@@ -1,10 +1,10 @@
 #pragma once
 #include "ICoreApplicationX.h"
 
-class CoreApplicationWrapperX : public RuntimeClass<ICoreApplicationX, IActivationFactory, ICoreApplicationResourceAvailabilityX>
+class CoreApplicationWrapperX : public RuntimeClass<IActivationFactory, ICoreApplicationResourceAvailabilityX, ICoreApplicationX>
 {
 public:
-
+	
 	CoreApplicationWrapperX(ComPtr<IActivationFactory> realFactory)
 		: m_realFactory(realFactory)
 	{
@@ -20,7 +20,7 @@ public:
 		return m_realFactory->ActivateInstance(instance);
 	}
 public:
-
+	
 	// ICoreApplicationX
 	INT32 _abi_get_Id(HSTRING* value) override;
 	INT32 _abi_add_Suspending(__FIEventHandler_1_Windows__CApplicationModel__CSuspendingEventArgs* handler, EventRegistrationToken* token) override;
@@ -49,5 +49,5 @@ private:
 	long m_refCount = 1;
 	ComPtr<IActivationFactory> m_realFactory;
 	ComPtr<ICoreApplication> m_realCoreApplication; // ICoreApplication to forward the calls
-
+	
 };

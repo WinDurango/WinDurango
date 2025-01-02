@@ -10,6 +10,12 @@
     <ClCompile Include="CoreApplicationWrapperX.cpp">
       <Filter>Windows.ApplicationModel.Core\CoreApplication</Filter>
     </ClCompile>
+    <ClCompile Include="FrameworkViewWrapper.cpp">
+      <Filter>Windows.ApplicationModel.Core\FrameworkView</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameworkViewSourceWrapper.cpp">
+      <Filter>Windows.ApplicationModel.Core\FrameworkViewSource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
@@ -32,6 +38,12 @@
     <ClInclude Include="ICoreApplicationResourceAvailabilityX.h">
       <Filter>Windows.ApplicationModel.Core</Filter>
     </ClInclude>
+    <ClInclude Include="FrameworkViewWrapper.h">
+      <Filter>Windows.ApplicationModel.Core\FrameworkView</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameworkViewSourceWrapper.h">
+      <Filter>Windows.ApplicationModel.Core\FrameworkViewSource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Exports.def" />
@@ -50,6 +62,12 @@
     </Filter>
     <Filter Include="Windows.ApplicationModel.Core\CoreApplication">
       <UniqueIdentifier>{ee124397-8dbc-48c3-869f-10201a7d04fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows.ApplicationModel.Core\FrameworkView">
+      <UniqueIdentifier>{1dfef95c-7e52-4c34-862d-18e9cd60a9de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows.ApplicationModel.Core\FrameworkViewSource">
+      <UniqueIdentifier>{c767c192-a92b-4536-b8a9-51f27fa78800}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

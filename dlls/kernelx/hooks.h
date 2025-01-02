@@ -1,9 +1,13 @@
 ﻿#pragma once
 #include <winrt/Windows.ApplicationModel.h>
 
-
+#include "utils.h"
 #include "CoreApplicationWrapperX.h"
+#include <windows.applicationmodel.core.h>
 
+
+
+#define IsXboxCallee() IsXboxAddress(_ReturnAddress())
 
 /* This function is used to compare the class name of the classId with the classIdName. */
 inline bool IsClassName(HSTRING classId, const char* classIdName)
@@ -28,44 +32,6 @@ DllGetActivationFactoryFunc pDllGetActivationFactory = nullptr;
 /* Function pointers for the WinRT RoGetActivationFactory function. */
 HRESULT(WINAPI* TrueRoGetActivationFactory)(HSTRING classId, REFIID iid, void** factory) = RoGetActivationFactory;
 
-BOOL IsXboxModule(HMODULE module)
-{
-	wchar_t moduleFilePath[MAX_PATH];
-	if (GetModuleFileNameW(module, moduleFilePath, MAX_PATH) > 0)
-	{
-		std::wstring moduleFileName(moduleFilePath);
-		wprintf(L"%ls\n", moduleFileName.c_str());
-
-		wchar_t exeFilePath[MAX_PATH];
-		if (GetModuleFileNameW(NULL, exeFilePath, MAX_PATH) > 0)
-		{
-			std::wstring exeDir(exeFilePath);
-			size_t pos = exeDir.find_last_of(L"\\/");
-			if (pos != std::wstring::npos) {
-				exeDir = exeDir.substr(0, pos);
-			}
-
-			if (moduleFileName.find(exeDir) == 0) {
-				return TRUE;
-			}
-		}
-	}
-
-	return FALSE;
-}
-
-
-BOOL IsXboxAddress(PVOID Address)
-{
-	HMODULE Module;
-
-	// Technically this should also use 'GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT'
-	if (!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCWSTR)Address, &Module))
-		return FALSE;
-
-	return IsXboxModule(Module);
-}
-
 
 // The hook function for GetForCurrentThread
 HRESULT STDMETHODCALLTYPE GetForCurrentThread_Hook(ICoreWindowStatic* pThis, CoreWindow** ppWindow)
@@ -75,17 +41,15 @@ HRESULT STDMETHODCALLTYPE GetForCurrentThread_Hook(ICoreWindowStatic* pThis, Cor
 	{
 		return hr;
 	}
-
+	
 	if (*ppWindow == NULL)
 		return hr;
 
-	// if GetForCurrentThread is called from xbox code we wrap it with the xbox ICoreWindow
-	if (IsXboxAddress(_ReturnAddress()))
-	{
+
+
+	if (IsXboxCallee())
 		*reinterpret_cast<ICoreWindowX**>(ppWindow) = new CoreWindowWrapperX(*ppWindow);
 
-		return S_OK;
-	}
 
 	return hr;
 }
@@ -102,7 +66,7 @@ inline HRESULT WINAPI RoGetActivationFactory_Hook(HSTRING classId, REFIID iid, v
 		wprintf(L"%ls\n", rawString);
 	}
 	auto hr = 0;
-
+	
 	if (IsClassName(classId, "Windows.ApplicationModel.Core.CoreApplication"))
 	{
 		ComPtr<IActivationFactory> realFactory;
@@ -113,11 +77,10 @@ inline HRESULT WINAPI RoGetActivationFactory_Hook(HSTRING classId, REFIID iid, v
 			return hr;
 
 		ComPtr<CoreApplicationWrapperX> wrappedFactory = Make<CoreApplicationWrapperX>(realFactory);
-
+		
 		return wrappedFactory.CopyTo(iid, factory);
 	}
-
-	if (IsClassName(classId, "Windows.UI.Core.CoreWindow"))
+	else if (IsClassName(classId, "Windows.UI.Core.CoreWindow"))
 	{
 		//
 		// for now we just hook GetForCurrentThread to get the CoreWindow but i'll change it later to

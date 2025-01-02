@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CoreApplicationWrapperX.h"
+#include "FrameworkViewSourceWrapper.h"
 
 HRESULT CoreApplicationWrapperX::GetIids(ULONG* iidCount, IID** iids)
 {
@@ -22,7 +23,8 @@ HRESULT CoreApplicationWrapperX::GetTrustLevel(TrustLevel* trustLevel)
 INT32 CoreApplicationWrapperX::_abi_add_Resuming(__FIEventHandler_1_IInspectable* handler, EventRegistrationToken* token)
 {
 	printf("_abi_add_Resuming\n");
-	return m_realCoreApplication->add_Resuming(handler, token);
+	//return m_realCoreApplication->add_Resuming(handler, token);
+	return S_OK;
 }
 
 INT32 CoreApplicationWrapperX::_abi_remove_Resuming(EventRegistrationToken token)
@@ -34,7 +36,8 @@ INT32 CoreApplicationWrapperX::_abi_remove_Resuming(EventRegistrationToken token
 INT32 CoreApplicationWrapperX::_abi_add_Suspending(__FIEventHandler_1_Windows__CApplicationModel__CSuspendingEventArgs* handler, EventRegistrationToken* token)
 {
 	printf("_abi_add_Suspending\n");
-	return m_realCoreApplication->add_Suspending(handler, token);
+	//return m_realCoreApplication->add_Suspending(handler, token);
+	return S_OK;
 }
 
 INT32 CoreApplicationWrapperX::_abi_remove_Suspending(EventRegistrationToken token)
@@ -67,14 +70,17 @@ HRESULT CoreApplicationWrapperX::_abi_remove_ResourceAvailabilityChanged(EventRe
 
 INT32 CoreApplicationWrapperX::_abi_GetCurrentView(ABI::Windows::ApplicationModel::Core::ICoreApplicationView** value)
 {
-	printf("_abi_GetCurrentView\n");
+	printf("[CoreApplicationWrapperX] ---> _abi_GetCurrentView\n");
 	return m_realCoreApplication->GetCurrentView(value);
 }
 
 INT32 CoreApplicationWrapperX::_abi_Run(ABI::Windows::ApplicationModel::Core::IFrameworkViewSource* viewSource)
 {
 	printf("_abi_Run\n");
-	return m_realCoreApplication->Run(viewSource);
+
+	// Wrap the ViewSource and pass it to the original function
+	FrameworkViewSourceWrapper* wrappedViewSource = new FrameworkViewSourceWrapper(viewSource);
+	return m_realCoreApplication->Run(wrappedViewSource);
 }
 
 INT32 CoreApplicationWrapperX::_abi_get_Id(HSTRING* value)
@@ -109,9 +115,21 @@ HRESULT CoreApplicationWrapperX::QueryInterface(const IID& riid, void** ppvObjec
 		*ppvObject = static_cast<ICoreApplicationResourceAvailabilityX*>(this);
 		AddRef();
 		return S_OK;
+	} 
+	
+	// DEBUG
+	HRESULT hr = m_realFactory->QueryInterface(riid, ppvObject);
+	if(FAILED(hr))
+	{
+		char iidstr[sizeof("{AAAAAAAA-BBBB-CCCC-DDEE-FFGGHHIIJJKK}")];
+		OLECHAR iidwstr[sizeof(iidstr)];
+		StringFromGUID2(riid, iidwstr, ARRAYSIZE(iidwstr));
+		WideCharToMultiByte(CP_UTF8, 0, iidwstr, -1, iidstr, sizeof(iidstr), nullptr, nullptr);
+		MessageBoxA(nullptr, iidstr, typeid(*this).name(), MB_OK);
 	}
 
-	return m_realFactory->QueryInterface(riid, ppvObject);
+	*ppvObject = nullptr;
+	return E_NOINTERFACE;
 }
 
 ULONG CoreApplicationWrapperX::AddRef()
