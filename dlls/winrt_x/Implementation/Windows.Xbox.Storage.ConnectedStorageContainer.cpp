@@ -35,11 +35,11 @@ namespace winrt::Windows::Xbox::Storage::implementation
     }
     winrt::Windows::Foundation::IAsyncAction ConnectedStorageContainer::SubmitUpdatesAsync(winrt::Windows::Foundation::Collections::IMapView<hstring, winrt::Windows::Storage::Streams::IBuffer> blobsToWrite, winrt::Windows::Foundation::Collections::IIterable<hstring> blobsToDelete)
     {
-        co_await WinDurango::impl::s_userStorage->Upload(Name( ), blobsToWrite, blobsToDelete);
+        co_await m_connectedStorage->Upload(Name( ), blobsToWrite, blobsToDelete);
     }
     winrt::Windows::Foundation::IAsyncAction ConnectedStorageContainer::ReadAsync(winrt::Windows::Foundation::Collections::IMapView<hstring, winrt::Windows::Storage::Streams::IBuffer> blobsToRead)
     {
-        co_await WinDurango::impl::s_userStorage->Read(Name( ), blobsToRead);
+        co_await m_connectedStorage->Read(Name( ), blobsToRead);
     }
     winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collections::IMapView<hstring, winrt::Windows::Storage::Streams::IBuffer>> ConnectedStorageContainer::GetAsync(winrt::Windows::Foundation::Collections::IIterable<hstring> blobsToRead)
     {
@@ -51,7 +51,7 @@ namespace winrt::Windows::Xbox::Storage::implementation
     }
     winrt::Windows::Foundation::IAsyncAction ConnectedStorageContainer::SubmitUpdatesAsync(winrt::Windows::Foundation::Collections::IMapView<hstring, winrt::Windows::Storage::Streams::IBuffer> blobsToWrite, winrt::Windows::Foundation::Collections::IIterable<hstring> blobsToDelete, hstring displayName)
     {
-        co_await WinDurango::impl::s_userStorage->Upload(Name( ), blobsToWrite, blobsToDelete);
+        co_await m_connectedStorage->Upload(Name(), blobsToWrite, blobsToDelete, displayName);
     }
     winrt::Windows::Foundation::IAsyncAction ConnectedStorageContainer::SubmitPropertySetUpdatesAsync(winrt::Windows::Foundation::Collections::IPropertySet blobsToWrite, winrt::Windows::Foundation::Collections::IIterable<hstring> blobsToDelete, hstring displayName)
     {
@@ -59,6 +59,6 @@ namespace winrt::Windows::Xbox::Storage::implementation
     }
     winrt::Windows::Xbox::Storage::BlobInfoQueryResult ConnectedStorageContainer::CreateBlobInfoQuery(hstring const& blobNamePrefix)
     {
-        return winrt::make<winrt::Windows::Xbox::Storage::implementation::BlobInfoQueryResult>(Name(), blobNamePrefix);
+        return winrt::make<winrt::Windows::Xbox::Storage::implementation::BlobInfoQueryResult>(Name(), blobNamePrefix, m_connectedStorage);
     }
 }

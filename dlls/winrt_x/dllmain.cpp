@@ -9,7 +9,13 @@ DWORD WINAPI ThreadProc(LPVOID lpParam)
     if (WinDurango::impl::s_userStorage == nullptr)
     {
         WinDurango::impl::s_userStorage = new WinDurango::impl::ConnectedStorage();
-        WinDurango::impl::s_userStorage->InitializeStorage().get();
+        WinDurango::impl::s_userStorage->InitializeStorage(L"UserStorage").get();
+    }
+
+    if (WinDurango::impl::s_machineStorage == nullptr)
+    {
+        WinDurango::impl::s_machineStorage = new WinDurango::impl::ConnectedStorage( );
+        WinDurango::impl::s_machineStorage->InitializeStorage(L"MachineStorage").get( );
     }
 
     return 1;
@@ -21,9 +27,6 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID reserved)
         printf("[winrt_x] DllMain invoked");
         CreateThread(nullptr, 0, ThreadProc, nullptr, 0, nullptr);
     }
-	else if (dwReason == DLL_PROCESS_DETACH) {
-		CloseHandle(WinDurango::impl::h_ContainerWriteEvent);
-	}
 
     return TRUE;
 }

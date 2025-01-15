@@ -27,9 +27,10 @@ namespace winrt::Windows::Xbox::Storage::implementation
     struct BlobInfoQueryResult : BlobInfoQueryResultT<BlobInfoQueryResult>
     {
         BlobInfoQueryResult() = default;
-        BlobInfoQueryResult(hstring parent, hstring prefix){
+        BlobInfoQueryResult(hstring parent, hstring prefix, WinDurango::impl::ConnectedStorage* connectedStorage){
             this->parentName = parent;
             this->prefix = prefix;
+			m_connectedStorage = connectedStorage;
         }
 
         winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Storage::BlobInfo>> GetBlobInfoAsync(uint32_t startIndex, uint32_t maxNumberOfItems);
@@ -39,5 +40,6 @@ namespace winrt::Windows::Xbox::Storage::implementation
     private:
         hstring parentName;
         hstring prefix;
+        WinDurango::impl::ConnectedStorage* m_connectedStorage = nullptr;
     };
 }

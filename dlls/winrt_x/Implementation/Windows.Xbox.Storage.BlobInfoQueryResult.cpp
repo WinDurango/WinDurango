@@ -35,29 +35,7 @@ namespace winrt::Windows::Xbox::Storage::implementation
     }
     winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Storage::BlobInfo>> BlobInfoQueryResult::GetBlobInfoAsync()
     {
-        winrt::Windows::Foundation::Collections::IVector<winrt::Windows::Xbox::Storage::BlobInfo> blobInfoVector = winrt::single_threaded_vector<winrt::Windows::Xbox::Storage::BlobInfo>( );
-        hstring s_prefix = prefix;
-
-        hstring storagePath = winrt::Windows::Storage::ApplicationData::Current( ).LocalFolder( ).Path( ) + L"\\WinDurango\\UserStorage\\" + parentName;
-        if (!co_await WinDurango::impl::ConnectedStorage::DoesFolderExist(storagePath))
-            co_return blobInfoVector.GetView( );
-
-        auto storageFolder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(storagePath);
-        auto files = co_await storageFolder.GetFilesAsync( );
-
-        for (auto file : files) {
-            // @Bagieta: if you know better way of checking this feel free to change this
-            std::wstring_view str_view{ file.Name( ) };
-            if (!str_view._Starts_with(s_prefix))
-                continue;
-
-            auto folderProperties = co_await file.GetBasicPropertiesAsync( );
-
-            uint32_t size = folderProperties.Size( );
-
-            blobInfoVector.Append({ file.Name( ), size});
-        }
-        co_return blobInfoVector.GetView( );
+		co_return co_await m_connectedStorage->GetBlobInfoAsync(parentName, prefix);
     }
     winrt::Windows::Foundation::IAsyncOperation<uint32_t> BlobInfoQueryResult::GetItemCountAsync()
     {

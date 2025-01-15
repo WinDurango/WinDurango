@@ -126,6 +126,7 @@ namespace d3d11x
 		IDXGISwapChain1* swap = nullptr;
 		HRESULT hr;
 		pDesc->Flags &= DXGI_SWAPCHAIN_FLAG_MASK;
+		pDesc->Scaling = DXGI_SCALING_ASPECT_RATIO_STRETCH;
 
 		if (pWindow == nullptr)
 		{

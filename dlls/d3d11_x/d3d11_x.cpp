@@ -164,7 +164,7 @@ HRESULT __stdcall D3D11CreateDevice_X(
     ID3D11DeviceContext2* device_context2{};
     auto flags = Flags & CREATE_DEVICE_FLAG_MASK;
 #ifdef _DEBUG
-	flags |= D3D11_CREATE_DEVICE_DEBUG;
+	//flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
 	HRESULT hr = D3D11CreateDevice(pAdapter, DriverType, Software, flags, featurelevels, _ARRAYSIZE(featurelevels), SDKVersion, (ID3D11Device**)ppDevice, pFeatureLevel, (ID3D11DeviceContext**)ppImmediateContext);
