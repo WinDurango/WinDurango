@@ -3,6 +3,7 @@
 #include <windows.ui.core.h>
 
 #include "ICoreApplicationResourceAvailabilityX.h"
+#include "ICoreApplicationGpuPolicy.h"
 
 using namespace ABI::Windows::ApplicationModel;
 using namespace ABI::Windows::ApplicationModel::Activation;

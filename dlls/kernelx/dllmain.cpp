@@ -160,7 +160,22 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID reserved)
 		DetourTransactionBegin();
 		DetourUpdateThread(GetCurrentThread());
 		//DetourAttach(&reinterpret_cast<PVOID&>(TrueRoGetActivationFactory), RoGetActivationFactory_Hook);
-		XWinePatchImport(GetModuleHandleW(nullptr), GetModuleHandleW(L"vccorlib140.dll"), "?GetActivationFactoryByPCWSTR@@YAJPEAXAEAVGuid@Platform@@PEAPEAX@Z", GetActivationFactoryRedirect);
+		
+		// games uses different vccorlib versions so just HardCoding vccorlib140 won't work
+		// so we can just check if any of corlib modules are loaded and use that
+		// (add more of them as we find in games)
+		std::array<const wchar_t*, 3> modules = { L"vccorlib140.dll", L"vccorlib110.dll", L"vccorlib120.dll" };
+		HMODULE hModule = nullptr;
+		for (auto& module : modules)
+		{
+			hModule = GetModuleHandleW(module);
+			if (hModule != nullptr)
+			{
+				break;
+			}
+		}
+
+		XWinePatchImport(GetModuleHandleW(nullptr), hModule, "?GetActivationFactoryByPCWSTR@@YAJPEAXAEAVGuid@Platform@@PEAPEAX@Z", GetActivationFactoryRedirect);
 
 		DetourAttach(&reinterpret_cast<PVOID&>(TrueOpenFile), OpenFile_Hook);
 		DetourAttach(&reinterpret_cast<PVOID&>(TrueCreateFileW), CreateFileW_Hook);
@@ -184,6 +199,9 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID reserved)
 		DetourDetach(&reinterpret_cast<PVOID&>(TrueGetFileAttributesExW), GetFileAttributesExW_Hook);
 		DetourDetach(&reinterpret_cast<PVOID&>(TrueFindFirstFileW), FindFirstFileW_Hook);
 		DetourDetach(&reinterpret_cast<PVOID&>(TrueDeleteFileW), DeleteFileW_Hook);
+		DetourDetach(&reinterpret_cast<PVOID&>(TrueLoadLibraryExW), LoadLibraryExW_Hook);
+		DetourDetach(&reinterpret_cast<PVOID&>(TrueLoadLibraryW), LoadLibraryW_Hook);
+		DetourDetach(&reinterpret_cast<PVOID&>(TrueLoadLibraryExA), LoadLibraryExA_Hook);
 
 		DetourTransactionCommit();
 	}

@@ -437,7 +437,7 @@ namespace d3d11x
 		}
 
 		HRESULT QueryInterface(REFIID riid, void** ppvObject) override;
-		
+
 
 		ULONG AddRef( ) override
 		{
@@ -809,5 +809,12 @@ namespace d3d11x
 
 	public:
 		::ID3D11Device2* m_realDevice;
+	};
+
+
+	MIDL_INTERFACE("88671610-712E-4F1E-84AB-01B5948BD373")
+		ID3D11PerformanceDeviceX : ID3D11DeviceX
+	{
+		// yea this is just empty lol
 	};
 }

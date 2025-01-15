@@ -1,10 +1,10 @@
 #pragma once
 #include "ICoreApplicationX.h"
 
-class CoreApplicationWrapperX : public RuntimeClass<IActivationFactory, ICoreApplicationResourceAvailabilityX, ICoreApplicationX>
+class CoreApplicationWrapperX : public RuntimeClass<IActivationFactory, ICoreApplicationResourceAvailabilityX, ICoreApplicationGpuPolicy, ICoreApplicationX>
 {
 public:
-	
+
 	CoreApplicationWrapperX(ComPtr<IActivationFactory> realFactory)
 		: m_realFactory(realFactory)
 	{
@@ -19,7 +19,7 @@ public:
 	{
 		return m_realFactory->ActivateInstance(instance);
 	}
-	
+
 	// ICoreApplicationX
 	INT32 _abi_get_Id(HSTRING* value) override;
 	INT32 _abi_add_Suspending(__FIEventHandler_1_Windows__CApplicationModel__CSuspendingEventArgs* handler, EventRegistrationToken* token) override;
@@ -35,6 +35,10 @@ public:
 	HRESULT _abi_add_ResourceAvailabilityChanged(winrt::Windows::Foundation::EventHandler<IInspectable>* handler, EventRegistrationToken* token) override;
 	HRESULT _abi_remove_ResourceAvailabilityChanged(EventRegistrationToken token) override;
 
+	// ICoreApplicationGpuPolicy
+	HRESULT get_DisableKinectGpuReservation(bool*) override;
+	HRESULT set_DisableKinectGpuReservation(bool) override;
+
 	// IActivationFactory (IInspectable + IUnknown)
 	HRESULT QueryInterface(const IID& riid, void** ppvObject) override;
 	ULONG AddRef() override;
@@ -48,5 +52,5 @@ private:
 	long m_RefCount = 1;
 	ComPtr<IActivationFactory> m_realFactory;
 	ComPtr<ICoreApplication> m_realCoreApplication; // ICoreApplication to forward the calls
-	
+	bool m_KinectGpuReservation = false;
 };

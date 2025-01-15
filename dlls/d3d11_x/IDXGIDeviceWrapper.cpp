@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "IDXGIWrappers.h"
+#include "../kernelx/utils.h"
 
 namespace d3d11x
 {
@@ -26,7 +27,7 @@ namespace d3d11x
 
 
 
-  
+
     ULONG IDXGIDeviceWrapper::AddRef( )
     {
         printf("[IDXGIDeviceWrapper] --> AddRef\n");
@@ -63,6 +64,13 @@ namespace d3d11x
         HRESULT hr = m_realDevice->GetParent(riid, ppParent);
         this->AddRef( );
 
+        if (IsXboxCallee( ))
+        {
+            if (riid == __uuidof(IDXGIAdapter))
+            {
+                *ppParent = new IDXGIAdapterWrapper(reinterpret_cast<IDXGIAdapter*>(*ppParent));
+            }
+        }
         return hr;
     }
 

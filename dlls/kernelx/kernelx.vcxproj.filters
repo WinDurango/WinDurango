@@ -50,6 +50,9 @@
     <ClInclude Include="CurrentAppWrapper.hpp">
       <Filter>Windows.ApplicationModel.Store\CurrentApp</Filter>
     </ClInclude>
+    <ClInclude Include="ICoreApplicationGpuPolicy.h">
+      <Filter>Windows.ApplicationModel.Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Exports.def" />

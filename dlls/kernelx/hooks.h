@@ -104,8 +104,70 @@ void FixRelativePath(LPCWSTR& lpFileName)
 
 		lpFileName = convert.data();
 	}
+	else if (fileName[0] == 'G' && fileName[1] == ':')
+	{
+
+		static std::wstring trimPath{};
+		trimPath = fileName.substr(2);
+		fileName = trimPath.data();
+		convert = std::filesystem::current_path().c_str();
+		convert.append(fileName);
+
+		lpFileName = convert.data();
+	}
 }
 
+
+HMODULE WINAPI LoadLibraryExA_Hook(LPCSTR lpLibFileName, _Reserved_ HANDLE hFile, _In_ DWORD dwFlags)
+{
+
+	static std::string convert{};
+	std::string_view fileName(lpLibFileName);
+
+	if (fileName.size() != 0 && fileName[0] == 'G' && fileName[1] == ':')
+	{
+		std::string trimPath = std::string(fileName.substr(2));
+		convert = std::filesystem::current_path().string();
+		convert.append(trimPath);
+		lpLibFileName = convert.c_str();
+	}
+
+	//printf("LoadLibraryExA_Hook-: %s\n", lpLibFileName);
+
+
+
+
+	HMODULE result = TrueLoadLibraryExA(lpLibFileName, hFile, dwFlags);
+	// Print last error if failed
+	if (result == NULL)
+	{
+		printf("LoadLibraryExA_Hook failed: %d\n", GetLastError());
+	}
+	return result;
+}
+
+HMODULE WINAPI LoadLibraryW_Hook(LPCWSTR lpLibFileName)
+{
+
+	static std::wstring convert{};
+	std::wstring_view fileName(lpLibFileName);
+
+
+	if (fileName[0] == 'G' && fileName[1] == ':' && fileName.size() != 0)
+	{
+
+		static std::wstring trimPath{};
+		trimPath = fileName.substr(2);
+		fileName = trimPath.data();
+		convert = std::filesystem::current_path().c_str();
+		convert.append(fileName);
+
+		lpLibFileName = convert.data();
+	}
+	//printf("LoadLibraryW_Hook: %ls\n", lpLibFileName);
+
+	return TrueLoadLibraryW(lpLibFileName);
+}
 HFILE WINAPI OpenFile_Hook(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle)
 {
 	//FixRelativePath(lpFileName);
@@ -158,7 +220,7 @@ HRESULT STDMETHODCALLTYPE GetForCurrentThread_Hook(ICoreWindowStatic* pThis, Cor
 	{
 		return hr;
 	}
-	
+
 	if (*ppWindow == NULL)
 		return hr;
 
@@ -190,7 +252,7 @@ inline HRESULT WINAPI RoGetActivationFactory_Hook(HSTRING classId, REFIID iid, v
 	const wchar_t* rawString = WindowsGetStringRawBuffer(classId, nullptr);
 
 	//wprintf(L"%ls\n", rawString);
-	auto hr = 0;
+		auto hr = 0;
 
 	if (IsClassName(classId, "Windows.ApplicationModel.Store.CurrentApp"))
 	{
@@ -208,70 +270,69 @@ inline HRESULT WINAPI RoGetActivationFactory_Hook(HSTRING classId, REFIID iid, v
 		DetourTransactionCommit();
 	}
 
-	if (IsClassName(classId, "Windows.ApplicationModel.Core.CoreApplication"))
-	{
-		ComPtr<IActivationFactory> realFactory;
-
-		hr = TrueRoGetActivationFactory(HStringReference(RuntimeClass_Windows_ApplicationModel_Core_CoreApplication).Get(), IID_PPV_ARGS(&realFactory));
-
-		if (FAILED(hr))
-			return hr;
-
-		ComPtr<CoreApplicationWrapperX> wrappedFactory = Make<CoreApplicationWrapperX>(realFactory);
-
-		return wrappedFactory.CopyTo(iid, factory);
-	}
-
-	if (IsClassName(classId, "Windows.UI.Core.CoreWindow"))
-	{
-		//
-		// for now we just hook GetForCurrentThread to get the CoreWindow but i'll change it later to
-		// wrap ICoreWindowStatic or as zombie said another thing that works is by hooking IFrameworkView::SetWindow
-		// but for now this *should* work just fine -AleBlbl
-		//
-		ComPtr<ICoreWindowStatic> coreWindowStatic;
-		hr = TrueRoGetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Core_CoreWindow).Get(), IID_PPV_ARGS(&coreWindowStatic));
-		if (FAILED(hr)) {
-			return hr;
-		}
-
-		if (!TrueGetForCurrentThread)
+		if (IsClassName(classId, "Windows.ApplicationModel.Core.CoreApplication"))
 		{
-			*reinterpret_cast<void**>(&TrueGetForCurrentThread) = (*reinterpret_cast<void***>(coreWindowStatic.Get()))[6];
+			ComPtr<IActivationFactory> realFactory;
 
-			DetourTransactionBegin();
-			DetourUpdateThread(GetCurrentThread());
-			DetourAttach(&TrueGetForCurrentThread, GetForCurrentThread_Hook);
-			DetourTransactionCommit();
+			hr = TrueRoGetActivationFactory(HStringReference(RuntimeClass_Windows_ApplicationModel_Core_CoreApplication).Get(), IID_PPV_ARGS(&realFactory));
+
+			if (FAILED(hr))
+				return hr;
+
+			ComPtr<CoreApplicationWrapperX> wrappedFactory = Make<CoreApplicationWrapperX>(realFactory);
+
+			return wrappedFactory.CopyTo(iid, factory);
 		}
 
-		return coreWindowStatic.CopyTo(iid, factory);
-	}
+		if (IsClassName(classId, "Windows.UI.Core.CoreWindow"))
+		{
+			//
+			// for now we just hook GetForCurrentThread to get the CoreWindow but i'll change it later to
+			// wrap ICoreWindowStatic or as zombie said another thing that works is by hooking IFrameworkView::SetWindow
+			// but for now this *should* work just fine -AleBlbl
+			//
+			ComPtr<ICoreWindowStatic> coreWindowStatic;
+			hr = TrueRoGetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Core_CoreWindow).Get(), IID_PPV_ARGS(&coreWindowStatic));
+			if (FAILED(hr)) {
+				return hr;
+			}
 
-	// After WinDurango overrides try to load the rest
+			if (!TrueGetForCurrentThread)
+			{
+				*reinterpret_cast<void**>(&TrueGetForCurrentThread) = (*reinterpret_cast<void***>(coreWindowStatic.Get()))[6];
 
-	if (!pDllGetActivationFactory)
-	{
-		auto library = LoadPackagedLibrary(L"winrt_x.dll", 0);
+				DetourTransactionBegin();
+				DetourUpdateThread(GetCurrentThread());
+				DetourAttach(&TrueGetForCurrentThread, GetForCurrentThread_Hook);
+				DetourTransactionCommit();
+			}
 
-		if (!library) library = LoadLibraryW(L"winrt_x.dll");
+			return coreWindowStatic.CopyTo(iid, factory);
+		}
 
-		if (!library) return hr;
-
-		pDllGetActivationFactory = reinterpret_cast<DllGetActivationFactoryFunc>
-			(GetProcAddress(library, "DllGetActivationFactory"));
+		// After WinDurango overrides try to load the rest
 
 		if (!pDllGetActivationFactory)
-			return hr;
-	}
+		{
+			auto library = LoadPackagedLibrary(L"winrt_x.dll", 0);
 
-	// fallback
-	ComPtr<IActivationFactory> fallbackFactory;
-	hr = pDllGetActivationFactory(classId, fallbackFactory.GetAddressOf());
+			if (!library) library = LoadLibraryW(L"winrt_x.dll");
 
-	if (SUCCEEDED(hr))
-		return fallbackFactory.CopyTo(iid, factory);
+			if (!library) return hr;
+
+			pDllGetActivationFactory = reinterpret_cast<DllGetActivationFactoryFunc>
+				(GetProcAddress(library, "DllGetActivationFactory"));
+
+			if (!pDllGetActivationFactory)
+				return hr;
+		}
+
+		// fallback
+		ComPtr<IActivationFactory> fallbackFactory;
+		hr = pDllGetActivationFactory(classId, fallbackFactory.GetAddressOf());
+
+		if (SUCCEEDED(hr))
+			return fallbackFactory.CopyTo(iid, factory);
 
 	return TrueRoGetActivationFactory(classId, iid, factory);
 }
-

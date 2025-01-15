@@ -18,7 +18,7 @@
 #define ERROR_LOG_FUNC() if(FAILED(hr)) { printf("[%s] hresult fail 0x%X\n", __func__, hr); }
 #define ERROR_LOG_HRES(res) printf("[%s] hresult fail 0x%X\n", __func__, res);
 
-HRESULT d3d11x::D3D11DeviceXWrapperX::QueryInterface(REFIID riid, void** ppvObject) 
+HRESULT d3d11x::D3D11DeviceXWrapperX::QueryInterface(REFIID riid, void** ppvObject)
 {
     // note from unixian: for debugging purposes
     char iidstr[ sizeof("{AAAAAAAA-BBBB-CCCC-DDEE-FFGGHHIIJJKK}") ];
@@ -31,6 +31,12 @@ HRESULT d3d11x::D3D11DeviceXWrapperX::QueryInterface(REFIID riid, void** ppvObje
         riid == __uuidof(ID3D11Device1) || riid == __uuidof(ID3D11Device))
     {
         *ppvObject = static_cast<ID3D11DeviceX*>(this);
+        AddRef( );
+        return S_OK;
+    }
+    else if (riid == __uuidof(ID3D11PerformanceDeviceX))
+    {
+        *ppvObject = reinterpret_cast<ID3D11PerformanceDeviceX*>(this);
         AddRef( );
         return S_OK;
     }
@@ -120,7 +126,7 @@ HRESULT d3d11x::D3D11DeviceXWrapperX::CreateShaderResourceView(
     if (ppSRView != nullptr)
     {
         *ppSRView = SUCCEEDED(hr) ? reinterpret_cast<ID3D11ShaderResourceView_X*>(new ID3D11ShaderResourceViewWrapper(target))
-                                : nullptr;
+            : nullptr;
     }
 
     return hr;
@@ -138,7 +144,7 @@ HRESULT d3d11x::D3D11DeviceXWrapperX::CreateUnorderedAccessView(
     if (ppUAView != nullptr)
     {
         *ppUAView = SUCCEEDED(hr) ? reinterpret_cast<ID3D11UnorderedAccessView_X*>(new ID3D11UnorderedAccessViewWrapper(target))
-                              : nullptr;
+            : nullptr;
     }
 
     return hr;
@@ -156,8 +162,8 @@ HRESULT d3d11x::D3D11DeviceXWrapperX::CreateRenderTargetView(
     if (ppRTView != nullptr)
     {
         *ppRTView = SUCCEEDED(hr) ? reinterpret_cast<ID3D11RenderTargetView_X*>(new ID3D11RenderTargetViewWrapper(target))
-                              : nullptr;
-	}
+            : nullptr;
+    }
 
     return hr;
 }
@@ -174,13 +180,13 @@ HRESULT d3d11x::D3D11DeviceXWrapperX::CreateDepthStencilView(
     if (ppDepthStencilView != nullptr)
     {
         *ppDepthStencilView = SUCCEEDED(hr) ? reinterpret_cast<ID3D11DepthStencilView_X*>(new ID3D11DepthStencilViewWrapper(target))
-                                        : nullptr;
-	}
+            : nullptr;
+    }
 
     return hr;
 }
 
-void d3d11x::D3D11DeviceXWrapperX::GetImmediateContext(ID3D11DeviceContext** ppImmediateContext) 
+void d3d11x::D3D11DeviceXWrapperX::GetImmediateContext(ID3D11DeviceContext** ppImmediateContext)
 {
     ::ID3D11DeviceContext* ctx{};
     m_realDevice->GetImmediateContext(&ctx);
@@ -213,11 +219,11 @@ HRESULT d3d11x::D3D11DeviceXWrapperX::CreateDeferredContext(UINT ContextFlags, d
 HRESULT d3d11x::D3D11DeviceXWrapperX::CreateBuffer(
                const D3D11_BUFFER_DESC* pDesc,
                const D3D11_SUBRESOURCE_DATA* pInitialData,
-               d3d11x::ID3D11Buffer_X** ppBuffer) 
+               d3d11x::ID3D11Buffer_X** ppBuffer)
 {
     ID3D11Buffer* buffer = nullptr;
     HRESULT hr = m_realDevice->CreateBuffer(pDesc, pInitialData, &buffer);
-    
+
     ERROR_LOG_FUNC( );
     if (ppBuffer != nullptr)
     {

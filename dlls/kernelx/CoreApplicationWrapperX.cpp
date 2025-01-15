@@ -68,6 +68,18 @@ HRESULT CoreApplicationWrapperX::_abi_remove_ResourceAvailabilityChanged(EventRe
 	return 0;
 }
 
+HRESULT CoreApplicationWrapperX::get_DisableKinectGpuReservation(bool* pOutValue)
+{
+	*pOutValue = this->m_KinectGpuReservation;
+	return S_OK;
+}
+
+HRESULT CoreApplicationWrapperX::set_DisableKinectGpuReservation(bool value)
+{
+	this->m_KinectGpuReservation = value;
+	return S_OK;
+}
+
 INT32 CoreApplicationWrapperX::_abi_GetCurrentView(ABI::Windows::ApplicationModel::Core::ICoreApplicationView** value)
 {
 	printf("[CoreApplicationWrapperX] ---> _abi_GetCurrentView\n");
@@ -115,8 +127,14 @@ HRESULT CoreApplicationWrapperX::QueryInterface(const IID& riid, void** ppvObjec
 		*ppvObject = static_cast<ICoreApplicationResourceAvailabilityX*>(this);
 		AddRef();
 		return S_OK;
-	} 
-	
+	}
+	else if (riid == __uuidof(ICoreApplicationGpuPolicy)) // allow ICoreApplicationResourceAvailabilityX interface
+	{
+		*ppvObject = static_cast<ICoreApplicationGpuPolicy*>(this);
+		AddRef();
+		return S_OK;
+	}
+
 	// DEBUG
 	HRESULT hr = m_realFactory->QueryInterface(riid, ppvObject);
 	if(FAILED(hr))

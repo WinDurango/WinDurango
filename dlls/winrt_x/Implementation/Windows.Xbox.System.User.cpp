@@ -28,7 +28,7 @@ namespace winrt::Windows::Xbox::System::implementation
             staticUsers = winrt::single_threaded_vector<System::User>( );
             staticUsers.Append(staticUser);
         }
-			
+
         return staticUsers.GetView();
     }
     winrt::event_token User::UserAdded(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::System::UserAddedEventArgs> const& handler)
@@ -41,7 +41,7 @@ namespace winrt::Windows::Xbox::System::implementation
     }
     winrt::event_token User::UserRemoved(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::System::UserRemovedEventArgs> const& handler)
     {
-		return m_userRemovedEvent.add(handler);
+        return m_userRemovedEvent.add(handler);
     }
     void User::UserRemoved(winrt::event_token const& token) noexcept
     {
@@ -123,7 +123,7 @@ namespace winrt::Windows::Xbox::System::implementation
     winrt::event_token User::UserDisplayInfoChanged(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::System::UserDisplayInfoChangedEventArgs> const& handler)
     {
         printf("!!!! Windows.Xbox.System.User UserDisplayInfoChanged | NOT IMPLEMENTED !!!!\n");
-        throw hresult_not_implemented();
+        return {};
     }
     void User::UserDisplayInfoChanged(winrt::event_token const& token) noexcept
     {
@@ -168,13 +168,13 @@ namespace winrt::Windows::Xbox::System::implementation
     }
     winrt::Windows::Xbox::System::User User::Sponsor()
     {
-		printf("!!!! Windows.Xbox.System.User Sponsor | NOT IMPLEMENTED !!!!\n");
+        printf("!!!! Windows.Xbox.System.User Sponsor | NOT IMPLEMENTED !!!!\n");
         return nullptr;
     }
     hstring User::XboxUserHash()
     {
-        printf("!!!! Windows.Xbox.System.User XboxUserHash | NOT IMPLEMENTED !!!!\n");
-        throw hresult_not_implemented();
+        printf("!!!! Windows.Xbox.System.User XboxUserHash | NOT IMPLEMENTED-- !!!!\n");
+        return winrt::to_hstring(0);
     }
     hstring User::XboxUserId()
     {

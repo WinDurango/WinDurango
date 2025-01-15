@@ -101,6 +101,7 @@
     <ClInclude Include="FrameworkViewSourceWrapper.h" />
     <ClInclude Include="FrameworkViewWrapper.h" />
     <ClInclude Include="hooks.h" />
+    <ClInclude Include="ICoreApplicationGpuPolicy.h" />
     <ClInclude Include="ICoreApplicationResourceAvailabilityX.h" />
     <ClInclude Include="ICoreApplicationX.h" />
     <ClInclude Include="ICoreWindowX.h" />
