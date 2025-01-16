@@ -14,6 +14,69 @@
 #define RETURN_HR(hr) return hr
 #define RETURN_LAST_ERROR_IF(cond) if (cond) return HRESULT_FROM_WIN32(GetLastError())
 
+
+std::vector<HMODULE> loadedMods;
+
+inline void LoadMods()
+{
+	
+	WCHAR path[MAX_PATH];
+	GetModuleFileNameW(GetModuleHandleW(nullptr), path, MAX_PATH);
+	PathRemoveFileSpecW(path);
+	PathAppendW(path, L"Mods");
+	
+	/*if (!PathFileExistsW(path))
+	{
+		BOOL ret = CreateDirectoryW(path, nullptr);
+		
+		if (!ret)
+		{
+			DWORD error = GetLastError();
+			printf("Error creating Mods directory: %d\n", error);
+		}
+		
+	}*/
+	if (!PathFileExistsW(path))
+	{
+		return;
+	}
+	WCHAR searchPath[MAX_PATH];
+	wcscpy_s(searchPath, path);
+	PathAppendW(searchPath, L"\\*.dll");
+	WIN32_FIND_DATAW findData;
+	HANDLE hFind = FindFirstFileW(searchPath, &findData);
+	if (hFind != INVALID_HANDLE_VALUE)
+	{
+		do
+		{
+			if (!(findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+			{
+				WCHAR modPath[MAX_PATH];
+				wcscpy_s(modPath, path);
+				PathAppendW(modPath, findData.cFileName);
+				HMODULE loadedModule = LoadLibraryW(modPath);
+				if (loadedModule != nullptr)
+				{
+					loadedMods.push_back(loadedModule);
+					printf("Loaded mod: %S\n", modPath);
+				}
+			}
+		} while (FindNextFileW(hFind, &findData));
+		FindClose(hFind);
+	}
+}	
+
+inline void UnLoadMods()
+{
+	for (auto mod : loadedMods)
+	{
+		FreeLibrary(mod);
+	}
+}
+
+
+
+
 inline HRESULT WINAPI GetActivationFactoryRedirect(PCWSTR str, REFIID riid, void** ppFactory)
 {
 	HRESULT hr;
@@ -186,6 +249,9 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID reserved)
 		//DetourAttach(&reinterpret_cast<PVOID&>(TrueLoadLibraryExW), LoadLibraryExW_Hook);
 
 		DetourTransactionCommit();
+
+
+		LoadMods();
 	}
 	else if (dwReason == DLL_PROCESS_DETACH)
 	{
@@ -204,6 +270,8 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID reserved)
 		DetourDetach(&reinterpret_cast<PVOID&>(TrueLoadLibraryExA), LoadLibraryExA_Hook);
 
 		DetourTransactionCommit();
+
+		UnLoadMods();
 	}
 
 	return TRUE;
