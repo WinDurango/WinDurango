@@ -179,12 +179,12 @@ namespace winrt::Windows::Xbox::System::implementation
     hstring User::XboxUserHash()
     {
         printf("!!!! Windows.Xbox.System.User XboxUserHash | NOT IMPLEMENTED-- !!!!\n");
-        return winrt::to_hstring(0);
+        return winrt::to_hstring(m_id);
     }
     hstring User::XboxUserId()
     {
         printf("!!!! Windows.Xbox.System.User XboxUserId | NOT IMPLEMENTED !!!!\n");
-        return winrt::to_hstring(123);
+        return winrt::to_hstring(m_id);
     }
     winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Xbox::System::GetTokenAndSignatureResult> User::GetTokenAndSignatureAsync(hstring httpMethod, hstring url, hstring headers)
     {
