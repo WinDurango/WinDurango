@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{dd076e76-174e-414f-a47f-01cc84e3fc80}</ProjectGuid>
+    <ProjectGuid>{DD076E76-174E-414F-A47F-01CC84E3FC80}</ProjectGuid>
     <RootNamespace>d3d11x</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -44,11 +44,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>d3d11_x</TargetName>
     <IncludePath>$(SolutionDir)thirdparty\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>d3d11_x</TargetName>
     <IncludePath>$(SolutionDir)thirdparty\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -65,7 +65,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>d3d10.lib;d3d11.lib;dxgi.lib;%(AdditionalDependencies);runtimeobject.lib</AdditionalDependencies>
+      <AdditionalDependencies>d3d10.lib;d3d11.lib;d3d12.lib;dxgi.lib;%(AdditionalDependencies);runtimeobject.lib;onecore.lib</AdditionalDependencies>
       <ModuleDefinitionFile>Exports.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
@@ -107,7 +107,9 @@
     <ClCompile Include="device_child_x.cpp" />
     <ClCompile Include="device_context_x.cpp" />
     <ClCompile Include="device_x.cpp" />
+    <ClCompile Include="XGUIDs.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="dma_engine.cpp" />
     <ClCompile Include="dxgi_adapter.cpp" />
     <ClCompile Include="dxgi_device.cpp" />
     <ClCompile Include="dxgi_factory.cpp" />
@@ -129,6 +131,8 @@
     <ClInclude Include="device_child_x.h" />
     <ClInclude Include="device_context_x.h" />
     <ClInclude Include="device_x.h" />
+    <ClInclude Include="XGUIDs.h" />
+    <ClInclude Include="dma_engine.h" />
     <ClInclude Include="dxgi_adapter.h" />
     <ClInclude Include="dxgi_device.h" />
     <ClInclude Include="dxgi_factory.h" />
