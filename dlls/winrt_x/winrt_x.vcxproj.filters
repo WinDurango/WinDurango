@@ -14,6 +14,102 @@
     <Filter Include="Implementation">
       <UniqueIdentifier>{956cd5a4-2b69-42c3-863f-45bb68b8d13e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platforms">
+      <UniqueIdentifier>{b366032e-e24b-47c3-9aef-aa97430f1a5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows">
+      <UniqueIdentifier>{1faca7af-5731-48ec-a354-cc2a618f74de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\idl">
+      <UniqueIdentifier>{20faefcd-8961-4350-9fcc-fcd56506e7b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\idl\Microsoft">
+      <UniqueIdentifier>{5bc1e451-c9da-40d6-b46e-fcb4e5cda1b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\idl\Microsoft\Xbox">
+      <UniqueIdentifier>{fa49bd15-73d2-4ab5-ba26-348edac64595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\idl\Microsoft\Xbox\Services">
+      <UniqueIdentifier>{5e0fc760-7f9d-4fda-b2e3-ad50488c93d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\idl\Windows">
+      <UniqueIdentifier>{7d56ae30-557c-49cc-91da-8a6deac9b5e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\idl\Windows\Xbox">
+      <UniqueIdentifier>{61bc2791-185b-467c-b60e-62c68fcfefe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Xbox One">
+      <UniqueIdentifier>{958f80f1-d285-4b37-b20d-569ae1620b9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Xbox One\Microsoft">
+      <UniqueIdentifier>{6d66cb9a-0509-4d26-9d08-8d446c569790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Xbox One\Microsoft\Xbox">
+      <UniqueIdentifier>{6fe51b7e-d9bc-4072-a226-605e952869a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Xbox One\Microsoft\Xbox\Services">
+      <UniqueIdentifier>{fd9c8fe4-a91c-4c2b-a9c3-2b78e1df61e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Xbox One\Microsoft\Xbox\Services\Achievements">
+      <UniqueIdentifier>{8b604662-893d-4f2e-bf1a-0b2b9bc95bca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Xbox One\Microsoft\Xbox\Services\Clubs">
+      <UniqueIdentifier>{3d493513-b614-46f1-a4b8-d591ad24aee0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch">
+      <UniqueIdentifier>{b896faf4-d524-4316-8afe-1c749ac1771f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Xbox One\Microsoft\Xbox\Services\EntertainmentProfile">
+      <UniqueIdentifier>{9680f0c8-8712-470c-83aa-3486341715ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform">
+      <UniqueIdentifier>{ad133121-4f1e-48af-a1b7-05d7dbe08f4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Kinect">
+      <UniqueIdentifier>{46d3de70-4eac-4009-93cd-563a0c904845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Xbox">
+      <UniqueIdentifier>{d02b5e51-b01c-45a2-8650-c13a3af2ffbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Xbox\ApplicationModel">
+      <UniqueIdentifier>{a39f793f-185a-4b42-8ed7-21290ed64334}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Xbox\Management">
+      <UniqueIdentifier>{ad8fec00-6ec0-4309-b3b4-70c287b6bf5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Xbox\Input">
+      <UniqueIdentifier>{4862225f-5476-472c-9ac3-72756bcbde04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Xbox\Media">
+      <UniqueIdentifier>{b7382df2-e0b5-480f-bff0-dbf0daa12f89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Xbox\Multiplayer">
+      <UniqueIdentifier>{932ff7d2-bdfd-435e-9a44-a0752c26f8a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Xbox\Multiplayer\Party">
+      <UniqueIdentifier>{96a84e3f-92a8-4cb9-a6d6-657fae0e1be4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Xbox\Multiplayer\GamePlayer">
+      <UniqueIdentifier>{2846e1db-7bad-49e0-b874-698eba20249d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Xbox\Services">
+      <UniqueIdentifier>{f326e884-70ac-4b06-88e0-4f307df59220}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Xbox\System">
+      <UniqueIdentifier>{33c5badd-a67b-447c-b1f7-d92cb05e4c6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Xbox\UI">
+      <UniqueIdentifier>{3797f358-9b35-49e3-9c0d-b3a760d3b5bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Xbox\Multiplayer\MultiplayerSession">
+      <UniqueIdentifier>{b0a03b7d-832b-4353-ac5d-2ba832b8a76d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Xbox\Multiplayer\MatchStatus">
+      <UniqueIdentifier>{f59a595b-1f37-47bc-95f6-3dc46b81dfda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platforms\Windows\Xbox\Multiplayer\GameSession">
+      <UniqueIdentifier>{5e7f044e-064e-41a4-85f6-f04e72b7d910}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -65,31 +161,7 @@
     <ClCompile Include="Implementation\Windows.Xbox.Achievements.AchievementUnlockedEventArgs.cpp">
       <Filter>Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.AppInfo.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.AumidQuery.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.ContentCompatibility.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.ContentEnhancements.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.PackageFullNameQuery.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.PackageInfo.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.PackageInfoEvents.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.ProtocolQuery.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.Store.Configuration.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.Store.Product.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.ContentInstallationInfo.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.ContentInstallManager.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.ContentLocation.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.ContentMetadata.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.ContentMetadataPackager.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.DownloadableContentPackageManager.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.PackageTransferManager.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.PackageTransferWatcher.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.StreamingInstallQueue.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Media.SmoothStreamingSessionManager.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Media.SystemMediaTransportControls.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Media.GameTransportControlsButtonPressedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Media.GameTransportControlsPropertyChangedEventArgs.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Media.GameTransportControls.cpp" />
     <ClCompile Include="Implementation\Windows.Xbox.Storage.BlobInfoQueryResult.cpp">
       <Filter>Implementation</Filter>
     </ClCompile>
@@ -192,260 +264,881 @@
     <ClCompile Include="Implementation\Microsoft.Xbox.GameChat.TextMessageReceivedEventArgs.cpp">
       <Filter>Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.Core.UserContextLookup.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.Core.CoreApplicationContext.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Services.XboxLiveConfiguration.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.Input.NavigationReading.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipsResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipUriInfo.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.EntertainmentProfile.EntertainmentProfileListContainsItemResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.EntertainmentProfile.EntertainmentProfileListService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.EntertainmentProfile.EntertainmentProfileListXboxOnePins.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.AllocationResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.ClusterResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerImageSet.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerMetadataResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerPlatformService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerPortMapping.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerTicketStatus.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameVariant.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.QualityOfServiceServer.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardColumn.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardQuery.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardRow.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.BrowseCatalogResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItem.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItemAvailability.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItemDetails.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItemImage.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.ConsumeInventoryItemResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.InventoryItem.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.InventoryItemsResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.InventoryService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Matchmaking.CreateMatchTicketResponse.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Matchmaking.HopperStatisticsResponse.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Matchmaking.MatchmakingService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Matchmaking.MatchTicketDetailsResponse.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.FindMatchCompletedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.HostChangedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.JoinLobbyCompletedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MemberJoinedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MemberLeftEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MemberPropertyChangedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerEvent.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerGameSession.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerLobbySession.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerManager.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerMember.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.PerformQosMeasurementsEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.SessionPropertyChangedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.TournamentGameSessionReadyEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.TournamentRegistrationStateChangedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.UserAddedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.UserRemovedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerActivityDetails.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerGetSessionsRequest.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerManagedInitialization.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerMemberInitialization.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerPeerToHostRequirements.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerPeerToPeerRequirements.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerQualityOfServiceMeasurements.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerQuerySearchHandleRequest.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerRoleInfo.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerRoleType.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSearchHandleDetails.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSearchHandleRequest.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSession.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionArbitrationServer.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionCapabilities.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionChangeEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionConstants.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionMatchmakingServer.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionMember.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionProperties.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionReference.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionRoleTypes.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionStates.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionTournamentsServer.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSubscriptionLostEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.WriteSessionResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.DevicePresenceChangeEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.DevicePresenceChangeSubscription.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceBroadcastRecord.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceData.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceDeviceRecord.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceMediaRecord.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceRecord.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceTitleRecord.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.TitlePresenceChangeEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.TitlePresenceChangeSubscription.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Privacy.MultiplePermissionsCheckResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Privacy.PermissionCheckResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Privacy.PermissionDenyReason.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Privacy.PermissionIdConstants.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Privacy.PrivacyService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.RealTimeActivity.RealTimeActivityResyncEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.RealTimeActivity.RealTimeActivityService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.RealTimeActivity.RealTimeActivitySubscriptionErrorEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.PreferredColor.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialEvent.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialManager.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialManagerPresenceRecord.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialManagerPresenceTitleRecord.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialUserGroupLoadedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.TitleHistory.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.XboxSocialUser.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.XboxSocialUserGroup.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.ProfileService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.ReputationFeedbackItem.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.ReputationService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.SocialGroupConstants.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.SocialRelationshipChangeEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.SocialRelationshipChangeSubscription.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.SocialService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.XboxSocialRelationship.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.XboxSocialRelationshipResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.XboxUserProfile.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.LeaderboardResultEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.StatisticEvent.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.StatisticManager.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.StatisticValue.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.System.StringService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.System.VerifyStringResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.System.XboxLiveServicesSettings.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageBlobMetadata.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageBlobMetadataResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageBlobResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageQuota.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.CurrentMatchMetadata.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.MatchMetadata.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.PreviousMatchMetadata.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamChangeEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamChangeSubscription.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamInfo.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamRequest.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamRequestResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamSummary.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.Tournament.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentChangeEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentChangeSubscription.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentReference.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentRequest.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentRequestResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentTeamResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.UserStatistics.RequestedStatistics.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.UserStatistics.ServiceConfigurationStatistic.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.UserStatistics.Statistic.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.UserStatistics.StatisticChangeEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.UserStatistics.StatisticChangeSubscription.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.UserStatistics.UserStatisticsResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.UserStatistics.UserStatisticsService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.Achievement.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementMediaAsset.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementProgression.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementRequirement.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementReward.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementsResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementTimeWindow.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementTitleAssociation.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.Club.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubActionSetting.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubActionSettings.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubBooleanSetting.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubPresenceCounts.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubProfile.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubRecommendation.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubRoleRecord.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubRoster.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubSearchAutoComplete.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubSearchFacetResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubsOwnedResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubsSearchResult.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubsService.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubStringMultiSetting.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubStringSetting.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubUserPresenceRecord.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchBroadcast.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchConfiguredStat.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClip.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipStat.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipThumbnail.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.HttpCallRequestMessage.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ServiceCallLoggingConfig.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxLiveAppConfiguration.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxLiveContext.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxLiveContextSettings.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxLiveHttpCall.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxLiveHttpCallResponse.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxLiveLogCallEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxLiveWnsEventArgs.cpp" />
-    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxServiceCallRoutedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.System.UserDisplayInfo.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.AudioBeam.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.AudioBeamFrame.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.AudioBeamFrameReference.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.AudioBeamSubFrame.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.AudioBodyCorrelation.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.AudioFrameArrivedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.AudioFrameReader.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.AudioSource.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.Body.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.BodyFrame.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.BodyFrameArrivedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.BodyFrameReader.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.BodyFrameReference.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.BodyFrameSource.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.BodyIndexFrame.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.BodyIndexFrameArrivedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.BodyIndexFrameReader.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.BodyIndexFrameReference.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.BodyIndexFrameSource.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.ColorFrame.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.ColorFrameArrivedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.ColorFrameReader.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.ColorFrameReference.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.ColorFrameSource.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.CoordinateMapper.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.DepthFrame.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.DepthFrameArrivedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.DepthFrameReader.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.DepthFrameReference.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.DepthFrameSource.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.FrameCapturedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.FrameDescription.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.InfraredFrame.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.InfraredFrameArrivedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.InfraredFrameReader.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.InfraredFrameReference.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.InfraredFrameSource.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.IsPausedChangedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.KinectSensor.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.MultiSourceFrame.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.MultiSourceFrameArrivedEventArgs.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.MultiSourceFrameReader.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.MultiSourceFrameReference.cpp" />
-    <ClCompile Include="Implementation\Windows.Kinect.PropertyChangedEventArgs.cpp" />
     <ClCompile Include="Implementation\Windows.Xbox.Input.GamepadReading.cpp">
       <Filter>Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.Store.ProductPurchasedEventArgs.cpp" />
     <ClCompile Include="ConnectedStorage\ConnectedStorage.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.UI.Accessibility.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.UI.AccountPickerResult.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.UI.AddRemoveFriendResult.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.UI.KeyboardOptions.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.UI.SystemUI.cpp" />
-    <ClCompile Include="Implementation\Windows.Xbox.UI.WebAuthenticationResult.cpp" />
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.Achievement.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementMediaAsset.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementProgression.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementRequirement.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementReward.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementsResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementTimeWindow.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementTitleAssociation.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.Club.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubActionSetting.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubActionSettings.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubBooleanSetting.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubPresenceCounts.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubProfile.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubRecommendation.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubRoleRecord.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubRoster.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubSearchAutoComplete.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubSearchFacetResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubsOwnedResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubsSearchResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubsService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubStringMultiSetting.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubStringSetting.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubUserPresenceRecord.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchBroadcast.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchConfiguredStat.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClip.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipsResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipStat.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipThumbnail.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipUriInfo.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.EntertainmentProfile.EntertainmentProfileListContainsItemResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\EntertainmentProfile</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.EntertainmentProfile.EntertainmentProfileListService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\EntertainmentProfile</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.EntertainmentProfile.EntertainmentProfileListXboxOnePins.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\EntertainmentProfile</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.AllocationResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.ClusterResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerImageSet.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerMetadataResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerPlatformService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerPortMapping.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerTicketStatus.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameVariant.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.QualityOfServiceServer.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.HttpCallRequestMessage.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardColumn.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardQuery.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardRow.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.BrowseCatalogResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItem.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItemAvailability.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItemDetails.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItemImage.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.ConsumeInventoryItemResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.InventoryItem.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.InventoryItemsResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Marketplace.InventoryService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Matchmaking.CreateMatchTicketResponse.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Matchmaking.HopperStatisticsResponse.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Matchmaking.MatchmakingService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Matchmaking.MatchTicketDetailsResponse.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.FindMatchCompletedEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.HostChangedEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.JoinLobbyCompletedEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MemberJoinedEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MemberLeftEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MemberPropertyChangedEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerEvent.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerGameSession.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerLobbySession.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerManager.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerMember.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.PerformQosMeasurementsEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.SessionPropertyChangedEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.TournamentGameSessionReadyEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.TournamentRegistrationStateChangedEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.UserAddedEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.UserRemovedEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerActivityDetails.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerGetSessionsRequest.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerManagedInitialization.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerMemberInitialization.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerPeerToHostRequirements.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerPeerToPeerRequirements.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerQualityOfServiceMeasurements.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerQuerySearchHandleRequest.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerRoleInfo.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerRoleType.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSearchHandleDetails.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSearchHandleRequest.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSession.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionArbitrationServer.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionCapabilities.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionChangeEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionConstants.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionMatchmakingServer.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionMember.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionProperties.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionReference.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionRoleTypes.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionStates.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionTournamentsServer.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSubscriptionLostEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Multiplayer.WriteSessionResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.DevicePresenceChangeEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.DevicePresenceChangeSubscription.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceBroadcastRecord.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceData.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceDeviceRecord.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceMediaRecord.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceRecord.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceTitleRecord.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.TitlePresenceChangeEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Presence.TitlePresenceChangeSubscription.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Privacy.MultiplePermissionsCheckResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Privacy.PermissionCheckResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Privacy.PermissionDenyReason.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Privacy.PermissionIdConstants.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Privacy.PrivacyService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.RealTimeActivity.RealTimeActivityResyncEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.RealTimeActivity.RealTimeActivityService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.RealTimeActivity.RealTimeActivitySubscriptionErrorEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.ServiceCallLoggingConfig.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.PreferredColor.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialEvent.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialManager.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialManagerPresenceRecord.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialManagerPresenceTitleRecord.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialUserGroupLoadedEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.TitleHistory.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.XboxSocialUser.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.Manager.XboxSocialUserGroup.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.ProfileService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.ReputationFeedbackItem.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.ReputationService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.SocialGroupConstants.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.SocialRelationshipChangeEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.SocialRelationshipChangeSubscription.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.SocialService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.XboxSocialRelationship.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.XboxSocialRelationshipResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Social.XboxUserProfile.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.LeaderboardResultEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.StatisticEvent.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.StatisticManager.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.StatisticValue.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.System.StringService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.System.VerifyStringResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.System.XboxLiveServicesSettings.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageBlobMetadata.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageBlobMetadataResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageBlobResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageQuota.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.CurrentMatchMetadata.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.MatchMetadata.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.PreviousMatchMetadata.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamChangeEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamChangeSubscription.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamInfo.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamRequest.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamRequestResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamSummary.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.Tournament.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentChangeEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentChangeSubscription.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentReference.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentRequest.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentRequestResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentTeamResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.UserStatistics.RequestedStatistics.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.UserStatistics.ServiceConfigurationStatistic.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.UserStatistics.Statistic.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.UserStatistics.StatisticChangeEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.UserStatistics.StatisticChangeSubscription.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.UserStatistics.UserStatisticsResult.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.UserStatistics.UserStatisticsService.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxLiveAppConfiguration.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxLiveContext.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxLiveContextSettings.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxLiveHttpCall.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxLiveHttpCallResponse.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxLiveLogCallEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxLiveWnsEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Microsoft.Xbox.Services.XboxServiceCallRoutedEventArgs.cpp">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.AudioBeam.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.AudioBeamFrame.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.AudioBeamFrameReference.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.AudioBeamSubFrame.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.AudioBodyCorrelation.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.AudioFrameArrivedEventArgs.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.AudioFrameReader.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.AudioSource.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.Body.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.BodyFrame.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.BodyFrameArrivedEventArgs.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.BodyFrameReader.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.BodyFrameReference.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.BodyFrameSource.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.BodyIndexFrame.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.BodyIndexFrameArrivedEventArgs.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.BodyIndexFrameReader.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.BodyIndexFrameReference.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.BodyIndexFrameSource.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.ColorFrame.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.ColorFrameArrivedEventArgs.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.ColorFrameReader.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.ColorFrameReference.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.ColorFrameSource.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.CoordinateMapper.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.DepthFrame.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.DepthFrameArrivedEventArgs.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.DepthFrameReader.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.DepthFrameReference.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.DepthFrameSource.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.FrameCapturedEventArgs.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.FrameDescription.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.InfraredFrame.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.InfraredFrameArrivedEventArgs.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.InfraredFrameReader.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.InfraredFrameReference.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.InfraredFrameSource.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.IsPausedChangedEventArgs.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.KinectSensor.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.MultiSourceFrame.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.MultiSourceFrameArrivedEventArgs.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.MultiSourceFrameReader.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.MultiSourceFrameReference.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Kinect.PropertyChangedEventArgs.cpp">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.Core.CoreApplicationContext.cpp">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.Core.UserContextLookup.cpp">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.AppInfo.cpp">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.AumidQuery.cpp">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.ContentCompatibility.cpp">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.ContentEnhancements.cpp">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.PackageFullNameQuery.cpp">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.PackageInfo.cpp">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.PackageInfoEvents.cpp">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.ProtocolQuery.cpp">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.Store.Configuration.cpp">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.Store.Product.cpp">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.Store.ProductPurchasedEventArgs.cpp">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.ContentInstallationInfo.cpp">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.ContentInstallManager.cpp">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.ContentLocation.cpp">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.ContentMetadata.cpp">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.ContentMetadataPackager.cpp">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.DownloadableContentPackageManager.cpp">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.PackageTransferManager.cpp">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.PackageTransferWatcher.cpp">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Management.Deployment.StreamingInstallQueue.cpp">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Input.NavigationReading.cpp">
+      <Filter>Platforms\Windows\Xbox\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Media.GameTransportControls.cpp">
+      <Filter>Platforms\Windows\Xbox\Media</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Media.GameTransportControlsButtonPressedEventArgs.cpp">
+      <Filter>Platforms\Windows\Xbox\Media</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Media.GameTransportControlsPropertyChangedEventArgs.cpp">
+      <Filter>Platforms\Windows\Xbox\Media</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Media.SmoothStreamingSessionManager.cpp">
+      <Filter>Platforms\Windows\Xbox\Media</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Media.SystemMediaTransportControls.cpp">
+      <Filter>Platforms\Windows\Xbox\Media</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.Party.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.PartyChat.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.PartyChatMember.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.PartyChatView.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.PartyConfig.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.PartyMember.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.PartyMemberDeviceGroup.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.PartyRosterChangedEventArgs.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.PartyStateChangedEventArgs.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.PartyView.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.UserPartyAssociation.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.GamePlayer.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\GamePlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.GamePlayerDeviceGroup.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\GamePlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.GamePlayersChangedEventArgs.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\GamePlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Services.XboxLiveConfiguration.cpp">
+      <Filter>Platforms\Windows\Xbox\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.System.UserDisplayInfo.cpp">
+      <Filter>Platforms\Windows\Xbox\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.UI.Accessibility.cpp">
+      <Filter>Platforms\Windows\Xbox\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.UI.AccountPickerResult.cpp">
+      <Filter>Platforms\Windows\Xbox\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.UI.AddRemoveFriendResult.cpp">
+      <Filter>Platforms\Windows\Xbox\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.UI.KeyboardOptions.cpp">
+      <Filter>Platforms\Windows\Xbox\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.UI.SystemUI.cpp">
+      <Filter>Platforms\Windows\Xbox\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.UI.WebAuthenticationResult.cpp">
+      <Filter>Platforms\Windows\Xbox\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.MultiplayerSessionReference.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\MultiplayerSession</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.MatchStatusChangedEventArgs.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\MatchStatus</Filter>
+    </ClCompile>
+    <ClCompile Include="Implementation\Windows.Xbox.Multiplayer.GameSessionReadyEventArgs.cpp">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\GameSession</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -497,30 +1190,6 @@
     <ClInclude Include="Implementation\Windows.Xbox.Achievements.AchievementUnlockedEventArgs.h">
       <Filter>Implementation</Filter>
     </ClInclude>
-    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.AppInfo.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.AumidQuery.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.ContentCompatibility.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.ContentEnhancements.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.PackageFullNameQuery.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.PackageInfo.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.PackageInfoEvents.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.ProtocolQuery.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.Store.Configuration.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.Store.Product.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.ContentInstallationInfo.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.ContentInstallManager.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.ContentLocation.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.ContentMetadata.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.ContentMetadataPackager.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.DownloadableContentPackageManager.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.PackageTransferManager.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.PackageTransferWatcher.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.StreamingInstallQueue.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Media.SystemMediaTransportControls.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Media.SmoothStreamingSessionManager.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Media.GameTransportControlsButtonPressedEventArgs.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Media.GameTransportControlsPropertyChangedEventArgs.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Media.GameTransportControls.h" />
     <ClInclude Include="Implementation\Windows.Xbox.Storage.BlobInfoQueryResult.h">
       <Filter>Implementation</Filter>
     </ClInclude>
@@ -623,259 +1292,880 @@
     <ClInclude Include="Implementation\Microsoft.Xbox.GameChat.TextMessageReceivedEventArgs.h">
       <Filter>Implementation</Filter>
     </ClInclude>
-    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.Core.UserContextLookup.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.Core.CoreApplicationContext.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Services.XboxLiveConfiguration.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.Input.NavigationReading.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipsResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipUriInfo.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.EntertainmentProfile.EntertainmentProfileListContainsItemResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.EntertainmentProfile.EntertainmentProfileListService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.EntertainmentProfile.EntertainmentProfileListXboxOnePins.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.AllocationResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.ClusterResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerImageSet.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerMetadataResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerPlatformService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerPortMapping.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerTicketStatus.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameVariant.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.QualityOfServiceServer.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardColumn.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardQuery.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardRow.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.BrowseCatalogResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItem.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItemAvailability.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItemDetails.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItemImage.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.ConsumeInventoryItemResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.InventoryItem.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.InventoryItemsResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.InventoryService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Matchmaking.CreateMatchTicketResponse.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Matchmaking.HopperStatisticsResponse.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Matchmaking.MatchmakingService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Matchmaking.MatchTicketDetailsResponse.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.FindMatchCompletedEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.HostChangedEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.JoinLobbyCompletedEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MemberJoinedEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MemberLeftEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MemberPropertyChangedEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerEvent.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerGameSession.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerLobbySession.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerManager.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerMember.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.PerformQosMeasurementsEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.SessionPropertyChangedEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.TournamentGameSessionReadyEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.TournamentRegistrationStateChangedEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.UserAddedEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.UserRemovedEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerActivityDetails.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerGetSessionsRequest.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerManagedInitialization.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerMemberInitialization.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerPeerToHostRequirements.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerPeerToPeerRequirements.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerQualityOfServiceMeasurements.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerQuerySearchHandleRequest.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerRoleInfo.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerRoleType.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSearchHandleDetails.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSearchHandleRequest.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSession.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionArbitrationServer.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionCapabilities.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionChangeEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionConstants.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionMatchmakingServer.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionMember.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionProperties.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionReference.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionRoleTypes.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionStates.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionTournamentsServer.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSubscriptionLostEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.WriteSessionResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.DevicePresenceChangeEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.DevicePresenceChangeSubscription.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceBroadcastRecord.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceData.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceDeviceRecord.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceMediaRecord.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceRecord.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceTitleRecord.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.TitlePresenceChangeEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.TitlePresenceChangeSubscription.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Privacy.MultiplePermissionsCheckResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Privacy.PermissionCheckResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Privacy.PermissionDenyReason.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Privacy.PermissionIdConstants.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Privacy.PrivacyService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.RealTimeActivity.RealTimeActivityResyncEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.RealTimeActivity.RealTimeActivityService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.RealTimeActivity.RealTimeActivitySubscriptionErrorEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.PreferredColor.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialEvent.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialManager.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialManagerPresenceRecord.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialManagerPresenceTitleRecord.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialUserGroupLoadedEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.TitleHistory.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.XboxSocialUser.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.XboxSocialUserGroup.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.ProfileService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.ReputationFeedbackItem.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.ReputationService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.SocialGroupConstants.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.SocialRelationshipChangeEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.SocialRelationshipChangeSubscription.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.SocialService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.XboxSocialRelationship.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.XboxSocialRelationshipResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.XboxUserProfile.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.LeaderboardResultEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.StatisticEvent.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.StatisticManager.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.StatisticValue.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.System.StringService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.System.VerifyStringResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.System.XboxLiveServicesSettings.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageBlobMetadata.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageBlobMetadataResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageBlobResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageQuota.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.CurrentMatchMetadata.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.MatchMetadata.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.PreviousMatchMetadata.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamChangeEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamChangeSubscription.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamInfo.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamRequest.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamRequestResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamSummary.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.Tournament.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentChangeEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentChangeSubscription.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentReference.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentRequest.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentRequestResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentTeamResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.UserStatistics.RequestedStatistics.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.UserStatistics.ServiceConfigurationStatistic.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.UserStatistics.Statistic.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.UserStatistics.StatisticChangeEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.UserStatistics.StatisticChangeSubscription.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.UserStatistics.UserStatisticsResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.UserStatistics.UserStatisticsService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.Achievement.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementMediaAsset.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementProgression.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementRequirement.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementReward.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementsResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementTimeWindow.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementTitleAssociation.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.Club.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubActionSetting.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubActionSettings.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubBooleanSetting.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubPresenceCounts.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubProfile.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubRecommendation.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubRoleRecord.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubRoster.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubSearchAutoComplete.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubSearchFacetResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubsOwnedResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubsSearchResult.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubsService.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubStringMultiSetting.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubStringSetting.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubUserPresenceRecord.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchBroadcast.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchConfiguredStat.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClip.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipStat.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipThumbnail.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.HttpCallRequestMessage.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ServiceCallLoggingConfig.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxLiveAppConfiguration.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxLiveContext.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxLiveContextSettings.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxLiveHttpCall.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxLiveHttpCallResponse.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxLiveLogCallEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxLiveWnsEventArgs.h" />
-    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxServiceCallRoutedEventArgs.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.System.UserDisplayInfo.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.AudioBeam.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.AudioBeamFrame.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.AudioBeamFrameReference.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.AudioBeamSubFrame.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.AudioBodyCorrelation.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.AudioFrameArrivedEventArgs.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.AudioFrameReader.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.AudioSource.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.Body.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.BodyFrame.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.BodyFrameArrivedEventArgs.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.BodyFrameReader.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.BodyFrameReference.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.BodyFrameSource.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.BodyIndexFrame.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.BodyIndexFrameArrivedEventArgs.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.BodyIndexFrameReader.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.BodyIndexFrameReference.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.BodyIndexFrameSource.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.ColorFrame.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.ColorFrameArrivedEventArgs.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.ColorFrameReader.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.ColorFrameReference.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.ColorFrameSource.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.CoordinateMapper.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.DepthFrame.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.DepthFrameArrivedEventArgs.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.DepthFrameReader.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.DepthFrameReference.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.DepthFrameSource.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.FrameCapturedEventArgs.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.FrameDescription.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.InfraredFrame.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.InfraredFrameArrivedEventArgs.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.InfraredFrameReader.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.InfraredFrameReference.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.InfraredFrameSource.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.IsPausedChangedEventArgs.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.KinectSensor.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.MultiSourceFrame.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.MultiSourceFrameArrivedEventArgs.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.MultiSourceFrameReader.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.MultiSourceFrameReference.h" />
-    <ClInclude Include="Implementation\Windows.Kinect.PropertyChangedEventArgs.h" />
     <ClInclude Include="Implementation\Windows.Xbox.Input.GamepadReading.h">
       <Filter>Implementation</Filter>
     </ClInclude>
-    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.Store.ProductPurchasedEventArgs.h" />
     <ClInclude Include="ConnectedStorage\ConnectedStorage.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.UI.Accessibility.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.UI.AccountPickerResult.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.UI.AddRemoveFriendResult.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.UI.KeyboardOptions.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.UI.SystemUI.h" />
-    <ClInclude Include="Implementation\Windows.Xbox.UI.WebAuthenticationResult.h" />
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.Achievement.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementMediaAsset.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementProgression.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementRequirement.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementReward.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementsResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementTimeWindow.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Achievements.AchievementTitleAssociation.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.Club.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubActionSetting.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubActionSettings.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubBooleanSetting.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubPresenceCounts.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubProfile.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubRecommendation.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubRoleRecord.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubRoster.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubSearchAutoComplete.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubSearchFacetResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubsOwnedResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubsSearchResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubsService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubStringMultiSetting.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubStringSetting.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Clubs.ClubUserPresenceRecord.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\Clubs</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchBroadcast.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchConfiguredStat.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClip.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipsResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipStat.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipThumbnail.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchGameClipUriInfo.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ContextualSearch.ContextualSearchService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\ContextualSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.EntertainmentProfile.EntertainmentProfileListContainsItemResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\EntertainmentProfile</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.EntertainmentProfile.EntertainmentProfileListService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\EntertainmentProfile</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.EntertainmentProfile.EntertainmentProfileListXboxOnePins.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\EntertainmentProfile</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.AllocationResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.ClusterResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerImageSet.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerMetadataResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerPlatformService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerPortMapping.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameServerTicketStatus.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.GameVariant.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services\GameServerPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.GameServerPlatform.QualityOfServiceServer.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.HttpCallRequestMessage.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardColumn.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardQuery.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardRow.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Leaderboard.LeaderboardService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.BrowseCatalogResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItem.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItemAvailability.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItemDetails.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogItemImage.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.CatalogService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.ConsumeInventoryItemResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.InventoryItem.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.InventoryItemsResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Marketplace.InventoryService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Matchmaking.CreateMatchTicketResponse.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Matchmaking.HopperStatisticsResponse.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Matchmaking.MatchmakingService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Matchmaking.MatchTicketDetailsResponse.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.FindMatchCompletedEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.HostChangedEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.JoinLobbyCompletedEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MemberJoinedEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MemberLeftEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MemberPropertyChangedEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerEvent.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerGameSession.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerLobbySession.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerManager.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.MultiplayerMember.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.PerformQosMeasurementsEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.SessionPropertyChangedEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.TournamentGameSessionReadyEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.TournamentRegistrationStateChangedEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.UserAddedEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.Manager.UserRemovedEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerActivityDetails.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerGetSessionsRequest.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerManagedInitialization.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerMemberInitialization.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerPeerToHostRequirements.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerPeerToPeerRequirements.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerQualityOfServiceMeasurements.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerQuerySearchHandleRequest.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerRoleInfo.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerRoleType.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSearchHandleDetails.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSearchHandleRequest.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSession.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionArbitrationServer.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionCapabilities.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionChangeEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionConstants.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionMatchmakingServer.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionMember.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionProperties.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionReference.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionRoleTypes.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionStates.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSessionTournamentsServer.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.MultiplayerSubscriptionLostEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Multiplayer.WriteSessionResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.DevicePresenceChangeEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.DevicePresenceChangeSubscription.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceBroadcastRecord.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceData.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceDeviceRecord.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceMediaRecord.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceRecord.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.PresenceTitleRecord.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.TitlePresenceChangeEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Presence.TitlePresenceChangeSubscription.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Privacy.MultiplePermissionsCheckResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Privacy.PermissionCheckResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Privacy.PermissionDenyReason.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Privacy.PermissionIdConstants.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Privacy.PrivacyService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.RealTimeActivity.RealTimeActivityResyncEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.RealTimeActivity.RealTimeActivityService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.RealTimeActivity.RealTimeActivitySubscriptionErrorEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.ServiceCallLoggingConfig.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.PreferredColor.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialEvent.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialManager.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialManagerPresenceRecord.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialManagerPresenceTitleRecord.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.SocialUserGroupLoadedEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.TitleHistory.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.XboxSocialUser.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.Manager.XboxSocialUserGroup.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.ProfileService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.ReputationFeedbackItem.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.ReputationService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.SocialGroupConstants.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.SocialRelationshipChangeEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.SocialRelationshipChangeSubscription.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.SocialService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.XboxSocialRelationship.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.XboxSocialRelationshipResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Social.XboxUserProfile.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.LeaderboardResultEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.StatisticEvent.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.StatisticManager.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Statistics.Manager.StatisticValue.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.System.StringService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.System.VerifyStringResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.System.XboxLiveServicesSettings.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageBlobMetadata.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageBlobMetadataResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageBlobResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageQuota.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.TitleStorage.TitleStorageService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.CurrentMatchMetadata.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.MatchMetadata.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.PreviousMatchMetadata.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamChangeEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamChangeSubscription.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamInfo.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamRequest.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamRequestResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TeamSummary.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.Tournament.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentChangeEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentChangeSubscription.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentReference.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentRequest.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentRequestResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.Tournaments.TournamentTeamResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.UserStatistics.RequestedStatistics.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.UserStatistics.ServiceConfigurationStatistic.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.UserStatistics.Statistic.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.UserStatistics.StatisticChangeEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.UserStatistics.StatisticChangeSubscription.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.UserStatistics.UserStatisticsResult.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.UserStatistics.UserStatisticsService.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxLiveAppConfiguration.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxLiveContext.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxLiveContextSettings.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxLiveHttpCall.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxLiveHttpCallResponse.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxLiveLogCallEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxLiveWnsEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Microsoft.Xbox.Services.XboxServiceCallRoutedEventArgs.h">
+      <Filter>Platforms\Xbox One\Microsoft\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.AudioBeam.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.AudioBeamFrame.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.AudioBeamFrameReference.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.AudioBeamSubFrame.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.AudioBodyCorrelation.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.AudioFrameArrivedEventArgs.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.AudioFrameReader.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.AudioSource.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.Body.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.BodyFrame.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.BodyFrameArrivedEventArgs.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.BodyFrameReader.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.BodyFrameReference.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.BodyFrameSource.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.BodyIndexFrame.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.BodyIndexFrameArrivedEventArgs.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.BodyIndexFrameReader.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.BodyIndexFrameReference.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.BodyIndexFrameSource.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.ColorFrame.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.ColorFrameArrivedEventArgs.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.ColorFrameReader.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.ColorFrameReference.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.ColorFrameSource.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.CoordinateMapper.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.DepthFrame.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.DepthFrameArrivedEventArgs.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.DepthFrameReader.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.DepthFrameReference.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.DepthFrameSource.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.FrameCapturedEventArgs.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.FrameDescription.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.InfraredFrame.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.InfraredFrameArrivedEventArgs.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.InfraredFrameReader.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.InfraredFrameReference.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.InfraredFrameSource.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.IsPausedChangedEventArgs.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.KinectSensor.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.MultiSourceFrame.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.MultiSourceFrameArrivedEventArgs.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.MultiSourceFrameReader.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.MultiSourceFrameReference.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Kinect.PropertyChangedEventArgs.h">
+      <Filter>Platforms\Windows\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.Core.CoreApplicationContext.h">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.Core.UserContextLookup.h">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.AppInfo.h">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.AumidQuery.h">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.ContentCompatibility.h">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.ContentEnhancements.h">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.PackageFullNameQuery.h">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.PackageInfo.h">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.PackageInfoEvents.h">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.State.Internal.ProtocolQuery.h">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.Store.Configuration.h">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.Store.Product.h">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.Store.ProductPurchasedEventArgs.h">
+      <Filter>Platforms\Windows\Xbox\ApplicationModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.ContentInstallationInfo.h">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.ContentInstallManager.h">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.ContentLocation.h">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.ContentMetadata.h">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.ContentMetadataPackager.h">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.DownloadableContentPackageManager.h">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.PackageTransferManager.h">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.PackageTransferWatcher.h">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Management.Deployment.StreamingInstallQueue.h">
+      <Filter>Platforms\Windows\Xbox\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Input.NavigationReading.h">
+      <Filter>Platforms\Windows\Xbox\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Media.GameTransportControls.h">
+      <Filter>Platforms\Windows\Xbox\Media</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Media.GameTransportControlsButtonPressedEventArgs.h">
+      <Filter>Platforms\Windows\Xbox\Media</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Media.GameTransportControlsPropertyChangedEventArgs.h">
+      <Filter>Platforms\Windows\Xbox\Media</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Media.SmoothStreamingSessionManager.h">
+      <Filter>Platforms\Windows\Xbox\Media</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Media.SystemMediaTransportControls.h">
+      <Filter>Platforms\Windows\Xbox\Media</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.Party.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.PartyChat.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.PartyChatMember.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.PartyChatView.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.PartyConfig.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.PartyMember.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.PartyMemberDeviceGroup.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.PartyRosterChangedEventArgs.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.PartyStateChangedEventArgs.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.PartyView.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.UserPartyAssociation.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.GamePlayer.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\GamePlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.GamePlayerDeviceGroup.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\GamePlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.GamePlayersChangedEventArgs.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\GamePlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Services.XboxLiveConfiguration.h">
+      <Filter>Platforms\Windows\Xbox\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.System.UserDisplayInfo.h">
+      <Filter>Platforms\Windows\Xbox\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.UI.Accessibility.h">
+      <Filter>Platforms\Windows\Xbox\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.UI.AccountPickerResult.h">
+      <Filter>Platforms\Windows\Xbox\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.UI.AddRemoveFriendResult.h">
+      <Filter>Platforms\Windows\Xbox\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.UI.KeyboardOptions.h">
+      <Filter>Platforms\Windows\Xbox\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.UI.SystemUI.h">
+      <Filter>Platforms\Windows\Xbox\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.UI.WebAuthenticationResult.h">
+      <Filter>Platforms\Windows\Xbox\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.MultiplayerSessionReference.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\MultiplayerSession</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.MatchStatusChangedEventArgs.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\MatchStatus</Filter>
+    </ClInclude>
+    <ClInclude Include="Implementation\Windows.Xbox.Multiplayer.GameSessionReadyEventArgs.h">
+      <Filter>Platforms\Windows\Xbox\Multiplayer\GameSession</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -936,30 +2226,83 @@
     <Midl Include="External\Windows.Xbox.ApplicationModel.Core.idl">
       <Filter>External</Filter>
     </Midl>
-    <Midl Include="External\Windows.Xbox.Services.idl" />
-    <Midl Include="External\Windows.Xbox.Networking.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.Achievements.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.Clubs.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.ContextualSearch.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.EntertainmentProfile.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.GameServerPlatform.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.Leaderboard.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.Marketplace.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.Matchmaking.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.Multiplayer.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.Multiplayer.Manager.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.Presence.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.Privacy.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.RealTimeActivity.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.Social.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.Social.Manager.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.Statistics.Manager.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.System.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.TitleStorage.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.Tournaments.idl" />
-    <Midl Include="External\Microsoft.Xbox.Services.UserStatistics.idl" />
-    <Midl Include="External\Windows.Kinect.idl" />
-    <Midl Include="External\Windows.Xbox.UI.idl" />
+    <Midl Include="External\Microsoft.Xbox.Services.Achievements.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.Clubs.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.ContextualSearch.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.EntertainmentProfile.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.GameServerPlatform.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.Leaderboard.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.Marketplace.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.Matchmaking.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.Multiplayer.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.Multiplayer.Manager.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.Presence.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.Privacy.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.RealTimeActivity.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.Social.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.Social.Manager.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.Statistics.Manager.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.System.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.TitleStorage.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.Tournaments.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Microsoft.Xbox.Services.UserStatistics.idl">
+      <Filter>Platforms\idl\Microsoft\Xbox\Services</Filter>
+    </Midl>
+    <Midl Include="External\Windows.Xbox.Multiplayer.idl">
+      <Filter>Platforms\idl\Windows\Xbox</Filter>
+    </Midl>
+    <Midl Include="External\Windows.Xbox.Networking.idl">
+      <Filter>Platforms\idl\Windows\Xbox</Filter>
+    </Midl>
+    <Midl Include="External\Windows.Xbox.Services.idl">
+      <Filter>Platforms\idl\Windows\Xbox</Filter>
+    </Midl>
+    <Midl Include="External\Windows.Xbox.UI.idl">
+      <Filter>Platforms\idl\Windows\Xbox</Filter>
+    </Midl>
+    <Midl Include="External\Windows.Kinect.idl">
+      <Filter>Platforms\idl\Windows</Filter>
+    </Midl>
   </ItemGroup>
 </Project>
