@@ -5,7 +5,7 @@
 #include "../../../thirdparty/imgui_impl_uwp.h"
 #include <winrt/windows.graphics.display.h>
 
-WinDurango::Overlay::Overlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, IDXGISwapChain1* pSwapchain):
+wd::Overlay::Overlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, IDXGISwapChain1* pSwapchain):
 	m_pRenderTargetView(nullptr)
 {
 	m_pDevice = pDevice;
@@ -13,7 +13,7 @@ WinDurango::Overlay::Overlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 	m_pSwapchain = pSwapchain;
 }
 
-WinDurango::Overlay::~Overlay()
+wd::Overlay::~Overlay()
 {
 	Shutdown( );
 	m_pDevice = nullptr;
@@ -21,8 +21,7 @@ WinDurango::Overlay::~Overlay()
 	m_pSwapchain = nullptr;
 }
 
-// This should be called when Run is called by the game inside the wrapper.
-void WinDurango::Overlay::Initialize()
+void wd::Overlay::Initialize()
 {
 	g_KeyboardFinished = CreateEventA(NULL, FALSE, FALSE, "KeyboardFinished");
 
@@ -45,19 +44,19 @@ void WinDurango::Overlay::Initialize()
 	ImGui_ImplDX11_Init(m_pDevice, m_pContext);
 }
 
-void WinDurango::Overlay::Shutdown()
+void wd::Overlay::Shutdown()
 {
 	ImGui_ImplDX11_Shutdown( );
 	ImGui_ImplUwp_Shutdown( );
 	ImGui::DestroyContext( );
 }
 
-void WinDurango::Overlay::EnableKeyboard()
+void wd::Overlay::EnableKeyboard()
 {
 	m_bKeyboard = true;
 }
 
-void WinDurango::Overlay::Present( )
+void wd::Overlay::Present( )
 {
     ImGui_ImplDX11_NewFrame( );
     ImGui_ImplUwp_NewFrame( );
@@ -66,123 +65,123 @@ void WinDurango::Overlay::Present( )
     if (m_bKeyboard)
     {
         ImGui::SetNextWindowSize(ImVec2(500, 300));
-        ImGui::Begin("WinDurango Keyboard Input", &m_bKeyboard, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse);
+        ImGui::Begin("WinDurango Keyboard Input", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse);
 
-        //static bool isUppercase = false;
-        //static bool isSymbols = false;
+        static bool isUppercase = false;
+        static bool isSymbols = false;
 
-        //const char* keys[] = {
-        //    "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=",
-        //    "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]",
-        //    "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'",
-        //    "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/"
-        //};
+        const char* keys[] = {
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=",
+            "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]",
+            "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'",
+            "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/"
+        };
 
-        //const char* symbols[] = {
-        //    "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+",
-        //    "~", "`", "|", "\\", "{", "}", "[", "]", ":", ";", "\"", "'",
-        //    "<", ">", "?", "/", ",", ".", "=", "-"
-        //};
+        const char* symbols[] = {
+            "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+",
+            "~", "`", "|", "\\", "{", "}", "[", "]", ":", ";", "\"", "'",
+            "<", ">", "?", "/", ",", ".", "=", "-"
+        };
 
         ImGui::InputText("Buffer", g_KeyboardText, IM_ARRAYSIZE(g_KeyboardText));
 
-        //if (ImGui::Button(isUppercase ? "Lowercase" : "Uppercase"))
-        //{
-        //    isUppercase = !isUppercase;
-        //}
-        //ImGui::SameLine();
-        //if (ImGui::Button(isSymbols ? "Letters" : "Symbols"))
-        //{
-        //    isSymbols = !isSymbols;
-        //}
-        //ImGui::NewLine();
+        if (ImGui::Button(isUppercase ? "Lowercase" : "Uppercase"))
+        {
+            isUppercase = !isUppercase;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(isSymbols ? "Letters" : "Symbols"))
+        {
+            isSymbols = !isSymbols;
+        }
+        ImGui::NewLine();
 
-        //const char** currentKeys = isSymbols ? symbols : keys;
-        ImVec2 buttonSize = ImVec2(30, 30); // Set a fixed size for all buttons
+        const char** currentKeys = isSymbols ? symbols : keys;
+        ImVec2 buttonSize = ImVec2(30, 30);
 
-        //for (int i = 0; i < 12; ++i)
-        //{
-        //    if (ImGui::Button(currentKeys[i], buttonSize))
-        //    {
-        //        size_t len = strlen(g_KeyboardText);
-        //        if (len < 255)
-        //        {
-        //            g_KeyboardText[len] = isUppercase ? currentKeys[i][0] : tolower(currentKeys[i][0]);
-        //            g_KeyboardText[len + 1] = '\0';
-        //        }
-        //    }
-        //    ImGui::SameLine();
-        //}
-        //ImGui::NewLine();
+        for (int i = 0; i < 12; ++i)
+        {
+            if (ImGui::Button(currentKeys[i], buttonSize))
+            {
+                size_t len = strlen(g_KeyboardText);
+                if (len < 255)
+                {
+                    g_KeyboardText[len] = isUppercase ? currentKeys[i][0] : tolower(currentKeys[i][0]);
+                    g_KeyboardText[len + 1] = '\0';
+                }
+            }
+            ImGui::SameLine();
+        }
+        ImGui::NewLine();
 
-        //for (int i = 12; i < 24; ++i)
-        //{
-        //    if (ImGui::Button(currentKeys[i], buttonSize))
-        //    {
-        //        size_t len = strlen(g_KeyboardText);
-        //        if (len < 255)
-        //        {
-        //            g_KeyboardText[len] = isUppercase ? currentKeys[i][0] : tolower(currentKeys[i][0]);
-        //            g_KeyboardText[len + 1] = '\0';
-        //        }
-        //    }
-        //    ImGui::SameLine();
-        //}
-        //ImGui::NewLine();
+        for (int i = 12; i < 24; ++i)
+        {
+            if (ImGui::Button(currentKeys[i], buttonSize))
+            {
+                size_t len = strlen(g_KeyboardText);
+                if (len < 255)
+                {
+                    g_KeyboardText[len] = isUppercase ? currentKeys[i][0] : tolower(currentKeys[i][0]);
+                    g_KeyboardText[len + 1] = '\0';
+                }
+            }
+            ImGui::SameLine();
+        }
+        ImGui::NewLine();
 
-        //if (!isSymbols)
-        //{
-        //    for (int i = 24; i < 35; ++i)
-        //    {
-        //        if (ImGui::Button(currentKeys[ i ], buttonSize))
-        //        {
-        //            size_t len = strlen(g_KeyboardText);
-        //            if (len < 255)
-        //            {
-        //                g_KeyboardText[ len ] = isUppercase ? currentKeys[ i ][ 0 ] : tolower(currentKeys[ i ][ 0 ]);
-        //                g_KeyboardText[ len + 1 ] = '\0';
-        //            }
-        //        }
-        //        ImGui::SameLine( );
-        //    }
-        //}
-        //else
-        //{
-        //    for (int i = 24; i < 32; ++i)
-        //    {
-        //        if (ImGui::Button(currentKeys[ i ], buttonSize))
-        //        {
-        //            size_t len = strlen(g_KeyboardText);
-        //            if (len < 255)
-        //            {
-        //                g_KeyboardText[ len ] = isUppercase ? currentKeys[ i ][ 0 ] : tolower(currentKeys[ i ][ 0 ]);
-        //                g_KeyboardText[ len + 1 ] = '\0';
-        //            }
-        //        }
-        //        ImGui::SameLine( );
-        //    }
-        //}
+        if (!isSymbols)
+        {
+            for (int i = 24; i < 35; ++i)
+            {
+                if (ImGui::Button(currentKeys[ i ], buttonSize))
+                {
+                    size_t len = strlen(g_KeyboardText);
+                    if (len < 255)
+                    {
+                        g_KeyboardText[ len ] = isUppercase ? currentKeys[ i ][ 0 ] : tolower(currentKeys[ i ][ 0 ]);
+                        g_KeyboardText[ len + 1 ] = '\0';
+                    }
+                }
+                ImGui::SameLine( );
+            }
+        }
+        else
+        {
+            for (int i = 24; i < 32; ++i)
+            {
+                if (ImGui::Button(currentKeys[ i ], buttonSize))
+                {
+                    size_t len = strlen(g_KeyboardText);
+                    if (len < 255)
+                    {
+                        g_KeyboardText[ len ] = isUppercase ? currentKeys[ i ][ 0 ] : tolower(currentKeys[ i ][ 0 ]);
+                        g_KeyboardText[ len + 1 ] = '\0';
+                    }
+                }
+                ImGui::SameLine( );
+            }
+        }
 
-        //ImGui::NewLine();
+        ImGui::NewLine();
 
-        //if (!isSymbols)
-        //{
-        //    for (int i = 35; i < 44; ++i)
-        //    {
-        //        if (ImGui::Button(currentKeys[ i ], buttonSize))
-        //        {
-        //            size_t len = strlen(g_KeyboardText);
-        //            if (len < 255)
-        //            {
-        //                g_KeyboardText[ len ] = isUppercase ? currentKeys[ i ][ 0 ] : tolower(currentKeys[ i ][ 0 ]);
-        //                g_KeyboardText[ len + 1 ] = '\0';
-        //            }
-        //        }
-        //        ImGui::SameLine( );
-        //    }
-        //}
+        if (!isSymbols)
+        {
+            for (int i = 35; i < 44; ++i)
+            {
+                if (ImGui::Button(currentKeys[ i ], buttonSize))
+                {
+                    size_t len = strlen(g_KeyboardText);
+                    if (len < 255)
+                    {
+                        g_KeyboardText[ len ] = isUppercase ? currentKeys[ i ][ 0 ] : tolower(currentKeys[ i ][ 0 ]);
+                        g_KeyboardText[ len + 1 ] = '\0';
+                    }
+                }
+                ImGui::SameLine( );
+            }
+        }
 
-        //ImGui::NewLine();
+        ImGui::NewLine();
 
         if (ImGui::Button("OK", buttonSize) || ImGui::IsKeyPressed(ImGuiKey_GamepadStart))
         {
@@ -190,14 +189,14 @@ void WinDurango::Overlay::Present( )
             SetEvent(g_KeyboardFinished);
         }
 
-        //if (ImGui::IsKeyPressed(ImGuiKey_GamepadBack))
-        //{
-        //    size_t len = strlen(g_KeyboardText);
-        //    if (len > 0)
-        //    {
-        //        g_KeyboardText[len - 1] = '\0';
-        //    }
-        //}
+        if (ImGui::IsKeyPressed(ImGuiKey_GamepadBack))
+        {
+            size_t len = strlen(g_KeyboardText);
+            if (len > 0)
+            {
+                g_KeyboardText[len - 1] = '\0';
+            }
+        }
 
         ImGui::End();
     }

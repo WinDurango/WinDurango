@@ -5,6 +5,8 @@
 
 #include "dxgi_swapchain.h"
 #include "../kernelx/CoreWindowWrapperX.h"
+#include "overlay/overlay.h"
+#include <d3d11_2.h>
 
 #define DXGI_SWAPCHAIN_FLAG_MASK DXGI_SWAP_CHAIN_FLAG_NONPREROTATED | DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH | DXGI_SWAP_CHAIN_FLAG_GDI_COMPATIBLE \
 		| DXGI_SWAP_CHAIN_FLAG_RESTRICTED_CONTENT | DXGI_SWAP_CHAIN_FLAG_RESTRICT_SHARED_RESOURCE_DRIVER | DXGI_SWAP_CHAIN_FLAG_DISPLAY_ONLY | DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT \
@@ -43,7 +45,7 @@ HRESULT wd::dxgi_factory::CreateSwapChainForCoreWindow(IGraphicsUnknown* pDevice
 	pDesc->Flags &= DXGI_SWAPCHAIN_FLAG_MASK;
 	pDesc->Scaling = DXGI_SCALING_ASPECT_RATIO_STRETCH;
 
-	IUnknown* pRealDevice = nullptr;
+	::ID3D11Device2* pRealDevice = nullptr;
 	hr = pDevice->QueryInterface(__uuidof(wdi::IGraphicsUnwrap), (void**)&pRealDevice);
 	if (FAILED(hr))
 	{
@@ -72,6 +74,13 @@ HRESULT wd::dxgi_factory::CreateSwapChainForCoreWindow(IGraphicsUnknown* pDevice
 	}
 
 	// TODO: init overlay
+	if (wd::g_Overlay == nullptr) {
+		::ID3D11DeviceContext* ctx = nullptr;
+		pRealDevice->GetImmediateContext(&ctx);
+
+		wd::g_Overlay = new wd::Overlay(pRealDevice, ctx, swap);
+		wd::g_Overlay->Initialize( );
+	}
 
 	return hr;
 }

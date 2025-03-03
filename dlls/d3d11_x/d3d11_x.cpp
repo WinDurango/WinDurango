@@ -407,7 +407,7 @@ void WD11XNotify_X(WDEVENT_TYPE event)
 		throw std::exception("this shouldn't happen, check code that sends events.");
 	case WDEVENT_TYPE_KEYBOARD_ENGAGE:
 		printf("[d3d11_x] keyboard engage\n");
-		WinDurango::g_Overlay->EnableKeyboard( );
+		wd::g_Overlay->EnableKeyboard( );
 		break;
     }
 }
@@ -416,7 +416,7 @@ void WDWaitForKeyboard(const char** outText)
 {
 	printf("[d3d11_x] waiting for keyboard\n");
 
-    WaitForSingleObject(WinDurango::g_KeyboardFinished, INFINITE);
+    WaitForSingleObject(wd::g_KeyboardFinished, INFINITE);
 
-	*outText = WinDurango::g_KeyboardText;
+	*outText = wd::g_KeyboardText;
 }

@@ -6,7 +6,7 @@
 #include "Shlwapi.h"
 
 // note from unixian: i used this since using appxlauncher requires me attaching to the game after it launches
-#define WINDURANGO_WAIT_FOR_DEBUGGER 0
+#define WINDURANGO_WAIT_FOR_DEBUGGER 1
 
 //Rodrigo Todescatto: For debbuging Forza.
 #define RETURN_IF_FAILED(hr) if (FAILED(hr)) return hr
@@ -16,7 +16,6 @@ std::vector<HMODULE> loadedMods;
 
 inline void LoadMods()
 {
-	
 	WCHAR path[MAX_PATH];
 	GetModuleFileNameW(GetModuleHandleW(nullptr), path, MAX_PATH);
 	PathRemoveFileSpecW(path);

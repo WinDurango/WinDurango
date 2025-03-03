@@ -60,42 +60,25 @@ public:
 		) = 0;
 };
 
-//class LicenseInformationWrapperX : public RuntimeClass<IActivationFactory, ILicenseInformationX> {
-//public:
-//	LicenseInformationWrapperX(ComPtr<IActivationFactory> realFactory)
-//		: m_realFactory(realFactory)
-//	{
-//		HRESULT hr = m_realFactory.As(&m_realLicenseInformation);
-//		if (FAILED(hr)) {
-//			return;
-//		}
-//	}
-//	HRESULT QueryInterface(const IID& riid, void** ppvObject) override;
-//	ULONG AddRef() override;
-//	ULONG Release() override;
-//	HRESULT GetIids(ULONG* iidCount, IID** iids) override;
-//	HRESULT GetRuntimeClassName(HSTRING* className) override;
-//	HRESULT GetTrustLevel(TrustLevel* trustLevel) override;
-//	HRESULT STDMETHODCALLTYPE get_ProductLicenses(
-//		__FIMapView_2_HSTRING_Windows__CApplicationModel__CStore__CProductLicense** value
-//	) override;
-//	HRESULT STDMETHODCALLTYPE get_IsActive(
-//		boolean* value
-//	) override;
-//	HRESULT STDMETHODCALLTYPE get_IsTrial(
-//		boolean* value
-//	) override;
-//	HRESULT STDMETHODCALLTYPE get_ExpirationDate(
-//		ABI::Windows::Foundation::DateTime* value
-//	) override;
-//	HRESULT STDMETHODCALLTYPE add_LicenseChanged(
-//		ABI::Windows::ApplicationModel::Store::ILicenseChangedEventHandler* handler,
-//		EventRegistrationToken* cookie
-//	) override;
-//	HRESULT STDMETHODCALLTYPE remove_LicenseChanged(
-//		EventRegistrationToken cookie
-//	) override;
-//};
+MIDL_INTERFACE("AA98C583-A3C8-4F51-A5BC-463AE0C23EAA")
+IXboxUserLicenseInformation : public IInspectable
+{
+public:
+	virtual HRESULT STDMETHODCALLTYPE get_CurrentLicenseUserXuid(winrt::hstring* value) = 0;
+};
+
+class XboxUserLicenseInformationWrapperX : public IXboxUserLicenseInformation
+{
+	HRESULT QueryInterface(REFIID riid, void** ppvObject) override;
+	ULONG AddRef() override;
+	ULONG Release() override;
+	HRESULT GetIids(ULONG* iidCount, IID** iids) override;
+	HRESULT GetRuntimeClassName(HSTRING* className) override;
+	HRESULT GetTrustLevel(TrustLevel* trustLevel) override;
+	HRESULT STDMETHODCALLTYPE get_CurrentLicenseUserXuid(winrt::hstring* value) override;
+private:
+	long m_RefCount = 1;
+};
 
 class LicenseInformationWrapperX : public ILicenseInformationX
 {

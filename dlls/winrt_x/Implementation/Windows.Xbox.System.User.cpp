@@ -151,7 +151,7 @@ namespace winrt::Windows::Xbox::System::implementation
     winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Input::IController> User::Controllers()
     {
         printf("!!!! Windows.Xbox.System.User Controllers | NOT IMPLEMENTED !!!!\n");
-        throw hresult_not_implemented();
+        return winrt::single_threaded_vector<Input::IController>( ).GetView( );
     }
     winrt::Windows::Xbox::System::UserDisplayInfo User::DisplayInfo()
     {

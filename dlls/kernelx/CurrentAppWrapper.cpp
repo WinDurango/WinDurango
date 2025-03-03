@@ -1,11 +1,68 @@
 #include "pch.h"
 #include "CurrentAppWrapper.hpp"
 
+HRESULT XboxUserLicenseInformationWrapperX::QueryInterface(const IID& riid, void** ppvObject)
+{
+	if (riid == __uuidof(IXboxUserLicenseInformation))
+	{
+		*ppvObject = reinterpret_cast<ICurrentAppX*>(this);
+		AddRef();
+		return S_OK;
+	}
+
+	*ppvObject = nullptr;
+	return E_NOINTERFACE;
+}
+
+ULONG XboxUserLicenseInformationWrapperX::AddRef()
+{
+	return InterlockedIncrement(&m_RefCount);
+}
+
+ULONG XboxUserLicenseInformationWrapperX::Release()
+{
+	ULONG refCount = InterlockedDecrement(&m_RefCount);
+	if (refCount == 0)
+	{
+		delete this;
+	}
+	return refCount;
+}
+
+HRESULT XboxUserLicenseInformationWrapperX::GetIids(ULONG* iidCount, IID** iids)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT XboxUserLicenseInformationWrapperX::GetRuntimeClassName(HSTRING* className)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT XboxUserLicenseInformationWrapperX::GetTrustLevel(TrustLevel* trustLevel)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT XboxUserLicenseInformationWrapperX::get_CurrentLicenseUserXuid(winrt::hstring* value)
+{
+	printf("[XboxUserLicenseInformationWrapperX] get_CurrentLicenseUserXuid\n");
+	*value = winrt::to_hstring(123);
+	return S_OK;
+}
+
 HRESULT LicenseInformationWrapperX::QueryInterface(const IID& riid, void** ppvObject)
 {
 	if (riid == __uuidof(ILicenseInformationX))
 	{
 		*ppvObject = reinterpret_cast<ICurrentAppX*>(this);
+		AddRef();
+		return S_OK;
+	}
+
+	if (riid == __uuidof(IXboxUserLicenseInformation))
+	{
+		*ppvObject = reinterpret_cast<IXboxUserLicenseInformation*>(new XboxUserLicenseInformationWrapperX());
 		AddRef();
 		return S_OK;
 	}
@@ -17,7 +74,7 @@ HRESULT LicenseInformationWrapperX::QueryInterface(const IID& riid, void** ppvOb
 		OLECHAR iidwstr[sizeof(iidstr)];
 		StringFromGUID2(riid, iidwstr, ARRAYSIZE(iidwstr));
 		WideCharToMultiByte(CP_UTF8, 0, iidwstr, -1, iidstr, sizeof(iidstr), nullptr, nullptr);
-		printf("[CurrentAppWrapperX] Interface Not Implemented: %s\n", iidstr);
+		printf("[LicenseInformationWrapperX] Interface Not Implemented: %s\n", iidstr);
 	}
 
 	*ppvObject = nullptr;
@@ -66,7 +123,8 @@ HRESULT LicenseInformationWrapperX::get_ProductLicenses(
 HRESULT LicenseInformationWrapperX::get_IsActive(boolean* value)
 {
 	printf("[LicenseInformationWrapperX] get_IsActive\n");
-	return E_NOTIMPL;
+	*value = true;
+	return S_OK;
 }
 
 HRESULT LicenseInformationWrapperX::get_IsTrial(boolean* value)
@@ -79,7 +137,11 @@ HRESULT LicenseInformationWrapperX::get_IsTrial(boolean* value)
 HRESULT LicenseInformationWrapperX::get_ExpirationDate(ABI::Windows::Foundation::DateTime* value)
 {
 	printf("[LicenseInformationWrapperX] get_ExpirationDate\n");
-	return E_NOTIMPL;
+	DateTime time;
+	time.UniversalTime = UINT64_MAX;
+
+	*value = time;
+	return S_OK;
 }
 
 HRESULT LicenseInformationWrapperX::add_LicenseChanged(
