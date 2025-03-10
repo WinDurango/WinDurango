@@ -7,9 +7,6 @@ namespace winrt::Windows::Xbox::Media::implementation
 	{
 		GameTransportControlsButtonPressedEventArgs() = default;
 
-		GameTransportControlsButton Button();
-
-	private:
-		GameTransportControlsButton m_button{};
+		winrt::Windows::Xbox::Media::GameTransportControlsButton Button();
 	};
 }

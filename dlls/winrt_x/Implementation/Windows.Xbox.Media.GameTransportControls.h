@@ -32,11 +32,6 @@ namespace winrt::Windows::Xbox::Media::implementation
     private:
         GamePlaybackStatus m_gamePlaybackStatus = GamePlaybackStatus::Closed;
 
-        hstring m_title{ L"Title" };
-		hstring m_subtitle{ L"Subtitle" };
-		Media::SoundLevel m_soundLevel = SoundLevel::Muted;
-		GamePlaybackStatus m_playbackStatus = GamePlaybackStatus::Closed;
-
     	bool m_enabled = false;
         bool m_playEnabled = false;
         bool m_pauseEnabled = false;
@@ -48,7 +43,6 @@ namespace winrt::Windows::Xbox::Media::implementation
         event<Foundation::TypedEventHandler<Media::GameTransportControls, GameTransportControlsPropertyChangedEventArgs>> m_gameTransportControlsPropertyChangedEventArgs;
     };
 }
-
 namespace winrt::Windows::Xbox::Media::factory_implementation
 {
     struct GameTransportControls : GameTransportControlsT<GameTransportControls, implementation::GameTransportControls>

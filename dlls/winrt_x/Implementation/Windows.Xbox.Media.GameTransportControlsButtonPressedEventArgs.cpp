@@ -4,11 +4,10 @@
 
 namespace winrt::Windows::Xbox::Media::implementation
 {
-	GameTransportControlsButton GameTransportControlsButtonPressedEventArgs::Button()
+	winrt::Windows::Xbox::Media::GameTransportControlsButton GameTransportControlsButtonPressedEventArgs::Button()
 	{
-		LOG_FUNCTION_NAME();
-		PRINT_UNIMPLEMENTED_FUNCTION();
+		GameTransportControlsButton button{};
 
-		return m_button;
+		return button;
 	}
 }
