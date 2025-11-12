@@ -12,7 +12,7 @@
 
 Check out the UI project at [WinDurango.UI](https://github.com/WinDurango-project/WinDurango.UI/)
 
-WinDurango is an experimental compatibility layer and emulator for **Xbox One** games on Windows. It aims to recreate the console environment so titles can run natively on PC hardware. Development is still in its early stages.
+WinDurango is an experimental compatibility layer and emulator for **Xbox One** games on Windows. It aims to recreate the console environment so titles can run natively on PC hardware. Development is still in its early stages.f
 
 <p>
   <a href="https://www.youtube.com/watch?v=SZMLML7yZns">
