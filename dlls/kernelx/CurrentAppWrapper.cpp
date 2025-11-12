@@ -7,6 +7,7 @@ HRESULT XboxUserLicenseInformationWrapperX::QueryInterface(const IID& riid, void
 	StringFromIID(riid, &str);
 	wprintf(L"XboxUserLicenseInformationWrapperX: [QI] IID Requested: %s\n", str);
 	CoTaskMemFree(str);
+	int * pDSAFDas ;
 
 	if (riid == __uuidof(IXboxUserLicenseInformation))
 	{
@@ -16,8 +17,7 @@ HRESULT XboxUserLicenseInformationWrapperX::QueryInterface(const IID& riid, void
 	}
 
 	*ppvObject = nullptr;
-	return E_NOINTERFACE;
-}
+	return E_NOINTERFACE;}
 
 ULONG XboxUserLicenseInformationWrapperX::AddRef()
 {
