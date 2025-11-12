@@ -48,5 +48,4 @@ public:
 	virtual INT32 _abi_remove_SizeChanged(EventRegistrationToken token) = 0;
 	virtual INT32 _abi_add_VisibilityChanged(ITypedEventHandler<CoreWindow*, VisibilityChangedEventArgs*>* handler, EventRegistrationToken* token) = 0;
 	virtual INT32 _abi_remove_VisibilityChanged(EventRegistrationToken token) = 0;
-				int * helloPtr = 	nullptr;
-};
+				int * helloPtr = 	nullptr;} ;
