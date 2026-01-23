@@ -655,3 +655,5 @@ EXTERN_C HRESULT WINAPI MapTitleEsramPages(PVOID VirtualAddress, UINT NumberOfPa
 
         return S_OK;
     }
+}
+
