@@ -1,447 +1,657 @@
+//Here lies some of the KernelX implementation.
+//All the code is based on XWine1's SlimEra
+//Repo (https://github.com/XWine1/SlimEra).
+//All credits to XWine1 and DaZombieKiller.
 #include "pch.h"
 #include "../common/common.h"
+#include "Allocation.h"
 
-uint32_t dword_180021AA0[16];
-uint32_t dword_180021A60[16];
-int64_t qword_18002C7E0[34];
-HANDLE HeapHandle;
-// Global function pointers for memory allocation and deallocation
-PVOID(__fastcall* XmpAllocRoutine)(SIZE_T, uint64_t) = nullptr;
-BOOLEAN(__stdcall* XmpFreeRoutine)(PVOID, uint64_t) = nullptr;
-// Define the global critical section lock
-XmpAllocationHookLock_t XmpAllocationHookLock = {
-    &XmpAllocationHookLock_DEBUG, // Pointer to debug info
-    -1,                           // LockCount (unowned)
-    0,                            // RecursionCount
-    0,                            // OwningThread
-    0,                            // LockSemaphore
-    0x4000000                     // SpinCount (high-performance)
-};
-
-// Define the debug info structure (can be initialized later if needed)
-RTL_CRITICAL_SECTION_DEBUG XmpAllocationHookLock_DEBUG = { 0 };
-
-
-// Define the global variables here (only once)
-void* XmpHeaps[32] = { 0 };
-
-int XmpHeapPageTypes[16] = {
-    PAGE_READWRITE,         // 0 - Standard heap memory
-    PAGE_READWRITE,         // 1 - General memory use
-    PAGE_READWRITE,         // 2 - Shared memory
-    0,                      // 3 - Unused/invalid
-    PAGE_READWRITE,         // 4 - Standard heap allocation
-    PAGE_READWRITE,         // 5 - Memory-mapped I/O
-    PAGE_READWRITE,         // 6 - Stack allocation
-    0,                      // 7 - Unused/invalid
-    PAGE_READWRITE,         // 8 - System memory allocation
-    0,                      // 9 - Unused
-    PAGE_EXECUTE_READ,      // 10 - Executable code memory
-    0,                      // 11 - Unused
-    PAGE_READWRITE,         // 12 - Shared heap
-    0,                      // 13 - Unused
-    PAGE_READWRITE,         // 14 - Custom memory pool
-    0                       // 15 - Reserved
-};
-
-const int XmpHeapAllocationTypes[16] = {
-    MEM_COMMIT | MEM_RESERVE,   // 0: Standard committed memory
-    MEM_LARGE_PAGES,            // 1: Large page allocation (if supported)
-    MEM_COMMIT,                 // 2: Committed memory only
-    MEM_RESERVE,                // 3: Reserved memory (uncommitted)
-    MEM_TOP_DOWN,               // 4: Allocate from highest address
-    MEM_WRITE_WATCH,            // 5: Write-watched memory pages
-    MEM_COMMIT | MEM_TOP_DOWN,  // 6: Committed with top-down allocation
-    MEM_RESERVE | MEM_TOP_DOWN, // 7: Reserved with top-down allocation
-    MEM_PHYSICAL,               // 8: Physical memory mapping
-    MEM_RESET,                  // 9: Reset memory (discards data)
-    MEM_RESET_UNDO,             // 10: Undo memory reset
-    MEM_LARGE_PAGES | MEM_COMMIT, // 11: Large Pages with Commit
-    MEM_MAPPED,                 // 12: Mapped memory
-    MEM_PRIVATE,                // 13: Private memory allocation
-    MEM_COMMIT | MEM_LARGE_PAGES, // 14: Large Pages with Commit (alt)
-    MEM_COMMIT | MEM_RESERVE | MEM_TOP_DOWN // 15: Fully committed, reserved, top-down
-};
-//Ignoring this as for now (just hope it's not being used and it's not useful.)
-__int64 NlsUpdateLocale_X() {
-    return 0();
+//No game uses that so far so
+//no worries about that for now.
+UINT64 WINAPI NlsUpdateLocale_X()
+{
+    return 0;
 }
 
-void WakeByAddressSingle_X(PVOID Address) {
+void WINAPI WakeByAddressSingle_X(PVOID Address)
+{
     WakeByAddressSingle(Address);
 }
 
-void WakeByAddressAll_X(PVOID Address) {
+void WINAPI WakeByAddressAll_X(PVOID Address)
+{
     WakeByAddressAll(Address);
 }
 
-BOOL __stdcall WaitOnAddress_X(volatile void* Address, PVOID CompareAddress, SIZE_T AddressSize, DWORD dwMilliseconds)
+BOOL WINAPI WaitOnAddress_X(volatile void* Address, PVOID CompareAddress, SIZE_T AddressSize, DWORD dwMilliseconds)
 {
     return WaitOnAddress(Address, CompareAddress, AddressSize, dwMilliseconds);
 }
-BOOL JobTitleMemoryStatus_X(void* pJob, LPTITLEMEMORYSTATUS Buffer) {
-    __int64 jobInfo[7]; // Buffer to store job object memory information
-    NTSTATUS status;
-    // Validate input parameters
-    if (!pJob || !Buffer || Buffer->dwLength != sizeof(TITLEMEMORYSTATUS)) {
+
+BOOL WINAPI JobTitleMemoryStatus_X(void* pJob, LPTITLEMEMORYSTATUS Buffer)
+{
+    SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
+    return FALSE;
+}
+
+BOOL WINAPI SetThreadpoolAffinityMask_X()
+{
+    return TRUE;
+}
+
+BOOL WINAPI SetThreadName_X(HANDLE hThread, const WCHAR* lpThreadName)
+{
+    HRESULT hr = SetThreadDescription(hThread, lpThreadName);
+    SetLastError(WIN32_FROM_HRESULT(hr));
+    return SUCCEEDED(hr);
+}
+
+void WINAPI QueryProcessorSchedulingStatistics_X(PPROCESSOR_SCHEDULING_STATISTICS ProcessorSchedulingStatistics)
+{
+    LARGE_INTEGER Frequency, Counter;
+    FILETIME IdleTime, KernelTime, UserTime;
+
+    QueryPerformanceFrequency(&Frequency);
+    QueryPerformanceCounter(&Counter);
+    ProcessorSchedulingStatistics->GlobalTime = Counter.QuadPart / (Frequency.QuadPart / 10000000ULL);
+
+    if (GetSystemTimes(&IdleTime, &KernelTime, &UserTime))
+    {
+        ULARGE_INTEGER IdleTime64 = { IdleTime.dwLowDateTime, IdleTime.dwHighDateTime };
+        ULARGE_INTEGER KernelTime64 = { KernelTime.dwLowDateTime, KernelTime.dwHighDateTime };
+        ULARGE_INTEGER UserTime64 = { UserTime.dwLowDateTime, UserTime.dwHighDateTime };
+        ProcessorSchedulingStatistics->RunningTime = (KernelTime64.QuadPart - IdleTime64.QuadPart) + UserTime64.QuadPart;
+        ProcessorSchedulingStatistics->IdleTime = IdleTime64.QuadPart;
+    }
+    else
+    {
+        ProcessorSchedulingStatistics->RunningTime = 0;
+        ProcessorSchedulingStatistics->IdleTime = 0;
+    }
+}
+
+BOOL WINAPI GetThreadName_X(HANDLE hThread, PWSTR lpThreadName, SIZE_T dwBufferLength, PSIZE_T pdwReturnLength)
+{
+    PWSTR pszThreadDescription;
+    int nThreadDescriptionLength;
+
+    if (!pdwReturnLength)
+    {
         SetLastError(ERROR_INVALID_PARAMETER);
         return FALSE;
     }
 
-    // Query job memory information
-    status = QueryInformationJobObject(pJob, (JOBOBJECTINFOCLASS)(JobObjectGroupInformation | 0x10), jobInfo, JOB_INFO_SIZE, NULL);
-    if (status < 0) {
-        RtlSetLastWin32ErrorAndNtStatusFromNtStatus(status);
+    if (HRESULT hr; FAILED(hr = GetThreadDescription(hThread, &pszThreadDescription)))
+    {
+        *pdwReturnLength = 0;
+        SetLastError(WIN32_FROM_HRESULT(hr));
         return FALSE;
     }
 
-    // Extract job memory stats
-    DWORDLONG totalMem = jobInfo[0];
-    DWORDLONG usedMem = jobInfo[1];
-    DWORDLONG peakLegacy = jobInfo[2];
-    DWORDLONG totalLegacy = jobInfo[3];
-    DWORDLONG limitLegacy = jobInfo[4];
-    DWORDLONG currentTitle = jobInfo[5];
-    DWORDLONG peakTitle = jobInfo[6];
+    nThreadDescriptionLength = lstrlenW(pszThreadDescription);
+    *pdwReturnLength = nThreadDescriptionLength;
 
-    // Populate TITLEMEMORYSTATUS structure
-    Buffer->ullTotalMem = totalMem;
-    Buffer->ullAvailMem = totalMem - usedMem;
-    Buffer->ullLegacyUsed = peakLegacy;
-    Buffer->ullLegacyPeak = totalLegacy;
-    Buffer->ullLegacyAvail = limitLegacy - peakLegacy;
-    Buffer->ullTitleUsed = currentTitle;
-    Buffer->ullTitleAvail = peakTitle - currentTitle;
-
-    return TRUE; // Success
-}
-// We ignore setting this as we actually don't care about this.
-bool SetThreadpoolAffinityMask_X()
-{
-    return true;
-}
-
-BOOL SetThreadName_X(HANDLE hThread, const WCHAR* lpThreadName)
-{
-    UNICODE_STRING DestinationString;
-
-    RtlInitUnicodeString(&DestinationString, lpThreadName);
-    NTSTATUS Status = NtSetInformationThread(hThread, ThreadNameInformation, &DestinationString, 0x10u);
-    if (NT_SUCCESS(Status))
-        return TRUE;
-    return FALSE;
-}
-
-void QueryProcessorSchedulingStatistics_X(PPROCESSOR_SCHEDULING_STATISTICS ProcessorSchedulingStatistics)
-{
-    LARGE_INTEGER frequency = { 0 };
-    LARGE_INTEGER counter = { 0 };
-
-    // Query the performance frequency and counter
-    QueryPerformanceFrequency(&frequency);
-    QueryPerformanceCounter(&counter);
-
-    // Set a1[2] based on the performance counter and frequency
-    ProcessorSchedulingStatistics->GlobalTime = counter.QuadPart / (frequency.QuadPart / 10000000);
-
-    // Use the CPUID instruction
-    int cpuInfo[4] = { 0 }; // {EAX, EBX, ECX, EDX}
-    __cpuid(cpuInfo, 0);  // This gets the highest function supported by CPUID
-
-    // Combine RBX and RAX as a 64-bit value and store in *a1
-    ProcessorSchedulingStatistics->RunningTime = __ull_rshift(cpuInfo[1], cpuInfo[0]);  // EBX (RBX), EAX (RAX)
-
-    // Combine RDX and RCX as a 64-bit value and store in a1[1]
-    ProcessorSchedulingStatistics->IdleTime = __ull_rshift(cpuInfo[3], cpuInfo[2]); // EDX (RDX), ECX (RCX)
-}
-
-
-BOOL GetThreadName_X(HANDLE hThread, PWSTR lpThreadName, SIZE_T nBufferLength, SIZE_T* pnRequiredLength)
-{
-    ULONG v11; // ebx
-    NTSTATUS iError; // edi
-    ULONG ReturnLength; // [rsp+78h] [rbp+20h] BYREF
-
-    if (!pnRequiredLength)
+    if (!lpThreadName || nThreadDescriptionLength >= dwBufferLength)
     {
-        SetLastError(STATUS_INVALID_PARAMETER);
+        LocalFree((HLOCAL)pszThreadDescription);
+        SetLastError(ERROR_INSUFFICIENT_BUFFER);
         return FALSE;
     }
 
-    PUNICODE_STRING lpData = NULL;
-    v11 = 144;
-    SIZE_T iNameSize = 0;
-    while (TRUE)
-    {
-        if (lpData)
-            HeapFree(GetProcessHeap(), 0, lpData);
-        lpData = (PUNICODE_STRING)HeapAlloc(GetProcessHeap(), 0, v11);
-        if (!lpData)
-        {
-            SetLastError(STATUS_NO_MEMORY);
-            return FALSE;
-        }
-        iError = NtQueryInformationThread(hThread, ThreadNameInformation, lpData, v11, &ReturnLength);
-        if (iError != STATUS_INFO_LENGTH_MISMATCH && iError != STATUS_BUFFER_TOO_SMALL && iError != STATUS_BUFFER_OVERFLOW)
-            break;
-        v11 = ReturnLength;
-    }
-    if (NT_SUCCESS(iError))
-    {
-        iNameSize = lpData->Length / 2;
-        if (lpThreadName && iNameSize < nBufferLength)
-        {
-            memcpy(lpThreadName, lpData->Buffer, iNameSize * sizeof(WCHAR));
-            lpThreadName[iNameSize] = 0;
-        }
-        else
-        {
-            ++iNameSize;
-            iError = STATUS_BUFFER_TOO_SMALL;
-        }
-    }
-
-    *pnRequiredLength = iNameSize;
-    HeapFree(GetProcessHeap(), 0, lpData);
-    if (!NT_SUCCESS(iError))
-    {
-        SetLastError(iError);
-        return FALSE;
-    }
+    CopyMemory(lpThreadName, pszThreadDescription, sizeof(WCHAR) * nThreadDescriptionLength);
+    lpThreadName[nThreadDescriptionLength] = L'\0';
+    LocalFree((HLOCAL)pszThreadDescription);
+    SetLastError(ERROR_SUCCESS);
     return TRUE;
 }
 
-void GetSystemOSVersion_X(LPSYSTEMOSVERSIONINFO VersionInformation) {
-    if (!VersionInformation)
+void GetSystemOSVersion_X(LPSYSTEMOSVERSIONINFO VersionInformation)
+{
+    DWORD FileVersionSize = GetFileVersionInfoSizeW(L".\\EmbeddedXvd\\Windows\\System32\\combase.dll", NULL);
+    if (!FileVersionSize)
     {
+        MessageBoxW(nullptr, L"Couldn't get the combase version info size! Make sure you have EmbeddedXvd in the game root/Mount folder.\n", L"Error!", MB_OK);
         return;
     }
 
-    int cpuInfo[4] = { -1 };
+    BYTE* Data = new BYTE[FileVersionSize];
+    BOOL ret = GetFileVersionInfoW(L".\\EmbeddedXvd\\Windows\\System32\\combase.dll", NULL, FileVersionSize, Data);
+    if (!ret)
+    {
+        MessageBoxW(nullptr, L"Couldn't get the combase version info! Make sure you have EmbeddedXvd in the game root/Mount folder.\n", L"Error!", MB_OK);
+        delete[] Data;
+        return;
+    }
 
-    // @Patoke note: the XBOX passes 0x4000000D for its default hypervisor, we're not running a hypervisor
-    // Execute CPUID with EAX = 1
-    __cpuid(cpuInfo, 1);
+    VS_FIXEDFILEINFO* pFixedFileInfo{};
+    UINT Length = 0;
 
-    int eax = cpuInfo[0];
-    int ebx = cpuInfo[1];
-    int edx = cpuInfo[3];
+    VerQueryValueW(Data, L"\\", (LPVOID*)&pFixedFileInfo, &Length);
+    if (!pFixedFileInfo)
+    {
+        MessageBoxW(nullptr, L"Couldn't get the combase version value! Make sure you have EmbeddedXvd in the game root/Mount folder.\n", L"Error!", MB_OK);
+        delete[] Data;
+        return;
+    }
 
-    VersionInformation->MajorVersion = LOBYTE(ebx);             // Lowest 8 bits of EBX
-    VersionInformation->MinorVersion = HIBYTE(HIWORD(eax));     // Highest 8 bits of EAX
+    DWORD major = HIWORD(pFixedFileInfo->dwProductVersionMS);
+    DWORD minor = LOWORD(pFixedFileInfo->dwProductVersionMS);
+    DWORD build = HIWORD(pFixedFileInfo->dwProductVersionLS);
+    DWORD revision = LOWORD(pFixedFileInfo->dwProductVersionLS);
 
-    VersionInformation->Revision = LOWORD(edx);                 // Lowest 16 bits of EDX
-    VersionInformation->BuildNumber = LOWORD(eax);              // Lowest 16 bits of EAX     
+    VersionInformation->MajorVersion = major;
+    VersionInformation->MinorVersion = minor;
+    VersionInformation->BuildNumber = build;
+    VersionInformation->Revision = revision;
+
+    delete[] Data;
 }
 
-
-CONSOLE_TYPE GetConsoleType_X() {
+CONSOLE_TYPE WINAPI GetConsoleType_X()
+{
+    //TODO: Allow users to change the console type based
+    //On the experience they want (i.e. Enhanced graphics etc)
     return CONSOLE_TYPE::CONSOLE_TYPE_XBOX_ONE_X_DEVKIT;
 }
 
-PVOID XMemAllocDefault_X(SIZE_T dwSize, uint64_t flags) {
-    PVOID ptr = nullptr;
-    // Example flag usage: we assume if the highest bit of flags is set, we zero the memory.
-    bool shouldZeroMemory = (flags & (1ULL << 63)) != 0;
-
-    // Allocate memory
-    ptr = malloc(dwSize);
-
-    // Optionally zero out the memory if the flag is set
-    if (ptr && shouldZeroMemory) {
-        memset(ptr, 0, dwSize);
-    }
-
-    return ptr;
-}
-
-BOOLEAN __stdcall XMemFreeDefault_X(PVOID pAddress, uint64_t dwAllocAttributes) {
-    
-    free(pAddress);
-
-    return TRUE;
-}
-
-
-void XMemFree_X(PVOID pADDRESS, uint64_t dwAllocAttributes) {
-    XMemFreeDefault_X(pADDRESS, dwAllocAttributes);
-}
-
-// Define PVOID for non-Windows environments if needed
-#ifndef _WINDEF_
-typedef void* PVOID;
-#endif
-
-
-
-PVOID XMemAlloc_X(SIZE_T dwSize, uint64_t flags) {
-    return XMemAllocDefault_X(dwSize, flags);
-}
-
-NTSTATUS __fastcall XMemSetAllocationHooks_X(PVOID(__fastcall* XMemAlloc)(SIZE_T, uint64_t), BOOLEAN(__stdcall* XMemFree)(PVOID, uint64_t))
+void WINAPI XMemSetAllocationHooks_X(PXMEMALLOC_ROUTINE pAllocRoutine, PXMEMFREE_ROUTINE pFreeRoutine)
 {
-    // Enter critical section using direct WinAPI
-    EnterCriticalSection((LPCRITICAL_SECTION)&XmpAllocationHookLock);
+    EnterCriticalSection(&XmpAllocationHookLock);
 
-    if (XMemAlloc)
+    if (pAllocRoutine)
     {
-        // Set custom memory management functions
-        XmpAllocRoutine = XMemAlloc;
-        XmpFreeRoutine = XMemFree;
+        XmpAllocRoutine = pAllocRoutine;
+        XmpFreeRoutine = pFreeRoutine;
     }
     else
     {
-        // Use default memory functions
         XmpAllocRoutine = XMemAllocDefault_X;
         XmpFreeRoutine = XMemFreeDefault_X;
     }
 
-    // Leave critical section using direct WinAPI
-    LeaveCriticalSection((LPCRITICAL_SECTION)&XmpAllocationHookLock);
-
-    return STATUS_SUCCESS;
+    LeaveCriticalSection(&XmpAllocationHookLock);
 }
 
-#define PROTECT_FLAGS_MASK (PAGE_EXECUTE | PAGE_EXECUTE_READ | PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY | PAGE_NOACCESS | PAGE_READONLY | PAGE_READWRITE | PAGE_WRITECOPY | PAGE_GUARD | PAGE_NOCACHE)
-#define ALLOCATION_FLAGS_MASK (MEM_COMMIT | MEM_RESERVE | MEM_RESET | MEM_LARGE_PAGES | MEM_PHYSICAL | MEM_TOP_DOWN | MEM_WRITE_WATCH)
+LPVOID WINAPI VirtualAllocEx_X(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect)
+{
+    //TODO: Rewrite d3d11.x (WITH XDL, THIS
+    //ISN'T NEGOTIABLE.) and
+    //Add an VEH for resource tracking.
+    if (flAllocationType & MEM_GRAPHICS)
+    {
+        //For placement update tracking.
+        flProtect = PAGE_READONLY;
 
-#define PROTECT_FLAGS_MASK 0xFF
-#define ALLOCATION_FLAGS_MASK 0xFFFFF
-
-bool EnableDebugPrivilege() {
-    HANDLE hToken;
-    TOKEN_PRIVILEGES tp;
-    LUID luid;
-
-    if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
-        return false;
-    if (!LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &luid))
-        return false;
-
-    tp.PrivilegeCount = 1;
-    tp.Privileges[0].Luid = luid;
-    tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-
-    if (!AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(tp), NULL, NULL)) {
-        CloseHandle(hToken);
-        return false;
+        //Optional but to make sure the memory
+        //will be able to be read when 
+        //placement update happens.
+        flAllocationType |= MEM_COMMIT;
     }
 
-    CloseHandle(hToken);
-    return GetLastError() == ERROR_SUCCESS;
-}
+    MEM_ADDRESS_REQUIREMENTS AddrRq;
+    AddrRq.LowestStartingAddress = nullptr;
+    AddrRq.HighestEndingAddress = nullptr;
+    AddrRq.Alignment = 0;
 
-LPVOID VirtualAllocEx_X(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect)
-{
-    flProtect &= PROTECT_FLAGS_MASK;
-    flAllocationType &= ALLOCATION_FLAGS_MASK;
+    MEM_EXTENDED_PARAMETER ExtParam;
+    ExtParam.Type = MemExtendedParameterAddressRequirements;
+    ExtParam.Reserved = 0;
+    ExtParam.Pointer = &AddrRq;
 
-    printf("VirtualAllocEx_X: %p, %zu, %x, %x\n", lpAddress, dwSize, flAllocationType, flProtect);
+    // If true, the memory can be used with MapTitlePhysicalPages and D3DMapEsramMemory.
+    // These allocations go through a file mapping and therefore get handled differently.
+    BOOL bMappable = FALSE;
+    MAPPABLE_MEM Mappable = {};
+    SIZE_T dwPageSize = PAGE_SIZE_4KB;
 
-    LPVOID ret = VirtualAllocEx(hProcess, lpAddress, dwSize, flAllocationType, flProtect);
-    if (!ret) {
-        DWORD err = GetLastError();
-        printf("VirtualAllocEx failed with error %lu\n", err);
+    if (flAllocationType & (MEM_RESERVE | MEM_TOP_DOWN))
+    {
+        // If MEM_LARGE_PAGES or MEM_4MB_PAGES is specified, the memory is mappable.
+        bMappable = !!(flAllocationType & (MEM_LARGE_PAGES | MEM_4MB_PAGES));
 
-        if (err == ERROR_PRIVILEGE_NOT_HELD) {
-            printf("VirtualAllocEx failed due to missing privileges (SeDebugPrivilege).\n");
-        }
+        if (!lpAddress)
+        {
+            if (flAllocationType & MEM_4MB_PAGES)
+                AddrRq.Alignment = PAGE_SIZE_4MB;
 
-        if (hProcess == GetCurrentProcess() || hProcess == NULL) {
-            printf("Attempting fallback with VirtualAlloc...\n");
-
-            if ((flAllocationType & (MEM_RESERVE | MEM_COMMIT)) != 0) {
-                ret = VirtualAlloc(lpAddress, dwSize, flAllocationType, flProtect);
-                if (!ret) {
-                    DWORD fallbackErr = GetLastError();
-                    printf("VirtualAlloc fallback also failed: %lu\n", fallbackErr);
-                }
+            // If we're reserving memory, ERA will use specific memory ranges.
+            // TODO: Does any set of flags use 1 TiB -> 2 TiB? Need to test on hardware.
+            if (flAllocationType & MEM_GRAPHICS) // 4 GiB -> 1 TiB
+            {
+                AddrRq.LowestStartingAddress = (PVOID)0x100000000ULL;
+                AddrRq.HighestEndingAddress = (PVOID)0xFFFFFFFFFFULL;
+            }
+            else if (flAllocationType & MEM_TITLE) // 2 TiB -> 4 TiB
+            {
+                AddrRq.LowestStartingAddress = (PVOID)0x40000000000ULL;
+                AddrRq.HighestEndingAddress = (PVOID)0x7FFFFFFFFFFULL;
+            }
+            else // 4 TiB -> 8 TiB
+            {
+                AddrRq.LowestStartingAddress = (PVOID)0x20000000000ULL;
+                AddrRq.HighestEndingAddress = (PVOID)0x3FFFFFFFFFFULL;
             }
         }
     }
-
-    if (!ret) {
-        printf("VirtualAllocEx_X ultimately failed to allocate %zu bytes.\n", dwSize);
+    else if (lpAddress && (flAllocationType & MEM_COMMIT))
+    {
+        AcquireSRWLockShared(&XwpMappableLock);
+        bMappable = !!MappableQuery(lpAddress, &Mappable);
+        ReleaseSRWLockShared(&XwpMappableLock);
     }
 
-    return ret;
+    if (!bMappable)
+        return VirtualAlloc2(hProcess, lpAddress, dwSize, flAllocationType & MEM_MASK, flProtect & PAGE_MASK, &ExtParam, 1);
+
+    if ((flAllocationType & MEM_4MB_PAGES) || Mappable.Is4MBPages)
+        dwPageSize = PAGE_SIZE_4MB;
+    else
+        dwPageSize = PAGE_SIZE_64K;
+
+    dwSize = (dwSize + (dwPageSize - 1)) & ~(dwPageSize - 1);
+    lpAddress = (LPVOID)((ULONG_PTR)lpAddress & ~(dwPageSize - 1));
+
+    if (flAllocationType & (MEM_RESERVE | MEM_TOP_DOWN))
+    {
+        Mappable = { dwSize, !!(flAllocationType & MEM_4MB_PAGES) };
+        lpAddress = VirtualAlloc2(hProcess, lpAddress, dwSize, MEM_RESERVE | MEM_RESERVE_PLACEHOLDER | (flAllocationType & MEM_TOP_DOWN), PAGE_NOACCESS, &ExtParam, 1);
+
+        if (lpAddress)
+        {
+            // Split the placeholder by the physical page size to enable individual mappings.
+            // This comes with its own caveats. MEM_COMMIT and other Virtual* functions must
+            // be aware of mappable memory allocations and handle them appropriately.
+            for (SIZE_T dwOffset = dwPageSize; dwOffset < dwSize; dwOffset += dwPageSize)
+                VirtualFreeEx(hProcess, (LPBYTE)lpAddress + dwOffset, dwPageSize, MEM_RELEASE | MEM_PRESERVE_PLACEHOLDER);
+
+            AcquireSRWLockExclusive(&XwpMappableLock);
+            XwpMappables[(ULONG_PTR)lpAddress] = Mappable;
+            ReleaseSRWLockExclusive(&XwpMappableLock);
+        }
+    }
+
+    if (lpAddress && (flAllocationType & MEM_COMMIT))
+    {
+        HANDLE hMap = CreateFileMapping2(INVALID_HANDLE_VALUE, nullptr, FILE_MAP_READ | FILE_MAP_WRITE, PAGE_READWRITE, SEC_RESERVE, dwSize, nullptr, nullptr, 0);
+
+        if (!hMap)
+        {
+            SetLastError(ERROR_OUTOFMEMORY);
+            return nullptr;
+        }
+
+        for (SIZE_T dwOffset = 0; dwOffset < dwSize; dwOffset += dwPageSize)
+        {
+            LPVOID PageAddress = (LPBYTE)lpAddress + dwOffset;
+            MapViewOfFile3(hMap, hProcess, PageAddress, dwOffset, dwPageSize, MEM_REPLACE_PLACEHOLDER, PAGE_READWRITE, nullptr, 0);
+            VirtualAlloc2(hProcess, PageAddress, dwPageSize, MEM_COMMIT, flProtect & PAGE_MASK, nullptr, 0);
+        }
+
+        CloseHandle(hMap);
+    }
+
+    return lpAddress;
 }
 
 
-LPVOID VirtualAlloc_X(
-    LPVOID lpAddress,
-    SIZE_T dwSize,
-    DWORD  flAllocationType,
-    DWORD  flProtect
-)
+LPVOID WINAPI VirtualAlloc_X(LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect)
 {
     return VirtualAllocEx_X(GetCurrentProcess(), lpAddress, dwSize, flAllocationType, flProtect);
 }
-BOOL ToolingMemoryStatus_X(LPTOOLINGMEMORYSTATUS buffer)
+
+BOOL WINAPI VirtualFreeEx_X(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD dwFreeType)
 {
-    __int64 SystemInformation[4];
+    LPVOID AllocationBase;
+    MAPPABLE_MEM Mappable;
+    AcquireSRWLockShared(&XwpMappableLock);
+    AllocationBase = MappableQuery(lpAddress, &Mappable);
+    ReleaseSRWLockShared(&XwpMappableLock);
 
-    if (buffer->dwLength != 40)
+    // If we have a mappable allocation, we need to ensure it is unmapped first.
+    if (AllocationBase)
     {
-        SetLastError(0x57u);
+        ULONG_PTR PageSize = Mappable.Is4MBPages ? PAGE_SIZE_4MB : PAGE_SIZE_64K;
+        ULONG_PTR BasePage = (ULONG_PTR)lpAddress & ~(PageSize - 1);
+
+        if (dwFreeType == MEM_RELEASE && (AllocationBase != lpAddress || dwSize))
+            return FALSE;
+
+        if (dwFreeType == MEM_RELEASE || (dwFreeType == MEM_DECOMMIT && !dwSize))
+            dwSize = Mappable.RegionSize - ((ULONG_PTR)BasePage - (ULONG_PTR)AllocationBase);
+
+        ULONG_PTR LastPage = ((ULONG_PTR)lpAddress + dwSize) & ~(PageSize - 1);
+
+        for (ULONG_PTR BaseAddress = BasePage; BaseAddress <= LastPage; BaseAddress += PageSize)
+            UnmapViewOfFile2(hProcess, (PVOID)BaseAddress, MEM_PRESERVE_PLACEHOLDER);
+
+        if (dwFreeType == MEM_DECOMMIT)
+            return TRUE;
+
+        BOOL Status;
+        VirtualFreeEx(hProcess, lpAddress, dwSize, MEM_RELEASE | MEM_COALESCE_PLACEHOLDERS);
+        AcquireSRWLockExclusive(&XwpMappableLock);
+        Status = VirtualFreeEx(hProcess, lpAddress, 0, MEM_RELEASE);
+        if (Status) XwpMappables.erase((ULONG_PTR)AllocationBase);
+        ReleaseSRWLockExclusive(&XwpMappableLock);
+        return Status;
+    }
+
+    return VirtualFreeEx(hProcess, lpAddress, dwSize, dwFreeType);
+}
+
+BOOL WINAPI VirtualFree_X(LPVOID lpAddress, SIZE_T dwSize, DWORD dwFreeType)
+{
+    return VirtualFreeEx_X(GetCurrentProcess(), lpAddress, dwSize, dwFreeType);
+}
+
+SIZE_T WINAPI VirtualQueryEx_X(HANDLE hProcess, LPCVOID lpAddress, PMEMORY_BASIC_INFORMATION lpBuffer, SIZE_T dwLength)
+{
+    LPVOID AllocationBase;
+    MAPPABLE_MEM Mappable;
+
+    if (!lpBuffer || dwLength < sizeof(*lpBuffer))
+        return 0;
+
+    AcquireSRWLockShared(&XwpMappableLock);
+    AllocationBase = MappableQuery(lpAddress, &Mappable);
+    ReleaseSRWLockShared(&XwpMappableLock);
+
+    // Mappable memory requires special handling because of placeholder splits.
+    // VirtualQuery will normally only report on pages that belong to the same allocation.
+    if (AllocationBase)
+    {
+        MEMORY_BASIC_INFORMATION Region;
+        ULONG_PTR PageSize = Mappable.Is4MBPages ? PAGE_SIZE_2MB : PAGE_SIZE_4KB;
+        ULONG_PTR BasePage = (ULONG_PTR)lpAddress & ~(PageSize - 1);
+        ULONG_PTR ByteSize = Mappable.RegionSize - ((ULONG_PTR)BasePage - (ULONG_PTR)AllocationBase);
+        ULONG_PTR LastPage = ((ULONG_PTR)lpAddress + ByteSize) & ~(PageSize - 1);
+
+        if (!VirtualQueryEx(hProcess, (LPCVOID)BasePage, &Region, sizeof(Region)))
+            return 0;
+
+        lpBuffer->BaseAddress = (PVOID)BasePage;
+        lpBuffer->AllocationBase = AllocationBase;
+        lpBuffer->AllocationProtect = Region.AllocationProtect;
+        lpBuffer->PartitionId = Region.PartitionId;
+        lpBuffer->RegionSize = PageSize;
+        lpBuffer->State = Region.State;
+        lpBuffer->Protect = Region.Protect;
+        lpBuffer->Type = Region.Type;
+
+        for (ULONG_PTR Page = BasePage + PageSize; Page <= LastPage; Page += PageSize)
+        {
+            if (!VirtualQueryEx(hProcess, (LPCVOID)Page, &Region, sizeof(Region)))
+                break;
+
+            if (Region.State != lpBuffer->State || Region.Protect != lpBuffer->Protect)
+                break;
+
+            if (Region.RegionSize < PageSize)
+            {
+                lpBuffer->RegionSize += Region.RegionSize;
+                break;
+            }
+
+            lpBuffer->RegionSize += PageSize;
+        }
+
+        return sizeof(*lpBuffer);
+    }
+
+    return VirtualQueryEx(hProcess, lpAddress, lpBuffer, dwLength);
+}
+
+SIZE_T WINAPI VirtualQuery_X(LPCVOID lpAddress, PMEMORY_BASIC_INFORMATION lpBuffer, SIZE_T dwLength)
+{
+    return VirtualQueryEx_X(GetCurrentProcess(), lpAddress, lpBuffer, dwLength);
+}
+
+BOOL WINAPI VirtualProtectEx_X(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect)
+{
+    DWORD flOldProtect;
+    LPVOID AllocationBase;
+    MAPPABLE_MEM Mappable;
+    AcquireSRWLockShared(&XwpMappableLock);
+    AllocationBase = MappableQuery(lpAddress, &Mappable);
+    ReleaseSRWLockShared(&XwpMappableLock);
+
+    // Mappable memory requires special handling because of placeholder splits.
+    // VirtualProtect will normally only work on pages that belong to the same allocation.
+    if (AllocationBase)
+    {
+        // TODO: Validate all pages are committed before changing protections
+        ULONG_PTR PageSize = Mappable.Is4MBPages ? PAGE_SIZE_2MB : PAGE_SIZE_4KB;
+        ULONG_PTR BasePage = (ULONG_PTR)lpAddress & ~(PageSize - 1);
+        ULONG_PTR LastPage = ((ULONG_PTR)lpAddress + dwSize) & ~(PageSize - 1);
+        BOOL Status = VirtualProtectEx(hProcess, (LPVOID)BasePage, PageSize, flNewProtect, lpflOldProtect ? lpflOldProtect : &flOldProtect);
+
+        for (ULONG_PTR Page = BasePage + PageSize; Page <= LastPage; Page += PageSize)
+            Status |= VirtualProtectEx(hProcess, (LPVOID)Page, PageSize, flNewProtect, &flOldProtect);
+
+        return Status;
+    }
+
+    return VirtualProtectEx(hProcess, lpAddress, dwSize, flNewProtect, lpflOldProtect ? lpflOldProtect : &flOldProtect);
+}
+
+BOOL WINAPI VirtualProtect_X(LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect)
+{
+    return VirtualProtectEx_X(GetCurrentProcess(), lpAddress, dwSize, flNewProtect, lpflOldProtect);
+}
+
+BOOL WINAPI ToolingMemoryStatus_X(LPTOOLINGMEMORYSTATUS buffer)
+{
+    SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
+    return FALSE;
+}
+
+BOOL WINAPI TitleMemoryStatus_X(LPTITLEMEMORYSTATUS Buffer)
+{
+    SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
+    return FALSE;
+}
+
+PVOID WINAPI XMemAllocDefault_X(SIZE_T dwSize, ULONGLONG dwAttributes)
+{
+    auto attr = XALLOC_ATTRIBUTES{ dwAttributes };
+
+    if (attr.s.dwMemoryType != XALLOC_MEMTYPE_HEAP)
+    {
+        DWORD flAllocationType = MEM_COMMIT | MEM_RESERVE;
+
+        if (attr.s.dwPageSize <= XALLOC_PAGESIZE_4KB || attr.s.dwPageSize >= XALLOC_PAGESIZE_4MB)
+            flAllocationType |= MEM_LARGE_PAGES;
+
+        if (attr.s.dwMemoryType >= XALLOC_MEMTYPE_GRAPHICS_1 &&
+            attr.s.dwMemoryType <= XALLOC_MEMTYPE_GRAPHICS_6)
+        {
+            flAllocationType |= MEM_GRAPHICS;
+        }
+
+        return VirtualAlloc_X(nullptr, dwSize, flAllocationType, PAGE_READWRITE);
+    }
+
+    void* ptr = _aligned_malloc(dwSize, 1ULL << max(4, attr.s.dwAlignment));
+
+    if (ptr)
+        memset(ptr, 0, dwSize);
+
+    return ptr;
+}
+
+void WINAPI XMemFreeDefault_X(PVOID lpAddress, ULONGLONG dwAttributes)
+{
+    auto attr = XALLOC_ATTRIBUTES{ dwAttributes };
+
+    if (attr.s.dwMemoryType != XALLOC_MEMTYPE_HEAP)
+    {
+        VirtualFree_X(lpAddress, 0, MEM_RELEASE);
+        return;
+    }
+
+    _aligned_free(lpAddress);
+}
+
+
+void WINAPI XMemFree_X(PVOID pADDRESS, uint64_t dwAllocAttributes)
+{
+    return XmpFreeRoutine(pADDRESS, dwAllocAttributes);
+}
+
+
+PVOID WINAPI XMemAlloc_X(SIZE_T dwSize, uint64_t flags)
+{
+    return XmpAllocRoutine(dwSize, flags);
+}
+
+BOOL WINAPI AllocateTitlePhysicalPages_X(HANDLE hProcess, DWORD flAllocationType, PULONG_PTR NumberOfPages, PULONG_PTR PageArray)
+{
+    UNREFERENCED_PARAMETER(hProcess);
+
+    if (!NumberOfPages || !PageArray ||
+        (flAllocationType & (MEM_LARGE_PAGES | MEM_4MB_PAGES)) == 0 ||
+        (flAllocationType & (MEM_LARGE_PAGES | MEM_4MB_PAGES)) == (MEM_LARGE_PAGES | MEM_4MB_PAGES) ||
+        ((flAllocationType & MEM_4MB_PAGES) && (*NumberOfPages & 63)))
+    {
+        if (NumberOfPages)
+            *NumberOfPages = 0;
+
+        SetLastError(ERROR_INVALID_PARAMETER);
         return FALSE;
     }
 
-    NTSTATUS Status = NtQuerySystemInformation((SYSTEM_INFORMATION_CLASS)(0x96 | 0x80), SystemInformation, 0x20u, 0i64);
-    if (!NT_SUCCESS(Status))
+    ULONG_PTR PagesAllocated = 0;
+    ULONG_PTR PagesRequested = *NumberOfPages;
+    ULONG_PTR PagesPerRegion = (flAllocationType & MEM_4MB_PAGES) ? 64 : 1;
+    AcquireSRWLockExclusive(&XwpPhysicalMemoryLock);
+
+    for (ULONG_PTR i = 0; (i + PagesPerRegion - 1) < XwpPhysicalPages.size() && PagesAllocated < PagesRequested;)
     {
-        SetLastError(Status);
+        BOOL FoundContiguousPages = TRUE;
+
+        for (ULONG_PTR j = 0; j < PagesPerRegion; j++)
+        {
+            if (XwpPhysicalPages[i + j])
+            {
+                FoundContiguousPages = FALSE;
+                break;
+            }
+        }
+
+        if (!FoundContiguousPages)
+        {
+            i++;
+            continue;
+        }
+
+        for (ULONG_PTR j = 0; j < PagesPerRegion; j++)
+        {
+            XwpPhysicalPages[i + j] = true;
+            PageArray[PagesAllocated++] = i + j;
+        }
+
+        i += PagesPerRegion;
+    }
+
+    ReleaseSRWLockExclusive(&XwpPhysicalMemoryLock);
+    *NumberOfPages = PagesAllocated;
+    SetLastError(PagesAllocated > 0 ? ERROR_SUCCESS : ERROR_OUTOFMEMORY);
+    return PagesAllocated > 0;
+}
+
+BOOL WINAPI FreeTitlePhysicalPages_X(HANDLE hProcess, ULONG_PTR NumberOfPages, PULONG_PTR PageArray)
+{
+    UNREFERENCED_PARAMETER(hProcess);
+
+    if (NumberOfPages && !PageArray)
+    {
+        SetLastError(ERROR_INVALID_PARAMETER);
         return FALSE;
     }
 
-    buffer->ullTotalMem = SystemInformation[0];
-    buffer->ullAvailMem = SystemInformation[1];
-    buffer->ulPeakUsage = SystemInformation[2];
-    buffer->ullPageTableUsage = SystemInformation[3];
+    AcquireSRWLockExclusive(&XwpPhysicalMemoryLock);
 
+    for (ULONG_PTR i = 0; i < NumberOfPages; i++)
+        XwpPhysicalPages[PageArray[i]] = false;
+
+    ReleaseSRWLockExclusive(&XwpPhysicalMemoryLock);
+    SetLastError(ERROR_SUCCESS);
     return TRUE;
 }
 
-BOOL TitleMemoryStatus_X(LPTITLEMEMORYSTATUS Buffer)
+PVOID WINAPI MapTitlePhysicalPages_X(PVOID VirtualAddress, ULONG_PTR NumberOfPages, DWORD flAllocationType, DWORD flProtect, PULONG_PTR PageArray)
 {
-    __int64 ProcessInformation[10]; // [rsp+30h] [rbp-68h] BYREF
+    // TODO: Validate that PageArray contains contiguous 4MB blocks of 64K pages for MEM_4MB_PAGES
 
-    if (Buffer->dwLength != 80)
+    if (!PageArray ||
+        (flAllocationType & (MEM_LARGE_PAGES | MEM_4MB_PAGES)) == 0 ||
+        (flAllocationType & (MEM_LARGE_PAGES | MEM_4MB_PAGES)) == (MEM_LARGE_PAGES | MEM_4MB_PAGES) ||
+        ((flAllocationType & MEM_4MB_PAGES) && (NumberOfPages & 63)))
     {
-        SetLastError(0x57u);
-        return false;
+        SetLastError(ERROR_INVALID_PARAMETER);
+        return nullptr;
     }
 
-    NTSTATUS Status = NtQueryInformationProcess(
-        (HANDLE)0xFFFFFFFFFFFFFFFFi64,
-        (PROCESSINFOCLASS)(0x3A | 0x3A),
-        ProcessInformation,
-        0x48u,
-        0i64);
+    ULONG_PTR dwPageSize = (flAllocationType & MEM_LARGE_PAGES) ? PAGE_SIZE_64K : PAGE_SIZE_4MB;
+    ULONG_PTR RegionSize = (flAllocationType & MEM_4MB_PAGES) ? 64 : 1;
 
-    if (!NT_SUCCESS(Status))
+    if (VirtualAddress && ((ULONG_PTR)VirtualAddress & (dwPageSize - 1)))
     {
-        SetLastError(Status);
-        return FALSE;
+        SetLastError(ERROR_INVALID_PARAMETER);
+        return nullptr;
     }
 
-    Buffer->ullTotalMem = ProcessInformation[0];
-    Buffer->ullAvailMem = ProcessInformation[0] - ProcessInformation[1];
+    if (MEMORY_BASIC_INFORMATION mbi; !VirtualAddress || !VirtualQuery(VirtualAddress, &mbi, sizeof(mbi)) || mbi.State == MEM_FREE)
+    {
+        VirtualAddress = VirtualAlloc_X(
+            VirtualAddress,
+            NumberOfPages * PAGE_SIZE_64K,
+            MEM_RESERVE | flAllocationType,
+            PAGE_NOACCESS);
 
-    Buffer->ullLegacyUsed = ProcessInformation[2];
-    Buffer->ullAvailMem = ProcessInformation[4] - ProcessInformation[2];
+        if (!VirtualAddress)
+        {
+            return nullptr;
+        }
+    }
 
-    Buffer->ullTitleUsed = ProcessInformation[5];
-    Buffer->ullTitleUsed = ProcessInformation[5] - ProcessInformation[6];
+    for (ULONG_PTR i = 0; i < NumberOfPages; i += RegionSize)
+    {
+        ULONG_PTR PhysicalOffset = PAGE_SIZE_64K * PageArray[i];
+        PVOID PageVirtualAddress = (PVOID)((ULONG_PTR)VirtualAddress + i * PAGE_SIZE_64K);
+        UnmapViewOfFile2(GetCurrentProcess(), PageVirtualAddress, MEM_PRESERVE_PLACEHOLDER);
+        MapViewOfFile3(XwpPhysicalMemory, nullptr, PageVirtualAddress, PhysicalOffset, dwPageSize, MEM_REPLACE_PLACEHOLDER, PAGE_READWRITE, nullptr, 0);
+        VirtualAlloc2(nullptr, PageVirtualAddress, dwPageSize, MEM_COMMIT, flProtect & PAGE_MASK, nullptr, 0);
+    }
 
-    //// @Patoke todo: what is this doing? it's writing outside the bounds of TITLEMEMORYSTATUS
-    //*(DWORD*)((uint8_t*)Buffer + 64) = ProcessInformation[7];
-    //*(DWORD*)((uint8_t*)Buffer + 72) = ProcessInformation[8];
-
-    // equivalent to the previous code
-    auto* nextBuffer = Buffer++;
-    nextBuffer->dwLength = ProcessInformation[7];
-    nextBuffer->dwReserved = ProcessInformation[8];
-
-    return TRUE;
+    SetLastError(ERROR_SUCCESS);
+    return VirtualAddress;
 }
+
+EXTERN_C HRESULT WINAPI MapTitleEsramPages(PVOID VirtualAddress, UINT NumberOfPages, DWORD flAllocationType, UINT const* PageArray)
+{
+    if (!VirtualAddress ||
+        (flAllocationType & (MEM_LARGE_PAGES | MEM_4MB_PAGES)) == 0 ||
+        (flAllocationType & (MEM_LARGE_PAGES | MEM_4MB_PAGES)) == (MEM_LARGE_PAGES | MEM_4MB_PAGES))
+    {
+        return E_INVALIDARG;
+    }
+
+    SIZE_T dwPageSize = (flAllocationType & MEM_LARGE_PAGES) ? PAGE_SIZE_64K : PAGE_SIZE_4MB;
+
+    if (NumberOfPages * dwPageSize > MEM_ESRAM_SIZE)
+        return E_INVALIDARG;
+
+    if ((ULONG_PTR)VirtualAddress & (dwPageSize - 1))
+        return E_INVALIDARG;
+
+    if (!PageArray)
+    {
+        for (ULONG_PTR dwOffset = 0; dwOffset < NumberOfPages * dwPageSize; dwOffset += dwPageSize)
+        {
+            PVOID PageAddress = (PVOID)((ULONG_PTR)VirtualAddress + dwOffset);
+            UnmapViewOfFile2(GetCurrentProcess(), PageAddress, MEM_PRESERVE_PLACEHOLDER);
+        }
+
+        return S_OK;
+    }

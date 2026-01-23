@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include "Shlwapi.h"
 #include <audioclient.h>
+#include "Allocation.h"
 // note from unixian: i used this since using appxlauncher requires me attaching to the game after it launches
 // #define WINDURANGO_WAIT_FOR_DEBUGGER 1
 #define WINDURANGO_WAIT_FOR_DEBUGGER 0
@@ -97,7 +98,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID reserved)
 {
 	winrt::hstring GamePackage = winrt::Windows::ApplicationModel::Package::Current().Id().FamilyName();
 	std::string packageName = GetPackageName();
-	InitializeCriticalSection(&XMemSetAllocationHooksLock_X);
+	InitializeCriticalSection(&XmpAllocationHookLock);
 
 	if (DetourIsHelperProcess()) return TRUE;
 

@@ -11,7 +11,7 @@ EXPORTS
 	AcquireSRWLockShared                = Kernel32.AcquireSRWLockShared                     @2
 	AddVectoredContinueHandler          = Kernel32.AddVectoredContinueHandler               @3
 	AddVectoredExceptionHandler         = Kernel32.AddVectoredExceptionHandler              @4
-	AllocateTitlePhysicalPages          = Kernel32.AllocateUserPhysicalPages				@5
+	AllocateTitlePhysicalPages          = AllocateTitlePhysicalPages_X						@5
 	Beep                                = Kernel32.Beep                                     @6
 	BindIoCompletionCallback            = Kernel32.BindIoCompletionCallback                 @7
 	CallbackMayRunLong                  = Kernel32.CallbackMayRunLong                       @8
@@ -137,7 +137,7 @@ EXPORTS
 	FreeLibrary                         = Kernel32.FreeLibrary                              @129
 	FreeLibraryAndExitThread            = Kernel32.FreeLibraryAndExitThread                 @130
 	FreeLibraryWhenCallbackReturns      = Kernel32.FreeLibraryWhenCallbackReturns           @131
-	FreeTitlePhysicalPages              = Kernel32.FreeUserPhysicalPages                   @132
+	FreeTitlePhysicalPages              = FreeTitlePhysicalPages_X							@132
 	GetACP                              = Kernel32.GetACP                                   @133
 	GetCPInfo                           = Kernel32.GetCPInfo                                @134
 	GetCommandLineA                     = Kernel32.GetCommandLineA                          @135
@@ -313,7 +313,7 @@ EXPORTS
 	LockFile                            = Kernel32.LockFile                                 @306
 	LockFileEx                          = Kernel32.LockFileEx                               @307
 	LockResource                        = Kernel32.LockResource                             @308
-	MapTitlePhysicalPages               = Kernel32.MapUserPhysicalPages                     @309
+	MapTitlePhysicalPages               = MapTitlePhysicalPages_X							@309
 	MapViewOfFileEx                     = Kernel32.MapViewOfFileEx                          @310
 	MoveFileExW                         = Kernel32.MoveFileExW                              @311
 	MulDiv                              = Kernel32.MulDiv                                   @312
@@ -479,13 +479,13 @@ EXPORTS
 	UnregisterWaitEx                    = Kernel32.UnregisterWaitEx                         @472
 	UpdateProcThreadAttribute           = Kernel32.UpdateProcThreadAttribute                @473
 	VirtualAlloc                        = VirtualAlloc_X									@474
-	VirtualAllocEx                      = Kernel32.VirtualAllocEx                           @475
-	VirtualFree                         = Kernel32.VirtualFree                              @476
-	VirtualFreeEx                       = Kernel32.VirtualFreeEx                            @477
-	VirtualProtect                      = Kernel32.VirtualProtect                           @478
-	VirtualProtectEx                    = Kernel32.VirtualProtectEx                         @479
-	VirtualQuery                        = Kernel32.VirtualQuery                             @480
-	VirtualQueryEx                      = Kernel32.VirtualQueryEx                           @481
+	VirtualAllocEx                      = VirtualAllocEx_X									@475
+	VirtualFree                         = VirtualFree_X			                            @476
+	VirtualFreeEx                       = VirtualFreeEx_X									@477
+	VirtualProtect                      = VirtualProtect_X									@478
+	VirtualProtectEx                    = VirtualProtectEx_X								@479
+	VirtualQuery                        = VirtualQuery_X									@480
+	VirtualQueryEx                      = VirtualQueryEx_X									@481
 	WaitForMultipleObjects              = Kernel32.WaitForMultipleObjects                   @482
 	WaitForMultipleObjectsEx            = Kernel32.WaitForMultipleObjectsEx                 @483
 	WaitForSingleObject                 = Kernel32.WaitForSingleObject                      @484
@@ -512,3 +512,4 @@ EXPORTS
 	lstrcmpW                            = Kernel32.lstrcmpW                                 @517
 	lstrcmpiA                           = Kernel32.lstrcmpiA                                @518
 	lstrcmpiW                           = Kernel32.lstrcmpiW                                @519
+	MapTitleEsramPages					= MapTitleEsramPages

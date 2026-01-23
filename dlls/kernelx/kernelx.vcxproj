@@ -99,6 +99,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Allocation.h" />
     <ClInclude Include="CoreApplicationWrapperX.h" />
     <ClInclude Include="CoreWindowWrapperX.h" />
     <ClInclude Include="CurrentAppWrapper.hpp" />

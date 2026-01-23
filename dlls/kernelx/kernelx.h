@@ -1,62 +1,37 @@
+//Here lies some structs used in some of the Kernelx
+//functions. All the code is based on XWine1's SlimEra
+//Repo (https://github.com/XWine1/SlimEra). All credits
+//to XWine1 and DaZombieKiller.
 #pragma once
-// THE VALUES FOR NAMES ARE GUESSED, BUT NAMES ARE CORRECT (THAT HOW ENUM SHOULD LOOK LIKE)
-enum CONSOLE_TYPE {
-	CONSOLE_TYPE_XBOX_ONE = 1,
-	CONSOLE_TYPE_XBOX_ONE_S = 2,
-	CONSOLE_TYPE_XBOX_ONE_X = 3,
-	CONSOLE_TYPE_XBOX_ONE_X_DEVKIT = 4
-};
-static CRITICAL_SECTION XMemSetAllocationHooksLock_X;
-extern HANDLE XmpHeaps[32];
-extern int XmpHeapPageTypes[16];
-extern const int XmpHeapAllocationTypes[16];
-#define JOB_INFO_SIZE 0x38 // JobInformation size in bytes
-#ifndef _XMP_ALLOCATION_HOOK_LOCK_DEFINED_
-#define _XMP_ALLOCATION_HOOK_LOCK_DEFINED_
-// Define the structure for the critical section lock
-typedef struct _XmpAllocationHookLock {
-	PRTL_CRITICAL_SECTION_DEBUG DebugInfo;
-	LONG LockCount;
-	LONG RecursionCount;
-	HANDLE OwningThread;
-	HANDLE LockSemaphore;
-	ULONG_PTR SpinCount;
-} XmpAllocationHookLock_t;
+#include <Windows.h>
 
-// Declare global variables (extern means they are defined elsewhere)
-extern XmpAllocationHookLock_t XmpAllocationHookLock;
-extern RTL_CRITICAL_SECTION_DEBUG XmpAllocationHookLock_DEBUG;
-#endif // _XMP_ALLOCATION_HOOK_LOCK_DEFINED_
-typedef struct _SYSTEMOSVERSIONINFO {
-	UINT8 MajorVersion;
-	UINT8 MinorVersion;
-	UINT16 BuildNumber;
-	UINT16 Revision;
-} SYSTEMOSVERSIONINFO, * LPSYSTEMOSVERSIONINFO;
+typedef struct _SYSTEMOSVERSIONINFO
+{
+    BYTE MajorVersion;
+    BYTE MinorVersion;
+    WORD BuildNumber;
+    WORD Revision;
+} SYSTEMOSVERSIONINFO, * PSYSTEMOSVERSIONINFO, * LPSYSTEMOSVERSIONINFO;
 
-typedef struct _PROCESSOR_SCHEDULING_STATISTICS {
-	UINT64 RunningTime;
-	UINT64 IdleTime;
-	UINT64 GlobalTime;
-} PROCESSOR_SCHEDULING_STATISTICS, * PPROCESSOR_SCHEDULING_STATISTICS;
+typedef enum _CONSOLE_TYPE
+{
+    CONSOLE_TYPE_UNKNOWN,
+    CONSOLE_TYPE_XBOX_ONE,
+    CONSOLE_TYPE_XBOX_ONE_S,
+    CONSOLE_TYPE_XBOX_ONE_X,
+    CONSOLE_TYPE_XBOX_ONE_X_DEVKIT,
+} CONSOLE_TYPE, * PCONSOLE_TYPE, * LPCONSOLE_TYPE;
 
-typedef struct _TOOLINGMEMORYSTATUS {
-	DWORD     dwLength;
-	DWORD     dwReserved;
-	DWORDLONG ullTotalMem;
-	DWORDLONG ullAvailMem;
-	DWORDLONG ulPeakUsage;
-	DWORDLONG ullPageTableUsage;
-} TOOLINGMEMORYSTATUS, * PTOOLINGMEMORYSTATUS, * LPTOOLINGMEMORYSTATUS;
+typedef struct _PROCESSOR_SCHEDULING_STATISTICS
+{
+	ULONGLONG RunningTime;
+	ULONGLONG IdleTime;
+	ULONGLONG GlobalTime;
+} PROCESSOR_SCHEDULING_STATISTICS, * PPROCESSOR_SCHEDULING_STATISTICS, * LPPROCESSOR_SCHEDULING_STATISTICS;
 
-typedef struct _TITLEMEMORYSTATUS {
-	DWORD dwLength;
-	DWORD dwReserved;
-	DWORDLONG ullTotalMem;
-	DWORDLONG ullAvailMem;
-	DWORDLONG ullLegacyUsed;
-	DWORDLONG ullLegacyPeak;
-	DWORDLONG ullLegacyAvail;
-	DWORDLONG ullTitleUsed;
-	DWORDLONG ullTitleAvail;
-} TITLEMEMORYSTATUS, * PTITLEMEMORYSTATUS, * LPTITLEMEMORYSTATUS;
+typedef struct _PROCESSOR_SCHEDULING_STATISTICS
+{
+    ULONGLONG RunningTime;
+    ULONGLONG IdleTime;
+    ULONGLONG GlobalTime;
+} PROCESSOR_SCHEDULING_STATISTICS, * PPROCESSOR_SCHEDULING_STATISTICS, * LPPROCESSOR_SCHEDULING_STATISTICS;
