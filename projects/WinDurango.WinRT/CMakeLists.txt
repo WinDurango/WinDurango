@@ -17,7 +17,7 @@ foreach(IDL_FILE ${IDL_FILES})
             /I "${CMAKE_SOURCE_DIR}/idl"
             /metadata_dir "$ENV{WindowsSdkDir}References\\$ENV{WindowsSdkVersion}Windows.Foundation.FoundationContract\\4.0.0.0"
             /reference "$ENV{WindowsSdkDir}References\\$ENV{WindowsSdkVersion}Windows.Foundation.FoundationContract\\4.0.0.0\\Windows.Foundation.FoundationContract.winmd"
-            /reference "$ENV{WindowsSdkDir}References\\$ENV{WindowsSdkVersion}Windows.Foundation.UniversalApiContract\\19.0.0.0\\Windows.Foundation.UniversalApiContract.winmd"
+            /reference "$ENV{WindowsSdkDir}References\\$ENV{WindowsSdkVersion}Windows.Foundation.UniversalApiContract\\20.0.0.0\\Windows.Foundation.UniversalApiContract.winmd"
             /out "${CMAKE_BINARY_DIR}\\WinMetadata"
             ${IDL_FILE}
         RESULT_VARIABLE MIDL_RESULT

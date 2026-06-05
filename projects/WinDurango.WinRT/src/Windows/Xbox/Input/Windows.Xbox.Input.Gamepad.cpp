@@ -371,26 +371,26 @@ namespace winrt::Windows::Xbox::Input::implementation
             reading.RightThumbstickY = xiState.Gamepad.sThumbRY / 32768.f;
         }
 
-        SHORT kb_wm;
-        SHORT kb_am;
-        SHORT kb_sm;
-        SHORT kb_dm;
-        SHORT kb_a;
-        SHORT kb_b;
-        SHORT kb_x;
-        SHORT kb_y;
-        SHORT kb_up;
-        SHORT kb_down;
-        SHORT kb_left;
-        SHORT kb_right;
-        SHORT kb_menu;
-        SHORT kb_view;
-        SHORT kb_lt;
-        SHORT kb_rt;
-        SHORT kb_ls;
-        SHORT kb_rs;
-        SHORT kb_rtr;
-        SHORT kb_ltr;
+        SHORT kb_wm = 0;
+        SHORT kb_am = 0;
+        SHORT kb_sm = 0;
+        SHORT kb_dm = 0;
+        SHORT kb_a = 0;
+        SHORT kb_b = 0;
+        SHORT kb_x = 0;
+        SHORT kb_y = 0;
+        SHORT kb_up = 0;
+        SHORT kb_down = 0;
+        SHORT kb_left = 0;
+        SHORT kb_right = 0;
+        SHORT kb_menu = 0;
+        SHORT kb_view = 0;
+        SHORT kb_lt = 0;
+        SHORT kb_rt = 0;
+        SHORT kb_ls = 0;
+        SHORT kb_rs = 0;
+        SHORT kb_rtr = 0;
+        SHORT kb_ltr = 0;
 
         if (p_wd->config.jsonData().contains("keyboard") && p_wd->config["keyboard"].is_object()) 
         {

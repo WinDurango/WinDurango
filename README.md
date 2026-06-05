@@ -17,17 +17,17 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://codeberg.org/WinDurango/WinDurango">
-    <img src="https://codeberg.org/WinDurango/WinDurango/raw/branch/main/assets/logo/128.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/WinDurango/WinDurango">
+    <img src="https://github.com/WinDurango/WinDurango/blob/main/assets/logo/128.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">WinDurango</h3>
   <p align="center">
     WinDurango is an Xbox One Translation Layer which allows you to play various ERA based Games on Windows via UWP.
     <br />
-    <a href="https://codeberg.org/WinDurango/WinDurango/issues">Report Bug</a>
+    <a href="https://github.com/WinDurango/WinDurango/issues">Report Bug</a>
     &middot;
-    <a href="https://codeberg.org/WinDurango/WinDurango/issues">Request Feature</a>
+    <a href="https://github.com/WinDurango/WinDurango/issues">Request Feature</a>
   </p>
 </div>
 
@@ -64,7 +64,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://codeberg.org/WinDurango/WinDurango)
+[![Product Name Screen Shot][product-screenshot]](https://github.com/WinDurango/WinDurango)
 
 WinDurango is an Xbox One Translation Layer which allows you to play various ERA based Games on Windows via UWP. Currently, WinDurango has implemented most of the essential Xbox WinRT interfaces, KernelX and D3D11.X. Kinect support is completely experimental and hasn't been tested, expect issues.
 
@@ -96,7 +96,7 @@ Make sure you have Visual Studio 2026 with the C++ Extension, vcpkg and cmake.
 1. Open up the `VS 2026 Powershell Prompt`
 2. Clone the repo
    ```sh
-   git clone https://codeberg.org/WinDurango/WinDurango
+   git clone https://github.com/WinDurango/WinDurango
    ```
 3. Install VCPKG packages
    ```sh
@@ -198,4 +198,4 @@ Thanks to
 [issues-url]: https://github.com/WinDurango/WinDurango/issues
 [license-shield]: https://img.shields.io/github/license/WinDurango/WinDurango.svg?style=for-the-badge
 [license-url]: https://github.com/WinDurango/WinDurango/blob/master/LICENSE.txt
-[product-screenshot]: https://codeberg.org/WinDurango/WinDurango/raw/branch/main/assets/demo.png
+[product-screenshot]: https://github.com/WinDurango/WinDurango/blob/main/assets/demo.png
