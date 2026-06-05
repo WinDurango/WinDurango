@@ -162,10 +162,10 @@ Don't forget to give the project a star! Thanks again!
 5. Open a Pull Request
 
 
-<!-- LICENSE -->
-## License
+<!--  -->
+## 
 
-Distributed under the project_license. See `LICENSE.txt` for more information.
+Distributed under the project_. See `.txt` for more information.
 
 
 
@@ -197,5 +197,5 @@ Thanks to
 [issues-shield]: https://img.shields.io/github/issues/WinDurango/WinDurango.svg?style=for-the-badge
 [issues-url]: https://github.com/WinDurango/WinDurango/issues
 [license-shield]: https://img.shields.io/github/license/WinDurango/WinDurango.svg?style=for-the-badge
-[license-url]: https://github.com/WinDurango/WinDurango/blob/master/LICENSE.txt
+[license-url]: https://github.com/WinDurango/WinDurango/blob/master/LICENSE.md
 [product-screenshot]: https://github.com/WinDurango/WinDurango/blob/main/assets/demo.png
