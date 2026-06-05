@@ -197,5 +197,5 @@ Thanks to
 [issues-shield]: https://img.shields.io/github/issues/WinDurango/WinDurango.svg?style=for-the-badge
 [issues-url]: https://github.com/WinDurango/WinDurango/issues
 [license-shield]: https://img.shields.io/github/license/WinDurango/WinDurango.svg?style=for-the-badge
-[license-url]: https://github.com/WinDurango/WinDurango/blob/master/LICENSE.md
+[license-url]: https://github.com/WinDurango/WinDurango/blob/main/LICENSE.md
 [product-screenshot]: https://github.com/WinDurango/WinDurango/blob/main/assets/demo.png
