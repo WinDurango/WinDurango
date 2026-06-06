@@ -14,18 +14,43 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: ilammy/msvc-dev-cmd@v1
+
     - name: Install VCPkg Packages
       uses: lukka/run-vcpkg@v11
+
     - name: Add vcpkg tools to PATH
       run: echo "${{ github.workspace }}/vcpkg/installed/x64-windows/tools/cppwinrt" >> $GITHUB_PATH
+
+    - name: Cache Cmake
+      uses: actions/cache@v5
+      with: 
+        path: |
+          _deps
+          ALL_BUILD.dir
+          CMakeFiles
+          projects
+          WinDurango.dir
+          WinMetadata
+          ZERO_CHECK.dir
+          ALL_BUILD.vcxproj
+          ALL_BUILD.vcxproj.filters
+          cmake_install.cmake
+          CMakeCache.txt
+          WinDurango.slnx
+          WinDurango.vcxproj
+          WinDurango.vcxproj.filters
+          ZERO_CHECK.vcxproj
+          ZERO_CHECK.vcxproj.filters
     - name: Configure CMake
       run: |
           mkdir build
           cd build
           cmake .. -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
           cd ../
+
     - name: Build WinDurango
       run: cmake --build build --config Release
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v7
       with:
