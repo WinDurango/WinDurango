@@ -16,6 +16,8 @@ jobs:
     - uses: ilammy/msvc-dev-cmd@v1
     - name: Install VCPkg Packages
       uses: lukka/run-vcpkg@v11
+    - name: Add vcpkg tools to PATH
+      run: echo "${{ github.workspace }}/vcpkg/installed/x64-windows/tools/cppwinrt" >> $GITHUB_PATH
     - name: Configure CMake
       run: |
           mkdir build
