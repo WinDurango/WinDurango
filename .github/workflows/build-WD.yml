@@ -19,7 +19,7 @@ jobs:
       uses: lukka/run-vcpkg@v11
 
     - name: Add vcpkg tools to PATH
-      run: echo "${{ github.workspace }}/vcpkg/installed/x64-windows/tools/cppwinrt" >> $GITHUB_PATH
+      run: echo "${{ github.workspace }}/build/vcpkg_installed/x64-windows/tools/cppwinrt" >> $GITHUB_PATH
 
     - name: Cache Cmake
       uses: actions/cache@v5
