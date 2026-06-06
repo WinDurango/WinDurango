@@ -24,23 +24,7 @@ jobs:
     - name: Cache Cmake
       uses: actions/cache@v5
       with: 
-        path: |
-          _deps
-          ALL_BUILD.dir
-          CMakeFiles
-          projects
-          WinDurango.dir
-          WinMetadata
-          ZERO_CHECK.dir
-          ALL_BUILD.vcxproj
-          ALL_BUILD.vcxproj.filters
-          cmake_install.cmake
-          CMakeCache.txt
-          WinDurango.slnx
-          WinDurango.vcxproj
-          WinDurango.vcxproj.filters
-          ZERO_CHECK.vcxproj
-          ZERO_CHECK.vcxproj.filters
+        path: build
         key: cmake-${{ hashFiles('**/CMakeLists.txt') }}
         restore-keys: cmake-
     - name: Configure CMake
