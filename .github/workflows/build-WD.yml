@@ -34,7 +34,7 @@ jobs:
           cmake .. -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
           cd ../
           Get-Content "projects/WinDurango.Kinect/Generated Files/winrt/Windows.Kinect.h" | Select-Object -First 10
-          cppwinrt --version
+          vcpkg list cppwinrt
 
     - name: Build WinDurango
       run: cmake --build build --config Release
