@@ -14,14 +14,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: ilammy/msvc-dev-cmd@v1
+      with: 
+        sdk: 10.0.28000.0
 
     - name: Install VCPkg Packages
       uses: lukka/run-vcpkg@v11
-    
-    - uses: ChristopheLav/windows-sdk-install@v1
-      with:
-        version-sdk: 28000
-        features: 'OptionId.UWPCPP,OptionId.DesktopCPParm64'
 
     - name: Cache Cmake
       uses: actions/cache@v5
