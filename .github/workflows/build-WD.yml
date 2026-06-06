@@ -31,6 +31,7 @@ jobs:
           cd build
           cmake .. -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
           cd ../
+          where.exe cppwinrt
           Get-Content "projects/WinDurango.Kinect/Generated Files/winrt/Windows.Kinect.h" | Select-Object -First 10
           Get-Content "build/vcpkg_installed/x64-windows/include/winrt/base.h" | Select-Object -First 15
 
