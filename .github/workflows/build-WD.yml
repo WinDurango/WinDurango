@@ -41,6 +41,8 @@ jobs:
           WinDurango.vcxproj.filters
           ZERO_CHECK.vcxproj
           ZERO_CHECK.vcxproj.filters
+        key: cmake-${{ hashFiles('**/CMakeLists.txt') }}
+        restore-keys: cmake-
     - name: Configure CMake
       run: |
           mkdir build
