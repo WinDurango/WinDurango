@@ -74,6 +74,7 @@ target_include_directories(WinDurango.Kinect PUBLIC
 
 target_link_directories(WinDurango.Kinect PRIVATE 
     "${CMAKE_SOURCE_DIR}/vcpkg_installed/x64-windows/lib"
+    "${CMAKE_SOURCE_DIR}/build/vcpkg_installed/x64-windows/lib"
 )
 
 target_link_libraries(WinDurango.Kinect PRIVATE WinDurango.Common windowsapp runtimeobject unofficial::kinectsdk2::kinectsdk2)
