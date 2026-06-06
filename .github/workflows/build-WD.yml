@@ -29,11 +29,11 @@ jobs:
         restore-keys: cmake-
     - name: Configure CMake
       run: |
-          vcpkg install cppwinrt:x64-windows
           mkdir build
           cd build
           cmake .. -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
           cd ../
+          tree /F /A
           Get-Content "projects/WinDurango.Kinect/Generated Files/winrt/Windows.Kinect.h" | Select-Object -First 10
           vcpkg list cppwinrt
 
