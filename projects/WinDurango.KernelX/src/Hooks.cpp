@@ -2,7 +2,7 @@
 #include "Hooks.h"
 #include "kernelx.h"
 #include "CurrentApp.h"
-#include <detours.h>
+#include <detours/detours.h>
 #include <wrl.h>
 #include "MMDeviceEnumerator.h"
 

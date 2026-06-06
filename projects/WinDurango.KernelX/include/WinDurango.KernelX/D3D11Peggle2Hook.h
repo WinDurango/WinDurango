@@ -4,7 +4,7 @@
 #include <dxgi1_6.h>
 #include <d3d11_4.h>
 #include <winrt/Windows.ApplicationModel.h>
-#include <detours.h>
+#include <detours/detours.h>
 #include <wrl.h>
 #include <CoreWindow.h>
 #include "EraCoreWindow.h"

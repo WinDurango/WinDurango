@@ -28,7 +28,6 @@ target_include_directories(WinDurango.D3D11X PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include/WinDurango.D3D11X/
     ../WinDurango.Common/include/
     ../WinDurango.KernelX/include/WinDurango.KernelX/
-    ${CMAKE_SOURCE_DIR}/vcpkg_installed/x64-windows/include
 )
 
 target_link_options(WinDurango.D3D11X

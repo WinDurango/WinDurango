@@ -4,6 +4,9 @@ project(WinDurango.KernelX VERSION 1.0.0)
 set(VERSION_SUFFIX "-dev.1") # used for non-stable versions, otherwise blank
 set(CMAKE_CXX_STANDARD 20)
 
+find_path(DETOURS_INCLUDE_DIRS "detours/detours.h" REQUIRED HINTS "${CMAKE_SOURCE_DIR}/vcpkg_installed/x64-windows/include")
+find_library(DETOURS_LIBRARY detours REQUIRED HINTS "${CMAKE_SOURCE_DIR}/vcpkg_installed/x64-windows/lib")
+
 set(FILES
     src/kernelx.cpp
     src/dllmain.cpp
@@ -20,7 +23,7 @@ add_library(WinDurango.KernelX SHARED ${FILES} "include/WinDurango.KernelX/EraCo
 target_link_libraries(WinDurango.KernelX PRIVATE 
     WinDurango.Common 
     WinDurango.Implementation.WinRT 
-    "${CMAKE_SOURCE_DIR}/vcpkg_installed/x64-windows/lib/detours.lib"
+    ${DETOURS_LIBRARY}
 )
 
 target_link_options(WinDurango.KernelX
@@ -32,7 +35,7 @@ target_include_directories(WinDurango.KernelX PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include/WinDurango.KernelX/
     ${CMAKE_SOURCE_DIR}/projects/WinDurango.Common/include
     ${CMAKE_SOURCE_DIR}/projects/WinDurango.Implementation.WinRT/include
-    ${CMAKE_SOURCE_DIR}/vcpkg_installed/x64-windows/include/detours
+    ${DETOURS_INCLUDE_DIRS}
 )
 
 set_target_properties(WinDurango.KernelX PROPERTIES

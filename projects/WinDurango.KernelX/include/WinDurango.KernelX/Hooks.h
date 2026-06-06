@@ -12,7 +12,7 @@
 #include <winrt/Windows.ApplicationModel.h>
 #include <winrt/windows.storage.provider.h>
 #include <wrl/client.h>
-#include <detours.h>
+#include <detours/detours.h>
 #include "CurrentApp.h"
 #include "EraCoreWindow.h"
 #include "EraCoreApplication.h"
