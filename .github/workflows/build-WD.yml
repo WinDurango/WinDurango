@@ -12,7 +12,13 @@ jobs:
     runs-on: windows-2025-vs2026
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4    
+    
+    - uses: ChristopheLav/windows-sdk-install@v1
+      with:
+        version-sdk: 28000
+        features: 'OptionId.UWPCPP,OptionId.DesktopCPParm64'
+
     - uses: ilammy/msvc-dev-cmd@v1
       with: 
         sdk: 10.0.28000.0
