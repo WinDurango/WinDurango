@@ -11,17 +11,31 @@ file(GLOB IDL_FILES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/idl/*.idl")
 cmake_path(CONVERT "${IDL_FILES}" TO_NATIVE_PATH_LIST IDL_FILES)
 
 foreach(IDL_FILE ${IDL_FILES})
-    execute_process(
-        COMMAND midl
-            /winrt /h nul /nomidl /x64
-            /I "${CMAKE_SOURCE_DIR}/idl"
-            /metadata_dir "$ENV{WindowsSdkDir}References\\$ENV{WindowsSdkVersion}Windows.Foundation.FoundationContract\\4.0.0.0"
-            /reference "$ENV{WindowsSdkDir}References\\$ENV{WindowsSdkVersion}Windows.Foundation.FoundationContract\\4.0.0.0\\Windows.Foundation.FoundationContract.winmd"
-            /reference "$ENV{WindowsSdkDir}References\\$ENV{WindowsSdkVersion}Windows.Foundation.UniversalApiContract\\20.0.0.0\\Windows.Foundation.UniversalApiContract.winmd"
-            /out "${CMAKE_BINARY_DIR}\\WinMetadata"
-            ${IDL_FILE}
-        RESULT_VARIABLE MIDL_RESULT
-        ERROR_VARIABLE MIDL_ERROR)
+    if(EXISTS "$ENV{WindowsSdkDir}References\\$ENV{WindowsSdkVersion}Windows.Foundation.UniversalApiContract\\20.0.0.0\\Windows.Foundation.UniversalApiContract.winmd")
+        execute_process(
+            COMMAND midl
+                /winrt /h nul /nomidl /x64
+                /I "${CMAKE_SOURCE_DIR}/idl"
+                /metadata_dir "$ENV{WindowsSdkDir}References\\$ENV{WindowsSdkVersion}Windows.Foundation.FoundationContract\\4.0.0.0"
+                /reference "$ENV{WindowsSdkDir}References\\$ENV{WindowsSdkVersion}Windows.Foundation.FoundationContract\\4.0.0.0\\Windows.Foundation.FoundationContract.winmd"
+                /reference "$ENV{WindowsSdkDir}References\\$ENV{WindowsSdkVersion}Windows.Foundation.UniversalApiContract\\20.0.0.0\\Windows.Foundation.UniversalApiContract.winmd"
+                /out "${CMAKE_BINARY_DIR}\\WinMetadata"
+                ${IDL_FILE}
+            RESULT_VARIABLE MIDL_RESULT
+            ERROR_VARIABLE MIDL_ERROR)
+    else()
+        execute_process(
+            COMMAND midl
+                /winrt /h nul /nomidl /x64
+                /I "${CMAKE_SOURCE_DIR}/idl"
+                /metadata_dir "$ENV{WindowsSdkDir}References\\$ENV{WindowsSdkVersion}Windows.Foundation.FoundationContract\\4.0.0.0"
+                /reference "$ENV{WindowsSdkDir}References\\$ENV{WindowsSdkVersion}Windows.Foundation.FoundationContract\\4.0.0.0\\Windows.Foundation.FoundationContract.winmd"
+                /reference "$ENV{WindowsSdkDir}References\\$ENV{WindowsSdkVersion}Windows.Foundation.UniversalApiContract\\19.0.0.0\\Windows.Foundation.UniversalApiContract.winmd"
+                /out "${CMAKE_BINARY_DIR}\\WinMetadata"
+                ${IDL_FILE}
+            RESULT_VARIABLE MIDL_RESULT
+            ERROR_VARIABLE MIDL_ERROR)
+    endif()
     
     if(NOT MIDL_RESULT EQUAL 0)
         message(FATAL_ERROR "${MIDL_ERROR}")
