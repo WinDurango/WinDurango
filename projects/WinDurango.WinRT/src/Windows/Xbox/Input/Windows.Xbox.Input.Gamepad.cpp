@@ -129,7 +129,7 @@ namespace winrt::Windows::Xbox::Input::implementation
     {
         if (!XInput || !XInput1_3GetState || !XInput1_3GetCapabilities || !XInput1_3SetState)
         {
-            XInput = LoadLibraryW(L"xinput1_3.dll");
+            XInput = LoadLibraryW(L"xinput1_4.dll");
             if (XInput)
             {
                 XInput1_3GetState = (PFN_XInputGetState)GetProcAddress(XInput, "XInputGetState");
@@ -150,8 +150,11 @@ namespace winrt::Windows::Xbox::Input::implementation
             {
                 XINPUT_CAPABILITIES capabilities{};
                 XINPUT_STATE state{};
+
+                auto XI_cap = XInput1_3GetCapabilities(gamepad, XINPUT_FLAG_GAMEPAD, &capabilities);
+                auto XI_stat = XInput1_3GetState(gamepad, &state);
                 
-                bool Result = XInput1_3GetCapabilities(gamepad, XINPUT_FLAG_GAMEPAD, &capabilities) == ERROR_SUCCESS || XInput1_3GetState(gamepad, &state) == ERROR_SUCCESS;
+                bool Result = XI_cap == ERROR_SUCCESS || XI_stat == ERROR_SUCCESS;
                 if (Result) // should work now btw
                 {
                     p_wd->log.Log("WinDurango::WinRT::Windows::Xbox::Input", "Creating gamepad");
@@ -336,7 +339,7 @@ namespace winrt::Windows::Xbox::Input::implementation
             }
         }
 
-        static std::pair<WORD, GamepadButtons> const buttons[] = {
+        std::pair<WORD, GamepadButtons> const buttons[] = {
             {gp_up, GamepadButtons::DPadUp},
             {gp_down, GamepadButtons::DPadDown},
             {gp_left, GamepadButtons::DPadLeft},
