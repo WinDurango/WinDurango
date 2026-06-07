@@ -6,7 +6,7 @@ namespace winrt::Windows::Xbox::Storage::implementation
 {
     winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Storage::BlobInfo>> BlobInfoQueryResult::GetBlobInfoAsync(uint32_t startIndex, uint32_t maxNumberOfItems)
     {
-        co_await winrt::resume_background();
+        co_return co_await m_connectedStorage->GetBlobInfoAsync(parentName, prefix);
     }
     winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Storage::BlobInfo>> BlobInfoQueryResult::GetBlobInfoAsync()
     {
@@ -14,7 +14,8 @@ namespace winrt::Windows::Xbox::Storage::implementation
     }
     winrt::Windows::Foundation::IAsyncOperation<uint32_t> BlobInfoQueryResult::GetItemCountAsync()
     {
-        co_await winrt::resume_background();
+        auto blobs = co_await m_connectedStorage->GetBlobInfoAsync(parentName, prefix);
+        co_return blobs.Size();
     }
     ConnectedStorageContainer::ConnectedStorageContainer(hstring name, wd::WinRT::ConnectedStorage *connectedStorage)
     {
