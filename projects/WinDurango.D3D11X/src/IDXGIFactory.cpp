@@ -90,10 +90,19 @@ template <abi_t ABI>
 HRESULT DXGIFactory2<ABI>::CreateSwapChain(xbox::IGraphicsUnknown<ABI> *pDevice, DXGI_SWAP_CHAIN_DESC *pDesc,
                                            gfx::IDXGISwapChain<ABI> **ppSwapChain)
 {
-    /*
-     * idk what im doing here
-    */
     auto pDesc2 = *pDesc;
+    IUnknown *dev{};
+    HWND hwnd{};
+
+    if (pDevice)
+    {
+        pDevice->QueryInterface(__uuidof(xbox::IGraphicsUnwrap), (void **)&dev);
+    }
+    else
+    {
+        pDevice = new D3D11DeviceX<ABI>(pDev2);
+        pDevice->QueryInterface(__uuidof(xbox::IGraphicsUnwrap), (void **)&dev);
+    }
 
     if (!pDesc2.OutputWindow)
     {
@@ -105,15 +114,35 @@ HRESULT DXGIFactory2<ABI>::CreateSwapChain(xbox::IGraphicsUnknown<ABI> *pDevice,
 
         ICoreWindowInterop *interop;
         Window->QueryInterface(IID_PPV_ARGS(&interop));
-        interop->get_WindowHandle(&pDesc2.OutputWindow);
+        interop->get_WindowHandle(&hwnd);
     }
 
-    IDXGISwapChain *SwapChain{};
-    HRESULT hr = m_pFunction->CreateSwapChain(reinterpret_cast<IUnknown*>(pDevice), &pDesc2, &SwapChain);
+    DXGI_SWAP_CHAIN_DESC1 SwapChainDesc{};
+    SwapChainDesc.Width = pDesc2.BufferDesc.Width;
+    SwapChainDesc.Height = pDesc2.BufferDesc.Height;
+    SwapChainDesc.Format = pDesc2.BufferDesc.Format;
+    SwapChainDesc.SampleDesc.Quality = 0;
+    SwapChainDesc.SampleDesc.Count = 1;
+    SwapChainDesc.BufferUsage = pDesc2.BufferUsage;
+    SwapChainDesc.Scaling = DXGI_SCALING_STRETCH;
+    
+    if (pDesc->SwapEffect == DXGI_SWAP_EFFECT_DISCARD || pDesc->SwapEffect == DXGI_SWAP_EFFECT_SEQUENTIAL)
+    {
+        if (pDesc->SwapEffect == DXGI_SWAP_EFFECT_DISCARD)
+            SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+        else if (pDesc->SwapEffect == DXGI_SWAP_EFFECT_SEQUENTIAL)
+            SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+    }
+
+    SwapChainDesc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
+    SwapChainDesc.BufferCount = pDesc2.BufferCount;
+
+    IDXGISwapChain1 *SwapChain{};
+    HRESULT hr = m_pFunction->CreateSwapChainForHwnd(dev, hwnd, &SwapChainDesc, nullptr, nullptr, &SwapChain);
 
     if (SwapChain)
     {
-        *ppSwapChain = reinterpret_cast<gfx::IDXGISwapChain<ABI>*>(SwapChain);
+        *ppSwapChain = new DXGISwapChain1<ABI>(SwapChain);
     }
     return hr;
 }
@@ -214,7 +243,7 @@ HRESULT DXGIFactory2<ABI>::CreateSwapChainForCoreWindow(xbox::IGraphicsUnknown<A
         interop->get_WindowHandle(&hwnd);
 
         IDXGISwapChain1 *SwapChain{};
-        hr = m_pFunction->CreateSwapChainForHwnd(dev, hwnd, &pDesc2, NULL, NULL, &SwapChain);
+        hr = m_pFunction->CreateSwapChainForHwnd(dev, hwnd, &pDesc2, nullptr, nullptr, &SwapChain);
 
         if (SwapChain)
         {

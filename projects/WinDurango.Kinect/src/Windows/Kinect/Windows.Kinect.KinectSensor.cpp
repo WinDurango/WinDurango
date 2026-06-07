@@ -341,18 +341,16 @@ namespace winrt::Windows::Kinect::implementation
     }
     winrt::event_token ColorFrameSource::FrameCaptured(winrt::Windows::Foundation::TypedEventHandler<winrt::Windows::Kinect::ColorFrameSource, winrt::Windows::Kinect::FrameCapturedEventArgs> const& handler)
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::ColorFrameSource", "Unimplemented: FrameCaptured");
-        throw hresult_not_implemented();
+        return {};
     }
     void ColorFrameSource::FrameCaptured(winrt::event_token const& token) noexcept
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::ColorFrameSource", "Unimplemented: FrameCaptured");
-        throw hresult_not_implemented();
     }
     bool ColorFrameSource::IsActive()
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::ColorFrameSource", "Unimplemented: IsActive");
-        throw hresult_not_implemented();
+        BOOLEAN isActive = 0;
+        m_pColorFrameSource->get_IsActive(&isActive);
+        return (bool)isActive;
     }
     winrt::Windows::Kinect::ColorFrameReader ColorFrameSource::OpenReader()
     {
@@ -361,13 +359,15 @@ namespace winrt::Windows::Kinect::implementation
     }
     winrt::Windows::Kinect::FrameDescription ColorFrameSource::CreateFrameDescription(winrt::Windows::Kinect::ColorImageFormat const& format)
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::ColorFrameSource", "Unimplemented: CreateFrameDescription");
-        throw hresult_not_implemented();
+        ::IFrameDescription *pFrameDescription = nullptr;
+        m_pColorFrameSource->CreateFrameDescription((::ColorImageFormat)format, &pFrameDescription);
+        return winrt::make<implementation::FrameDescription>(pFrameDescription);
     }
     winrt::Windows::Kinect::FrameDescription ColorFrameSource::FrameDescription()
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::ColorFrameSource", "Unimplemented: FrameDescription");
-        throw hresult_not_implemented();
+        ::IFrameDescription *pFrameDescription = nullptr;
+        m_pColorFrameSource->get_FrameDescription(&pFrameDescription);
+        return winrt::make<implementation::FrameDescription>(pFrameDescription);
     }
     winrt::Windows::Kinect::KinectSensor ColorFrameSource::KinectSensor()
     {
@@ -616,38 +616,45 @@ namespace winrt::Windows::Kinect::implementation
     }
     int32_t FrameDescription::Width()
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::FrameDescription", "Unimplemented: Width");
-        throw hresult_not_implemented();
+        int32_t Width = 0;
+        m_pFrameDescription->get_Width(&Width);
+        return Width;
     }
     int32_t FrameDescription::Height()
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::FrameDescription", "Unimplemented: Height");
-        throw hresult_not_implemented();
+        int32_t Height = 0;
+        m_pFrameDescription->get_Height(&Height);
+        return Height;
     }
     float FrameDescription::HorizontalFieldOfView()
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::FrameDescription", "Unimplemented: HorizontalFieldOfView");
-        throw hresult_not_implemented();
+        float HorizontalFieldOfView = 0;
+        m_pFrameDescription->get_HorizontalFieldOfView(&HorizontalFieldOfView);
+        return HorizontalFieldOfView;
     }
     float FrameDescription::VerticalFieldOfView()
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::FrameDescription", "Unimplemented: VerticalFieldOfView");
-        throw hresult_not_implemented();
+        float VerticalFieldOfView = 0;
+        m_pFrameDescription->get_VerticalFieldOfView(&VerticalFieldOfView);
+        return VerticalFieldOfView;
     }
     float FrameDescription::DiagonalFieldOfView()
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::FrameDescription", "Unimplemented: DiagonalFieldOfView");
-        throw hresult_not_implemented();
+        float DiagonalFieldOfView = 0;
+        m_pFrameDescription->get_DiagonalFieldOfView(&DiagonalFieldOfView);
+        return DiagonalFieldOfView;
     }
     uint32_t FrameDescription::LengthInPixels()
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::FrameDescription", "Unimplemented: LengthInPixels");
-        throw hresult_not_implemented();
+        uint32_t LengthInPixels = 0;
+        m_pFrameDescription->get_LengthInPixels(&LengthInPixels);
+        return LengthInPixels;
     }
     uint32_t FrameDescription::BytesPerPixel()
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::FrameDescription", "Unimplemented: BytesPerPixel");
-        throw hresult_not_implemented();
+        uint32_t BytesPerPixel = 0;
+        m_pFrameDescription->get_BytesPerPixel(&BytesPerPixel);
+        return BytesPerPixel;
     }
     com_array<uint16_t> InfraredFrame::CopyFrameDataToArray()
     {
@@ -950,13 +957,11 @@ namespace winrt::Windows::Kinect::implementation
     }
     winrt::event_token KinectSensor::IsAvailableChanged(winrt::Windows::Foundation::TypedEventHandler<winrt::Windows::Kinect::KinectSensor, winrt::Windows::Kinect::IsAvailableChangedEventArgs> const& handler)
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::KinectSensor", "Unimplemented: IsAvailableChanged");
-        throw hresult_not_implemented();
+        return {};
     }
     void KinectSensor::IsAvailableChanged(winrt::event_token const& token) noexcept
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::KinectSensor", "Unimplemented: IsAvailableChanged");
-        throw hresult_not_implemented();
+
     }
     void KinectSensor::Open()
     {
@@ -980,8 +985,9 @@ namespace winrt::Windows::Kinect::implementation
     }
     winrt::Windows::Kinect::ColorFrameSource KinectSensor::ColorFrameSource()
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::KinectSensor", "Unimplemented: ColorFrameSource");
-        throw hresult_not_implemented();
+        ::IColorFrameSource *pColorFrameSource = nullptr;
+        m_pKinectSensor->get_ColorFrameSource(&pColorFrameSource);
+        return winrt::make<implementation::ColorFrameSource>(pColorFrameSource);
     }
     winrt::Windows::Kinect::DepthFrameSource KinectSensor::DepthFrameSource()
     {

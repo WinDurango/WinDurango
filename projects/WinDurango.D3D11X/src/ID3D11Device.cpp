@@ -8,6 +8,7 @@
 #include "ID3D11Runtime.h"
 #include "ID3D11DMAEngineContext.h"
 #include "d3d11.x.h"
+#include <d3d12.h>
 
 //
 // IUnknown
@@ -38,6 +39,12 @@ template <abi_t ABI> HRESULT D3D11DeviceX<ABI>::QueryInterface(REFIID riid, void
     }
 
     if (riid == __uuidof(ID3D11InfoQueue))
+    {
+        *ppvObject = nullptr;
+        return E_NOINTERFACE;
+    }
+
+    if (riid == __uuidof(ID3D12Device))
     {
         *ppvObject = nullptr;
         return E_NOINTERFACE;
@@ -845,6 +852,15 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementBuffer(D3D11_BUFFER_DESC const *pDesc,
     if (pDesc2.Usage == D3D11_USAGE_IMMUTABLE)
     {
         pDesc2.Usage = D3D11_USAGE_DEFAULT;
+    }
+
+    if (pDesc2.Usage == D3D11_USAGE_DEFAULT)
+    {
+        if (pDesc2.BindFlags == D3D11_BIND_CONSTANT_BUFFER)
+        {
+            //EA, would you mind telling me why the fuck would a constant buffer with default usage need CPU write access?
+            if (pDesc2.CPUAccessFlags > 0) pDesc2.CPUAccessFlags = 0;
+        }
     }
 
     HRESULT hr = 0;

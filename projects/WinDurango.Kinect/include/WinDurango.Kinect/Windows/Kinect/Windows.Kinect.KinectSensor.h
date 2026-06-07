@@ -190,7 +190,7 @@ namespace winrt::Windows::Kinect::implementation
 
     struct ColorFrameSource : ColorFrameSourceT<ColorFrameSource>
     {
-        ColorFrameSource() = default;
+        ColorFrameSource(::IColorFrameSource *pColorFrameSource) : m_pColorFrameSource(pColorFrameSource) {}
 
         winrt::event_token FrameCaptured(winrt::Windows::Foundation::TypedEventHandler<winrt::Windows::Kinect::ColorFrameSource, winrt::Windows::Kinect::FrameCapturedEventArgs> const& handler);
         void FrameCaptured(winrt::event_token const& token) noexcept;
@@ -199,6 +199,9 @@ namespace winrt::Windows::Kinect::implementation
         winrt::Windows::Kinect::FrameDescription CreateFrameDescription(winrt::Windows::Kinect::ColorImageFormat const& format);
         winrt::Windows::Kinect::FrameDescription FrameDescription();
         winrt::Windows::Kinect::KinectSensor KinectSensor();
+
+        private:
+        ::IColorFrameSource *m_pColorFrameSource = nullptr;
     };
 
     struct DepthFrame : DepthFrameT<DepthFrame>
@@ -446,7 +449,7 @@ namespace winrt::Windows::Kinect::implementation
 
     struct FrameDescription : FrameDescriptionT<FrameDescription>
     {
-        FrameDescription() = default;
+        FrameDescription(::IFrameDescription *pFrameDescription) : m_pFrameDescription(pFrameDescription) {}
 
         int32_t Width();
         int32_t Height();
@@ -455,6 +458,9 @@ namespace winrt::Windows::Kinect::implementation
         float DiagonalFieldOfView();
         uint32_t LengthInPixels();
         uint32_t BytesPerPixel();
+
+        private:
+        ::IFrameDescription *m_pFrameDescription = nullptr;
     };
 
     struct KinectSensor : KinectSensorT<KinectSensor>
