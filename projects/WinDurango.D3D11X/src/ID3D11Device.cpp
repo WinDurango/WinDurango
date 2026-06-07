@@ -8,6 +8,8 @@
 #include "ID3D11Runtime.h"
 #include "ID3D11DMAEngineContext.h"
 #include "d3d11.x.h"
+#include <d3d12.h>
+#pragma comment(lib, "d3d12.lib")
 
 //
 // IUnknown
@@ -16,7 +18,8 @@ template <abi_t ABI> HRESULT D3D11DeviceX<ABI>::QueryInterface(REFIID riid, void
 {
     if (riid == xcom::guid_of<gfx::ID3D11Device>() || riid == xcom::guid_of<gfx::ID3D11Device1>() ||
         riid == xcom::guid_of<gfx::ID3D11Device2>() || riid == xcom::guid_of<gfx::ID3D11DeviceX>() ||
-        riid == xcom::guid_of<gfx::ID3D11PerformanceDeviceX>())
+        riid == xcom::guid_of<gfx::ID3D11PerformanceDeviceX>() || 
+        riid == IID{0xB898D4FD, 0xB5B3, 0x4FFC, {0x86, 0x94, 0x02, 0x59, 0x86, 0x4F, 0xFC, 0xF8}})
     {
         *ppvObject = this;
         AddRef();
@@ -29,6 +32,17 @@ template <abi_t ABI> HRESULT D3D11DeviceX<ABI>::QueryInterface(REFIID riid, void
         m_pFunction->QueryInterface(__uuidof(IDXGIDevice2), ppvObject);
         *ppvObject = new DXGIDevice2<ABI>(static_cast<IDXGIDevice2 *>(*ppvObject));
         return S_OK;
+    }
+
+    if (riid == IID{0x9B7E4A00, 0x342C, 0x4106, {0xA1, 0x9F, 0x4F, 0x27, 0x04, 0xF6, 0x89, 0xF0}} ||
+        riid == IID{0x85611E73, 0x70A9, 0x490E, {0x96, 0x14, 0xA9, 0xE3, 0x02, 0x77, 0x79, 0x04}})
+    {
+        return m_pFunction->QueryInterface(riid, ppvObject);
+    }
+
+    if (riid == IID{0x189819F1, 0x1DB6, 0x4B57, {0xBE, 0x54, 0x18, 0x21, 0x33, 0x9B, 0x85, 0xF7}})
+    {
+        return D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, riid, ppvObject);
     }
 
     if (riid == xcom::guid_of<xbox::IGraphicsUnwrap>())

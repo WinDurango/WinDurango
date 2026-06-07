@@ -109,7 +109,8 @@ HRESULT DXGIFactory2<ABI>::CreateSwapChain(xbox::IGraphicsUnknown<ABI> *pDevice,
     }
 
     IDXGISwapChain *SwapChain{};
-    HRESULT hr = m_pFunction->CreateSwapChain(reinterpret_cast<IUnknown*>(pDevice), &pDesc2, &SwapChain);
+    IUnknown *pRealDevice = static_cast<D3D11DeviceX<ABI> *>(pDevice)->m_pFunction;
+    HRESULT hr = m_pFunction->CreateSwapChain(pRealDevice, &pDesc2, &SwapChain);
 
     if (SwapChain)
     {
