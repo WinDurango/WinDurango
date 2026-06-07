@@ -90,8 +90,32 @@ template <abi_t ABI>
 HRESULT DXGIFactory2<ABI>::CreateSwapChain(xbox::IGraphicsUnknown<ABI> *pDevice, DXGI_SWAP_CHAIN_DESC *pDesc,
                                            gfx::IDXGISwapChain<ABI> **ppSwapChain)
 {
-    IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    /*
+     * idk what im doing here
+    */
+    auto pDesc2 = *pDesc;
+
+    if (!pDesc2.OutputWindow)
+    {
+        ComPtr<ICoreWindowStatic> pWindowStatic;
+        RoGetActivationFactory(Microsoft::WRL::Wrappers::HStringReference::HStringReference(RuntimeClass_Windows_UI_Core_CoreWindow).Get(), IID_PPV_ARGS(&pWindowStatic));
+
+        ComPtr<ICoreWindow> Window;
+        pWindowStatic->GetForCurrentThread(&Window);
+
+        ICoreWindowInterop *interop;
+        Window->QueryInterface(IID_PPV_ARGS(&interop));
+        interop->get_WindowHandle(&pDesc2.OutputWindow);
+    }
+
+    IDXGISwapChain *SwapChain{};
+    HRESULT hr = m_pFunction->CreateSwapChain(reinterpret_cast<IUnknown*>(pDevice), &pDesc2, &SwapChain);
+
+    if (SwapChain)
+    {
+        *ppSwapChain = reinterpret_cast<gfx::IDXGISwapChain<ABI>*>(SwapChain);
+    }
+    return hr;
 }
 
 template <abi_t ABI>
