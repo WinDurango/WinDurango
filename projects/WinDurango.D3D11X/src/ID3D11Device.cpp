@@ -179,6 +179,20 @@ HRESULT D3D11DeviceX<ABI>::CreateShaderResourceView(gfx::ID3D11Resource<ABI> *pR
     }
     else if (Type == D3D11_RESOURCE_DIMENSION_TEXTURE2D)
     {
+        if (pDesc)
+        {
+            D3D11_TEXTURE2D_DESC Desc{};
+            static_cast<D3D11Texture2D<ABI> *>(pResource)->GetDesc(&Desc);
+
+            if (IsFloatFormat(Desc.Format) && IsUINTFormat(pDesc->Format))
+            {
+                printf("D3D11 Warning: Game is trying to create an UINT SRV over a FLOAT resource!\n");
+            }
+            else if (IsUnormFormat(Desc.Format) && IsUINTFormat(pDesc->Format))
+            {
+                printf("D3D11 Warning: Game is trying to create an UINT SRV over an UNORM resource!\n");
+            }
+        }
         hr = m_pFunction->CreateShaderResourceView(static_cast<D3D11Texture2D<ABI> *>(pResource)->m_pFunction, pDesc,
                                                    &pView);
     }
