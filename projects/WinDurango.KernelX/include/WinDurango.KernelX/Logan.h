@@ -243,6 +243,8 @@ typedef struct ACP_COMMAND_REGISTER_CONTEXT_ARRAYS
     APU_ADDRESS pcmContextArray;
 };
 
+
+//There can be 4 IAcpHal instances, which means 4 main command and message queues, hence client pointers/counters are arrays of 4.
 typedef struct AcpState
 {
     uint32_t internalCommandQueueReadPointer;
@@ -505,6 +507,64 @@ typedef union AcpInternalCommandQueueEntry
     uint8_t padToAcpCacheLineSize[256];
 };
 
+typedef struct ACP_MESSAGE_FLOWGRAPH_COMPLETED
+{
+    uint32_t flowgraph;
+};
+
+typedef struct ACP_MESSAGE_SHAPE_COMMAND_BLOCKED
+{
+    uint32_t contextIndex;
+    uint32_t flowgraph;
+};
+
+typedef struct ACP_MESSAGE_COMMAND_COMPLETED
+{
+    uint32_t commandType;
+    uint64_t commandId;
+    uint32_t audioFrame;
+};
+
+typedef struct ACP_MESSAGE_ERROR
+{
+    int32_t errorCode;
+    uint32_t additionalData;
+};
+
+typedef struct ACP_MESSAGE_FLOWGRAPH_TERMINATED
+{
+    uint32_t flowgraph;
+    uint32_t numCommandsCompleted;
+    uint32_t reason;
+};
+
+typedef struct ACP_MESSAGE_AUDIO_FRAME_START
+{
+    uint32_t audioFrame;
+};
+
+typedef struct ACP_MESSAGE
+{
+    uint32_t type;
+    uint32_t droppedMessageCount;
+    union
+    {
+        ACP_MESSAGE_AUDIO_FRAME_START audioFrameStart;
+        ACP_MESSAGE_FLOWGRAPH_COMPLETED flowgraphCompleted;
+        ACP_MESSAGE_SHAPE_COMMAND_BLOCKED shapeCommandBlocked;
+        ACP_MESSAGE_COMMAND_COMPLETED commandCompleted;
+        ACP_MESSAGE_FLOWGRAPH_TERMINATED flowgraphTerminated;
+        ACP_MESSAGE_ERROR error;
+    };
+};
+
+typedef struct AcpMessageQueueEntry
+{
+    uint32_t state;
+    ACP_MESSAGE message;
+    uint8_t padToAcpCacheLineSize[228];
+};
+
 BOOL(WINAPI *TrueDeviceIoControl)(HANDLE hDevice, DWORD dwIoControlCode, LPVOID lpInBuffer, DWORD nInBufferSize,
                                   LPVOID lpOutBuffer, DWORD nOutBufferSize, LPDWORD lpBytesReturned,
                                   LPOVERLAPPED lpOverlapped) = DeviceIoControl;
@@ -550,6 +610,7 @@ class LoganHeap
     LOGAN_PHYSICAL_MEMORY _driverMemory[3];
     static ULONGLONG constexpr c_XMemAttributes = 0xEC810000; 
     ACP_COMMAND_REGISTER_CONTEXT_ARRAYS _acpContextArrays;
+    ACP_COMMAND_CONNECT _acpConnectCommand[4]; //There can be 4 IAcpHal instances :)
 };
 
 template <typename T> void _declspec(dllexport) DispatchLoganCommand(LOGAN_COMMAND_TYPE cmdType, T cmd);
@@ -665,17 +726,34 @@ static BOOL ReadFromRingBuffer(T *OutBuffer, T *InBuffer, LOGAN_RING_BUFFER_DESC
     return TRUE;
 }
 
-static BOOL ReadFromInternalACPRingBuffer(AcpCommand *OutBuffer, AcpCommand *InBuffer, AcpState *InBufferDesc)
+static BOOL ReadFromInternalACPRingBuffer(AcpCommand *OutBuffer, AcpInternalCommandQueueEntry* InBuffer, AcpState *InBufferDesc)
 {
     if (InBufferDesc->internalCommandQueueReadCounter == InBufferDesc->internalCommandQueueSendCounter)
         return FALSE;
 
-    *OutBuffer = InBuffer[InBufferDesc->internalCommandQueueReadPointer];
+    *OutBuffer = InBuffer[InBufferDesc->internalCommandQueueReadPointer].command;
+    InBuffer[InBufferDesc->internalCommandQueueReadPointer].state = 0;
     InBufferDesc->internalCommandQueueReadPointer++;
     InBufferDesc->internalCommandQueueReadCounter++;
 
     if (InBufferDesc->internalCommandQueueReadPointer >= 16)
         InBufferDesc->internalCommandQueueReadPointer = 0;
+
+    return TRUE;
+}
+
+static BOOL ReadFromClientACPRingBuffer(AcpCommand *OutBuffer, AcpCommandQueueEntry *InBuffer, AcpState *InBufferDesc, UINT ClientIndex)
+{
+    if (InBufferDesc->clientCommandQueueReadCounter[ClientIndex] == InBufferDesc->clientCommandQueueSendCounter[ClientIndex])
+        return FALSE;
+
+    *OutBuffer = InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].command;
+    InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].state = 0;
+    InBufferDesc->clientCommandQueueReadPointer[ClientIndex]++;
+    InBufferDesc->clientCommandQueueReadCounter[ClientIndex]++;
+
+    if (InBufferDesc->clientCommandQueueReadPointer[ClientIndex] >= 16)
+        InBufferDesc->clientCommandQueueReadPointer[ClientIndex] = 0;
 
     return TRUE;
 }
@@ -687,7 +765,8 @@ inline void DispatchACPCommand(ACP_COMMAND_TYPE_INTERNAL cmdType, AcpState *acpS
 {
     if (cmdType == INTERNAL_ACP_COMMAND_TYPE_CONNECT)
     {
-        printf("Received Internal ACP command (INTERNAL_ACP_COMMAND_TYPE_CONNECT)\n");
+        g_LoganHeap._acpConnectCommand[Cmd.connect.index] = Cmd.connect;
+        printf("Registered main ACP command and message queues.\n");
     }
     else if (cmdType == INTERNAL_ACP_COMMAND_TYPE_DISCONNECT)
     {
@@ -721,11 +800,28 @@ inline void DispatchACPCommand(ACP_COMMAND_TYPE_INTERNAL cmdType, AcpState *acpS
 }
 
 template <typename T> 
+inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState* acpState, T Cmd)
+{
+    if (cmdType == ACP_COMMAND_TYPE_REGISTER_MESSAGE)
+    {
+        printf("Received Client ACP command (ACP_COMMAND_TYPE_REGISTER_MESSAGE)\n");
+    }
+    else if (cmdType == ACP_COMMAND_TYPE_UNREGISTER_MESSAGE)
+    {
+        printf("Received Client ACP command (ACP_COMMAND_TYPE_UNREGISTER_MESSAGE)\n");
+    }
+    else
+    {
+        printf("Received unknown Client ACP command of type 0x%x\n", cmdType);
+    }
+}
+
+template <typename T> 
 inline void DispatchLoganCommand(LOGAN_COMMAND_TYPE cmdType, T cmd)
 {
-    printf("Received Logan command of type 0x%x\n", cmdType);
     if (cmdType == LOGAN_COMMAND_TYPE_ACP_INIT)
     {
+        printf("Received Logan command (LOGAN_COMMAND_TYPE_ACP_INIT)\n");
         InitialCommand = reinterpret_cast<LOGAN_COMMAND_ACP_INIT*>(cmd);
     }
 }
@@ -742,14 +838,13 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
     do
     {
         LOGAN_COMMAND_INTERNAL command;
-        UINT MessageIndex = 0;
         while (ReadFromRingBuffer(&command, commands, &channel->commands))
         {
             DispatchLoganCommand((LOGAN_COMMAND_TYPE)command.commandType, g_LoganHeap.GetVirtualAddress(command.apuAddress, sizeof((LOGAN_COMMAND_TYPE)command.commandType)));
-            messages[MessageIndex].status = ACP_MESSAGE_TYPE_COMMAND_COMPLETED;
-            messages[MessageIndex].time = GetTickCount();
-            messages[MessageIndex].unknown0 = 1;
-            MessageIndex++;
+            messages[channel->messages.offsetWrite].status = ACP_MESSAGE_TYPE_COMMAND_COMPLETED;
+            messages[channel->messages.offsetWrite].time = GetTickCount();
+            messages[channel->messages.offsetWrite].unknown0 = 1;
+            channel->messages.offsetWrite = (channel->messages.offsetWrite + 1 < channel->messages.sizeInBlocks) ? channel->messages.offsetWrite + 1 : 0;
         }       
 
         if (InitialCommand != nullptr)
@@ -760,11 +855,32 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
             if (pAcpState != nullptr && AcpInternalCommandQueue->command.commandType != 0)
             {
                 AcpCommand Command{};
-                while (ReadFromInternalACPRingBuffer(&Command, &AcpInternalCommandQueue->command, pAcpState))
+                while (ReadFromInternalACPRingBuffer(&Command, AcpInternalCommandQueue, pAcpState))
                 {
                     if (Command.commandType)
                     {
                         DispatchACPCommand((ACP_COMMAND_TYPE_INTERNAL)Command.commandType, pAcpState, Command);
+                    }
+                }
+            }
+        }
+
+        for (UINT i = 0; i < 4; i++)
+        {
+            if (g_LoganHeap._acpConnectCommand[i].commandQueue != 0)
+            {
+                AcpCommandQueueEntry *AcpClientCommandQueue = g_LoganHeap.GetVirtualAddress<AcpCommandQueueEntry>(g_LoganHeap._acpConnectCommand[i].commandQueue);
+                AcpState *pAcpState = g_LoganHeap.GetVirtualAddress<AcpState>(InitialCommand->acpState);
+
+                if (pAcpState != nullptr && AcpClientCommandQueue->command.commandType != 0)
+                {
+                    AcpCommand Command{};
+                    while (ReadFromClientACPRingBuffer(&Command, AcpClientCommandQueue, pAcpState, i))
+                    {
+                        if (Command.commandType)
+                        {
+                            DispatchClientACPCommand((ACP_COMMAND_TYPE)Command.commandType, pAcpState, Command);
+                        }
                     }
                 }
             }

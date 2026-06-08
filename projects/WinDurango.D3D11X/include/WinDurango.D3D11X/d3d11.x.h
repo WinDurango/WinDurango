@@ -85,3 +85,65 @@ inline void CalculatePitch(uint32_t Width, uint32_t Height, DXGI_FORMAT Format, 
     (*pRowPitch) = rowPitch;
     (*pSlicePitch) = slicePitch;
 }
+
+inline bool IsFloatFormat(DXGI_FORMAT Format)
+{
+    switch (Format)
+    {
+    case DXGI_FORMAT_R32G32B32A32_FLOAT:
+    case DXGI_FORMAT_R32G32B32_FLOAT:
+    case DXGI_FORMAT_R16G16B16A16_FLOAT:
+    case DXGI_FORMAT_R32G32_FLOAT:
+    case DXGI_FORMAT_R11G11B10_FLOAT:
+    case DXGI_FORMAT_R16G16_FLOAT:
+    case DXGI_FORMAT_R32_FLOAT:
+    case DXGI_FORMAT_R16_FLOAT:
+        return true;
+    default:
+        return false;
+    }
+}
+
+inline bool IsUINTFormat(DXGI_FORMAT Format)
+{
+    switch (Format)
+    {
+    case DXGI_FORMAT_R32G32B32A32_UINT:
+    case DXGI_FORMAT_R32G32B32_UINT:
+    case DXGI_FORMAT_R16G16B16A16_UINT:
+    case DXGI_FORMAT_R32G32_UINT:
+    case DXGI_FORMAT_R10G10B10A2_UINT:
+    case DXGI_FORMAT_R16G16_UINT:
+    case DXGI_FORMAT_R32_UINT:
+    case DXGI_FORMAT_R16_UINT:
+    case DXGI_FORMAT_R8G8B8A8_UINT:
+    case DXGI_FORMAT_R8G8_UINT:
+    case DXGI_FORMAT_R8_UINT:
+        return true;
+    default:
+        return false;
+    }
+}
+
+inline bool IsUnormFormat(DXGI_FORMAT Format)
+{
+    switch (Format)
+    {
+    case DXGI_FORMAT_R16G16B16A16_UNORM:
+    case DXGI_FORMAT_R10G10B10A2_UNORM:
+    case DXGI_FORMAT_R8G8B8A8_UNORM:
+    case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+    case DXGI_FORMAT_R16G16_UNORM:
+    case DXGI_FORMAT_R8G8_UNORM:
+    case DXGI_FORMAT_R16_UNORM:
+    case DXGI_FORMAT_R8_UNORM:
+    case DXGI_FORMAT_A8_UNORM:
+    case DXGI_FORMAT_R1_UNORM:
+    case DXGI_FORMAT_R8G8_B8G8_UNORM:
+    case DXGI_FORMAT_G8R8_G8B8_UNORM:
+    case DXGI_FORMAT_B8G8R8A8_UNORM:
+        return true;
+    default:
+        return false;
+    }
+}
