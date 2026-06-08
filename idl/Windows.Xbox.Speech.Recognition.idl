@@ -1,96 +1,5 @@
-namespace Windows
-{
-    namespace Xbox
-    {
-        namespace Speech
-        {
-            namespace Recognition
-            {
-                interface ISpeechRecognizer;
-                interface ISpeechRecognizerFactoryStatic;
-                interface ISpeechRecognizerAnalyzerStatic;
-                interface ISpeechGrammar;
-                interface ISpeechGrammarSet;
-                interface IInstalledSpeechRecognizersStatic;
-                interface ISpeechRecognizerInformation;
-                interface ISpeechAudioProblemOccurredEventArgs;
-                interface ISpeechRecognizerAudioCaptureStateChangedEventArgs;
-                interface IContinuousSpeechRecognitionResultEventArgs;
-                interface IContinuousSpeechRecognitionStatusEventArgs;
-                interface ISpeechHypothesisResultEventArgs;
-                interface ISpeechRecognizerSoundStartedEventArgs;
-                interface ISpeechRecognizerSoundEndedEventArgs;
-                interface ISpeechRecognizerPhraseStartedEventArgs;
-                interface ISpeechRecognizerAudioContext;
-                interface ISpeechRecognizerSettings;
-                interface ISpeechRecognizerInputSetting;
-                interface ISpeechRecognitionResult;
-                interface ISpeechRecognitionResultDetail;
-                interface ISpeechRecognitionResultBodyCorrelation;
-                interface ISpeechRecognitionResultToken;
-                interface ISpeechRecognitionSemanticProperty;
-                interface ISpeechGrammarBuilderFactory;
-                interface ISpeechGrammarBuilderStatic;
-                interface ISpeechGrammarBuilder;
-                interface ISpeechRule;
-                interface ISpeechGrammarBuilderRuleSet;
-                interface ISpeechRuleItem;
-                interface ISpeechSequenceRule;
-                interface ISpeechChoiceRule;
-                interface ISpeechGraphRule;
-                interface ISpeechPhraseItemFactory;
-                interface ISpeechPhraseItem;
-                interface ISpeechRuleReferenceItemFactory;
-                interface ISpeechRuleReferenceItem;
-                interface ISpeechGarbageItemFactory;
-                interface ISpeechGarbageItem;
-                interface ISpeechNullItem;
-                interface ISpeechGraphState;
-                interface ISpeechPronunciationDetail;
-                runtimeclass SpeechRecognizer;
-                runtimeclass SpeechRecognizerFactory;
-                runtimeclass SpeechRecognizerAnalyzer;
-                runtimeclass SpeechGrammar;
-                runtimeclass SpeechGrammarSet;
-                runtimeclass SpeechGrammarBuilder;
-                runtimeclass InstalledSpeechRecognizers;
-                runtimeclass InstalledSpeechRecognizersInProc;
-                runtimeclass SpeechRecognizerInformation;
-                runtimeclass SpeechAudioProblemOccurredEventArgs;
-                runtimeclass SpeechRecognizerAudioCaptureStateChangedEventArgs;
-                runtimeclass ContinuousSpeechRecognitionResultEventArgs;
-                runtimeclass SpeechRecognitionResult;
-                runtimeclass ContinuousSpeechRecognitionStatusEventArgs;
-                runtimeclass SpeechHypothesisResultEventArgs;
-                runtimeclass SpeechRecognizerSoundStartedEventArgs;
-                runtimeclass SpeechRecognizerAudioContext;
-                runtimeclass SpeechRecognizerSoundEndedEventArgs;
-                runtimeclass SpeechRecognizerPhraseStartedEventArgs;
-                runtimeclass SpeechRecognizerSettings;
-                runtimeclass SpeechRecognizerInputSetting;
-                runtimeclass SpeechRecognitionSemanticProperty;
-                runtimeclass SpeechRecognitionResultDetail;
-                runtimeclass SpeechRecognitionResultToken;
-                runtimeclass SpeechRecognitionResultBodyCorrelation;
-                runtimeclass SpeechGrammarBuilderRuleSet;
-                runtimeclass SpeechChoiceRule;
-                runtimeclass SpeechSequenceRule;
-                runtimeclass SpeechGraphRule;
-                runtimeclass SpeechGraphState;
-                runtimeclass SpeechPhraseItem;
-                runtimeclass SpeechRuleReferenceItem;
-                runtimeclass SpeechGarbageItem;
-                runtimeclass SpeechNullItem;
-                runtimeclass SpeechPronunciationDetail;
-            }
-        }
-    }
-}
-
-
 namespace Windows.Xbox.Speech.Recognition
 {
-
     enum SpeechGrammarProbability
     {
         Low = 0,
@@ -180,26 +89,294 @@ namespace Windows.Xbox.Speech.Recognition
         OrderedSubsetContentRequired = 4
     };
 
-    [uuid(3A3AA19C-F4E9-4985-A53C-DBCC22795CA7)]
-    [version(0x00010000)]
-    interface ISpeechRecognizer
-        requires Windows.Foundation.IClosable
+    enum SpeechLanguageSupportLevel
+    {
+        None,
+        Alpha,
+        Beta,
+        Retail,
+    };
+
+    [interface_name("IContinuousSpeechRecognitionResultEventArgs", A6A614C1-DC90-4D81-8FAB-F1324A017767)]
+    runtimeclass ContinuousSpeechRecognitionResultEventArgs 
+    {
+        SpeechRecognitionResult Result { get; };
+    }
+
+    [interface_name("IContinuousSpeechRecognitionStatusEventArgs", 13BD8DF7-85F7-4F78-88C2-D4E150E085F2)]
+    runtimeclass ContinuousSpeechRecognitionStatusEventArgs 
+    {
+        ContinuousSpeechRecognitionStatus Status { get; };
+        Windows.Foundation.HResult ErrorCode { get; };
+    }
+
+    [interface_name("ISpeechAudioProblemOccurredEventArgs", 996BEEE5-850C-4748-ADF1-E76E4BD17C35)]
+    runtimeclass SpeechAudioProblemOccurredEventArgs 
+    {
+        SpeechRecognitionAudioProblem Problem { get; };
+    }
+
+    [interface_name("ISpeechHypothesisResultEventArgs", 4A044F62-061D-4079-9376-CE2528FAD55E)]
+    runtimeclass SpeechHypothesisResultEventArgs 
+    {
+        SpeechRecognitionResult Hypothesis { get; };
+    }
+
+    [interface_name("ISpeechRecognizerAudioCaptureStateChangedEventArgs", 6DF51DA4-3AE8-4F1E-8D51-8CADE835CF8A)]
+    runtimeclass SpeechRecognizerAudioCaptureStateChangedEventArgs 
+    {
+        SpeechRecognizerAudioCaptureState State { get; };
+    }
+
+    [interface_name("ISpeechRecognizerPhraseStartedEventArgs", 7D27B49C-59E1-417F-984E-E16BB44904BD)]
+    runtimeclass SpeechRecognizerPhraseStartedEventArgs 
+    {
+        SpeechRecognizerAudioContext AudioContext { get; };
+    }
+
+    [interface_name("ISpeechRecognizerSoundEndedEventArgs", AD371030-F5C7-4958-8A7A-0C135EAA52AF)]
+    runtimeclass SpeechRecognizerSoundEndedEventArgs 
+    {
+        SpeechRecognizerAudioContext AudioContext { get; };
+    }
+
+    [interface_name("ISpeechRecognizerSoundStartedEventArgs", 32ADEA0E-6262-40B7-A030-87FB9B160A97)]
+    runtimeclass SpeechRecognizerSoundStartedEventArgs 
+    {
+        SpeechRecognizerAudioContext AudioContext { get; };
+    }
+
+    [static_name("IInstalledSpeechRecognizersStatic", 606A630F-C5C3-4DFA-9950-D98BFE772C8F)]
+    runtimeclass InstalledSpeechRecognizers 
+    {
+        static Windows.Foundation.Collections.IVectorView<SpeechRecognizerInformation> All { get; };
+        static SpeechRecognizerInformation Default { get; };
+    }
+
+    [uuid(9776ff56-9bfd-4581-ad45-b645bba526d6)]
+    interface ISpeechRule
+    {
+        Boolean EnabledOnLoad { get; set; };
+        void Clear();
+    }
+
+    [uuid(21CC0B0B-1300-46B7-A567-1FFD90AD0206)]
+    interface ISpeechRuleItem
+    {
+        SpeechRuleItemMatchType MatchType { get; set; };
+        String Semantics { get; set; };
+    }
+
+    [interface_name("ISpeechChoiceRule", BDEF8B1D-9917-4B09-98F7-31869488A2E6)]
+    runtimeclass SpeechChoiceRule : [default] ISpeechRule
+    {
+        void AddItem(ISpeechRuleItem item);
+    }
+
+    [interface_name("ISpeechGarbageItem", 7D150D62-4B6B-44FC-B867-CA1AFCA54E04)]
+    runtimeclass SpeechGarbageItem : [default] ISpeechRuleItem
+    {
+        void AddItem(ISpeechRuleItem item);
+    }
+
+    [interface_name("ISpeechGarbageItemFactory", A67AA356-8E3F-412D-91B7-D3144B35BCC6)]
+    runtimeclass SpeechGarbageItemFactory
+    {
+        SpeechGarbageItem CreateRuleItemGarbageWithMatchType(SpeechRuleItemMatchType matchType);
+    }
+
+    [interface_name("ISpeechGrammar", BEDB311F-1D59-4C0A-9BB0-D5774906EC28)]
+    runtimeclass SpeechGrammar
+    {
+        Boolean Enabled { get; set; };
+        SpeechGrammarProbability Probability { get; set; };
+        void EnableRule(String ruleName);
+        void DisableRule(String ruleName);
+    }
+
+    [interface_name("ISpeechGrammarBuilder", 120E617B-AE2B-466E-855B-1A4BCFAE06D4)]
+    runtimeclass SpeechGrammarBuilder
+    {
+        SpeechGrammarBuilderRuleSet Rules { get; };
+        SpeechGrammarBuilderSemanticsFormat SemanticsFormat { get; set; };
+        ISpeechRule RootRule { get; };
+        void SetRootRule(String ruleKey);
+        SpeechPronunciationFormat PronunciationFormat { set; get; };
+        [static_name("ISpeechGrammarBuilderStatic", 8A7D628E-0337-46F6-BFC4-C97212587467)]
+    	{
+        	static Windows.Foundation.IAsyncOperation<SpeechGrammarBuilder> CreateFromSpeechGrammarAsync(SpeechGrammar speechGrammar);
+            static Windows.Foundation.IAsyncOperation<SpeechGrammarBuilder> CreateFromStreamAsync(Windows.Storage.Streams.IRandomAccessStream stream);
+    	}
+    }
+
+    [interface_name("ISpeechGrammarBuilderFactory", 4918B04E-7D4C-4929-B7E3-B80931FF4D33)]
+    runtimeclass SpeechGrammarBuilderFactory
+    {
+        SpeechGrammarBuilder CreateSpeechGrammarBuilder(String language);
+    }
+
+    [interface_name("ISpeechGrammarBuilderRuleSet", FFE5CB68-E2CB-46D2-98F0-627253B38256)]
+    runtimeclass SpeechGrammarBuilderRuleSet : Windows.Foundation.Collections.IMapView<String, ISpeechRule>, 
+        Windows.Foundation.Collections.IIterable<Windows.Foundation.Collections.IKeyValuePair<String, ISpeechRule> >
+    {
+        SpeechChoiceRule AddChoiceRuleFromList(String key, Windows.Foundation.Collections.IIterable<String> phrases);
+        SpeechChoiceRule AddChoiceRule(String key);
+        SpeechSequenceRule AddSequenceRuleFromArray(String key, Windows.Foundation.Collections.IIterable<ISpeechRuleItem> items);
+        SpeechSequenceRule AddSequenceRule(String key);
+        SpeechGraphRule AddGraphRule(String key);
+        void Clear();
+        ISpeechRule Remove(String key);
+    }
+
+    [interface_name("ISpeechGrammarSet", E2B746C0-5ED2-4071-868C-4695A7CD1D2A)]
+    runtimeclass SpeechGrammarSet : Windows.Foundation.Collections.IMapView<String, SpeechGrammar>, 
+        Windows.Foundation.Collections.IIterable<Windows.Foundation.Collections.IKeyValuePair<String, SpeechGrammar> >
+    {
+        SpeechGrammar AddGrammarFromList(String key, Windows.Foundation.Collections.IIterable<String> phrases);
+        SpeechGrammar AddGrammarFromUri(String key, Windows.Foundation.Uri grammarUri);
+        SpeechGrammar AddGrammarFromStream(String key, Windows.Storage.Streams.IRandomAccessStream stream);
+        void Clear();
+        SpeechGrammar Remove(String key);
+        SpeechGrammar AddGrammarFromBuilder(String key, SpeechGrammarBuilder grammar);
+    }
+
+    [interface_name("ISpeechGraphRule", C77C35C2-FEFD-4547-8B22-A42712B68F73)]
+    runtimeclass SpeechGraphRule : [default] ISpeechRule
+    {
+        SpeechGraphState CreateGraphState(SpeechGraphStateType stateType);
+        SpeechGraphState StartState { set; get; };
+    }
+
+    [interface_name("ISpeechGraphState", 2962AE4E-2145-40FE-9BF0-29A46A100500)]
+    runtimeclass SpeechGraphState
+    {
+        void AddTransition(ISpeechRuleItem item, Single weight, SpeechGraphState targetState);
+        SpeechGraphStateType StateType { get; };
+    }
+
+    [interface_name("ISpeechLanguage", 0D08D7A6-E966-43F6-8B41-70D8AC377314)]
+    runtimeclass SpeechLanguage
+    {
+        String LanguageTag { get; };
+        Boolean IsDefault { get; };
+        SpeechLanguageInformation SpeechLanguageInformation { get; };
+    }
+
+    [interface_name("ISpeechLanguageInformation", EE933534-D720-49A5-B17B-B09E84656B08)]
+    runtimeclass SpeechLanguageInformation
+    {
+        Boolean IsWakeOnVoiceSupported { get; };
+        Boolean IsApplicationLocalSpeechRecognitionSupported { get; };
+        Boolean IsSystemLocalSpeechRecognitionSupported { get; };
+        Boolean IsSystemCloudSpeechRecognitionSupported { get; };
+        SpeechLanguageSupportLevel SpeechLanguageSupportLevel { get; };
+    }
+
+    [interface_name("ISpeechLanguageSupportInternal", CCA74304-1901-4E6E-922B-6562923DAFF6)]
+    runtimeclass SpeechLanguageSupportInternal
+    {
+        Windows.Foundation.Collections.IVectorView<SpeechLanguage> GetSupportedSpeechLanguages(String languageTag);
+        SpeechLanguage DefaultSpeechLanguage { get; };
+    }
+
+    [interface_name("ISpeechNullItem", 7FF1A244-5719-482E-96D4-C8010FE4F9AF)]
+    runtimeclass SpeechNullItem : [default] ISpeechRuleItem
+    {
+    }
+
+    [interface_name("ISpeechPhraseItem", 2F9E39F2-6D75-447A-838C-4705A3131FE0)]
+    runtimeclass SpeechPhraseItem : [default] ISpeechRuleItem
+    {
+        String Text { get; set; };
+        String Pronunciation { get; set; };
+        String DisplayForm { get; set; };
+        SpeechPhraseSubsetMatchMode SubsetMatchMode { get; set; };
+    }
+
+    [interface_name("ISpeechPhraseItemFactory", 9894918C-91C0-43E7-A8FD-1FE88C531A54)]
+    runtimeclass SpeechPhraseItemFactory
+    {
+        SpeechPhraseItem CreateRuleItemPhrase(String text);
+        SpeechPhraseItem CreateRuleItemPhraseWithSemantics(String text, String semantics);
+        SpeechPhraseItem CreateRuleItemPhraseWithSemanticsAndMatchType(
+            String text,
+            String semantics,
+            SpeechRuleItemMatchType matchType);
+        SpeechPhraseItem CreateRuleItemPhraseWithSemanticsAndMatchTypeAndPhraseMatchMode(
+            String text,
+            String semantics,
+            SpeechRuleItemMatchType itemMatchType,
+            SpeechPhraseSubsetMatchMode phraseSubsetMatchMode);
+    }
+
+    [interface_name("ISpeechPronunciationDetail", F12312E5-B6B5-40A0-9885-07E780D09652)]
+    runtimeclass SpeechPronunciationDetail
+    {
+        String Pronunciation { get; };
+        SpeechPronunciationSource Source { get; };
+        SpeechPronunciationFormat Format { get; };
+    }
+
+    [interface_name("ISpeechRecognitionResult", EFFEC6CC-0054-4D6A-A198-675CF5720C3F)]
+    runtimeclass SpeechRecognitionResult
+    {
+        String Text { get; };
+        SpeechRecognitionConfidence TextConfidence { get; };
+        Windows.Foundation.Collections.IMapView<String, SpeechRecognitionSemanticProperty> Semantics { get; };
+        String RuleName { get; };
+        Windows.Foundation.Collections.IVectorView<SpeechRecognitionResult> GetAlternates(UInt32 maxAlternates);
+        SpeechRecognitionResultDetail Details { get; };
+    }
+
+    [interface_name("ISpeechRecognitionResultBodyCorrelation", C061CBAA-D6E4-4E73-8920-8B2F148445F3)]
+    runtimeclass SpeechRecognitionResultBodyCorrelation
+    {
+        UInt64 BodyTrackingId { get; };
+    }
+
+    [interface_name("ISpeechRecognitionResultDetail", 1D04B45B-D5F4-4B3F-AA38-4B9C22BE737C)]
+    runtimeclass SpeechRecognitionResultDetail
+    {
+        Windows.Foundation.Collections.IVectorView<String> RuleStack { get; };
+        Single ConfidenceScore { get; };
+        String Pronunciation { get; };
+        Windows.Foundation.Collections.IVectorView<SpeechRecognitionResultToken> Tokens { get; };
+        UInt64 AudioPosition { get; };
+        UInt32 AudioSize { get; };
+        Windows.Foundation.Collections.IVectorView<SpeechRecognitionResultBodyCorrelation> BodyCorrelation { get; };
+    }
+
+    [interface_name("ISpeechRecognitionResultToken", 2467026C-D1BA-4AFC-B51D-6175D3B2F339)]
+    runtimeclass SpeechRecognitionResultToken
+    {
+        String DisplayForm { get; };
+        String LexicalForm { get; };
+        String PronunciationForm { get; };
+    }
+
+    [interface_name("ISpeechRecognitionSemanticProperty", 9F3B0682-605C-4753-A4E7-18BE8245F365)]
+    runtimeclass SpeechRecognitionSemanticProperty
+    {
+        String Name { get; };
+        String ValueAsString { get; };
+        SpeechRecognitionConfidence ConfidenceLevel { get; };
+        Single ConfidenceScore { get; };
+        Windows.Foundation.Collections.IVectorView<SpeechRecognitionSemanticProperty> Duplicates { get; };
+    }
+
+    [interface_name("ISpeechRecognizer", 3A3AA19C-F4E9-4985-A53C-DBCC22795CA7)]
+    runtimeclass SpeechRecognizer
     {
         Windows.Foundation.IAsyncOperation<SpeechRecognitionResult> RecognizeAsync();
         Windows.Foundation.IAsyncAction PreloadGrammarsAsync();
-
-        SpeechRecognizerSettings Settings{ get; };
-        SpeechGrammarSet Grammars{ get; };
-
+        SpeechRecognizerSettings Settings { get; };
+        SpeechGrammarSet Grammars { get; };
         void StartContinuousRecognition();
         void StopContinuousRecognition();
         void ResumeContinuousRecognition();
-
-        Boolean PauseOnContinuousRecognitionResultAvailable;
-
+        Boolean PauseOnContinuousRecognitionResultAvailable { get; set; };
         SpeechRecognizerInformation GetRecognizer();
         void SetRecognizer(SpeechRecognizerInformation recognizerInformation);
-
         event Windows.Foundation.TypedEventHandler<SpeechRecognizer, SpeechAudioProblemOccurredEventArgs> AudioProblemOccurred;
         event Windows.Foundation.TypedEventHandler<SpeechRecognizer, SpeechRecognizerAudioCaptureStateChangedEventArgs> AudioCaptureStateChanged;
         event Windows.Foundation.TypedEventHandler<SpeechRecognizer, ContinuousSpeechRecognitionResultEventArgs> ContinuousRecognitionResultAvailable;
@@ -208,554 +385,77 @@ namespace Windows.Xbox.Speech.Recognition
         event Windows.Foundation.TypedEventHandler<SpeechRecognizer, SpeechRecognizerSoundStartedEventArgs> SoundStarted;
         event Windows.Foundation.TypedEventHandler<SpeechRecognizer, SpeechRecognizerSoundEndedEventArgs> SoundEnded;
         event Windows.Foundation.TypedEventHandler<SpeechRecognizer, SpeechRecognizerPhraseStartedEventArgs> PhraseStarted;
-    };
+    }
 
-    [uuid(9D99295C-ECD0-44E5-9F3D-6130ACFF3A18)]
-    [version(0x00010000)]
-    interface ISpeechRecognizerFactoryStatic
+    [static_name("ISpeechRecognizerAnalyzerStatic", 11E2BF59-A4E0-4BD7-A885-7728E3E57F59)]
+    runtimeclass SpeechRecognizerAnalyzer 
     {
-        SpeechRecognizer CreateSpeechRecognizerForLocale(UInt16 requestedLanguageId);
-    };
+        static Windows.Foundation.IAsyncAction SerializeGrammarsToFolderAsync(SpeechRecognizer speechRecognizer, Windows.Foundation.Uri destinationFolder,
+            SpeechGrammarRuleInclusionMode inclusionMode);
+        static Windows.Foundation.IAsyncOperation<SpeechRecognitionResult> CheckResultFromPhraseAsync(
+            SpeechRecognizer speechRecognizer,
+            String phrase);
+        static Windows.Foundation.Collections.IVectorView<SpeechPronunciationDetail> GetPronunciationFromPhrase(
+            SpeechRecognizer speechRecognizer,
+            String phrase);
+    }
 
-    [uuid(BEDB311F-1D59-4C0A-9BB0-D5774906EC28)]
-    [version(0x00010000)]
-    interface ISpeechGrammar
+    [interface_name("ISpeechRecognizerAudioContext", 2E458E3E-5896-4CD2-B6E6-8A2B5AD712A4)]
+    runtimeclass SpeechRecognizerAudioContext
     {
-        Boolean Enabled;
-        SpeechGrammarProbability Probability;
+        UInt64 AudioPosition { get; };
+    }
 
-        void EnableRule(String ruleName);
-        void DisableRule(String ruleName);
-    };
-
-    [uuid(E2B746C0-5ED2-4071-868C-4695A7CD1D2A)]
-    [version(0x00010000)]
-    interface ISpeechGrammarSet
-        requires
-            Windows.Foundation.Collections.IMapView<String, SpeechGrammar>, Windows.Foundation.Collections.IIterable<Windows.Foundation.Collections.IKeyValuePair<String, SpeechGrammar> >
+    [static_name("ISpeechRecognizerFactoryStatic", 9D99295C-ECD0-44E5-9F3D-6130ACFF3A18)]
+    runtimeclass SpeechRecognizerFactory 
     {
-        SpeechGrammar AddGrammarFromList(String key, Windows.Foundation.Collections.IIterable<String> phrases);
-        SpeechGrammar AddGrammarFromUri(String key, Windows.Foundation.Uri grammarUri);
-        SpeechGrammar AddGrammarFromStream(String key, Windows.Storage.Streams.IRandomAccessStream stream);
-        void Clear();
-        SpeechGrammar Remove(String key);
-        SpeechGrammar AddGrammarFromBuilder(String key, SpeechGrammarBuilder grammar);
-    };
+        static SpeechRecognizer CreateSpeechRecognizerForLocale(UInt16 requestedLanguageId);
+    }
 
-    [uuid(606A630F-C5C3-4DFA-9950-D98BFE772C8F)]
-    [version(0x00010000)]
-    interface IInstalledSpeechRecognizersStatic
+    [static_name("ISpeechRecognizerFactoryHostedStatic", 9D99295C-ECD0-44E5-9F3D-6130ACFF3A18)]
+    runtimeclass SpeechRecognizerFactoryHosted 
     {
-        Windows.Foundation.Collections.IVectorView<SpeechRecognizerInformation> All{ get; };
-        SpeechRecognizerInformation Default{ get; };
-    };
+        static SpeechRecognizer CreateSpeechRecognizerForLocale(UInt16 requestedLanguageId, String aumid);
+        static SpeechRecognizer CreateSystemSpeechRecognizer(String aumid);
+    }
 
-    [uuid(CDC2A794-ED21-4D55-88C0-86FC1CCADC64)]
-    [version(0x00010000)]
-    interface ISpeechRecognizerInformation
+    [interface_name("ISpeechRecognizerInformation", CDC2A794-ED21-4D55-88C0-86FC1CCADC64)]
+    runtimeclass SpeechRecognizerInformation
     {
-        String DisplayName{ get; };
-        String Id{ get; };
-        String Language{ get; };
-        String Description{ get; };
-    };
+        String DisplayName { get; };
+        String Id { get; };
+        String Language { get; };
+        String Description { get; };
+    }
 
-    [uuid(996BEEE5-850C-4748-ADF1-E76E4BD17C35)]
-    [version(0x00010000)]
-    interface ISpeechAudioProblemOccurredEventArgs
-    {
-        SpeechRecognitionAudioProblem Problem{ get; };
-    };
-
-    [uuid(6DF51DA4-3AE8-4F1E-8D51-8CADE835CF8A)]
-    [version(0x00010000)]
-    interface ISpeechRecognizerAudioCaptureStateChangedEventArgs
-    {
-        SpeechRecognizerAudioCaptureState State{ get; };
-    };
-
-    [uuid(A6A614C1-DC90-4D81-8FAB-F1324A017767)]
-    [version(0x00010000)]
-    interface IContinuousSpeechRecognitionResultEventArgs
-    {
-        SpeechRecognitionResult Result{ get; };
-    };
-
-    [uuid(13BD8DF7-85F7-4F78-88C2-D4E150E085F2)]
-    [version(0x00010000)]
-    interface IContinuousSpeechRecognitionStatusEventArgs
-    {
-        ContinuousSpeechRecognitionStatus Status{ get; };
-        Int32 ErrorCode{ get; };
-    };
-
-    [uuid(4A044F62-061D-4079-9376-CE2528FAD55E)]
-    [version(0x00010000)]
-    interface ISpeechHypothesisResultEventArgs
-    {
-        SpeechRecognitionResult Hypothesis{ get; };
-    };
-
-    [uuid(32ADEA0E-6262-40B7-A030-87FB9B160A97)]
-    [version(0x00010000)]
-    interface ISpeechRecognizerSoundStartedEventArgs
-    {
-        SpeechRecognizerAudioContext AudioContext{ get; };
-    };
-
-    [uuid(AD371030-F5C7-4958-8A7A-0C135EAA52AF)]
-    [version(0x00010000)]
-    interface ISpeechRecognizerSoundEndedEventArgs
-    {
-        SpeechRecognizerAudioContext AudioContext{ get; };
-    };
-
-    [uuid(7D27B49C-59E1-417F-984E-E16BB44904BD)]
-    [version(0x00010000)]
-    interface ISpeechRecognizerPhraseStartedEventArgs
-    {
-        SpeechRecognizerAudioContext AudioContext{ get; };
-    };
-
-    [uuid(2E458E3E-5896-4CD2-B6E6-8A2B5AD712A4)]
-    [version(0x00010000)]
-    interface ISpeechRecognizerAudioContext
-    {
-        UInt64 AudioPosition{ get; };
-    };
-
-    [uuid(29F6B227-D7FC-478B-ABF5-659F742B0050)]
-    [version(0x00010000)]
-    interface ISpeechRecognizerSettings
-    {
-        Windows.Foundation.TimeSpan InitialSilenceTimeout;
-        Windows.Foundation.TimeSpan EndSilenceTimeout;
-        Windows.Foundation.TimeSpan BabbleTimeout;
-
-        SpeechRecognizerInputSetting SpeechRecognizerInputSetting{ get; };
-    };
-
-    [uuid(BB50D322-A807-4F33-A7E6-4E16F0AC60CD)]
-    [version(0x00010000)]
-    interface ISpeechRecognizerInputSetting
+    [interface_name("ISpeechRecognizerInputSetting", BB50D322-A807-4F33-A7E6-4E16F0AC60CD)]
+    runtimeclass SpeechRecognizerInputSetting
     {
         void SetInputToAudioStream(Windows.Storage.Streams.IRandomAccessStream inputStream);
         void SetInputToText(String text);
         void SetInputToPronunciation(String pronunciation);
         void SetInputToMicrophone();
         void SetInputToMicrophoneFeatureVector();
-    };
-
-    [uuid(EFFEC6CC-0054-4D6A-A198-675CF5720C3F)]
-    [version(0x00010000)]
-    interface ISpeechRecognitionResult
-    {
-        String Text{ get; };
-        SpeechRecognitionConfidence TextConfidence{ get; };
-        Windows.Foundation.Collections.IMapView<String, SpeechRecognitionSemanticProperty> Semantics{ get; };
-        String RuleName{ get; };
-
-        Windows.Foundation.Collections.IVectorView<SpeechRecognitionResult> GetAlternates(UInt32 maxAlternates);
-
-        SpeechRecognitionResultDetail Details{ get; };
-    };
-
-    [uuid(1D04B45B-D5F4-4B3F-AA38-4B9C22BE737C)]
-    [version(0x00010000)]
-    interface ISpeechRecognitionResultDetail
-    {
-        Windows.Foundation.Collections.IVectorView<String> RuleStack{ get; };
-        Single ConfidenceScore{ get; };
-        String Pronunciation{ get; };
-        Windows.Foundation.Collections.IVectorView<SpeechRecognitionResultToken> Tokens{ get; };
-        UInt64 AudioPosition{ get; };
-        UInt32 AudioSize{ get; };
-        Windows.Foundation.Collections.IVectorView<SpeechRecognitionResultBodyCorrelation> BodyCorrelation{ get; };
-    };
-
-    [uuid(C061CBAA-D6E4-4E73-8920-8B2F148445F3)]
-    [version(0x00010000)]
-    interface ISpeechRecognitionResultBodyCorrelation
-    {
-        UInt64 BodyTrackingId{ get; };
-    };
-
-    [uuid(2467026C-D1BA-4AFC-B51D-6175D3B2F339)]
-    [version(0x00010000)]
-    interface ISpeechRecognitionResultToken
-    {
-        String DisplayForm{ get; };
-        String LexicalForm{ get; };
-        String PronunciationForm{ get; };
-    };
-
-    [uuid(9F3B0682-605C-4753-A4E7-18BE8245F365)]
-    [version(0x00010000)]
-    interface ISpeechRecognitionSemanticProperty
-    {
-        String Name{ get; };
-        String ValueAsString{ get; };
-        SpeechRecognitionConfidence ConfidenceLevel{ get; };
-        Single ConfidenceScore{ get; };
-        Windows.Foundation.Collections.IVectorView<SpeechRecognitionSemanticProperty> Duplicates{ get; };
-    };
-
-    [uuid(4918B04E-7D4C-4929-B7E3-B80931FF4D33)]
-    [version(0x00010000)]
-    interface ISpeechGrammarBuilderFactory
-    {
-        SpeechGrammarBuilder CreateSpeechGrammarBuilder(String language);
-    };
-
-    [uuid(8A7D628E-0337-46F6-BFC4-C97212587467)]
-    [version(0x00010000)]
-    interface ISpeechGrammarBuilderStatic
-    {
-        Windows.Foundation.IAsyncOperation<SpeechGrammarBuilder> CreateFromSpeechGrammarAsync(SpeechGrammar speechGrammar);
-        Windows.Foundation.IAsyncOperation<SpeechGrammarBuilder> CreateFromStreamAsync(Windows.Storage.Streams.IRandomAccessStream stream);
-    };
-
-    [uuid(120E617B-AE2B-466E-855B-1A4BCFAE06D4)]
-    [version(0x00010000)]
-    interface ISpeechGrammarBuilder
-    {
-        SpeechGrammarBuilderRuleSet Rules{ get; };
-
-        SpeechGrammarBuilderSemanticsFormat SemanticsFormat;
-
-        ISpeechRule RootRule{ get; };
-
-        void SetRootRule(String ruleKey);
-
-        SpeechPronunciationFormat PronunciationFormat;
-    };
-
-    [uuid(6DEDCADB-66F4-454B-9D2C-CEBF07116F34)]
-    [version(0x00010000)]
-    interface ISpeechRule
-    {
-        Boolean EnabledOnLoad;
-
-        void Clear();
-    };
-
-    [uuid(FFE5CB68-E2CB-46D2-98F0-627253B38256)]
-    [version(0x00010000)]
-    interface ISpeechGrammarBuilderRuleSet
-        requires
-            Windows.Foundation.Collections.IMapView<String, ISpeechRule>, Windows.Foundation.Collections.IIterable<Windows.Foundation.Collections.IKeyValuePair<String, ISpeechRule> >
-    {
-        SpeechChoiceRule AddChoiceRule(String key, Windows.Foundation.Collections.IIterable<String> phrases);
-        SpeechChoiceRule AddChoiceRule(String key);
-        SpeechSequenceRule AddSequenceRule(String key, Windows.Foundation.Collections.IIterable<ISpeechRuleItem> items);
-        SpeechSequenceRule AddSequenceRule(String key);
-
-        SpeechGraphRule AddGraphRule(String key);
-
-        void Clear();
-
-        ISpeechRule Remove(String key);
-    };
-
-    [uuid(21CC0B0B-1300-46B7-A567-1FFD90AD0206)]
-    [version(0x00010000)]
-    interface ISpeechRuleItem
-    {
-        SpeechRuleItemMatchType MatchType;
-        String Semantics;
-    };
-
-    [uuid(29779078-0625-4D9C-8DE2-8751F4DF5449)]
-    [version(0x00010000)]
-    interface ISpeechSequenceRule
-        requires
-            ISpeechRule
-    {
-        void AppendItem(ISpeechRuleItem item);
-    };
-
-    [uuid(BDEF8B1D-9917-4B09-98F7-31869488A2E6)]
-    [version(0x00010000)]
-    interface ISpeechChoiceRule
-        requires
-            ISpeechRule
-    {
-        void AddItem(ISpeechRuleItem item);
-    };
-
-    [uuid(C77C35C2-FEFD-4547-8B22-A42712B68F73)]
-    [version(0x00010000)]
-    interface ISpeechGraphRule
-        requires
-            ISpeechRule
-    {
-        SpeechGraphState CreateGraphState(SpeechGraphStateType stateType);
-
-        SpeechGraphState StartState;
-    };
-
-    [uuid(9894918C-91C0-43E7-A8FD-1FE88C531A54)]
-    [version(0x00010000)]
-    interface ISpeechPhraseItemFactory
-    {
-        SpeechPhraseItem CreateRuleItemPhrase(String text);
-
-        SpeechPhraseItem CreateRuleItemPhrase(String text, String semantics);
-
-        SpeechPhraseItem CreateRuleItemPhrase(
-            String text,
-            String semantics,
-            SpeechRuleItemMatchType matchType
-        );
-
-        SpeechPhraseItem CreateRuleItemPhrase(
-            String text,
-            String semantics,
-            SpeechRuleItemMatchType itemMatchType,
-            SpeechPhraseSubsetMatchMode phraseSubsetMatchMode
-        );
-    };
-
-    [uuid(2F9E39F2-6D75-447A-838C-4705A3131FE0)]
-    [version(0x00010000)]
-    interface ISpeechPhraseItem
-        requires
-            ISpeechRuleItem
-    {
-        String Text;
-        String Pronunciation;
-        String DisplayForm;
-        SpeechPhraseSubsetMatchMode SubsetMatchMode;
-    };
-
-    [uuid(AB9BB287-B75E-4D53-8362-FB2D701CF9BC)]
-    [version(0x00010000)]
-    interface ISpeechRuleReferenceItemFactory
-    {
-        SpeechRuleReferenceItem CreateRuleItemRuleReference(String ruleName);
-
-        SpeechRuleReferenceItem CreateRuleItemRuleReference(
-            String ruleName,
-            SpeechRuleItemMatchType matchType
-        );
-    };
-
-    [uuid(44A49DE4-3A7C-4CEA-BA8F-D5F1F2EF15F2)]
-    [version(0x00010000)]
-    interface ISpeechRuleReferenceItem
-        requires
-            ISpeechRuleItem
-    {
-        String RuleName;
-    };
-
-    [uuid(2962AE4E-2145-40FE-9BF0-29A46A100500)]
-    [version(0x00010000)]
-    interface ISpeechGraphState
-    {
-        void AddTransition(
-            ISpeechRuleItem item,
-            Single weight,
-            SpeechGraphState targetState
-        );
-
-        SpeechGraphStateType StateType{ get; };
-    };
-
-    [uuid(F12312E5-B6B5-40A0-9885-07E780D09652)]
-    [version(0x00010000)]
-    interface ISpeechPronunciationDetail
-    {
-        String Pronunciation{ get; };
-        SpeechPronunciationSource Source{ get; };
-        SpeechPronunciationFormat Format{ get; };
-    };
-
-    [uuid(7D150D62-4B6B-44FC-B867-CA1AFCA54E04)]
-    [version(0x00010000)]
-    interface ISpeechGarbageItem requires ISpeechRuleItem
-    {
-    };
-
-    [uuid(A67AA356-8E3F-412D-91B7-D3144B35BCC6)]
-    [version(0x00010000)]
-    interface ISpeechGarbageItemFactory
-    {
-        SpeechGarbageItem CreateRuleItemGarbageWithMatchType(SpeechRuleItemMatchType matchType);
     }
 
-    [uuid(7FF1A244-5719-482E-96D4-C8010FE4F9AF)]
-    [version(0x00010000)]
-    interface ISpeechNullItem requires ISpeechRuleItem
+    [interface_name("ISpeechRecognizerSettings", 29F6B227-D7FC-478B-ABF5-659F742B0050)]
+    runtimeclass SpeechRecognizerSettings
     {
-    };
-    
-    [version(0x00010000)]
-    runtimeclass SpeechRecognizer
+        Windows.Foundation.TimeSpan InitialSilenceTimeout { get; set; };
+        Windows.Foundation.TimeSpan EndSilenceTimeout { get; set; };
+        Windows.Foundation.TimeSpan BabbleTimeout { get; set; };
+        SpeechRecognizerInputSetting SpeechRecognizerInputSetting { get; };
+    }
+
+    [interface_name("ISpeechRuleReferenceItem", 44A49DE4-3A7C-4CEA-BA8F-D5F1F2EF15F2)]
+    runtimeclass SpeechRuleReferenceItem : [default] ISpeechRuleItem
     {
-        [default] interface ISpeechRecognizer;
-    };
+        String RuleName { get; set; };
+    }
 
-    [static_name("ISpeechRecognizerFactoryStatic")]
-    [version(0x00010000)]
-    runtimeclass SpeechRecognizerFactory
+    [interface_name("ISpeechSequenceRule", 29779078-0625-4D9C-8DE2-8751F4DF5449)]
+    runtimeclass SpeechSequenceRule : [default] ISpeechRule
     {
-    };
-
-    [static_name("ISpeechRecognizerAnalyzerStatic")]
-    [version(0x00010000)]
-    runtimeclass SpeechRecognizerAnalyzer
-    {
-    };
-
-    [version(0x00010000)]
-    runtimeclass SpeechGrammar
-    {
-        [default] interface ISpeechGrammar;
-    };
-
-    [version(0x00010000)]
-    runtimeclass SpeechGrammarSet : [default] ISpeechGrammarSet, Windows.Foundation.Collections.IMapView<String, SpeechGrammar>, Windows.Foundation.Collections.IIterable<Windows.Foundation.Collections.IKeyValuePair<String, SpeechGrammar> >
-    {
-    };
-
-    [activatable(ISpeechGrammarBuilderFactory, 0x00010000)]
-    [static_name("ISpeechGrammarBuilderStatic")]
-    [version(0x00010000)]
-    runtimeclass SpeechGrammarBuilder
-    {
-        [default] interface ISpeechGrammarBuilder;
-    };
-
-    [static_name("IInstalledSpeechRecognizersStatic")]
-    [version(0x00010000)]
-    runtimeclass InstalledSpeechRecognizers
-    {
-    };
-
-    [static_name("IInstalledSpeechRecognizersStatic")]
-    [version(0x00010000)]
-    runtimeclass InstalledSpeechRecognizersInProc
-    {
-    };
-
-    [version(0x00010000)]
-    runtimeclass SpeechRecognizerInformation : [default] ISpeechRecognizerInformation {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechAudioProblemOccurredEventArgs : [default] ISpeechAudioProblemOccurredEventArgs {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechRecognizerAudioCaptureStateChangedEventArgs : [default] ISpeechRecognizerAudioCaptureStateChangedEventArgs {};
-
-    [version(0x00010000)]
-    runtimeclass ContinuousSpeechRecognitionResultEventArgs : [default] IContinuousSpeechRecognitionResultEventArgs {};
-
-    [version(0x00010000)]
-    runtimeclass ContinuousSpeechRecognitionStatusEventArgs : [default] IContinuousSpeechRecognitionStatusEventArgs {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechHypothesisResultEventArgs : [default] ISpeechHypothesisResultEventArgs {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechRecognizerSoundStartedEventArgs : [default] ISpeechRecognizerSoundStartedEventArgs {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechRecognizerSoundEndedEventArgs : [default] ISpeechRecognizerSoundEndedEventArgs {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechRecognizerPhraseStartedEventArgs : [default] ISpeechRecognizerPhraseStartedEventArgs {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechRecognizerAudioContext : [default] ISpeechRecognizerAudioContext {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechRecognizerSettings : [default] ISpeechRecognizerSettings {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechRecognizerInputSetting : [default] ISpeechRecognizerInputSetting {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechRecognitionResult : [default] ISpeechRecognitionResult {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechRecognitionSemanticProperty : [default] ISpeechRecognitionSemanticProperty {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechRecognitionResultDetail : [default] ISpeechRecognitionResultDetail {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechRecognitionResultToken : [default] ISpeechRecognitionResultToken {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechRecognitionResultBodyCorrelation : [default] ISpeechRecognitionResultBodyCorrelation {};
-
-    [version(0x00010000)]
-    runtimeclass SpeechGrammarBuilderRuleSet : [default] ISpeechGrammarBuilderRuleSet, Windows.Foundation.Collections.IMapView<String, ISpeechRule>, Windows.Foundation.Collections.IIterable<Windows.Foundation.Collections.IKeyValuePair<String, ISpeechRule> >
-    {
-    };
-
-    [version(0x00010000)]
-    runtimeclass SpeechChoiceRule
-    {
-        [default] interface ISpeechChoiceRule; 
-        interface ISpeechRule;
-    };
-
-    [version(0x00010000)]
-    runtimeclass SpeechSequenceRule
-    {
-         [default] interface ISpeechSequenceRule;
-         interface ISpeechRule;
-    };
-
-    [version(0x00010000)]
-    runtimeclass SpeechGraphRule
-    {
-        [default] interface ISpeechGraphRule;
-        interface ISpeechRule;
-    };
-
-    [version(0x00010000)]
-    runtimeclass SpeechGraphState
-    {
-        [default] interface ISpeechGraphState;
-    };
-    
-    [activatable(ISpeechPhraseItemFactory, 0x00010000)]
-    [version(0x00010000)]
-    runtimeclass SpeechPhraseItem
-    {
-        [default] interface ISpeechPhraseItem;
-        interface ISpeechRuleItem;
-    };
-    
-    [activatable(ISpeechRuleReferenceItemFactory, 0x00010000)]
-    [version(0x00010000)]
-    runtimeclass SpeechRuleReferenceItem
-    {
-        [default] interface ISpeechRuleReferenceItem;
-        interface ISpeechRuleItem;
-    };
-    
-    [activatable(ISpeechGarbageItemFactory, 0x00010000)]
-    [version(0x00010000)]
-    runtimeclass SpeechGarbageItem
-    {
-        [default] interface ISpeechGarbageItem;
-        interface ISpeechRuleItem;
-    };
-
-    [version(0x00010000)]
-    runtimeclass SpeechNullItem
-    {
-        [default] interface ISpeechNullItem;
-        interface ISpeechRuleItem;
-    };
-
-    [version(0x00010000)]
-    runtimeclass SpeechPronunciationDetail
-    {
-        [default] interface ISpeechPronunciationDetail;
-    };
+        void AppendItem(ISpeechRuleItem item);
+    }
 }

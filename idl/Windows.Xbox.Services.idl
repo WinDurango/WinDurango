@@ -1,10 +1,10 @@
 namespace Windows.Xbox.Services
 {
     [static_name("IXboxLiveConfigurationStatics", 00193376-6a84-4c67-84a5-3b8a8aaea712)]
-	runtimeclass XboxLiveConfiguration
-	{
-		static String TitleId { get; };
-		static String PrimaryServiceConfigId { get; };
-		static String SandboxId { get; };
-	}
+    runtimeclass XboxLiveConfiguration
+    {
+        static String TitleId { get; };
+        static String PrimaryServiceConfigId { get; };
+        static String SandboxId { get; };
+    }
 }
