@@ -1,4 +1,4 @@
-name: Build WD
+name: Build WinDurango
 
 on:
   push:
@@ -7,7 +7,17 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  Build:
+    name: Build (${{ matrix.configuration }})
+    continue-on-error : ${{matrix.continue}} 
+    strategy:
+      fail-fast: true
+      matrix:
+        configuration: [Debug]
+        continue: [false]
+        include:
+          - configuration: Release
+            continue: true
 
     runs-on: windows-2025-vs2026
 
@@ -41,11 +51,11 @@ jobs:
           cd ../
 
     - name: Build WinDurango
-      run: cmake --build build --config Release
+      run: cmake --build build --config ${{ matrix.configuration }}
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v7
       with:
-        name: WinDurango-Release
-        path: build/bin/Release/
+        name: WinDurango-${{ matrix.configuration }}
+        path: build/bin/${{ matrix.configuration }}/
         archive: true
