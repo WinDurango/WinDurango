@@ -493,11 +493,11 @@ typedef struct AcpCommand
   };
 };
 
-typedef struct AcpCommandQueueEntry
+typedef union AcpCommandQueueEntry
 { 
     uint32_t state;
     AcpCommand command;
-    uint8_t padToAcpCacheLineSize[120];
+    uint8_t padToAcpCacheLineSize[256];
 };
 
 typedef union AcpInternalCommandQueueEntry
@@ -558,7 +558,8 @@ typedef struct ACP_MESSAGE
     };
 };
 
-typedef struct AcpMessageQueueEntry
+//Not sure if it should be a union? Gotta do some testing...
+typedef union AcpMessageQueueEntry
 {
     uint32_t state;
     ACP_MESSAGE message;
@@ -610,7 +611,8 @@ class LoganHeap
     LOGAN_PHYSICAL_MEMORY _driverMemory[3];
     static ULONGLONG constexpr c_XMemAttributes = 0xEC810000; 
     ACP_COMMAND_REGISTER_CONTEXT_ARRAYS _acpContextArrays;
-    ACP_COMMAND_CONNECT _acpConnectCommand[4]; //There can be 4 IAcpHal instances :)
+    ACP_COMMAND_CONNECT _acpConnectCommand[4]; //There can be 4 IAcpHal instances! (even though there are not any known games that use more than one)
+    UINT32 _enabledMessages = 0;
 };
 
 template <typename T> void _declspec(dllexport) DispatchLoganCommand(LOGAN_COMMAND_TYPE cmdType, T cmd);
@@ -804,11 +806,47 @@ inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState* acpStat
 {
     if (cmdType == ACP_COMMAND_TYPE_REGISTER_MESSAGE)
     {
-        printf("Received Client ACP command (ACP_COMMAND_TYPE_REGISTER_MESSAGE)\n");
+        //Enables one or more message types. Uses the same struct as ACP_COMMAND_TYPE_UNREGISTER_MESSAGE
+        g_LoganHeap._enabledMessages |= Cmd.registerMessage.message;
+
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_COMMAND_COMPLETED)
+        {
+            printf("Enabled command completed message type.\n");
+        }
+        else if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_ERROR)
+        {
+            printf("Enabled error message type.\n");
+        }
+        else if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_DISCONNECTED)
+        {
+            printf("Enabled disconnected message type.\n");
+        }
+        else
+        {
+            printf("Enabled message type 0x%x.\n", Cmd.registerMessage.message);
+        }
     }
     else if (cmdType == ACP_COMMAND_TYPE_UNREGISTER_MESSAGE)
     {
-        printf("Received Client ACP command (ACP_COMMAND_TYPE_UNREGISTER_MESSAGE)\n");
+        //Disables one or more message types. Uses the same struct as ACP_COMMAND_TYPE_REGISTER_MESSAGE
+        g_LoganHeap._enabledMessages &= ~Cmd.registerMessage.message;
+
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_COMMAND_COMPLETED)
+        {
+            printf("Disabled command completed message type.\n");
+        }
+        else if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_ERROR)
+        {
+            printf("Disabled error message type.\n");
+        }
+        else if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_DISCONNECTED)
+        {
+            printf("Disabled disconnected message type.\n");
+        }
+        else
+        {
+            printf("Disabled message type 0x%x.\n", Cmd.registerMessage.message);
+        }
     }
     else
     {
@@ -960,6 +998,7 @@ EXTERN_C BOOL __stdcall EraDeviceIoControl(HANDLE hDevice, DWORD dwIoControlCode
         }
         else
         {
+            //This shouldn't happen since these are all known codes.
             MessageBoxA(NULL, "Unknown Logan code!", "DeviceIoControl", MB_OK);
         }
 
