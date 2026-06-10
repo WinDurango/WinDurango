@@ -260,100 +260,24 @@ namespace winrt::Windows::Xbox::Input::implementation
 
     winrt::Windows::Xbox::Input::RawGamepadReading Gamepad::GetRawCurrentReading()
     {
-        XINPUT_STATE xiState;
-        ZeroMemory(&xiState, sizeof(XINPUT_STATE));
+        XINPUT_STATE xiState = {};
         RawGamepadReading reading = {};
 
-        WORD gp_up;
-        WORD gp_down;
-        WORD gp_left;
-        WORD gp_right;
-        WORD gp_start;
-        WORD gp_back;
-        WORD gp_lt;
-        WORD gp_rt;
-        WORD gp_ls;
-        WORD gp_rs;
-        WORD gp_a;
-        WORD gp_b;
-        WORD gp_x;
-        WORD gp_y;
-
-        if (p_wd->config.jsonData().contains("controls") && p_wd->config["controls"].is_object()) 
-        {
-            if (p_wd->config["controls"].contains("Up") && p_wd->config["controls"]["Up"].is_number())
-            {
-                gp_up = p_wd->config["controls"]["Up"];
-            }
-            if (p_wd->config["controls"].contains("Down") && p_wd->config["controls"]["Down"].is_number())
-            {
-                gp_down = p_wd->config["controls"]["Down"];
-            }
-            if (p_wd->config["controls"].contains("Left") && p_wd->config["controls"]["Left"].is_number())
-            {
-                gp_left = p_wd->config["controls"]["Left"];
-            }
-            if (p_wd->config["controls"].contains("Right") && p_wd->config["controls"]["Right"].is_number())
-            {
-                gp_right = p_wd->config["controls"]["Right"];
-            }
-            if (p_wd->config["controls"].contains("Start") && p_wd->config["controls"]["Start"].is_number())
-            {
-                gp_start = p_wd->config["controls"]["Start"];
-            }
-            if (p_wd->config["controls"].contains("Back") && p_wd->config["controls"]["Back"].is_number())
-            {
-                gp_back = p_wd->config["controls"]["Back"];
-            }
-            if (p_wd->config["controls"].contains("LeftTrigger") && p_wd->config["controls"]["LeftTrigger"].is_number())
-            {
-                gp_lt = p_wd->config["controls"]["LeftTrigger"];
-            }
-            if (p_wd->config["controls"].contains("RightTrigger") && p_wd->config["controls"]["RightTrigger"].is_number())
-            {
-                gp_rt = p_wd->config["controls"]["RightTrigger"];
-            }
-            if (p_wd->config["controls"].contains("LeftShoulder") && p_wd->config["controls"]["LeftShoulder"].is_number())
-            {
-                gp_ls = p_wd->config["controls"]["LeftShoulder"];
-            }
-            if (p_wd->config["controls"].contains("RightShoulder") && p_wd->config["controls"]["RightShoulder"].is_number())
-            {
-                gp_rs = p_wd->config["controls"]["RightShoulder"];
-            }
-            if (p_wd->config["controls"].contains("A") && p_wd->config["controls"]["A"].is_number())
-            {
-                gp_a = p_wd->config["controls"]["A"];
-            }
-            if (p_wd->config["controls"].contains("B") && p_wd->config["controls"]["B"].is_number())
-            {
-                gp_b = p_wd->config["controls"]["B"];
-            }
-            if (p_wd->config["controls"].contains("X") && p_wd->config["controls"]["X"].is_number())
-            {
-                gp_x = p_wd->config["controls"]["X"];
-            }
-            if (p_wd->config["controls"].contains("Y") && p_wd->config["controls"]["Y"].is_number())
-            {
-                gp_y = p_wd->config["controls"]["Y"];
-            }
-        }
-
         std::pair<WORD, GamepadButtons> const buttons[] = {
-            {gp_up, GamepadButtons::DPadUp},
-            {gp_down, GamepadButtons::DPadDown},
-            {gp_left, GamepadButtons::DPadLeft},
-            {gp_right, GamepadButtons::DPadRight},
-            {gp_start, GamepadButtons::Menu},
-            {gp_back, GamepadButtons::View},
-            {gp_lt, GamepadButtons::LeftThumbstick},
-            {gp_rt, GamepadButtons::RightThumbstick},
-            {gp_ls, GamepadButtons::LeftShoulder},
-            {gp_rs, GamepadButtons::RightShoulder},
-            {gp_a, GamepadButtons::A},
-            {gp_b, GamepadButtons::B},
-            {gp_x, GamepadButtons::X},
-            {gp_y, GamepadButtons::Y},
+            {XINPUT_GAMEPAD_DPAD_UP, GamepadButtons::DPadUp},
+            {XINPUT_GAMEPAD_DPAD_DOWN, GamepadButtons::DPadDown},
+            {XINPUT_GAMEPAD_DPAD_LEFT, GamepadButtons::DPadLeft},
+            {XINPUT_GAMEPAD_DPAD_RIGHT, GamepadButtons::DPadRight},
+            {XINPUT_GAMEPAD_START, GamepadButtons::Menu},
+            {XINPUT_GAMEPAD_BACK, GamepadButtons::View},
+            {XINPUT_GAMEPAD_LEFT_THUMB, GamepadButtons::LeftThumbstick},
+            {XINPUT_GAMEPAD_RIGHT_THUMB, GamepadButtons::RightThumbstick},
+            {XINPUT_GAMEPAD_LEFT_SHOULDER, GamepadButtons::LeftShoulder},
+            {XINPUT_GAMEPAD_RIGHT_SHOULDER, GamepadButtons::RightShoulder},
+            {XINPUT_GAMEPAD_A, GamepadButtons::A},
+            {XINPUT_GAMEPAD_B, GamepadButtons::B},
+            {XINPUT_GAMEPAD_X, GamepadButtons::X},
+            {XINPUT_GAMEPAD_Y, GamepadButtons::Y},
         };
 
         if (XInput1_3GetState(id, &xiState) == ERROR_SUCCESS)
