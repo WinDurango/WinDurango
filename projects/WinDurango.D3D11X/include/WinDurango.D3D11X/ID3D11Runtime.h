@@ -31,7 +31,12 @@ template <abi_t ABI> struct D3D11Runtime : public ID3D11Runtime
 
         if (FAILED(hr))
         {
-            MessageBoxA(nullptr, "Failed to create the D3D11 Device!", "Error!", MB_OK);
+            auto warp_hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_WARP, nullptr, 0, FeatureLevels, 2, D3D11_SDK_VERSION,
+                                    &pDevice, nullptr, &pContext);
+            if (FAILED(warp_hr))
+            {
+                MessageBoxA(nullptr, "Failed to create the D3D11 Device!", "Error!", MB_OK);
+            }
         }
 
         ID3D11Device2 *pDevice2 = nullptr;
