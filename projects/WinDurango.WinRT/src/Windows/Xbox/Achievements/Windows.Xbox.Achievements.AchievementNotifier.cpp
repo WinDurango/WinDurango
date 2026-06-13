@@ -3,22 +3,20 @@
 
 namespace winrt::Windows::Xbox::Achievements::implementation
 {
+    winrt::event<winrt::Windows::Xbox::Achievements::AchievementUnlockedHandler> g_AchievementUnlockedHandle;
     winrt::Windows::Xbox::Achievements::AchievementSource AchievementNotifier::GetTitleIdFilteredSource()
     {
-        p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Achievements", "Unimplemented: GetTitleIdFilteredSource");
         return winrt::make<implementation::AchievementSource>();
     }
 
     winrt::Windows::Xbox::Achievements::AchievementSource AchievementNotifier::GetUnfilteredSource()
     {
-        p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Achievements", "Unimplemented: GetUnfilteredSource");
         return winrt::make<implementation::AchievementSource>();
     }
 
     winrt::event_token AchievementSource::AchievementUnlocked(winrt::Windows::Xbox::Achievements::AchievementUnlockedHandler const& handler)
     {
-        p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Achievements", "Unimplemented: AchievementUnlocked");
-        return {};
+        return g_AchievementUnlockedHandle.add(handler);
     }
 
     void AchievementSource::AchievementUnlocked(winrt::event_token const& token) noexcept

@@ -3202,8 +3202,7 @@ enum D3D11X_IMG_NUM_FORMAT
         virtual HRESULT CreateCounterSet(D3D11X_COUNTER_SET_DESC const *pCounterSetDesc, ID3D11CounterSetX **ppCounterSet) = 0;
         virtual HRESULT CreateCounterSample(ID3D11CounterSampleX **ppCounterSample) = 0;
         virtual HRESULT SetDriverHint(UINT Feature, UINT Value) = 0;
-        virtual HRESULT CreateDmaEngineContext(D3D11_DMA_ENGINE_CONTEXT_DESC const *pDmaEngineContextDesc,
-                                               ID3D11DMAEngineContextX<ABI> **ppDmaDeviceContext) = 0;
+        virtual HRESULT CreateDmaEngineContext(D3D11_DMA_ENGINE_CONTEXT_DESC const *pDmaEngineContextDesc, ID3D11DMAEngineContextX<ABI> **ppDmaDeviceContext) = 0;
         virtual BOOL IsFencePending(UINT64 Fence) = 0;
         virtual BOOL IsResourcePending(gfx::ID3D11Resource<ABI> *pResource) = 0;
         virtual HRESULT CreatePlacementBuffer(D3D11_BUFFER_DESC const *pDesc, void *pVirtualAddress, gfx::ID3D11Buffer<ABI> **ppBuffer) = 0;
@@ -3260,8 +3259,7 @@ enum D3D11X_IMG_NUM_FORMAT
         HRESULT(*CreateCounterSet)(void *, D3D11X_COUNTER_SET_DESC const *pCounterSetDesc, ID3D11CounterSetX **ppCounterSet);
         HRESULT(*CreateCounterSample)(void *, ID3D11CounterSampleX **ppCounterSample);
         HRESULT(*SetDriverHint)(void *, UINT Feature, UINT Value);
-        HRESULT (*CreateDmaEngineContext)(void *, D3D11_DMA_ENGINE_CONTEXT_DESC const *pDmaEngineContextDesc,
-                                          ID3D11DMAEngineContextX<ABI> **ppDmaDeviceContext);
+        HRESULT (*CreateDmaEngineContext)(void *, D3D11_DMA_ENGINE_CONTEXT_DESC const *pDmaEngineContextDesc, ID3D11DMAEngineContextX<ABI> **ppDmaDeviceContext);
         BOOL(*IsFencePending)(void *, UINT64 Fence);
         BOOL(*IsResourcePending)(void *, gfx::ID3D11Resource<ABI> *pResource);
         HRESULT(*CreatePlacementBuffer)(void *, D3D11_BUFFER_DESC const *pDesc, void *pVirtualAddress, gfx::ID3D11Buffer<ABI> **ppBuffer);
@@ -3329,7 +3327,7 @@ enum D3D11X_IMG_NUM_FORMAT
     };
 
     template <abi_t ABI>
-        requires(ABI >= abi_t{10, 0, 14393, 2152})
+        requires(ABI >= abi_t{6, 2, 1004, 0})
     struct IDXGIObject<ABI> : xbox::IGraphicsUnknown<ABI>, details::IDXGIObjectData<ABI>
     {
         virtual HRESULT SetPrivateData(GUID const &Name, uint32_t DataSize, void const *pData) = 0;
@@ -3339,7 +3337,7 @@ enum D3D11X_IMG_NUM_FORMAT
     };
 
     template <abi_t ABI>
-        requires(ABI >= abi_t{10, 0, 14393, 2152})
+        requires(ABI >= abi_t{6, 2, 13004, 0})
     struct IDXGIObjectVtbl<ABI> : xbox::IGraphicsUnknownVtbl<ABI>
     {
         HRESULT (*SetPrivateData)(void *, GUID const &Name, uint32_t DataSize, void const *pData);

@@ -158,8 +158,7 @@ EXTERN_C HRESULT __stdcall DXGIXPresentArray(UINT SyncInterval, UINT PresentImme
 
 EXTERN_C HRESULT __stdcall DXGIXSetVLineNotification(UINT VLineCounter, UINT VLineNum, HANDLE hEvent)
 {
-    IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    return S_OK;
 }
 
 #pragma comment(linker, "/export:D3D10CreateBlob=EraD3D10CreateBlob,@1")

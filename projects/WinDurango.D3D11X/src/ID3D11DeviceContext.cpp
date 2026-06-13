@@ -2851,14 +2851,12 @@ template <abi_t ABI> void D3D11DeviceContextX<ABI>::GpuSendPipelinedEvent(gfx::D
 
 template <abi_t ABI> HRESULT D3D11DeviceContextX<ABI>::Suspend(UINT Flags)
 {
-    IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    return S_OK;
 }
 
 template <abi_t ABI> HRESULT D3D11DeviceContextX<ABI>::Resume()
 {
-    IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    return S_OK;
 }
 
 template <abi_t ABI> void D3D11DeviceContextX<ABI>::BeginCommandListExecution(UINT Flags)

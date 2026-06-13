@@ -198,6 +198,9 @@ public:
     void ReportGpuHang(UINT Flags);
     HRESULT SetGpuMemoryPriority(UINT Priority);
     void GetGpuHardwareConfiguration(gfx::D3D11X_GPU_HARDWARE_CONFIGURATION *pGpuHardwareConfiguration);
+
+private:
+        UINT m_DebugFlags = 0;
 };
 
 #undef ABI_INTERFACE

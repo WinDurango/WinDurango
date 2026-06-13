@@ -58,8 +58,7 @@ namespace winrt::Windows::Xbox::Management::Deployment::implementation
     }
     void PackageTransferManager::UpdateInstallOrder(winrt::Windows::Foundation::Collections::IIterable<uint32_t> const& unk, winrt::Windows::Xbox::Management::Deployment::UpdateInstallOrderBehavior const& unka)
     {
-        p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Management::Deployment", "Unimplemented: UpdateInstallOrder");
-        throw hresult_not_implemented();
+
     }
     bool PackageTransferManager::IsChunkInstalled(uint32_t chunkId)
     {
@@ -75,7 +74,6 @@ namespace winrt::Windows::Xbox::Management::Deployment::implementation
     }
     winrt::Windows::Xbox::Management::Deployment::PackageTransferStatus PackageTransferManager::TransferStatus()
     {
-        p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Management::Deployment", "Unimplemented: TransferStatus");
-        throw hresult_not_implemented();
+        return PackageTransferStatus::None;
     }
 }

@@ -49,18 +49,9 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collecti
 
     for (auto const &blobs : blobsToRead)
     {
-        try {
-            winrt::Windows::Storage::IStorageFile file = co_await folder.GetFileAsync(blobs);
-            auto fileBuffer = co_await winrt::Windows::Storage::FileIO::ReadBufferAsync(file);
-            data.Insert(blobs, fileBuffer);
-        } catch (...) {
-            p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::ConnectedStorage", "File doesnt exist: {}", winrt::to_string(blobs));
-
-            //Forza hangs if this isn't done
-            winrt::Windows::Storage::IStorageFile file = co_await folder.GetFileAsync(blobs);
-            auto fileBuffer = co_await winrt::Windows::Storage::FileIO::ReadBufferAsync(file);
-            data.Insert(blobs, fileBuffer);
-        }
+        winrt::Windows::Storage::IStorageFile file = co_await folder.GetFileAsync(blobs);
+        auto fileBuffer = co_await winrt::Windows::Storage::FileIO::ReadBufferAsync(file);
+        data.Insert(blobs, fileBuffer);
     }
     co_await Read(containerName, data.GetView());
 

@@ -65,7 +65,21 @@ EXTERN_C HRESULT __stdcall D3DMapEsramMemory(UINT Flags, void *pVirtualAddress, 
     return MapTitleEsramPages(pVirtualAddress, NumPages, flAllocationType, pPageList);
 }
 
+EXTERN_C HRESULT __stdcall EraD3D12GetDebugInterface(const IID* riid, void** ppvDebug)
+
+{
+    MessageBoxA(nullptr, "D3D12GetDebugInterface", "STUB", MB_ICONERROR);
+
+    if (!riid)
+        return E_INVALIDARG;
+
+    const IID &DebugInterfaceGUID = (*riid);
+    return D3D12GetDebugInterface(DebugInterfaceGUID, ppvDebug);
+
+}
+
 #pragma comment(linker, "/export:D3D12CreateDevice=EraD3D12CreateDevice,@7")
+#pragma comment(linker, "/export:D3D12GetDebugInterface=EraD3D12GetDebugInterface,@9")
 #pragma comment(linker, "/export:D3D12SerializeRootSignature=EraD3D12SerializeRootSignature,@10")
 #pragma comment(linker, "/export:D3D12XboxSetProcessDebugFlags,@11")
 #pragma comment(linker, "/export:D3DMapEsramMemory,@16")

@@ -1161,18 +1161,17 @@ void D3D11DeviceX<ABI>::ComposeSamplerState(gfx::D3D11X_SAMPLER_STATE_DESC const
 template <abi_t ABI>
 void D3D11DeviceX<ABI>::PlaceSwapChainView(gfx::ID3D11Resource<ABI> *pSwapChainBuffer, gfx::ID3D11View<ABI> *pView)
 {
-    IMPLEMENT_STUB();
+
 }
 
 template <abi_t ABI> void D3D11DeviceX<ABI>::SetDebugFlags(UINT Flags)
 {
-    IMPLEMENT_STUB();
+    m_DebugFlags = Flags;
 }
 
 template <abi_t ABI> uint32_t D3D11DeviceX<ABI>::GetDebugFlags()
 {
-    IMPLEMENT_STUB();
-    return {};
+    return m_DebugFlags;
 }
 
 template <abi_t ABI>
