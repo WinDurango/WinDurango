@@ -43,13 +43,6 @@ void KernelxInitialize(HINSTANCE hinstDLL)
         {
             *(void**)&P_StartForzaThread = (char*)GetModuleHandleW(nullptr) + 0xFE6920;
             DetourAttach((void**)&P_StartForzaThread, &D_StartForzaThread);
-
-            HMODULE hAcpHal = GetModuleHandleA("acphal.dll");
-            uintptr_t hAcpHalBase = (uintptr_t)hAcpHal;
-            void* PopMessageAddress = (void*)(hAcpHalBase + 0x173C);
-
-            Original_Sub_18000173C = reinterpret_cast<Sub_18000173C_t>(PopMessageAddress);
-            DetourAttach(&reinterpret_cast<PVOID &>(Original_Sub_18000173C), Sub_18000173CHook);
         }
         //Forza Horizon 2
         if (winrt::Windows::ApplicationModel::Package::Current().Id().FamilyName() == L"Anthem_8wekyb3d8bbwe")

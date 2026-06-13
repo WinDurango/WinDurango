@@ -161,6 +161,8 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                                 AcpMessage.commandCompleted.commandType = Command.commandType;
                                 AcpMessage.commandCompleted.audioFrame = Command.frame;
                                 AcpMessage.commandCompleted.commandId = Command.commandId;
+
+                                //TODO: Send this message back to sinalize the command was completed
                             }
                         }
                     }

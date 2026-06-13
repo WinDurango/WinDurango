@@ -565,17 +565,3 @@ typedef union AcpMessageQueueEntry
     ACP_MESSAGE message;
     uint8_t padToAcpCacheLineSize[228];
 };
-
-//PopMessage in FH2 AcpHal
-typedef BOOL(__fastcall* Sub_18000173C_t)(INT64 a1, DWORD* a2);
-
-Sub_18000173C_t Original_Sub_18000173C = nullptr;
-
-BOOL __fastcall Sub_18000173CHook(INT64 a1, DWORD* a2)
-{
-    BOOL result = Original_Sub_18000173C(a1, a2);
-
-    if (result) printf("PopMessage returned a message!\n");
-
-    return result;
-}
