@@ -1,7 +1,7 @@
 ---
 name: Game bug report
 about: Create a report about any bugs caused in games by WinDurango
-title: 'game: '
+title: 'bug: '
 labels: bug, game
 assignees: ''
 type: Bug
