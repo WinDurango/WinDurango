@@ -2,7 +2,7 @@
 name: Game crash report
 about: Create a report about crash bugs caused in games by WinDurango
 title: 'crash: '
-labels: bug
+labels: bug, game
 assignees: ''
 type: Bug
 
