@@ -1,3 +1,4 @@
+#pragma comment(lib, "d3dcompiler.lib")
 #include "ID3D11Device.h"
 #include "IDXGIDevice.h"
 #include "ID3D11Resource.h"
@@ -9,6 +10,7 @@
 #include "ID3D11DMAEngineContext.h"
 #include "d3d11.x.h"
 #include <d3d12.h>
+#include <d3dcompiler.h>
 
 //
 // IUnknown
@@ -409,6 +411,12 @@ template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreateVertexShader(void const *pBytecode, uint64_t BytecodeLength,
                                               ID3D11ClassLinkage *pClassLinkage, gfx::ID3D11VertexShader<ABI> **ppVS)
 {
+    //Before some Unity versions create the swap chain, they pass
+    //an invalid shader expecting this call to fail, but on PC, it
+    //makes the D3D11 Device get removed.
+    if ((uintptr_t)pBytecode == 0x00007ff60f7ce540 && BytecodeLength == 3028)
+        return E_INVALIDARG;
+
     ID3D11VertexShader *Shader{};
     HRESULT hr = m_pFunction->CreateVertexShader(pBytecode, BytecodeLength, pClassLinkage, &Shader);
     if (Shader)
@@ -675,8 +683,7 @@ template <abi_t ABI> uint32_t D3D11DeviceX<ABI>::GetCreationFlags()
 
 template <abi_t ABI> HRESULT D3D11DeviceX<ABI>::GetDeviceRemovedReason()
 {
-    IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    return m_pFunction->GetDeviceRemovedReason();
 }
 
 template <abi_t ABI> void D3D11DeviceX<ABI>::GetImmediateContext(gfx::ID3D11DeviceContext<ABI> **ppImmediateContext)

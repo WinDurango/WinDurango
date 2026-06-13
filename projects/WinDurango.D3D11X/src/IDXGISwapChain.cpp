@@ -134,8 +134,7 @@ template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::GetFullscreenState(bool *pFull
 
 template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::GetDesc(DXGI_SWAP_CHAIN_DESC *pDesc)
 {
-    IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    return m_pFunction->GetDesc(pDesc);
 }
 
 template <abi_t ABI>

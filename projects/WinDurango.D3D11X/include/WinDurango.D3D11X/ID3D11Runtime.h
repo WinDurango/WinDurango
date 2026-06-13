@@ -25,15 +25,19 @@ template <abi_t ABI> struct D3D11Runtime : public ID3D11Runtime
         ID3D11DeviceContext *pContext = nullptr;
 
         D3D_FEATURE_LEVEL FeatureLevels[] = {D3D_FEATURE_LEVEL_11_1, D3D_FEATURE_LEVEL_11_0};
+        UINT Flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+        #ifdef _DEBUG
+        Flags |= D3D11_CREATE_DEVICE_DEBUG;
+        #endif
 
-        auto hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_DEBUG, FeatureLevels, 2, D3D11_SDK_VERSION,
+        auto hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, Flags, FeatureLevels, 2, D3D11_SDK_VERSION,
                                     &pDevice, nullptr, &pContext);
 
         if (FAILED(hr))
         {
-            auto warp_hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_WARP, nullptr, 0, FeatureLevels, 2, D3D11_SDK_VERSION,
+            hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_WARP, nullptr, Flags, FeatureLevels, 2, D3D11_SDK_VERSION,
                                     &pDevice, nullptr, &pContext);
-            if (FAILED(warp_hr))
+            if (FAILED(hr))
             {
                 MessageBoxA(nullptr, "Failed to create the D3D11 Device!", "Error!", MB_OK);
             }

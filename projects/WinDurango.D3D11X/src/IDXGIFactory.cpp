@@ -189,17 +189,6 @@ HRESULT DXGIFactory2<ABI>::CreateSwapChainForHwnd(xbox::IGraphicsUnknown<ABI> *p
     return E_NOTIMPL;
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-    switch (msg)
-    {
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        return 0;
-    }
-    return DefWindowProc(hWnd, msg, wParam, lParam);
-}
-
 template <abi_t ABI>
 HRESULT DXGIFactory2<ABI>::CreateSwapChainForCoreWindow(xbox::IGraphicsUnknown<ABI> *pDevice, IUnknown *pWindow,
                                                         DXGI_SWAP_CHAIN_DESC1 *pDesc, IDXGIOutput *pRestrictToOutput,
@@ -260,7 +249,13 @@ HRESULT DXGIFactory2<ABI>::CreateSwapChainForCoreWindow(xbox::IGraphicsUnknown<A
     interop->get_WindowHandle(&hwnd);
 
     IDXGISwapChain1 *SwapChain{};
-    hr = m_pFunction->CreateSwapChainForHwnd(dev, hwnd, &pDesc2, NULL, NULL, &SwapChain);
+    hr = m_pFunction->CreateSwapChainForHwnd(dev, hwnd, &pDesc2, nullptr, nullptr, &SwapChain);
+
+    if (hr == DXGI_ERROR_DEVICE_REMOVED)
+    {
+        HRESULT RemovedReason = static_cast<D3D11DeviceX<ABI>*>(pDevice)->GetDeviceRemovedReason();
+        printf("D3D11 Error: Swap Chain creation failed due to device being removed! Device Removed reason: 0x%X\n", RemovedReason);
+    }
 
     if (SwapChain)
     {

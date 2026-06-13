@@ -3327,7 +3327,7 @@ enum D3D11X_IMG_NUM_FORMAT
     };
 
     template <abi_t ABI>
-        requires(ABI >= abi_t{6, 2, 1004, 0})
+        requires(ABI >= abi_t{6, 2, 13004, 0})
     struct IDXGIObject<ABI> : xbox::IGraphicsUnknown<ABI>, details::IDXGIObjectData<ABI>
     {
         virtual HRESULT SetPrivateData(GUID const &Name, uint32_t DataSize, void const *pData) = 0;
