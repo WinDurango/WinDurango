@@ -50,9 +50,8 @@ namespace winrt::Windows::Kinect::implementation
     }
     winrt::Windows::Kinect::BodyFrame BodyFrameReader::AcquireLatestFrame()
     {
-        ::IBodyFrame *pBodyFrame = nullptr;
-        m_pBodyFrameReader->AcquireLatestFrame(&pBodyFrame);
-        return winrt::make<implementation::BodyFrame>(pBodyFrame);
+        //p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::BodyFrame", "Unimplemented: AcquireLatestFrame");
+        throw hresult_not_implemented();
     }
     bool BodyFrameReader::IsPaused()
     {

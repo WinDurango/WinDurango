@@ -105,6 +105,8 @@ template <abi_t ABI> class D3D11Texture2D : public gfx::ID3D11Texture2D<ABI>
     ID3D11Texture2D *m_pFunction = nullptr;
     bool m_IsDirty = false;
     UINT m_TileModeIndex = 0;
+    UINT m_RowPitch = 0;
+    UINT m_SlicePitch = 0;
 
     D3D11Texture2D(ID3D11Texture2D *pResource)
     {
@@ -256,6 +258,24 @@ public:
     //
     void GetDesc(D3D11_BUFFER_DESC *pDesc);
 };
+
+template <abi_t ABI>
+gfx::ID3D11Buffer<ABI> *g_VSFastConstantBuffers[D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT];
+
+template <abi_t ABI>
+gfx::ID3D11Buffer<ABI> *g_PSFastConstantBuffers[D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT];
+
+template <abi_t ABI>
+gfx::ID3D11Buffer<ABI> *g_CSFastConstantBuffers[D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT];
+
+template <abi_t ABI>
+gfx::ID3D11Buffer<ABI> *g_GSFastConstantBuffers[D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT];
+
+template <abi_t ABI>
+gfx::ID3D11Buffer<ABI> *g_HSFastConstantBuffers[D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT];
+
+template <abi_t ABI>
+gfx::ID3D11Buffer<ABI> *g_DSFastConstantBuffers[D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT];
 
 #undef ABI_INTERFACE
 #define ABI_INTERFACE(ABI) D3D11Buffer<ABI>

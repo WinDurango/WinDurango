@@ -361,11 +361,11 @@ extern "C"
 HMODULE g_XboxGraphicsModule = nullptr;
 XGCreateTexture2DComputer g_XGCreateTexture2DComputer = nullptr;
 
-HRESULT CopyFromSubresourceChecked(XGTextureAddressComputer* Computer, UINT Subresource, void* pVirtualAddress, UINT RowPitch, UINT SlicePitch, BYTE** DetiledData)
+HRESULT CopyFromSubresourceChecked(XGTextureAddressComputer* Computer, UINT Subresource, void* pVirtualAddress, UINT RowPitch, UINT SlicePitch, BYTE* DetiledData)
 {
     __try
     {
-        Computer->vt->CopyFromSubresource(Computer, (*DetiledData), 0, Subresource, pVirtualAddress, RowPitch, SlicePitch);
+        Computer->vt->CopyFromSubresource(Computer, DetiledData, 0, Subresource, pVirtualAddress, RowPitch, SlicePitch);
         return S_OK;
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
@@ -412,27 +412,12 @@ HRESULT DetileTexture2D(UINT TileModeIndex, D3D11_TEXTURE2D_DESC* pDesc, void* p
         if (FAILED(hr))
             return hr;
 
-        BYTE *Detiled = new BYTE[SlicePitch];
-        hr = CopyFromSubresourceChecked(compWrapper, 0, pVirtualAddress, RowPitch, SlicePitch, &Detiled);
-
-        __try
+        if (!compWrapper || !compWrapper->vt)
         {
-            memcpy((*DetiledData), Detiled, SlicePitch);
-            delete[] Detiled;
-        }
-        __except (EXCEPTION_EXECUTE_HANDLER)
-        {
-            memcpy((*DetiledData), pVirtualAddress, SlicePitch);
-            __try
-            {
-                delete[] Detiled;
-            }
-            __except (EXCEPTION_EXECUTE_HANDLER)
-            {
-
-            }
+            return E_FAIL;
         }
 
+        hr = CopyFromSubresourceChecked(compWrapper, 0, pVirtualAddress, RowPitch, SlicePitch, (*DetiledData));
         compWrapper->vt->Release(compWrapper);
 
         return hr;

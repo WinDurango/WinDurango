@@ -402,10 +402,15 @@ HRESULT D3D11DeviceX<ABI>::CreateDepthStencilView(gfx::ID3D11Resource<ABI> *pRes
 template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreateInputLayout(const D3D11_INPUT_ELEMENT_DESC *pInputElementDescs, uint32_t NumElements,
                                              const void *pShaderBytecodeWithInputSignature, SIZE_T BytecodeLength,
-                                             ID3D11InputLayout **ppInputLayout)
+                                             gfx::ID3D11InputLayout<ABI> **ppInputLayout)
 {
-    return m_pFunction->CreateInputLayout(pInputElementDescs, NumElements, pShaderBytecodeWithInputSignature,
-                                          BytecodeLength, ppInputLayout);
+    ID3D11InputLayout *InputLayout = nullptr;
+    HRESULT hr = m_pFunction->CreateInputLayout(pInputElementDescs, NumElements, pShaderBytecodeWithInputSignature, BytecodeLength, &InputLayout);
+    if (InputLayout)
+    {
+        *ppInputLayout = new D3D11InputLayout<ABI>(InputLayout);
+    }
+    return hr;
 }
 
 template <abi_t ABI>
@@ -892,7 +897,16 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementBuffer(D3D11_BUFFER_DESC const *pDesc,
         hr = CreateBuffer(&pDesc2, &initialData, ppBuffer);
 
     if (pVirtualAddress)
-        (*ppBuffer)->m_pAllocationStart = pVirtualAddress;
+    {
+        MEMORY_BASIC_INFORMATION mbi{};
+        SIZE_T Result = VirtualQuery(pVirtualAddress, &mbi, sizeof(mbi));
+        if (Result == sizeof(mbi) && mbi.AllocationBase)
+        {
+            (*ppBuffer)->m_pAllocationStart = pVirtualAddress;
+            static_cast<D3D11Buffer<ABI> *>((*ppBuffer))->m_IsDirty = true;
+            g_ResourceMap.insert({mbi.AllocationBase, (*ppBuffer)});
+        }
+    }
 
     return hr;
 }
@@ -966,9 +980,11 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture2D(D3D11_TEXTURE2D_DESC const *
         (mbi.State & MEM_COMMIT) != MEM_COMMIT || (mbi.Protect & (PAGE_READWRITE | PAGE_READONLY)) == 0)
     {
         HRESULT hr = CreateTexture2D(&pDesc2, 0, ppTexture2D);
-        (*ppTexture2D)->m_pAllocationStart = pVirtualAddress;
-        static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_TileModeIndex = TileModeIndex;
-        static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_IsDirty = true;
+        if (mbi.AllocationBase) (*ppTexture2D)->m_pAllocationStart = pVirtualAddress;
+        if (mbi.AllocationBase) static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_TileModeIndex = TileModeIndex;
+        if (mbi.AllocationBase) static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_IsDirty = true;
+        static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_RowPitch = RowPitch;
+        static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_SlicePitch = SlicePitch;
         if (mbi.AllocationBase) g_ResourceMap.insert({mbi.AllocationBase, (*ppTexture2D)});
         initialData.clear();
         return hr;
@@ -979,6 +995,8 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture2D(D3D11_TEXTURE2D_DESC const *
         (*ppTexture2D)->m_pAllocationStart = pVirtualAddress;
         static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_TileModeIndex = TileModeIndex;
         static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_IsDirty = true;
+        static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_RowPitch = RowPitch;
+        static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_SlicePitch = SlicePitch;
         g_ResourceMap.insert({mbi.AllocationBase, (*ppTexture2D)});
         initialData.clear();
         return hr;
@@ -989,6 +1007,8 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture2D(D3D11_TEXTURE2D_DESC const *
         (*ppTexture2D)->m_pAllocationStart = pVirtualAddress;
         static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_TileModeIndex = TileModeIndex;
         static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_IsDirty = true;
+        static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_RowPitch = RowPitch;
+        static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_SlicePitch = SlicePitch;
         g_ResourceMap.insert({mbi.AllocationBase, (*ppTexture2D)});
         initialData.clear();
         return hr;
