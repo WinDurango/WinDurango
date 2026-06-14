@@ -214,7 +214,7 @@ template <abi_t ABI> ULONG D3D11Texture2D<ABI>::AddRef()
 
 template <abi_t ABI> ULONG D3D11Texture2D<ABI>::Release()
 {
-    std::lock_guard<std::mutex> PlacementUpdateLock(g_ResourceMapMutex);
+    std::lock_guard PlacementUpdateLock(g_ResourceMapMutex);
     m_pFunction->Release();
     ULONG RefCount = InterlockedDecrement(&this->m_RefCount);
     if (!RefCount)

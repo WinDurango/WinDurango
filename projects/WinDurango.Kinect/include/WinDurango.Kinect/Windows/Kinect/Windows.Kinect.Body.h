@@ -16,13 +16,16 @@ namespace winrt::Windows::Kinect::implementation
 {
     struct BodyFrame : BodyFrameT<BodyFrame>
     {
-        BodyFrame() = default;
+        BodyFrame(::IBodyFrame *pBodyFrame) : m_pBodyFrame(pBodyFrame) {}
 
         void GetAndRefreshBodyData(winrt::Windows::Foundation::Collections::IVector<winrt::Windows::Kinect::Body> const& bodies);
         int32_t BodyCount();
         winrt::Windows::Kinect::Vector4 FloorClipPlane();
         winrt::Windows::Foundation::TimeSpan RelativeTime();
         winrt::Windows::Kinect::BodyFrameSource BodyFrameSource();
+
+    private:
+        ::IBodyFrame *m_pBodyFrame = nullptr;
     };
 
     struct BodyFrameArrivedEventArgs : BodyFrameArrivedEventArgsT<BodyFrameArrivedEventArgs>

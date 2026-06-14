@@ -2,6 +2,7 @@
 #include "ID3D11DeviceContext.h"
 #include "d3d11_x.g.h"
 #include <vector>
+#include <zlib.h>
 
 BOOL DMAFences[1024]{};
 UINT DMAFenceIndex = 0;
@@ -181,7 +182,15 @@ template <abi_t ABI> struct LZDecompressMemoryCommand
 
     BOOL Execute(D3D11DMAEngineContextX<ABI> *pDmaContext)
     {
-        //TODO: Install zlib
+        z_stream Stream{};
+        Stream.next_in = reinterpret_cast<Bytef*>(NextIn);
+        Stream.avail_in = AvailIn;
+        Stream.next_out = reinterpret_cast<Bytef*>(NextOut);
+        Stream.avail_out = UINT32_MAX;
+
+        inflate(&Stream, Z_FINISH);
+        inflateEnd(&Stream);
+
         return FALSE;
     }
 };

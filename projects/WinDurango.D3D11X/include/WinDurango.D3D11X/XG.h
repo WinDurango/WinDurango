@@ -418,11 +418,19 @@ HRESULT DetileTexture2D(UINT TileModeIndex, D3D11_TEXTURE2D_DESC* pDesc, void* p
         __try
         {
             memcpy((*DetiledData), Detiled, SlicePitch);
+            delete[] Detiled;
         }
         __except (EXCEPTION_EXECUTE_HANDLER)
         {
             memcpy((*DetiledData), pVirtualAddress, SlicePitch);
-            delete[] Detiled;
+            __try
+            {
+                delete[] Detiled;
+            }
+            __except (EXCEPTION_EXECUTE_HANDLER)
+            {
+
+            }
         }
 
         compWrapper->vt->Release(compWrapper);

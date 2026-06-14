@@ -5,18 +5,23 @@ namespace winrt::Windows::Kinect::implementation
 {
     void BodyFrame::GetAndRefreshBodyData(winrt::Windows::Foundation::Collections::IVector<winrt::Windows::Kinect::Body> const& bodies)
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::BodyFrame", "Unimplemented: GetAndRefreshBodyData");
-        throw hresult_not_implemented();
+
     }
     int32_t BodyFrame::BodyCount()
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::BodyFrame", "Unimplemented: BodyCount");
-        throw hresult_not_implemented();
+        return 1;
     }
     winrt::Windows::Kinect::Vector4 BodyFrame::FloorClipPlane()
     {
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::BodyFrame", "Unimplemented: FloorClipPlane");
-        throw hresult_not_implemented();
+        ::Vector4 pVector4{};
+        m_pBodyFrame->get_FloorClipPlane(&pVector4);
+        
+        winrt::Windows::Kinect::Vector4 Return{};
+        Return.X = pVector4.x;
+        Return.Y = pVector4.y;
+        Return.Z = pVector4.z;
+        Return.W = pVector4.w;
+        return Return;
     }
     winrt::Windows::Foundation::TimeSpan BodyFrame::RelativeTime()
     {
@@ -45,11 +50,9 @@ namespace winrt::Windows::Kinect::implementation
     }
     winrt::Windows::Kinect::BodyFrame BodyFrameReader::AcquireLatestFrame()
     {
-        /*
-        * Peggle 2
-        */
-        p_wd->log.Warn("WinDurango::Kinect::Windows::Kinect::BodyFrameReader", "Unimplemented: AcquireLatestFrame");
-        throw hresult_not_implemented();
+        ::IBodyFrame *pBodyFrame = nullptr;
+        m_pBodyFrameReader->AcquireLatestFrame(&pBodyFrame);
+        return winrt::make<implementation::BodyFrame>(pBodyFrame);
     }
     bool BodyFrameReader::IsPaused()
     {

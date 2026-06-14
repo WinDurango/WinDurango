@@ -101,6 +101,18 @@ gfx::ID3D11ShaderResourceView<ABI> *g_VSFastShaderResources[D3D11_COMMONSHADER_I
 template <abi_t ABI>
 gfx::ID3D11ShaderResourceView<ABI> *g_PSFastShaderResources[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT];
 
+template <abi_t ABI>
+gfx::ID3D11ShaderResourceView<ABI> *g_CSFastShaderResources[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT];
+
+template <abi_t ABI>
+gfx::ID3D11ShaderResourceView<ABI> *g_GSFastShaderResources[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT];
+
+template <abi_t ABI>
+gfx::ID3D11ShaderResourceView<ABI> *g_HSFastShaderResources[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT];
+
+template <abi_t ABI>
+gfx::ID3D11ShaderResourceView<ABI> *g_DSFastShaderResources[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT];
+
 #undef ABI_INTERFACE
 #define ABI_INTERFACE(ABI) D3D11ShaderResourceView<ABI>
 D3D11_DECLARE_ABI_TEMPLATES(extern);

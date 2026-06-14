@@ -5,6 +5,7 @@
     "cppwinrt",
     "detours",
     "directxtex",
-    "kinectsdk2"
+    "kinectsdk2",
+    "zlib"
   ]
 }

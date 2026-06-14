@@ -131,11 +131,15 @@ void D3D11DeviceContextX<ABI>::CheckDirtyFlags()
         }
     }
 
-    std::lock_guard<std::mutex> PlacementUpdateLock(g_ResourceMapMutex);
+    ExecuteBackgroundContexts();
+
+    std::lock_guard PlacementUpdateLock(g_ResourceMapMutex);
     UpdateShaderResources(g_VSFastShaderResources<ABI>);
     UpdateShaderResources(g_PSFastShaderResources<ABI>);
-
-    ExecuteBackgroundContexts();
+    UpdateShaderResources(g_CSFastShaderResources<ABI>);
+    UpdateShaderResources(g_GSFastShaderResources<ABI>);
+    UpdateShaderResources(g_HSFastShaderResources<ABI>);
+    UpdateShaderResources(g_DSFastShaderResources<ABI>);
 }
 
 template <abi_t ABI> 
@@ -214,8 +218,7 @@ void D3D11DeviceContextX<ABI>::PSSetShaderResources(UINT StartSlot, UINT NumView
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI> *>(ppShaderResourceViews[i])->m_pFunction;
 
-            if (ppShaderResourceViews[i]->m_pAllocationStart)
-                g_PSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_PSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->PSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -234,8 +237,7 @@ void D3D11DeviceContextX<ABI>::PSSetShaderResources(gfx::ID3D11ShaderResourceVie
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
 
-            if (ppShaderResourceViews[i]->m_pAllocationStart)
-                g_PSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_PSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->PSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -538,8 +540,7 @@ void D3D11DeviceContextX<ABI>::VSSetShaderResources(UINT StartSlot, UINT NumView
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI> *>(ppShaderResourceViews[i])->m_pFunction;
 
-            if (ppShaderResourceViews[i]->m_pAllocationStart)
-                g_VSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_VSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->VSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -558,8 +559,7 @@ void D3D11DeviceContextX<ABI>::VSSetShaderResources(gfx::ID3D11ShaderResourceVie
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
 
-            if (ppShaderResourceViews[i]->m_pAllocationStart)
-                g_VSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_VSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->VSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -621,6 +621,8 @@ void D3D11DeviceContextX<ABI>::GSSetShaderResources(UINT StartSlot, UINT NumView
         else
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI> *>(ppShaderResourceViews[i])->m_pFunction;
+
+            g_GSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->GSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -638,6 +640,8 @@ void D3D11DeviceContextX<ABI>::GSSetShaderResources(gfx::ID3D11ShaderResourceVie
         else
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
+
+            g_GSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->GSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -786,7 +790,7 @@ void D3D11DeviceContextX<ABI>::DrawInstancedIndirect(gfx::ID3D11Buffer<ABI>* pBu
 template<abi_t ABI>
 void D3D11DeviceContextX<ABI>::Dispatch(UINT ThreadGroupCountX, UINT ThreadGroupCountY, UINT ThreadGroupCountZ)
 {
-    //CheckDirtyFlags();
+    CheckDirtyFlags();
     m_pFunction->Dispatch(ThreadGroupCountX, ThreadGroupCountY, ThreadGroupCountZ);
 }
 
@@ -1470,6 +1474,8 @@ void D3D11DeviceContextX<ABI>::HSSetShaderResources(UINT StartSlot, UINT NumView
         else
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI> *>(ppShaderResourceViews[i])->m_pFunction;
+
+            g_HSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->HSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -1487,6 +1493,8 @@ void D3D11DeviceContextX<ABI>::HSSetShaderResources(gfx::ID3D11ShaderResourceVie
         else
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
+
+            g_HSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->HSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -1553,6 +1561,8 @@ void D3D11DeviceContextX<ABI>::DSSetShaderResources(UINT StartSlot, UINT NumView
         else
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI> *>(ppShaderResourceViews[i])->m_pFunction;
+
+            g_DSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->DSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -1570,6 +1580,8 @@ void D3D11DeviceContextX<ABI>::DSSetShaderResources(gfx::ID3D11ShaderResourceVie
         else
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
+
+            g_DSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->DSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -1636,6 +1648,8 @@ void D3D11DeviceContextX<ABI>::CSSetShaderResources(UINT StartSlot, UINT NumView
         else
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI> *>(ppShaderResourceViews[i])->m_pFunction;
+
+            g_CSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->CSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -1653,6 +1667,8 @@ void D3D11DeviceContextX<ABI>::CSSetShaderResources(gfx::ID3D11ShaderResourceVie
         else
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
+
+            g_CSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->CSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -3617,7 +3633,10 @@ void D3D11DeviceContextX<ABI>::UpdateShaderResources(gfx::ID3D11ShaderResourceVi
             {
                 gfx::ID3D11Resource<ABI> *pResource{};
                 pSRV->GetResource(&pResource);
-                if (pResource)
+
+                MEMORY_BASIC_INFORMATION mbi{};
+                SIZE_T Result = VirtualQuery(pSRV->m_pAllocationStart, &mbi, sizeof(mbi));
+                if (pResource && (mbi.State & MEM_COMMIT) != 0 && Result)
                 {
                     D3D11_RESOURCE_DIMENSION Type{};
                     pResource->GetType(&Type);
@@ -3637,13 +3656,16 @@ void D3D11DeviceContextX<ABI>::UpdateShaderResources(gfx::ID3D11ShaderResourceVi
 
                             BYTE *DetiledData = new BYTE[SlicePitch];
                             HRESULT hr = DetileTexture2D(static_cast<D3D11Texture2D<ABI>*>(pTexture)->m_TileModeIndex, &Desc, pSRV->m_pAllocationStart, &DetiledData, RowPitch, SlicePitch);
-                            if (Desc.Usage == D3D11_USAGE_DEFAULT)
+                            if (SUCCEEDED(hr) && Desc.Usage == D3D11_USAGE_DEFAULT)
                             {
                                 UpdateSubresource(pTexture, 0, nullptr, DetiledData, RowPitch, SlicePitch);
                                 delete[] DetiledData;
                                 static_cast<D3D11Texture2D<ABI>*>(pTexture)->m_IsDirty = false;
+
+                                DWORD OldProtect = 0;
+                                VirtualProtect(pSRV->m_pAllocationStart, 1, PAGE_READONLY, &OldProtect);
                             }
-                            else
+                            else if (SUCCEEDED(hr))
                             {
                                 D3D11_MAPPED_SUBRESOURCE Mapped{};
                                 hr = Map(pTexture, 0, D3D11_MAP_WRITE_DISCARD, 0, &Mapped);
@@ -3653,6 +3675,9 @@ void D3D11DeviceContextX<ABI>::UpdateShaderResources(gfx::ID3D11ShaderResourceVi
                                     Unmap(pTexture, 0);
                                     delete[] DetiledData;
                                     static_cast<D3D11Texture2D<ABI>*>(pTexture)->m_IsDirty = false;
+
+                                    DWORD OldProtect = 0;
+                                    VirtualProtect(pSRV->m_pAllocationStart, 1, PAGE_READONLY, &OldProtect);
                                 }
                             }
                         }
