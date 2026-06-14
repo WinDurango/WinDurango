@@ -114,7 +114,7 @@ Make sure you have Visual Studio 2026 with the C++ Extension, vcpkg and cmake.
 
 ### Installation
 
-1. Get WinDurango Dll's from `build/bin/Debug`
+1. Get WinDurango Dll's from [Github Actions](https://github.com/WinDurango/WinDurango/actions)
 2. Copy the Dll's into the Mount Dir in your Game
 3. Enable Developer Mode
 3. Install the Game (open powershell in the folder that contains `AppxManifest.xml`)
