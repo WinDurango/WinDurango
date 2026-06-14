@@ -212,7 +212,8 @@ HRESULT D3D11DeviceX<ABI>::CreateShaderResourceView(gfx::ID3D11Resource<ABI> *pR
     if (pView)
     {
         *ppSRV = new D3D11ShaderResourceView<ABI>(pView);
-        (*ppSRV)->m_pAllocationStart = pResource->m_pAllocationStart;
+        if (pResource->m_pAllocationStart)
+            (*ppSRV)->m_pAllocationStart = pResource->m_pAllocationStart;
 
         if (Type == D3D11_RESOURCE_DIMENSION_BUFFER)
         {
@@ -966,6 +967,8 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture2D(D3D11_TEXTURE2D_DESC const *
     {
         HRESULT hr = CreateTexture2D(&pDesc2, 0, ppTexture2D);
         (*ppTexture2D)->m_pAllocationStart = pVirtualAddress;
+        static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_TileModeIndex = TileModeIndex;
+        static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_IsDirty = true;
         initialData.clear();
         return hr;
     }
@@ -973,6 +976,8 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture2D(D3D11_TEXTURE2D_DESC const *
     {
         HRESULT hr = CreateTexture2D(&pDesc2, 0, ppTexture2D);
         (*ppTexture2D)->m_pAllocationStart = pVirtualAddress;
+        static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_TileModeIndex = TileModeIndex;
+        static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_IsDirty = true;
         initialData.clear();
         return hr;
     }
@@ -980,6 +985,8 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture2D(D3D11_TEXTURE2D_DESC const *
     {
         HRESULT hr = CreateTexture2D(&pDesc2, initialData.data(), ppTexture2D);
         (*ppTexture2D)->m_pAllocationStart = pVirtualAddress;
+        static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_TileModeIndex = TileModeIndex;
+        static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D))->m_IsDirty = true;
         initialData.clear();
         return hr;
     }

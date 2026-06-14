@@ -95,6 +95,12 @@ template <abi_t ABI> class D3D11ShaderResourceView : public gfx::ID3D11ShaderRes
     int32_t SetFormatX(gfx::D3D11X_SRV_FORMAT const *);
 };
 
+template <abi_t ABI>
+gfx::ID3D11ShaderResourceView<ABI> *g_VSFastShaderResources[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT];
+
+template <abi_t ABI>
+gfx::ID3D11ShaderResourceView<ABI> *g_PSFastShaderResources[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT];
+
 #undef ABI_INTERFACE
 #define ABI_INTERFACE(ABI) D3D11ShaderResourceView<ABI>
 D3D11_DECLARE_ABI_TEMPLATES(extern);

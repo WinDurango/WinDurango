@@ -24,7 +24,7 @@ abi_t g_ABI{};
 BOOL m_Fence = TRUE;
 
 // Multimap for placement update
-std::multimap<void *, void *> g_ResourceMap;
+std::multimap<void*, void *> g_ResourceMap;
 std::mutex g_ResourceMapMutex;
 
 #pragma comment(lib, "onecore.lib")

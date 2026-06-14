@@ -1,24 +1,8 @@
 #include "Config.h"
 
 std::string jsonTemplate = R"({
-    "gamertag": "Durangler1",
-    "gamerscore": 900,
-    "controls": {
-        "Up": 1, 
-        "Down": 2,
-        "Left": 4,
-        "Right": 8,
-        "Start": 16,
-        "Back": 32,
-        "LeftTrigger": 64,
-        "RightTrigger": 128,
-        "LeftShoulder": 256,
-        "RightShoulder": 512,
-        "A": 4096,
-        "B": 8192,
-        "X": 16384,
-        "Y": 32768
-    },
+    "gamertag": "Durangler",
+    "gamerscore": 0,
     "keyboard": {
         "WM": 87,
         "AM": 65,
@@ -54,6 +38,7 @@ bool wd::common::Config::parse()
         } else {
             pFile = pDirectory->CreateFile("winDurango.json");
             pFile->open();
+            pFile->write(jsonTemplate);
         }
         std::string jsonData = pFile->read();
         data = nlohmann::json::parse(jsonData);

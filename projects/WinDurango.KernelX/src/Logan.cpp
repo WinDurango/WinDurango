@@ -198,3 +198,9 @@ inline void DispatchLoganCommand(LOGAN_COMMAND_TYPE cmdType, T cmd)
         InitialCommand = reinterpret_cast<LOGAN_COMMAND_ACP_INIT*>(cmd);
     }
 }
+
+//THIS IS MEANT TO BE A WORKAROUND.
+void SendMessageFromACP(ACP_MESSAGE* pMessage)
+{
+    return g_MessageQueue.push_back((*pMessage));
+}

@@ -1,5 +1,6 @@
 #include "ID3D11View.h"
 #include "ID3D11Resource.h"
+#include "d3d11.x.h"
 
 //
 // IUnknown
@@ -291,9 +292,20 @@ template <abi_t ABI> ULONG D3D11ShaderResourceView<ABI>::AddRef()
 
 template <abi_t ABI> ULONG D3D11ShaderResourceView<ABI>::Release()
 {
+    std::lock_guard<std::mutex> PlacementUpdateLock(g_ResourceMapMutex);
     m_pFunction->Release();
     ULONG RefCount = InterlockedDecrement(&this->m_RefCount);
-    if (!RefCount) delete this;
+    if (!RefCount)
+    {
+        for (UINT i = 0; i < D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT; i++)
+        {
+            if (g_PSFastShaderResources<ABI>[i] == this)
+                g_PSFastShaderResources<ABI>[i] = 0;
+            else if (g_VSFastShaderResources<ABI>[i] == this)
+                g_VSFastShaderResources<ABI>[i] = 0;
+        }
+        delete this;
+    }
     return RefCount;
 }
 

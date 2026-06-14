@@ -1,4 +1,5 @@
 #include "ID3D11Resource.h"
+#include "d3d11.x.h"
 
 //
 // IUnknown
@@ -213,9 +214,27 @@ template <abi_t ABI> ULONG D3D11Texture2D<ABI>::AddRef()
 
 template <abi_t ABI> ULONG D3D11Texture2D<ABI>::Release()
 {
+    std::lock_guard<std::mutex> PlacementUpdateLock(g_ResourceMapMutex);
     m_pFunction->Release();
     ULONG RefCount = InterlockedDecrement(&this->m_RefCount);
-    if (!RefCount) delete this;
+    if (!RefCount)
+    {
+        void* AllocationBase = nullptr;
+        MEMORY_BASIC_INFORMATION mbi{};
+        VirtualQuery(this->m_pAllocationStart, &mbi, sizeof(mbi));
+        if (mbi.AllocationBase) AllocationBase = mbi.AllocationBase;
+        auto range = g_ResourceMap.equal_range(AllocationBase);
+
+        for (auto it = range.first; it != range.second; ++it)
+        {
+            if (it->second == this)
+            {
+                g_ResourceMap.erase(it);
+                break;
+            }
+        }
+        delete this;
+    }
     return RefCount;
 }
 

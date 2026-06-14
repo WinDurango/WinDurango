@@ -231,8 +231,7 @@ EXTERN_C LPVOID __stdcall EraVirtualAllocEx(HANDLE hProcess, LPVOID lpAddress, S
 {
     if (flAllocationType & MEM_GRAPHICS)
     {
-        //flProtect = PAGE_READONLY;
-        flAllocationType |= MEM_COMMIT;
+        flProtect = PAGE_READONLY;
     }
 
     MEM_ADDRESS_REQUIREMENTS AddrRq;

@@ -1,6 +1,7 @@
 #include "ID3D11GraphicsMemoryManager.h"
 #include "ID3D11Resource.h"
 #include "ID3D11DeviceContext.h"
+#include "ID3D11View.h"
 #include "d3d11.x.h"
 
 template<abi_t ABI>
@@ -27,13 +28,13 @@ LONG D3D11GraphicsMemoryManager<ABI>::VectoredExceptionHandler(_EXCEPTION_POINTE
                             else if (Type == D3D11_RESOURCE_DIMENSION_TEXTURE1D) reinterpret_cast<D3D11Texture1D<ABI>*>(pair.second)->m_IsDirty = true;
                             else if (Type == D3D11_RESOURCE_DIMENSION_TEXTURE2D) reinterpret_cast<D3D11Texture2D<ABI>*>(pair.second)->m_IsDirty = true;
                             else if (Type == D3D11_RESOURCE_DIMENSION_TEXTURE3D) reinterpret_cast<D3D11Texture3D<ABI>*>(pair.second)->m_IsDirty = true;
-                            DWORD LastFlProtect;
+                            DWORD LastFlProtect = 0;
                             VirtualProtect((void*)pair.first, 1, PAGE_READWRITE, &LastFlProtect);
                         }
-                    }
+                    }    
                 }
 
-                DWORD LastFlProtect;
+                DWORD LastFlProtect = 0;
                 VirtualProtect((void*)pExceptionPointers->ExceptionRecord->ExceptionInformation[1], 1, PAGE_READWRITE, &LastFlProtect);
                 return EXCEPTION_CONTINUE_EXECUTION;
             }

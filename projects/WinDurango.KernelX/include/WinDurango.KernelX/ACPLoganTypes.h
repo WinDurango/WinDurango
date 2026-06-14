@@ -565,3 +565,14 @@ typedef union AcpMessageQueueEntry
     ACP_MESSAGE message;
     uint8_t padToAcpCacheLineSize[228];
 };
+
+typedef union ACP_COMMAND_UPDATE_XMA_CONTEXT_ENTRY
+{
+    uint32_t contextIndex;
+    uint32_t ptrRead0;
+    uint32_t ptrRead1;
+    uint16_t sizeRead0;
+    uint16_t sizeRead1;
+    uint16_t writeBufferOffsetRead;
+    uint16_t validBuffer;
+};

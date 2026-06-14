@@ -73,6 +73,11 @@ static BOOL ReadFromInternalACPRingBuffer(AcpCommand *OutBuffer, AcpInternalComm
     return TRUE;
 }
 
+static BOOL ReadFromXmaContextEntry(ACP_COMMAND_UPDATE_XMA_CONTEXT *OutBuffer, ACP_COMMAND_UPDATE_XMA_CONTEXT_ENTRY* InBuffer)
+{
+    return TRUE;
+}
+
 static BOOL ReadFromClientACPRingBuffer(AcpCommand *OutBuffer, AcpCommandQueueEntry *InBuffer, AcpState *InBufferDesc, UINT ClientIndex)
 {
     if (InBufferDesc->clientCommandQueueReadCounter[ClientIndex] == InBufferDesc->clientCommandQueueSendCounter[ClientIndex])
@@ -88,6 +93,25 @@ static BOOL ReadFromClientACPRingBuffer(AcpCommand *OutBuffer, AcpCommandQueueEn
 
     return TRUE;
 }
+
+BOOL(*P_PopMessage)(LPVOID, ACP_MESSAGE);
+std::vector<ACP_MESSAGE> g_MessageQueue;
+
+//THIS IS MEANT TO BE A WORKAROUND.
+BOOL __fastcall D_PopMessage(LPVOID pIAcpHal, ACP_MESSAGE *pMessage)
+{
+    if (g_MessageQueue.size() == 0)
+        return FALSE;
+
+    (*pMessage) = g_MessageQueue.back();
+
+    g_MessageQueue.pop_back();
+
+    printf("Sent message via PopMessage!\n");
+    return TRUE;
+}
+
+void SendMessageFromACP(ACP_MESSAGE *pMessage);
 
 LOGAN_COMMAND_ACP_INIT *InitialCommand;
 
@@ -115,9 +139,9 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
         while (ReadFromRingBuffer(&command, commands, &channel->commands))
         {
             DispatchLoganCommand((LOGAN_COMMAND_TYPE)command.commandType, g_LoganHeap.GetVirtualAddress(command.apuAddress, sizeof((LOGAN_COMMAND_TYPE)command.commandType)));
-            messages[channel->messages.offsetWrite].status = ACP_MESSAGE_TYPE_COMMAND_COMPLETED;
+            messages[channel->messages.offsetWrite].status = 0;
             messages[channel->messages.offsetWrite].time = GetTickCount();
-            messages[channel->messages.offsetWrite].unknown0 = 1;
+            messages[channel->messages.offsetWrite].unknown0 = 0;
             channel->messages.offsetWrite = (channel->messages.offsetWrite + 1 < channel->messages.sizeInBlocks) ? channel->messages.offsetWrite + 1 : 0;
         }       
 
@@ -139,7 +163,7 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
             }
         }
 
-        for (UINT i = 0; i < 4; i++)
+        for (UINT i = 0; i < 1; i++)
         {
             if (g_LoganHeap._acpConnectCommand[i].commandQueue != 0)
             {
@@ -161,8 +185,7 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                                 AcpMessage.commandCompleted.commandType = Command.commandType;
                                 AcpMessage.commandCompleted.audioFrame = Command.frame;
                                 AcpMessage.commandCompleted.commandId = Command.commandId;
-
-                                //TODO: Send this message back to sinalize the command was completed
+                                SendMessageFromACP(&AcpMessage);
                             }
                         }
                     }

@@ -86,6 +86,7 @@ public:
     void ExecuteBackgroundContexts();
     void AddBackgroundContext(ID3D11BackgroundContext *pContext);
     void RemoveBackgroundContext(ID3D11BackgroundContext *pContext);
+    void UpdateShaderResources(gfx::ID3D11ShaderResourceView<ABI> **ppSRVs);
     void VSSetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppConstantBuffers);
     void PSSetShaderResources(UINT StartSlot, UINT NumViews,
                               gfx::ID3D11ShaderResourceView<ABI> *const *ppShaderResourceViews);

@@ -104,6 +104,7 @@ template <abi_t ABI> class D3D11Texture2D : public gfx::ID3D11Texture2D<ABI>
   public:
     ID3D11Texture2D *m_pFunction = nullptr;
     bool m_IsDirty = false;
+    UINT m_TileModeIndex = 0;
 
     D3D11Texture2D(ID3D11Texture2D *pResource)
     {

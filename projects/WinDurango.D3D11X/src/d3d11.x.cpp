@@ -114,20 +114,6 @@ struct DXGIX_FRAME_STATISTICS
 
 EXTERN_C HRESULT __stdcall DXGIXGetFrameStatistics(UINT NumberFramesRequested, DXGIX_FRAME_STATISTICS *pFrameStatistics)
 {
-    pFrameStatistics->QueueLengthAddedToQueue = 0;
-    pFrameStatistics->CPUTimeAddedToQueue = 0;
-    pFrameStatistics->CPUTimeFlip = 0;
-    pFrameStatistics->CPUTimeFrameComplete = 0;
-    pFrameStatistics->CPUTimePresentCalled = 0;
-    pFrameStatistics->CPUTimeVSync = 0;
-    pFrameStatistics->GPUCountSystemUsed = 0;
-    pFrameStatistics->GPUCountTitleUsed = 0;
-    pFrameStatistics->GPUTimeFlip = 0;
-    pFrameStatistics->GPUTimeFrameComplete = 0;
-    pFrameStatistics->GPUTimeVSync = 0;
-    pFrameStatistics->PercentScanned = 100.0f;
-    pFrameStatistics->QueueLengthAddedToQueue = 0;
-    pFrameStatistics->VSyncCount = 0;
     return S_OK;
 }
 
