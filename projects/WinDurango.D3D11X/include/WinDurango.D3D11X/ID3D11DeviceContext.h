@@ -43,7 +43,7 @@ public:
             this->m_RefCount = 0;
         m_pFunction = pContext;
         g_Context = m_pFunction;
-        AddRef();
+        InterlockedIncrement(&this->m_RefCount);
         memcpy(&this->m_Function, *(void ***)this, sizeof(this->m_Function));
     }
     D3D11DeviceContextX()
@@ -51,7 +51,7 @@ public:
         if (this->m_RefCount != 0)
             this->m_RefCount = 0;
         m_pFunction = g_Context;
-        AddRef();
+        InterlockedIncrement(&this->m_RefCount);
         memcpy(&this->m_Function, *(void ***)this, sizeof(this->m_Function));
     }
 
@@ -87,6 +87,7 @@ public:
     void AddBackgroundContext(ID3D11BackgroundContext *pContext);
     void RemoveBackgroundContext(ID3D11BackgroundContext *pContext);
     void UpdateShaderResources(gfx::ID3D11ShaderResourceView<ABI> **ppSRVs);
+    void UpdateConstantBuffers(gfx::ID3D11Buffer<ABI> **ppBuffers);
     void VSSetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppConstantBuffers);
     void PSSetShaderResources(UINT StartSlot, UINT NumViews,
                               gfx::ID3D11ShaderResourceView<ABI> *const *ppShaderResourceViews);
@@ -101,7 +102,7 @@ public:
                 D3D11_MAPPED_SUBRESOURCE *pMappedResource);
     void Unmap(gfx::ID3D11Resource<ABI> *pResource, UINT Subresource);
     void PSSetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppConstantBuffers);
-    void IASetInputLayout(ID3D11InputLayout *pInputLayout);
+    void IASetInputLayout(gfx::ID3D11InputLayout<ABI> *pInputLayout);
     void IASetVertexBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppVertexBuffers,
                             UINT const *pStrides, UINT const *pOffsets);
     void IASetIndexBuffer(UINT HardwareIndexFormat, gfx::ID3D11Buffer<ABI> *pIndexBuffer, UINT Offset);
@@ -198,7 +199,7 @@ public:
     void VSGetShader(gfx::ID3D11VertexShader<ABI> **ppVertexShader, ID3D11ClassInstance **ppClassInstances,
                      UINT *pNumClassInstances);
     void PSGetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppConstantBuffers);
-    void IAGetInputLayout(ID3D11InputLayout **ppInputLayout);
+    void IAGetInputLayout(gfx::ID3D11InputLayout<ABI> **ppInputLayout);
     void IAGetVertexBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppVertexBuffers, UINT *pStrides,
                             UINT *pOffsets);
     void IAGetIndexBuffer(gfx::ID3D11Buffer<ABI> **pIndexBuffer, DXGI_FORMAT *Format, UINT *Offset);

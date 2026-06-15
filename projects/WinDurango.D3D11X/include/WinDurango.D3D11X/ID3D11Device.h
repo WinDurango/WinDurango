@@ -68,7 +68,7 @@ public:
                                    gfx::ID3D11DepthStencilView<ABI> **ppDSV);
     HRESULT CreateInputLayout(D3D11_INPUT_ELEMENT_DESC const *pDesc, uint32_t NumElements,
                               void const *pShaderBytecodeWithInputSignature, uint64_t BytecodeLength,
-                              ID3D11InputLayout **ppInputLayout);
+                              gfx::ID3D11InputLayout<ABI> **ppInputLayout);
     HRESULT CreateVertexShader(void const *pBytecode, uint64_t BytecodeLength, ID3D11ClassLinkage *pClassLinkage,
                                gfx::ID3D11VertexShader<ABI> **ppVS);
     HRESULT CreateGeometryShader(void const *pBytecode, uint64_t BytecodeLentgh, ID3D11ClassLinkage *pClassLinkage,

@@ -52,6 +52,12 @@ namespace gfx
     
     template<abi_t ABI>
     struct ID3D11BufferVtbl;
+
+    template <abi_t ABI>
+    struct ID3D11InputLayout;
+
+    template <abi_t ABI>
+    struct ID3D11InputLayoutVtbl;
     
     template<abi_t ABI>
     struct ID3D11VertexShader;
@@ -853,7 +859,7 @@ enum D3D11X_IMG_NUM_FORMAT
         uint32_t m_DirtyFlags;
         uint32_t m_Reserved1;
         uint64_t m_Topology;
-        ID3D11InputLayout *m_pInputLayout;
+        gfx::ID3D11InputLayout<ABI> *m_pInputLayout;
         gfx::ID3D11VertexShader<ABI> *m_pVs;
         gfx::ID3D11PixelShader<ABI> *m_pPs;
         uint32_t m_Reserved2[128];
@@ -1020,6 +1026,16 @@ enum D3D11X_IMG_NUM_FORMAT
     struct ID3D11BufferVtbl : gfx::ID3D11ResourceVtbl<ABI>
     {
         void (*GetDesc)(void *, D3D11_BUFFER_DESC *pDesc);
+    };
+
+    template<abi_t ABI>
+    struct ID3D11InputLayout : gfx::ID3D11DeviceChild<ABI>
+    {
+    };
+    
+    template<abi_t ABI>
+    struct ID3D11InputLayoutVtbl : gfx::ID3D11DeviceChildVtbl<ABI>
+    {
     };
     
     template<abi_t ABI>
@@ -1364,7 +1380,7 @@ enum D3D11X_IMG_NUM_FORMAT
         virtual HRESULT Map(gfx::ID3D11Resource<ABI> *pResource, UINT Subresource, D3D11_MAP MapType, UINT MapFlags, D3D11_MAPPED_SUBRESOURCE *pMappedResource) = 0;
         virtual void Unmap(gfx::ID3D11Resource<ABI> *pResource, UINT Subresource) = 0;
         virtual void PSSetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppConstantBuffers) = 0;
-        virtual void IASetInputLayout(ID3D11InputLayout *pInputLayout) = 0;
+        virtual void IASetInputLayout(gfx::ID3D11InputLayout<ABI> *pInputLayout) = 0;
         virtual void IASetVertexBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppVertexBuffers, UINT const *pStrides, UINT const *pOffsets) = 0;
         virtual void IASetIndexBuffer(gfx::ID3D11Buffer<ABI> *pIndexBuffer, UINT HardwareIndexFormat, UINT Offset) = 0;
         virtual void DrawIndexedInstanced(UINT IndexCountPerInstance, UINT InstanceCount, UINT StartIndexLocation, INT BaseVertexLocation, UINT StartInstanceLocation) = 0;
@@ -1425,7 +1441,7 @@ enum D3D11X_IMG_NUM_FORMAT
         virtual void PSGetSamplers(UINT StartSlot, UINT NumSamplers, gfx::ID3D11SamplerState<ABI> **ppSamplers) = 0;
         virtual void VSGetShader(gfx::ID3D11VertexShader<ABI> **ppVertexShader, ID3D11ClassInstance **ppClassInstances, UINT *pNumClassInstances) = 0;
         virtual void PSGetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppConstantBuffers) = 0;
-        virtual void IAGetInputLayout(ID3D11InputLayout **ppInputLayout) = 0;
+        virtual void IAGetInputLayout(gfx::ID3D11InputLayout<ABI> **ppInputLayout) = 0;
         virtual void IAGetVertexBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppVertexBuffers, UINT *pStrides, UINT *pOffsets) = 0;
         virtual void IAGetIndexBuffer(gfx::ID3D11Buffer<ABI> **pIndexBuffer, DXGI_FORMAT *Format, UINT *Offset) = 0;
         virtual void GSGetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppConstantBuffers) = 0;
@@ -1483,7 +1499,7 @@ enum D3D11X_IMG_NUM_FORMAT
         virtual void Unmap(gfx::ID3D11Resource<ABI> *pResource, UINT Subresource) = 0;
         virtual void PSSetConstantBuffers(UINT StartSlot, UINT NumBuffers,
                                           gfx::ID3D11Buffer<ABI> *const *ppConstantBuffers) = 0;
-        virtual void IASetInputLayout(ID3D11InputLayout *pInputLayout) = 0;
+        virtual void IASetInputLayout(gfx::ID3D11InputLayout<ABI> *pInputLayout) = 0;
         virtual void IASetVertexBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppVertexBuffers,
                                         UINT const *pStrides, UINT const *pOffsets) = 0;
         virtual void IASetIndexBuffer(gfx::ID3D11Buffer<ABI> *pIndexBuffer, UINT HardwareIndexFormat, UINT Offset) = 0;
@@ -1586,7 +1602,7 @@ enum D3D11X_IMG_NUM_FORMAT
                                  UINT *pNumClassInstances) = 0;
         virtual void PSGetConstantBuffers(UINT StartSlot, UINT NumBuffers,
                                           gfx::ID3D11Buffer<ABI> **ppConstantBuffers) = 0;
-        virtual void IAGetInputLayout(ID3D11InputLayout **ppInputLayout) = 0;
+        virtual void IAGetInputLayout(gfx::ID3D11InputLayout<ABI> **ppInputLayout) = 0;
         virtual void IAGetVertexBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppVertexBuffers,
                                         UINT *pStrides, UINT *pOffsets) = 0;
         virtual void IAGetIndexBuffer(gfx::ID3D11Buffer<ABI> **pIndexBuffer, DXGI_FORMAT *Format, UINT *Offset) = 0;
@@ -1661,7 +1677,7 @@ enum D3D11X_IMG_NUM_FORMAT
         virtual HRESULT Map(gfx::ID3D11Resource<ABI> *pResource, UINT Subresource, D3D11_MAP MapType, UINT MapFlags, D3D11_MAPPED_SUBRESOURCE *pMappedResource) = 0;
         virtual void Unmap(gfx::ID3D11Resource<ABI> *pResource, UINT Subresource) = 0;
         virtual void PSSetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppConstantBuffers) = 0;
-        virtual void IASetInputLayout(ID3D11InputLayout *pInputLayout) = 0;
+        virtual void IASetInputLayout(gfx::ID3D11InputLayout<ABI> *pInputLayout) = 0;
         virtual void IASetVertexBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppVertexBuffers, UINT const *pStrides, UINT const *pOffsets) = 0;
         virtual void IASetIndexBuffer(UINT HardwareIndexFormat, gfx::ID3D11Buffer<ABI> *pIndexBuffer, UINT Offset) = 0;
         virtual void DrawIndexedInstanced(UINT64 StartIndexLocationAndIndexCountPerInstance, UINT64 BaseVertexLocationAndStartInstanceLocation, UINT InstanceCount) = 0;
@@ -1721,7 +1737,7 @@ enum D3D11X_IMG_NUM_FORMAT
         virtual void PSGetSamplers(UINT StartSlot, UINT NumSamplers, gfx::ID3D11SamplerState<ABI> **ppSamplers) = 0;
         virtual void VSGetShader(gfx::ID3D11VertexShader<ABI> **ppVertexShader, ID3D11ClassInstance **ppClassInstances, UINT *pNumClassInstances) = 0;
         virtual void PSGetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppConstantBuffers) = 0;
-        virtual void IAGetInputLayout(ID3D11InputLayout **ppInputLayout) = 0;
+        virtual void IAGetInputLayout(gfx::ID3D11InputLayout<ABI> **ppInputLayout) = 0;
         virtual void IAGetVertexBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppVertexBuffers, UINT *pStrides, UINT *pOffsets) = 0;
         virtual void IAGetIndexBuffer(gfx::ID3D11Buffer<ABI> **pIndexBuffer, DXGI_FORMAT *Format, UINT *Offset) = 0;
         virtual void GSGetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppConstantBuffers) = 0;
@@ -1774,7 +1790,7 @@ enum D3D11X_IMG_NUM_FORMAT
         virtual HRESULT Map(gfx::ID3D11Resource<ABI>* pResource, UINT Subresource, D3D11_MAP MapType, UINT MapFlags, D3D11_MAPPED_SUBRESOURCE* pMappedResource) = 0;
         virtual void Unmap(gfx::ID3D11Resource<ABI>* pResource, UINT Subresource) = 0;
         virtual void PSSetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI>* const* ppConstantBuffers) = 0;
-        virtual void IASetInputLayout(ID3D11InputLayout* pInputLayout) = 0;
+        virtual void IASetInputLayout(gfx::ID3D11InputLayout<ABI>* pInputLayout) = 0;
         virtual void IASetVertexBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI>* const* ppVertexBuffers, UINT const* pStrides, UINT const* pOffsets) = 0;
         virtual void IASetIndexBuffer(UINT HardwareIndexFormat, gfx::ID3D11Buffer<ABI>* pIndexBuffer, UINT Offset) = 0;
         virtual void DrawIndexedInstanced(UINT64 StartIndexLocationAndIndexCountPerInstance, UINT64 BaseVertexLocationAndStartInstanceLocation, UINT InstanceCount) = 0;
@@ -1834,7 +1850,7 @@ enum D3D11X_IMG_NUM_FORMAT
         virtual void PSGetSamplers(UINT StartSlot, UINT NumSamplers, gfx::ID3D11SamplerState<ABI>** ppSamplers) = 0;
         virtual void VSGetShader(gfx::ID3D11VertexShader<ABI>** ppVertexShader, ID3D11ClassInstance** ppClassInstances, UINT* pNumClassInstances) = 0;
         virtual void PSGetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI>** ppConstantBuffers) = 0;
-        virtual void IAGetInputLayout(ID3D11InputLayout** ppInputLayout) = 0;
+        virtual void IAGetInputLayout(gfx::ID3D11InputLayout<ABI>** ppInputLayout) = 0;
         virtual void IAGetVertexBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI>** ppVertexBuffers, UINT* pStrides, UINT* pOffsets) = 0;
         virtual void IAGetIndexBuffer(gfx::ID3D11Buffer<ABI>** pIndexBuffer, DXGI_FORMAT* Format, UINT* Offset) = 0;
         virtual void GSGetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI>** ppConstantBuffers) = 0;
@@ -1890,7 +1906,7 @@ enum D3D11X_IMG_NUM_FORMAT
         void (*Unmap)(void *, gfx::ID3D11Resource<ABI> *pResource, UINT Subresource);
         void (*PSSetConstantBuffers)(void *, UINT StartSlot, UINT NumBuffers,
                                      gfx::ID3D11Buffer<ABI> *const *ppConstantBuffers);
-        void (*IASetInputLayout)(void *, ID3D11InputLayout *pInputLayout);
+        void (*IASetInputLayout)(void *, gfx::ID3D11InputLayout<ABI> *pInputLayout);
         void (*IASetVertexBuffers)(void *, UINT StartSlot, UINT NumBuffers,
                                    gfx::ID3D11Buffer<ABI> *const *ppVertexBuffers, UINT const *pStrides,
                                    UINT const *pOffsets);
@@ -1991,7 +2007,7 @@ enum D3D11X_IMG_NUM_FORMAT
                             ID3D11ClassInstance **ppClassInstances, UINT *pNumClassInstances);
         void (*PSGetConstantBuffers)(void *, UINT StartSlot, UINT NumBuffers,
                                      gfx::ID3D11Buffer<ABI> **ppConstantBuffers);
-        void (*IAGetInputLayout)(void *, ID3D11InputLayout **ppInputLayout);
+        void (*IAGetInputLayout)(void *, gfx::ID3D11InputLayout<ABI> **ppInputLayout);
         void (*IAGetVertexBuffers)(void *, UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppVertexBuffers,
                                    UINT *pStrides, UINT *pOffsets);
         void (*IAGetIndexBuffer)(void *, gfx::ID3D11Buffer<ABI> **pIndexBuffer, DXGI_FORMAT *Format, UINT *Offset);
@@ -2072,7 +2088,7 @@ enum D3D11X_IMG_NUM_FORMAT
         void (*Unmap)(void *, gfx::ID3D11Resource<ABI> *pResource, UINT Subresource);
         void (*PSSetConstantBuffers)(void *, UINT StartSlot, UINT NumBuffers,
                                      gfx::ID3D11Buffer<ABI> *const *ppConstantBuffers);
-        void (*IASetInputLayout)(void *, ID3D11InputLayout *pInputLayout);
+        void (*IASetInputLayout)(void *, gfx::ID3D11InputLayout<ABI> *pInputLayout);
         void (*IASetVertexBuffers)(void *, UINT StartSlot, UINT NumBuffers,
                                    gfx::ID3D11Buffer<ABI> *const *ppVertexBuffers, UINT const *pStrides,
                                    UINT const *pOffsets);
@@ -2173,7 +2189,7 @@ enum D3D11X_IMG_NUM_FORMAT
                             ID3D11ClassInstance **ppClassInstances, UINT *pNumClassInstances);
         void (*PSGetConstantBuffers)(void *, UINT StartSlot, UINT NumBuffers,
                                      gfx::ID3D11Buffer<ABI> **ppConstantBuffers);
-        void (*IAGetInputLayout)(void *, ID3D11InputLayout **ppInputLayout);
+        void (*IAGetInputLayout)(void *, gfx::ID3D11InputLayout<ABI> **ppInputLayout);
         void (*IAGetVertexBuffers)(void *, UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppVertexBuffers,
                                    UINT *pStrides, UINT *pOffsets);
         void (*IAGetIndexBuffer)(void *, gfx::ID3D11Buffer<ABI> **pIndexBuffer, DXGI_FORMAT *Format, UINT *Offset);
@@ -2248,7 +2264,7 @@ enum D3D11X_IMG_NUM_FORMAT
         HRESULT(*Map)(void *, gfx::ID3D11Resource<ABI> *pResource, UINT Subresource, D3D11_MAP MapType, UINT MapFlags, D3D11_MAPPED_SUBRESOURCE *pMappedResource);
         void(*Unmap)(void *, gfx::ID3D11Resource<ABI> *pResource, UINT Subresource);
         void(*PSSetConstantBuffers)(void *, UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppConstantBuffers);
-        void(*IASetInputLayout)(void *, ID3D11InputLayout *pInputLayout);
+        void(*IASetInputLayout)(void *, gfx::ID3D11InputLayout<ABI> *pInputLayout);
         void(*IASetVertexBuffers)(void *, UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppVertexBuffers, UINT const *pStrides, UINT const *pOffsets);
         void(*IASetIndexBuffer)(void *, UINT HardwareIndexFormat, gfx::ID3D11Buffer<ABI> *pIndexBuffer, UINT Offset);
         void(*DrawIndexedInstanced)(void *, UINT64 StartIndexLocationAndIndexCountPerInstance, UINT64 BaseVertexLocationAndStartInstanceLocation, UINT InstanceCount);
@@ -2308,7 +2324,7 @@ enum D3D11X_IMG_NUM_FORMAT
         void(*PSGetSamplers)(void *, UINT StartSlot, UINT NumSamplers, gfx::ID3D11SamplerState<ABI> **ppSamplers);
         void(*VSGetShader)(void *, gfx::ID3D11VertexShader<ABI> **ppVertexShader, ID3D11ClassInstance **ppClassInstances, UINT *pNumClassInstances);
         void(*PSGetConstantBuffers)(void *, UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppConstantBuffers);
-        void(*IAGetInputLayout)(void *, ID3D11InputLayout **ppInputLayout);
+        void(*IAGetInputLayout)(void *, gfx::ID3D11InputLayout<ABI> **ppInputLayout);
         void(*IAGetVertexBuffers)(void *, UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppVertexBuffers, UINT *pStrides, UINT *pOffsets);
         void(*IAGetIndexBuffer)(void *, gfx::ID3D11Buffer<ABI> **pIndexBuffer, DXGI_FORMAT *Format, UINT *Offset);
         void(*GSGetConstantBuffers)(void *, UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppConstantBuffers);
@@ -2361,7 +2377,7 @@ enum D3D11X_IMG_NUM_FORMAT
         HRESULT(*Map)(void *, gfx::ID3D11Resource<ABI> *pResource, UINT Subresource, D3D11_MAP MapType, UINT MapFlags, D3D11_MAPPED_SUBRESOURCE *pMappedResource);
         void(*Unmap)(void *, gfx::ID3D11Resource<ABI> *pResource, UINT Subresource);
         void(*PSSetConstantBuffers)(void *, UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppConstantBuffers);
-        void(*IASetInputLayout)(void *, ID3D11InputLayout *pInputLayout);
+        void(*IASetInputLayout)(void *, gfx::ID3D11InputLayout<ABI> *pInputLayout);
         void(*IASetVertexBuffers)(void *, UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppVertexBuffers, UINT const *pStrides, UINT const *pOffsets);
         void(*IASetIndexBuffer)(void *, UINT HardwareIndexFormat, gfx::ID3D11Buffer<ABI> *pIndexBuffer, UINT Offset);
         void(*DrawIndexedInstanced)(void *, UINT64 StartIndexLocationAndIndexCountPerInstance, UINT64 BaseVertexLocationAndStartInstanceLocation, UINT InstanceCount);
@@ -2421,7 +2437,7 @@ enum D3D11X_IMG_NUM_FORMAT
         void(*PSGetSamplers)(void *, UINT StartSlot, UINT NumSamplers, gfx::ID3D11SamplerState<ABI> **ppSamplers);
         void(*VSGetShader)(void *, gfx::ID3D11VertexShader<ABI> **ppVertexShader, ID3D11ClassInstance **ppClassInstances, UINT *pNumClassInstances);
         void(*PSGetConstantBuffers)(void *, UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppConstantBuffers);
-        void(*IAGetInputLayout)(void *, ID3D11InputLayout **ppInputLayout);
+        void(*IAGetInputLayout)(void *, gfx::ID3D11InputLayout<ABI> **ppInputLayout);
         void(*IAGetVertexBuffers)(void *, UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppVertexBuffers, UINT *pStrides, UINT *pOffsets);
         void(*IAGetIndexBuffer)(void *, gfx::ID3D11Buffer<ABI> **pIndexBuffer, DXGI_FORMAT *Format, UINT *Offset);
         void(*GSGetConstantBuffers)(void *, UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> **ppConstantBuffers);
@@ -2985,7 +3001,7 @@ enum D3D11X_IMG_NUM_FORMAT
         virtual HRESULT CreateUnorderedAccessView(gfx::ID3D11Resource<ABI> *pResource, D3D11_UNORDERED_ACCESS_VIEW_DESC const *pDesc, gfx::ID3D11UnorderedAccessView<ABI> **ppUAV) = 0;
         virtual HRESULT CreateRenderTargetView(gfx::ID3D11Resource<ABI> *pResource, D3D11_RENDER_TARGET_VIEW_DESC const *pDesc, gfx::ID3D11RenderTargetView<ABI> **ppRTV) = 0;
         virtual HRESULT CreateDepthStencilView(gfx::ID3D11Resource<ABI> *pResource, D3D11_DEPTH_STENCIL_VIEW_DESC const *pDesc, gfx::ID3D11DepthStencilView<ABI> **ppDSV) = 0;
-        virtual HRESULT CreateInputLayout(D3D11_INPUT_ELEMENT_DESC const *pDesc, uint32_t NumElements, void const *pShaderBytecodeWithInputSignature, uint64_t BytecodeLength, ID3D11InputLayout **ppInputLayout) = 0;
+        virtual HRESULT CreateInputLayout(D3D11_INPUT_ELEMENT_DESC const *pDesc, uint32_t NumElements, void const *pShaderBytecodeWithInputSignature, uint64_t BytecodeLength, gfx::ID3D11InputLayout<ABI> **ppInputLayout) = 0;
         virtual HRESULT CreateVertexShader(void const *pBytecode, uint64_t BytecodeLength, ID3D11ClassLinkage *pClassLinkage, gfx::ID3D11VertexShader<ABI> **ppVS) = 0;
         virtual HRESULT CreateGeometryShader(void const *pBytecode, uint64_t BytecodeLentgh, ID3D11ClassLinkage *pClassLinkage, gfx::ID3D11GeometryShader<ABI> **ppGS) = 0;
         virtual HRESULT CreateGeometryShaderWithStreamOutput(void const *pBytecode, uint64_t BytecodeLentgh, D3D11_SO_DECLARATION_ENTRY const *pSODeclaration, uint32_t NumEntries, uint32_t const *pStrides, uint32_t NumStides, uint32_t RasterizedStream, ID3D11ClassLinkage *pClassLinkage, gfx::ID3D11GeometryShader<ABI> **ppGS) = 0;
@@ -3031,7 +3047,7 @@ enum D3D11X_IMG_NUM_FORMAT
         HRESULT(*CreateUnorderedAccessView)(void *, gfx::ID3D11Resource<ABI> *pResource, D3D11_UNORDERED_ACCESS_VIEW_DESC const *pDesc, gfx::ID3D11UnorderedAccessView<ABI> **ppUAV);
         HRESULT(*CreateRenderTargetView)(void *, gfx::ID3D11Resource<ABI> *pResource, D3D11_RENDER_TARGET_VIEW_DESC const *pDesc, gfx::ID3D11RenderTargetView<ABI> **ppRTV);
         HRESULT(*CreateDepthStencilView)(void *, gfx::ID3D11Resource<ABI> *pResource, D3D11_DEPTH_STENCIL_VIEW_DESC const *pDesc, gfx::ID3D11DepthStencilView<ABI> **ppDSV);
-        HRESULT(*CreateInputLayout)(void *, D3D11_INPUT_ELEMENT_DESC const *pDesc, uint32_t NumElements, void const *pShaderBytecodeWithInputSignature, uint64_t BytecodeLength, ID3D11InputLayout **ppInputLayout);
+        HRESULT(*CreateInputLayout)(void *, D3D11_INPUT_ELEMENT_DESC const *pDesc, uint32_t NumElements, void const *pShaderBytecodeWithInputSignature, uint64_t BytecodeLength, gfx::ID3D11InputLayout<ABI> **ppInputLayout);
         HRESULT(*CreateVertexShader)(void *, void const *pBytecode, uint64_t BytecodeLength, ID3D11ClassLinkage *pClassLinkage, gfx::ID3D11VertexShader<ABI> **ppVS);
         HRESULT(*CreateGeometryShader)(void *, void const *pBytecode, uint64_t BytecodeLentgh, ID3D11ClassLinkage *pClassLinkage, gfx::ID3D11GeometryShader<ABI> **ppGS);
         HRESULT(*CreateGeometryShaderWithStreamOutput)(void *, void const *pBytecode, uint64_t BytecodeLentgh, D3D11_SO_DECLARATION_ENTRY const *pSODeclaration, uint32_t NumEntries, uint32_t const *pStrides, uint32_t NumStides, uint32_t RasterizedStream, ID3D11ClassLinkage *pClassLinkage, gfx::ID3D11GeometryShader<ABI> **ppGS);
@@ -3673,6 +3689,8 @@ DECLARE_ABI_UUIDOF_HELPER(gfx::ID3D11Texture2D, 0x6F15AAF2,0xD208,0x4E89,0x9A,0x
 DECLARE_ABI_UUIDOF_HELPER(gfx::ID3D11Texture3D, 0x037E866E,0xF56D,0x4357,0xA8,0xAF,0x9D,0xAB,0xBE,0x6E,0x25,0x0E)
 
 DECLARE_ABI_UUIDOF_HELPER(gfx::ID3D11Buffer, 0x48570B85,0xD1EE,0x4FCD,0xA2,0x50,0xEB,0x35,0x07,0x22,0xB0,0x37)
+
+DECLARE_ABI_UUIDOF_HELPER(gfx::ID3D11InputLayout, 0xE4819DDC,0x4CF0,0x40,0x25,0xBD,0x26,0x5D,0xE8,0x2A,0x3E,0x07,0xB7)
 
 DECLARE_ABI_UUIDOF_HELPER(gfx::ID3D11VertexShader, 0x3B301D64,0xD678,0x4289,0x88,0x97,0x22,0xF8,0x92,0x8B,0x72,0xF3)
 

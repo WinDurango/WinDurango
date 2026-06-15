@@ -18,9 +18,31 @@ template <abi_t ABI> ULONG D3D11Resource<ABI>::AddRef()
 
 template <abi_t ABI> ULONG D3D11Resource<ABI>::Release()
 {
+    std::lock_guard PlacementUpdateLock(g_ResourceMapMutex);
     m_pFunction->Release();
     ULONG RefCount = InterlockedDecrement(&this->m_RefCount);
-    if (!RefCount) delete this;
+    if (!RefCount)
+    {
+        void* AllocationBase = nullptr;
+        MEMORY_BASIC_INFORMATION mbi{};
+        SIZE_T Result = VirtualQuery(this->m_pAllocationStart, &mbi, sizeof(mbi));
+        if (mbi.AllocationBase && Result == sizeof(mbi))
+        {
+            AllocationBase = mbi.AllocationBase;
+            auto range = g_ResourceMap.equal_range(AllocationBase);
+
+            for (auto it = range.first; it != range.second; ++it)
+            {
+                if (it->second == this)
+                {
+                    g_ResourceMap.erase(it);
+                    break;
+                }
+            }
+        }
+
+        delete this;
+    }
     return RefCount;
 }
 
@@ -111,9 +133,31 @@ template <abi_t ABI> ULONG D3D11Texture1D<ABI>::AddRef()
 
 template <abi_t ABI> ULONG D3D11Texture1D<ABI>::Release()
 {
+    std::lock_guard PlacementUpdateLock(g_ResourceMapMutex);
     m_pFunction->Release();
     ULONG RefCount = InterlockedDecrement(&this->m_RefCount);
-    if (!RefCount) delete this;
+    if (!RefCount)
+    {
+        void* AllocationBase = nullptr;
+        MEMORY_BASIC_INFORMATION mbi{};
+        SIZE_T Result = VirtualQuery(this->m_pAllocationStart, &mbi, sizeof(mbi));
+        if (mbi.AllocationBase && Result == sizeof(mbi))
+        {
+            AllocationBase = mbi.AllocationBase;
+            auto range = g_ResourceMap.equal_range(AllocationBase);
+
+            for (auto it = range.first; it != range.second; ++it)
+            {
+                if (it->second == this)
+                {
+                    g_ResourceMap.erase(it);
+                    break;
+                }
+            }
+        }
+
+        delete this;
+    }
     return RefCount;
 }
 
@@ -221,18 +265,22 @@ template <abi_t ABI> ULONG D3D11Texture2D<ABI>::Release()
     {
         void* AllocationBase = nullptr;
         MEMORY_BASIC_INFORMATION mbi{};
-        VirtualQuery(this->m_pAllocationStart, &mbi, sizeof(mbi));
-        if (mbi.AllocationBase) AllocationBase = mbi.AllocationBase;
-        auto range = g_ResourceMap.equal_range(AllocationBase);
-
-        for (auto it = range.first; it != range.second; ++it)
+        SIZE_T Result = VirtualQuery(this->m_pAllocationStart, &mbi, sizeof(mbi));
+        if (mbi.AllocationBase && Result == sizeof(mbi))
         {
-            if (it->second == this)
+            AllocationBase = mbi.AllocationBase;
+            auto range = g_ResourceMap.equal_range(AllocationBase);
+
+            for (auto it = range.first; it != range.second; ++it)
             {
-                g_ResourceMap.erase(it);
-                break;
+                if (it->second == this)
+                {
+                    g_ResourceMap.erase(it);
+                    break;
+                }
             }
         }
+
         delete this;
     }
     return RefCount;
@@ -335,9 +383,31 @@ template <abi_t ABI> ULONG D3D11Texture3D<ABI>::AddRef()
 
 template <abi_t ABI> ULONG D3D11Texture3D<ABI>::Release()
 {
+    std::lock_guard PlacementUpdateLock(g_ResourceMapMutex);
     m_pFunction->Release();
     ULONG RefCount = InterlockedDecrement(&this->m_RefCount);
-    if (!RefCount) delete this;
+    if (!RefCount)
+    {
+        void* AllocationBase = nullptr;
+        MEMORY_BASIC_INFORMATION mbi{};
+        SIZE_T Result = VirtualQuery(this->m_pAllocationStart, &mbi, sizeof(mbi));
+        if (mbi.AllocationBase && Result == sizeof(mbi))
+        {
+            AllocationBase = mbi.AllocationBase;
+            auto range = g_ResourceMap.equal_range(AllocationBase);
+
+            for (auto it = range.first; it != range.second; ++it)
+            {
+                if (it->second == this)
+                {
+                    g_ResourceMap.erase(it);
+                    break;
+                }
+            }
+        }
+
+        delete this;
+    }
     return RefCount;
 }
 
@@ -430,9 +500,31 @@ template <abi_t ABI> ULONG D3D11Buffer<ABI>::AddRef()
 
 template <abi_t ABI> ULONG D3D11Buffer<ABI>::Release()
 {
+    std::lock_guard PlacementUpdateLock(g_ResourceMapMutex);
     m_pFunction->Release();
     ULONG RefCount = InterlockedDecrement(&this->m_RefCount);
-    if (!RefCount) delete this;
+    if (!RefCount)
+    {
+        void* AllocationBase = nullptr;
+        MEMORY_BASIC_INFORMATION mbi{};
+        SIZE_T Result = VirtualQuery(this->m_pAllocationStart, &mbi, sizeof(mbi));
+        if (mbi.AllocationBase && Result == sizeof(mbi))
+        {
+            AllocationBase = mbi.AllocationBase;
+            auto range = g_ResourceMap.equal_range(AllocationBase);
+
+            for (auto it = range.first; it != range.second; ++it)
+            {
+                if (it->second == this)
+                {
+                    g_ResourceMap.erase(it);
+                    break;
+                }
+            }
+        }
+
+        delete this;
+    }
     return RefCount;
 }
 

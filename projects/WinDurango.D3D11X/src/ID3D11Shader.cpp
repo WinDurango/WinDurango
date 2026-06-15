@@ -360,3 +360,63 @@ HRESULT D3D11DomainShader<ABI>::SetPrivateDataInterfaceGraphics(_GUID const &gui
 #undef ABI_INTERFACE
 #define ABI_INTERFACE(ABI) D3D11DomainShader<ABI>
 D3D11_DECLARE_ABI_TEMPLATES();
+
+//
+// IUnknown
+//
+template <abi_t ABI> HRESULT D3D11InputLayout<ABI>::QueryInterface(REFIID riid, void **ppvObject)
+{
+    IMPLEMENT_STUB();
+    return E_NOTIMPL;
+}
+
+template <abi_t ABI> ULONG D3D11InputLayout<ABI>::AddRef()
+{
+    m_pFunction->AddRef();
+    return InterlockedIncrement(&this->m_RefCount);
+}
+
+template <abi_t ABI> ULONG D3D11InputLayout<ABI>::Release()
+{
+    m_pFunction->Release();
+    ULONG RefCount = InterlockedDecrement(&this->m_RefCount);
+    if (!RefCount)
+        delete this;
+    return RefCount;
+}
+
+//
+// ID3D11DeviceChild
+//
+template <abi_t ABI> void D3D11InputLayout<ABI>::GetDevice(gfx::ID3D11Device<ABI> **ppDevice)
+{
+    IMPLEMENT_STUB();
+}
+
+template <abi_t ABI> HRESULT D3D11InputLayout<ABI>::GetPrivateData(_GUID const &guid, uint32_t *pDataSize, void *pData)
+{
+    return m_pFunction->GetPrivateData(guid, pDataSize, pData);
+}
+
+template <abi_t ABI>
+HRESULT D3D11InputLayout<ABI>::SetPrivateData(_GUID const &guid, uint32_t DataSize, void const *pData)
+{
+    return m_pFunction->SetPrivateData(guid, DataSize, pData);
+}
+
+template <abi_t ABI> HRESULT D3D11InputLayout<ABI>::SetPrivateDataInterface(_GUID const &guid, IUnknown const *pData)
+{
+    return m_pFunction->SetPrivateDataInterface(guid, pData);
+}
+
+template <abi_t ABI>
+HRESULT D3D11InputLayout<ABI>::SetPrivateDataInterfaceGraphics(_GUID const &guid,
+                                                                xbox::IGraphicsUnknown<ABI> const *pData)
+{
+    IMPLEMENT_STUB();
+    return E_NOTIMPL;
+}
+
+#undef ABI_INTERFACE
+#define ABI_INTERFACE(ABI) D3D11InputLayout<ABI>
+D3D11_DECLARE_ABI_TEMPLATES();
