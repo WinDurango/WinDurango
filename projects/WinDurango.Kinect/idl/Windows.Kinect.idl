@@ -786,8 +786,11 @@ namespace Windows.Kinect
     };
 
     [interface_name("IKinectSensor", E3FADC66-723F-48A5-933E-BFD72529AB16)]
+    [static_name("IKinectSensorStatics", C421D46B-5084-45D6-BDF0-57151F81D0D9)]
     runtimeclass KinectSensor
     {
+        static KinectSensor GetDefault();
+        static Windows.Foundation.Collections.IObservableMap<String, KinectSensor> Sensors { get; };
         event Windows.Foundation.TypedEventHandler<KinectSensor, IsAvailableChangedEventArgs> IsAvailableChanged;
         void Open();
         void Close();
@@ -804,10 +807,5 @@ namespace Windows.Kinect
         CoordinateMapper CoordinateMapper { get; };
         String UniqueKinectId { get; };
         KinectCapabilities KinectCapabilities { get; };
-        [static_name("IKinectSensorStatics", C421D46B-5084-45D6-BDF0-57151F81D0D9)]
-        {
-            static KinectSensor GetDefault();
-            static Windows.Foundation.Collections.IObservableMap<String, KinectSensor> Sensors { get; };
-        }
     };
 }
