@@ -91,6 +91,7 @@ namespace winrt::Windows::Xbox::Input::implementation
         static winrt::event<winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Input::GamepadAddedEventArgs>> e_GamepadAdded;
         static winrt::event<winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Input::GamepadRemovedEventArgs>> e_GamepadRemoved;
         static winrt::Windows::Foundation::Collections::IVector<winrt::Windows::Xbox::Input::IGamepad> a_gamepads;
+        bool m_IsMouseLockEnabled = false;
     };
 }
 namespace winrt::Windows::Xbox::Input::factory_implementation

@@ -480,44 +480,55 @@ namespace winrt::Windows::Xbox::Input::implementation
             reading.LeftTrigger = 1.0f;
         }
 
-        POINT pos;
-        GetCursorPos(&pos);
-
-        if (firstFrame) {
-            prev = pos;
-            firstFrame = false;
+        //Toggles the mouse lock
+        if (GetAsyncKeyState(VK_F9) & 0x8000)
+        {
+            m_IsMouseLockEnabled = !m_IsMouseLockEnabled;
         }
 
-        const int dx = pos.x - prev.x;
-        const int dy = pos.y - prev.y;
+        if (m_IsMouseLockEnabled)
+        {
+            POINT MousePosition{};
+            GetCursorPos(&MousePosition);
 
-        deltaSumX += dx;
-        deltaSumY += dy;
-        prev = pos;
+            if (firstFrame)
+            {
+                prev = MousePosition;
+                firstFrame = false;
+            }
 
-        const int centerX = GetSystemMetrics(SM_CXSCREEN) / 2;
-        const int centerY = GetSystemMetrics(SM_CYSCREEN) / 2;
+            const int dx = MousePosition.x - prev.x;
+            const int dy = MousePosition.y - prev.y;
 
-        SetCursorPos(centerX, centerY);
+            deltaSumX += dx;
+            deltaSumY += dy;
+            prev = MousePosition;
 
-        prev.x = centerX;
-        prev.y = centerY;
+            const int centerX = GetSystemMetrics(SM_CXSCREEN) / 2;
+            const int centerY = GetSystemMetrics(SM_CYSCREEN) / 2;
 
-        auto sign = [](float v) { return (v > 0) - (v < 0); };
+            SetCursorPos(centerX, centerY);
+
+            prev.x = centerX;
+            prev.y = centerY;
+
+            auto sign = [](float v) { return (v > 0) - (v < 0); };
         
-        float x = -std::exp((-1.0f / 5.0f) * std::abs(deltaSumX)) + 1.0f;
-        float y = -std::exp((-1.0f / 5.0f) * std::abs(deltaSumY)) + 1.0f;
+            float x = -std::exp((-1.0f / 5.0f) * std::abs(deltaSumX)) + 1.0f;
+            float y = -std::exp((-1.0f / 5.0f) * std::abs(deltaSumY)) + 1.0f;
 
-        x *= sign(deltaSumX);
-        y *= -sign(deltaSumY);
+            x *= sign(deltaSumX);
+            y *= -sign(deltaSumY);
 
-        if (x != 0 || y != 0) {
-            reading.RightThumbstickX = std::clamp(x, -1.0f, 1.0f);
-            reading.RightThumbstickY = std::clamp(y, -1.0f, 1.0f);
+            if (x != 0 || y != 0)
+            {
+                reading.RightThumbstickX = std::clamp(x, -1.0f, 1.0f);
+                reading.RightThumbstickY = std::clamp(y, -1.0f, 1.0f);
+            }
+
+            deltaSumX = 0.0f;
+            deltaSumY = 0.0f;
         }
-
-        deltaSumX = 0.0f;
-        deltaSumY = 0.0f;
 
         return reading;
     }
