@@ -6,6 +6,7 @@
 #include "ID3D11State.h"
 #include "d3d11.x.h"
 #include "XG.h"
+#include "ID3D11CommandList.h"
 
 //
 // IUnknown
@@ -1486,9 +1487,21 @@ void D3D11DeviceContextX<ABI>::ResolveSubresource(gfx::ID3D11Resource<ABI>* pDst
 }
 
 template <abi_t ABI>
-void D3D11DeviceContextX<ABI>::ExecuteCommandList(ID3D11CommandList *pCommandList, BOOL RestoreContextState)
+void D3D11DeviceContextX<ABI>::ExecuteCommandList(gfx::ID3D11CommandList<ABI> *pCommandList, BOOL RestoreContextState)
 {
-    m_pFunction->ExecuteCommandList(pCommandList, RestoreContextState);
+    if (pCommandList)
+    {
+        D3D11CommandList<ABI> *CmdListWrapper = static_cast<D3D11CommandList<ABI> *>(pCommandList);
+        if (!CmdListWrapper->m_IsDrawBundle)
+        {
+            ID3D11CommandList *CommandList = static_cast<D3D11CommandList<ABI> *>(pCommandList)->m_pFunction;
+            m_pFunction->ExecuteCommandList(CommandList, RestoreContextState);
+        }
+        else
+        {
+            ExecuteDrawBundles(pCommandList);
+        }
+    }
 }
 
 template <abi_t ABI>
@@ -2249,9 +2262,17 @@ template <abi_t ABI> UINT D3D11DeviceContextX<ABI>::GetContextFlags()
 }
 
 template <abi_t ABI>
-HRESULT D3D11DeviceContextX<ABI>::FinishCommandList(BOOL RestoreDeferredContextState, ID3D11CommandList **ppCommandList)
+HRESULT D3D11DeviceContextX<ABI>::FinishCommandList(BOOL RestoreDeferredContextState, gfx::ID3D11CommandList<ABI> **ppCommandList)
 {
-    return m_pFunction->FinishCommandList(RestoreDeferredContextState, ppCommandList);
+    ID3D11CommandList *CommandList = nullptr;
+    HRESULT hr = m_pFunction->FinishCommandList(RestoreDeferredContextState, &CommandList);
+
+    if (CommandList)
+    {
+        (*ppCommandList) = new D3D11CommandList<ABI>(CommandList);
+    }
+
+    return hr;
 }
 
 //
@@ -3680,7 +3701,7 @@ template <abi_t ABI> void D3D11DeviceContextX<ABI>::SetDrawBalancing(UINT Balanc
 template <abi_t ABI>
 void D3D11DeviceContextX<ABI>::UpdateShaderResources(gfx::ID3D11ShaderResourceView<ABI>** ppSRVs)
 {
-    for (UINT i = 0; i < D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT; i++)
+    for (UINT i = 0; i < D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT; ++i)
     {
         __try
         {
@@ -3803,49 +3824,155 @@ void D3D11DeviceContextX<ABI>::UpdateShaderResources(gfx::ID3D11ShaderResourceVi
 template <abi_t ABI>
 void D3D11DeviceContextX<ABI>::UpdateConstantBuffers(gfx::ID3D11Buffer<ABI>** ppBuffers)
 {
-    for (UINT i = 0; i < D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT; i++)
+    for (UINT i = 0; i < D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT; ++i)
     {
-        if (ppBuffers[i])
+        auto* pBuffer = ppBuffers[i];
+        if (!pBuffer) continue;
+
+        auto* BufferWrapper = static_cast<D3D11Buffer<ABI>*>(pBuffer);
+        if (!pBuffer->m_pAllocationStart || !BufferWrapper->m_IsDirty)
+            continue;
+
+        D3D11_BUFFER_DESC Desc{};
+        pBuffer->GetDesc(&Desc);
+        if (Desc.Usage == D3D11_USAGE_DEFAULT)
         {
-            gfx::ID3D11Buffer<ABI> *pBuffer = ppBuffers[i];
-            if (pBuffer->m_pAllocationStart)
-            {
-                if (static_cast<D3D11Buffer<ABI> *>(pBuffer)->m_IsDirty == true)
-                {
-                    D3D11_BUFFER_DESC Desc{};
-                    pBuffer->GetDesc(&Desc);
-                    if (Desc.Usage == D3D11_USAGE_DEFAULT)
-                    {
-                        UpdateSubresource(pBuffer, 0, nullptr, pBuffer->m_pAllocationStart, 0, 0);
-                        static_cast<D3D11Buffer<ABI> *>(pBuffer)->m_IsDirty = false;
-
-                        DWORD OldProtect = 0;
-                        VirtualProtect(pBuffer->m_pAllocationStart, 1, PAGE_READONLY, &OldProtect);
-                    }
-                    else
-                    {
-                        D3D11_MAPPED_SUBRESOURCE Mapped{};
-                        HRESULT hr = Map(pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &Mapped);
-                        if (SUCCEEDED(hr))
-                        {
-                            memcpy(Mapped.pData, pBuffer->m_pAllocationStart, Mapped.DepthPitch);
-                            Unmap(pBuffer, 0);
-                            static_cast<D3D11Buffer<ABI> *>(pBuffer)->m_IsDirty = false;
-
-                            DWORD OldProtect = 0;
-                            VirtualProtect(pBuffer->m_pAllocationStart, 1, PAGE_READONLY, &OldProtect);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                continue;
-            }
+            UpdateSubresource(pBuffer, 0, nullptr, pBuffer->m_pAllocationStart, 0, 0);
+            DWORD OldProtect = 0;
+            VirtualProtect(pBuffer->m_pAllocationStart, 1, PAGE_READONLY, &OldProtect);
         }
         else
         {
-            continue;
+            D3D11_MAPPED_SUBRESOURCE mapped{};
+            if (SUCCEEDED(Map(pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped)))
+            {
+                memcpy(mapped.pData, pBuffer->m_pAllocationStart, Desc.ByteWidth);
+                Unmap(pBuffer, 0);
+                DWORD OldProtect = 0;
+                VirtualProtect(pBuffer->m_pAllocationStart, 1, PAGE_READONLY, &OldProtect);
+            }
+        }
+
+        BufferWrapper->m_IsDirty = false;
+    }
+}
+
+template <abi_t ABI>
+void D3D11DeviceContextX<ABI>::ExecuteDrawBundles(gfx::ID3D11CommandList<ABI> *pCommandList)
+{
+    if (!pCommandList)
+        return;
+
+    D3D11CommandList<ABI>* Bundle = static_cast<D3D11CommandList<ABI>*>(pCommandList);
+    for (UINT i = 0; i < Bundle->m_Commands.size(); ++i)
+    {
+        const DrawBundlesCommand<ABI>& cmd = Bundle->m_Commands[i];
+        switch (cmd.m_CommandType)
+        {
+        case DrawBundlesCommandType::VSSetShaderResourcesPC:
+            VSSetShaderResources(cmd.VSSetShaderResourcesPC.StartSlot, cmd.VSSetShaderResourcesPC.NumViews, cmd.VSSetShaderResourcesPC.ppShaderResourceViews);
+            break;
+        case DrawBundlesCommandType::PSSetShaderResourcesPC:
+            PSSetShaderResources(cmd.PSSetShaderResourcesPC.StartSlot, cmd.PSSetShaderResourcesPC.NumViews, cmd.PSSetShaderResourcesPC.ppShaderResourceViews);
+            break;
+        case DrawBundlesCommandType::ClearState:
+            ClearState();
+            break;
+        case DrawBundlesCommandType::DrawIndexedXbox:
+            DrawIndexed(cmd.DrawIndexedXbox.StartIndexLocationAndIndexCount, cmd.DrawIndexedXbox.BaseVertexLocation);
+            break;
+        case DrawBundlesCommandType::DrawIndexedInstancedXbox:
+            DrawIndexedInstanced(cmd.DrawIndexedInstancedXbox.StartIndexLocationAndIndexCountPerInstance, cmd.DrawIndexedInstancedXbox.BaseVertexLocationAndStartInstanceLocation, cmd.DrawIndexedInstancedXbox.InstanceCount);
+            break;
+        case DrawBundlesCommandType::DrawIndexedInstancedIndirect:
+            DrawIndexedInstancedIndirect(cmd.DrawIndexedInstancedIndirect.pBufferForArgs, cmd.DrawIndexedInstancedIndirect.AlignedByteOffsetForArgs);
+            break;
+        case DrawBundlesCommandType::DrawInstancedIndirect:
+            DrawInstancedIndirect(cmd.DrawInstancedIndirect.pBufferForArgs, cmd.DrawInstancedIndirect.AlignedByteOffsetForArgs);
+            break;
+        case DrawBundlesCommandType::DSSetShader:
+            DSSetShader(cmd.DSSetShader.pDomainShader);
+            break;
+        case DrawBundlesCommandType::HSSetShader:
+            HSSetShader(cmd.HSSetShader.pHullShader);
+            break;
+        case DrawBundlesCommandType::GSSetShader:
+            GSSetShader(cmd.GSSetShader.pShader);
+            break;
+        case DrawBundlesCommandType::VSSetShader:
+            VSSetShader(cmd.VSSetShader.pVertexShader);
+            break;
+        case DrawBundlesCommandType::PSSetShader:
+            PSSetShader(cmd.PSSetShader.pPixelShader);
+            break;
+        case DrawBundlesCommandType::CSSetShader:
+            CSSetShader(cmd.CSSetShader.pComputeShader);
+            break;
+        case DrawBundlesCommandType::IASetIndexBufferXbox:
+            IASetIndexBuffer(cmd.IASetIndexBufferXbox.HardwareIndexFormat, cmd.IASetIndexBufferXbox.pIndexBuffer, cmd.IASetIndexBufferXbox.Offset);
+            break;
+        case DrawBundlesCommandType::IASetIndexBufferPC:
+            IASetIndexBuffer(cmd.IASetIndexBufferPC.pIndexBuffer, cmd.IASetIndexBufferPC.HardwareIndexFormat, cmd.IASetIndexBufferPC.Offset);
+            break;
+        case DrawBundlesCommandType::IASetVertexBuffers:
+            IASetVertexBuffers(cmd.IASetVertexBuffers.StartSlot, cmd.IASetVertexBuffers.NumBuffers, cmd.IASetVertexBuffers.ppVertexBuffers, cmd.IASetVertexBuffers.pStrides, cmd.IASetVertexBuffers.pOffsets);
+            break;
+        case DrawBundlesCommandType::RemapConstantBufferInheritance:
+            RemapConstantBufferInheritance(cmd.RemapConstantBufferInheritance.Stage, cmd.RemapConstantBufferInheritance.Slot, cmd.RemapConstantBufferInheritance.InheritStage, cmd.RemapConstantBufferInheritance.InheritSlot);
+            break;
+        case DrawBundlesCommandType::RemapShaderResourceInheritance:
+            RemapShaderResourceInheritance(cmd.RemapShaderResourceInheritance.Stage, cmd.RemapShaderResourceInheritance.Slot, cmd.RemapShaderResourceInheritance.InheritStage, cmd.RemapShaderResourceInheritance.InheritSlot);
+            break;
+        case DrawBundlesCommandType::PSSetFastShaderResource:
+            PSSetFastShaderResource(cmd.PSSetFastShaderResource.Slot, cmd.PSSetFastShaderResource.pShaderResourceView);
+            break;
+        case DrawBundlesCommandType::VSSetFastShaderResource:
+            VSSetFastShaderResource(cmd.VSSetFastShaderResource.Slot, cmd.VSSetFastShaderResource.pShaderResourceView);
+            break;
+        case DrawBundlesCommandType::PSSetFastConstantBuffer:
+            PSSetFastConstantBuffer(cmd.PSSetFastConstantBuffer.Slot, cmd.PSSetFastConstantBuffer.pConstantBuffer);
+            break;
+        case DrawBundlesCommandType::VSSetFastConstantBuffer:
+            VSSetFastConstantBuffer(cmd.VSSetFastConstantBuffer.Slot, cmd.VSSetFastConstantBuffer.pConstantBuffer);
+            break;
+        case DrawBundlesCommandType::PSSetFastSampler:
+            PSSetFastSampler(cmd.PSSetFastSampler.Slot, cmd.PSSetFastSampler.pSampler);
+            break;
+        case DrawBundlesCommandType::VSSetFastSampler:
+            VSSetFastSampler(cmd.VSSetFastSampler.Slot, cmd.VSSetFastSampler.pSampler);
+            break;
+        case DrawBundlesCommandType::HSSetFastSampler:
+            HSSetFastSampler(cmd.HSSetFastSampler.Slot, cmd.HSSetFastSampler.pSampler);
+            break;
+        case DrawBundlesCommandType::GSSetFastSampler:
+            GSSetFastSampler(cmd.GSSetFastSampler.Slot, cmd.GSSetFastSampler.pSampler);
+            break;
+        case DrawBundlesCommandType::CSSetFastSampler:
+            CSSetFastSampler(cmd.CSSetFastSampler.Slot, cmd.CSSetFastSampler.pSampler);
+            break;
+        case DrawBundlesCommandType::DSSetFastSampler:
+            DSSetFastSampler(cmd.DSSetFastSampler.Slot, cmd.DSSetFastSampler.pSampler);
+            break;
+        case DrawBundlesCommandType::IASetInputLayout:
+            IASetInputLayout(cmd.IASetInputLayout.pInputLayout);
+            break;
+        case DrawBundlesCommandType::IASetPrimitiveTopology:
+            IASetPrimitiveTopology(cmd.IASetPrimitiveTopology.PrimitiveTopology);
+            break;
+        case DrawBundlesCommandType::DrawIndexedPC:
+            DrawIndexed(cmd.DrawIndexedPC.IndexCount, cmd.DrawIndexedPC.StartIndexLocation, cmd.DrawIndexedPC.BaseVertexLocation);
+            break;
+        case DrawBundlesCommandType::DrawIndexedInstancedPC:
+            DrawIndexedInstanced(cmd.DrawIndexedInstancedPC.IndexCountPerInstance, cmd.DrawIndexedInstancedPC.InstanceCount,
+            cmd.DrawIndexedInstancedPC.StartIndexLocation, cmd.DrawIndexedInstancedPC.BaseVertexLocation,
+            cmd.DrawIndexedInstancedPC.StartInstanceLocation);
+            break;
+        case DrawBundlesCommandType::Draw:
+            Draw(cmd.Draw.VertexCount, cmd.Draw.StartVertexLocation);
+            break;
+        default:
+            MessageBoxA(NULL, "Unknown Bundle Context command!", "Error!", MB_OK);
+            break;
         }
     }
 }

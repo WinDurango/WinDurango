@@ -19,7 +19,7 @@ LONG D3D11GraphicsMemoryManager<ABI>::VectoredExceptionHandler(_EXCEPTION_POINTE
                 {
                     std::lock_guard<std::mutex> lock(g_ResourceMapMutex);
                     auto Range = g_ResourceMap.equal_range(mbi.AllocationBase);
-                    for (auto it = Range.first; it != Range.second; it++)
+                    for (auto it = Range.first; it != Range.second; ++it)
                     {
                         D3D11_RESOURCE_DIMENSION Type{};
                         reinterpret_cast<gfx::ID3D11Resource<ABI>*>(it->second)->GetType(&Type);

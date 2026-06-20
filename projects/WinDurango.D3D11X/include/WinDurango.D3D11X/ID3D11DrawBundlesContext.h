@@ -1,56 +1,17 @@
-#pragma once
 #include "d3d11_x.g.h"
-#include <map>
-#include <mutex>
-#include <vector>
+#include "ID3D11CommandList.h"
 
-ID3D11DeviceContext2 *g_Context = nullptr;
-
-static std::map<UINT64, int> D3D11X_HARDWARE_TO_TOPOLOGY_MAP = {
-    {0x000001ffc0009e00, 0}, {0x000003ffc0009e00, 1}, {0x000005ffc0009e00, 2}, {0x000007ffc0009e00, 3},
-    {0x000009ffc0009e00, 4}, {0x00000dffc0009e00, 5}, {0x00000bffc0009e00, 6}, {0x000001ffc0009e00, 7},
-    {0x000001ffc0009e00, 8}, {0x000001ffc0009e00, 9}, {0x0000157fc0009e00, 10}, {0x0000177fc0009e00, 11},
-    {0x0000197fc0009e00, 12}, {0x00001b7fc0009e00, 13}, {0x00001dffc0009e00, 14}, {0x00001fffc0009e00, 15},
-    {0x000021ffc0009e00, 16}, {0x000023ffc0009e00, 17}, {0x000025ffc0009e00, 18}, {0x000027ffc0009e00, 19},
-    {0x000029ffc0009e00, 20}, {0x00002bffc0009e00, 21}, {0x00002dffc0009e00, 22}, {0x00002fffc0009e00, 23},
-    {0x000031ffc0009e00, 24}, {0x000033ffc0009e00, 25}, {0x000035ffc0009e00, 26}, {0x000037ffc0009e00, 27},
-    {0x000039ffc0009e00, 28}, {0x000001ffc0009e00, 29}, {0x000001ffc0009e00, 30}, {0x000001ffc0009e00, 31},
-    {0x000001ffc0009e00, 32}, {0x001013ffc0009e00, 33}, {0x0020137fc0009e00, 34}, {0x00301354c0009e00, 35},
-    {0x0040133fc0009e00, 36}, {0x00501332c0009e00, 37}, {0x00601329c0009e00, 38}, {0x00701323c0009e00, 39},
-    {0x0080131fc0009e00, 40}, {0x0090131bc0009e00, 41}, {0x00a01318c0009e00, 42}, {0x00b01316c0009e00, 43},
-    {0x00c01314c0009e00, 44}, {0x00d01312c0009e00, 45}, {0x00e01311c0009e00, 46}, {0x00f01310c0009e00, 47},
-    {0x0100130fc0009e00, 48}, {0x0110130ec0009e00, 49}, {0x0120130dc0009e00, 50}, {0x0130130cc0009e00, 51},
-    {0x0140130bc0009e00, 52}, {0x0150130bc0009e00, 53}, {0x0160130ac0009e00, 54}, {0x0170130ac0009e00, 55},
-    {0x01801309c0009e00, 56}, {0x01901309c0009e00, 57}, {0x01a01308c0009e00, 58}, {0x01b01308c0009e00, 59},
-    {0x01c01308c0009e00, 60}, {0x01d01307c0009e00, 61}, {0x01e01307c0009e00, 62}, {0x01f01307c0009e00, 63},
-    {0x02001307c0009e00, 64}
-};
-
-struct ID3D11BackgroundContext : IUnknown
-{
-    // Returns TRUE if the context has executed all of its commands
-    virtual BOOL ExecuteContext() = 0;
-};
-
-template <abi_t ABI> class D3D11DeviceContextX : public gfx::ID3D11DeviceContextX<ABI>
+template <abi_t ABI> class D3D11DrawBundlesContext : public gfx::ID3D11DrawBundlesContext<ABI>
 {
 public:
     ID3D11DeviceContext2 *m_pFunction;
+    std::vector<DrawBundlesCommand<ABI>> m_CommandQueue;
 
-    D3D11DeviceContextX(ID3D11DeviceContext2 *pContext)
+    D3D11DrawBundlesContext(ID3D11DeviceContext2 *pContext)
     {
         if (this->m_RefCount != 0)
             this->m_RefCount = 0;
         m_pFunction = pContext;
-        g_Context = m_pFunction;
-        InterlockedIncrement(&this->m_RefCount);
-        memcpy(&this->m_Function, *(void ***)this, sizeof(this->m_Function));
-    }
-    D3D11DeviceContextX()
-    {
-        if (this->m_RefCount != 0)
-            this->m_RefCount = 0;
-        m_pFunction = g_Context;
         InterlockedIncrement(&this->m_RefCount);
         memcpy(&this->m_Function, *(void ***)this, sizeof(this->m_Function));
     }
@@ -76,19 +37,9 @@ public:
         return E_NOTIMPL;
     }
 
-    std::vector<ID3D11BackgroundContext*> m_BkgContexts;
-    std::mutex m_BkgCtxLock;
-
     //
     // ID3D11DeviceContext
     //
-    void CheckDirtyFlags();
-    void ExecuteBackgroundContexts();
-    void AddBackgroundContext(ID3D11BackgroundContext *pContext);
-    void RemoveBackgroundContext(ID3D11BackgroundContext *pContext);
-    void UpdateShaderResources(gfx::ID3D11ShaderResourceView<ABI> **ppSRVs);
-    void UpdateConstantBuffers(gfx::ID3D11Buffer<ABI> **ppBuffers);
-    void ExecuteDrawBundles(gfx::ID3D11CommandList<ABI> *pCommandList);
     void VSSetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppConstantBuffers);
     void PSSetShaderResources(UINT StartSlot, UINT NumViews,
                               gfx::ID3D11ShaderResourceView<ABI> *const *ppShaderResourceViews);
@@ -490,5 +441,5 @@ public:
 };
 
 #undef ABI_INTERFACE
-#define ABI_INTERFACE(ABI) D3D11DeviceContextX<ABI>
+#define ABI_INTERFACE(ABI) D3D11DrawBundlesContext<ABI>
 D3D11_DECLARE_ABI_TEMPLATES(extern);

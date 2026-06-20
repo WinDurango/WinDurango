@@ -11,6 +11,7 @@
 #include "d3d11.x.h"
 #include <d3d12.h>
 #include <d3dcompiler.h>
+#include "ID3D11DrawBundlesContext.h"
 
 //
 // IUnknown
@@ -601,6 +602,12 @@ HRESULT D3D11DeviceX<ABI>::CreateDeferredContext(uint32_t Flags, gfx::ID3D11Devi
     pContext->QueryInterface(IID_PPV_ARGS(&pContext2));
     pContext->Release();
 
+    if (Flags & D3D11_CREATE_DEFERRED_CONTEXT_DRAW_BUNDLES)
+    {
+        *ppDeferredContext = new D3D11DrawBundlesContext<ABI>(pContext2);
+        return S_OK;
+    }
+
     *ppDeferredContext = new D3D11DeviceContextX<ABI>(pContext2);
     return S_OK;
 }
@@ -734,6 +741,12 @@ HRESULT D3D11DeviceX<ABI>::CreateDeferredContext1(uint32_t Flags, gfx::ID3D11Dev
     pContext->QueryInterface(IID_PPV_ARGS(&pContext2));
     pContext->Release();
 
+    if (Flags & D3D11_CREATE_DEFERRED_CONTEXT_DRAW_BUNDLES)
+    {
+        *ppDeferredContext1 = new D3D11DrawBundlesContext<ABI>(pContext2);
+        return S_OK;
+    }
+
     *ppDeferredContext1 = new D3D11DeviceContextX<ABI>(pContext2);
     return S_OK;
 }
@@ -796,6 +809,12 @@ HRESULT D3D11DeviceX<ABI>::CreateDeferredContext2(uint32_t Flags, gfx::ID3D11Dev
 
     pContext->QueryInterface(IID_PPV_ARGS(&pContext2));
     pContext->Release();
+
+    if (Flags & D3D11_CREATE_DEFERRED_CONTEXT_DRAW_BUNDLES)
+    {
+        *ppDeferredContext = new D3D11DrawBundlesContext<ABI>(pContext2);
+        return S_OK;
+    }
 
     *ppDeferredContext = new D3D11DeviceContextX<ABI>(pContext2);
     return S_OK;
@@ -870,6 +889,7 @@ template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreatePlacementBuffer(D3D11_BUFFER_DESC const *pDesc, void *pVirtualAddress,
                                                  gfx::ID3D11Buffer<ABI> **ppBuffer)
 {
+    std::lock_guard<std::mutex> lock(g_ResourceMapMutex);
     D3D11_SUBRESOURCE_DATA initialData{};
     initialData.pSysMem = pVirtualAddress;
     initialData.SysMemPitch = 0;
@@ -915,6 +935,7 @@ template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture1D(D3D11_TEXTURE1D_DESC const *pDesc, UINT TileModeIndex, UINT Pitch,
                                                     void *pVirtualAddress, gfx::ID3D11Texture1D<ABI> **ppTexture1D)
 {
+    std::lock_guard<std::mutex> lock(g_ResourceMapMutex);
     std::vector<D3D11_SUBRESOURCE_DATA> initialData(pDesc->ArraySize);
     UINT RowPitch = 0;
     UINT SlicePitch = 0;
@@ -957,6 +978,7 @@ template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture2D(D3D11_TEXTURE2D_DESC const *pDesc, UINT TileModeIndex, UINT Pitch,
                                                     void *pVirtualAddress, gfx::ID3D11Texture2D<ABI> **ppTexture2D)
 {
+    std::lock_guard<std::mutex> lock(g_ResourceMapMutex);
     std::vector<D3D11_SUBRESOURCE_DATA> initialData(pDesc->ArraySize);
     UINT RowPitch = 0;
     UINT SlicePitch = 0;
@@ -1021,6 +1043,7 @@ template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture3D(D3D11_TEXTURE3D_DESC const *pDesc, UINT TileModeIndex, UINT Pitch,
                                                     void *pVirtualAddress, gfx::ID3D11Texture3D<ABI> **ppTexture3D)
 {
+    std::lock_guard<std::mutex> lock(g_ResourceMapMutex);
     std::vector<D3D11_SUBRESOURCE_DATA> initialData(1);
     UINT RowPitch = 0;
     UINT SlicePitch = 0;
