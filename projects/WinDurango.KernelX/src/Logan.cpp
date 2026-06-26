@@ -7,6 +7,11 @@ PVOID LoganHeap::GetVirtualAddress(APU_ADDRESS ApuAddress, SIZE_T SizeInBytes)
     return (PVOID)((ULONG_PTR)_view + ApuAddress);
 }
 
+APU_ADDRESS LoganHeap::GetAPUAddress(PVOID CpuAddress)
+{
+    return (APU_ADDRESS)((ULONG_PTR)_view - (ULONG_PTR)CpuAddress);
+}
+
 HRESULT LoganHeap::GetDriverMemory(UINT32 index, LOGAN_PHYSICAL_MEMORY *memory)
 {
     *memory = _driverMemory[index];
@@ -148,17 +153,33 @@ inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState* acpStat
         {
             printf("Enabled command completed message type.\n");
         }
-        else if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_ERROR)
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_ERROR)
         {
             printf("Enabled error message type.\n");
         }
-        else if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_DISCONNECTED)
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_AUDIO_FRAME_START)
+        {
+            printf("Enabled frame start message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_DISCONNECTED)
         {
             printf("Enabled disconnected message type.\n");
         }
-        else
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_FLOWGRAPH_COMPLETED)
         {
-            printf("Enabled message type 0x%x.\n", Cmd.registerMessage.message);
+            printf("Enabled flowgraph completed message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_SRC_BLOCKED)
+        {
+            printf("Enabled Sample Rate Converter blocked message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_DMA_BLOCKED)
+        {
+            printf("Enabled DMA blocked message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_FLOWGRAPH_TERMINATED)
+        {
+            printf("Enabled flowgraph terminated message type.\n");
         }
     }
     else if (cmdType == ACP_COMMAND_TYPE_UNREGISTER_MESSAGE)
@@ -170,18 +191,38 @@ inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState* acpStat
         {
             printf("Disabled command completed message type.\n");
         }
-        else if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_ERROR)
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_ERROR)
         {
             printf("Disabled error message type.\n");
         }
-        else if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_DISCONNECTED)
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_AUDIO_FRAME_START)
+        {
+            printf("Disabled frame start message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_DISCONNECTED)
         {
             printf("Disabled disconnected message type.\n");
         }
-        else
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_FLOWGRAPH_COMPLETED)
         {
-            printf("Disabled message type 0x%x.\n", Cmd.registerMessage.message);
+            printf("Disabled flowgraph completed message type.\n");
         }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_SRC_BLOCKED)
+        {
+            printf("Disabled Sample Rate Converter blocked message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_DMA_BLOCKED)
+        {
+            printf("Disabled DMA blocked message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_FLOWGRAPH_TERMINATED)
+        {
+            printf("Disabled flowgraph terminated message type.\n");
+        }
+    }
+    else if (cmdType == ACP_COMMAND_TYPE_DISABLE_XMA_CONTEXT)
+    {
+
     }
     else
     {
