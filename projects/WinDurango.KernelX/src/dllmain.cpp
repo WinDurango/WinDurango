@@ -79,9 +79,18 @@ void KernelxInitialize(HINSTANCE hinstDLL)
         if (AcpHalData.nFileSizeLow == 21504)
         {
             HMODULE AcpHal = GetModuleHandleW(L"acphal.dll");
-            uintptr_t AcpHalSize = (uintptr_t)AcpHal;
-            *(void**)&P_PopMessage = (char*)AcpHalSize + 0x173C;
-            DetourAttach((void**)&P_PopMessage, &D_PopMessage);
+            if (!AcpHal)
+            {
+                HMODULE AcpHalModule = LoadLibraryW(L"acphal.dll");
+                AcpHal = GetModuleHandleW(L"acphal.dll");
+            }
+
+            if (AcpHal)
+            {
+                uintptr_t AcpHalSize = (uintptr_t)AcpHal;
+                *(void**)&P_PopMessage = (char*)AcpHalSize + 0x173C;
+                DetourAttach((void**)&P_PopMessage, &D_PopMessage);
+            }
         }
 
         DetourAttach(&reinterpret_cast<PVOID &>(TrueCoCreateInstance), EraCoCreateInstance);
