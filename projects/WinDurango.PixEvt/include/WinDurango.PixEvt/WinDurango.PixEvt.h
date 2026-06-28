@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿//Source: SlimEra from XWine1 (https://github.com/XWine1/SlimEra)
+#pragma once
 #include <Windows.h>
 
 union PIXCaptureParameters

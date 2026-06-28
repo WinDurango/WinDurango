@@ -1,4 +1,5 @@
-﻿#include "WinDurango.PixEvt.h"
+﻿//Source: SlimEra from XWine1 (https://github.com/XWine1/SlimEra)
+#include "WinDurango.PixEvt.h"
 
 EXTERN_C HRESULT WINAPI ConfigureL2IPMCs(
     _In_ UINT eventIndex10,
