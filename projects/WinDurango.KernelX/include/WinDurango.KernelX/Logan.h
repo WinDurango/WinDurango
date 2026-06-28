@@ -99,24 +99,21 @@ static BOOL ReadFromClientACPRingBuffer(AcpCommand *OutBuffer, AcpCommandQueueEn
     return TRUE;
 }
 
-BOOL(*P_PopMessage)(LPVOID, ACP_MESSAGE);
+BOOL(*P_PopMessage)(LPVOID, ACP_MESSAGE*);
 std::vector<ACP_MESSAGE> g_MessageQueue;
 
 //THIS IS MEANT TO BE A WORKAROUND.
 BOOL __fastcall D_PopMessage(LPVOID pIAcpHal, ACP_MESSAGE *pMessage)
 {
-    if (g_MessageQueue.size() == 0)
-        return FALSE;
+    BOOL Result = P_PopMessage(pIAcpHal, pMessage);
 
-    (*pMessage) = g_MessageQueue.back();
+    if (Result)
+        printf("PopMessage returned a message!\n");
 
-    g_MessageQueue.pop_back();
-
-    printf("Sent message via PopMessage!\n");
-    return TRUE;
+    return Result;
 }
 
-void SendMessageFromACP(ACP_MESSAGE *pMessage);
+void SendMessageFromACP(ACP_MESSAGE *pMessage, AcpMessageQueueEntry *pMessageQueue, AcpState *pAcpState, UINT ClientIndex);
 
 LOGAN_COMMAND_ACP_INIT *InitialCommand;
 
@@ -170,6 +167,7 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
             {
                 AcpCommandQueueEntry *AcpClientCommandQueue = g_LoganHeap.GetVirtualAddress<AcpCommandQueueEntry>(g_LoganHeap._acpConnectCommand[i].commandQueue);
                 AcpState *pAcpState = g_LoganHeap.GetVirtualAddress<AcpState>(InitialCommand->acpState);
+                AcpMessageQueueEntry *AcpClientMessageQueue = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry>(g_LoganHeap._acpConnectCommand[i].messageQueue, sizeof(AcpMessageQueueEntry) * g_LoganHeap._acpConnectCommand[i].numMessages << 8);
 
                 if (pAcpState != nullptr && AcpClientCommandQueue->command.commandType != 0)
                 {
@@ -188,23 +186,7 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                                 AcpMessage.commandCompleted.commandId = Command.commandId;
                                 AcpMessage.droppedMessageCount = g_LoganHeap._droppedMessages;
                                 g_LoganHeap._droppedMessages++;
-                                SendMessageFromACP(&AcpMessage);
-                            }
-                            if (g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_SRC_BLOCKED)
-                            {
-                                ACP_MESSAGE AcpMessage{};
-                                AcpMessage.type = ACP_MESSAGE_TYPE_SRC_BLOCKED;
-                                AcpMessage.droppedMessageCount = g_LoganHeap._droppedMessages;
-                                g_LoganHeap._droppedMessages++;
-                                SendMessageFromACP(&AcpMessage);
-                            }
-                            if (g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_DMA_BLOCKED)
-                            {
-                                ACP_MESSAGE AcpMessage{};
-                                AcpMessage.type = ACP_MESSAGE_TYPE_DMA_BLOCKED;
-                                AcpMessage.droppedMessageCount = g_LoganHeap._droppedMessages;
-                                g_LoganHeap._droppedMessages++;
-                                SendMessageFromACP(&AcpMessage);
+                                SendMessageFromACP(&AcpMessage, AcpClientMessageQueue, pAcpState, i);
                             }
                         }
                     }
@@ -299,6 +281,6 @@ void LoganInit()
     hLoganMap = CreateFileMapping2(INVALID_HANDLE_VALUE, nullptr, FILE_MAP_READ | FILE_MAP_WRITE, PAGE_READWRITE, SEC_RESERVE, 0x20000000, nullptr, nullptr, 0);
     g_LoganHeap.AllocateDriverMemory();
     g_LoganHeap._view = MapViewOfFile(hLoganMap, FILE_MAP_WRITE, 0, 0, 0);
-
+    g_LoganHeap._sizeInBytes = 0x20000000;
     printf("Logan was initialized.\n");
 }

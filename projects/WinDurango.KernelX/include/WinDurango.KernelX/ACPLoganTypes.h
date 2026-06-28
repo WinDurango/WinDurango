@@ -468,29 +468,29 @@ typedef struct AcpCommand
     uint64_t commandId;
     uint32_t commandType;
     uint32_t notification;
-  union
-  {
-    ACP_COMMAND_LOAD_SHAPE_FLOWGRAPH loadFlowgraph;
-    ACP_COMMAND_MESSAGE registerMessage;
-    ACP_COMMAND_ENABLE_OR_DISABLE_XMA_CONTEXT enableOrDisableXmaContext;
-    ACP_COMMAND_UPDATE_SRC_CONTEXT updateSrcContext;
-    ACP_COMMAND_UPDATE_XMA_CONTEXT updateXmaContext;
-    ACP_COMMAND_UPDATE_PCM_CONTEXT updatePcmContext;
-    ACP_COMMAND_UPDATE_EQCOMP_CONTEXT updateEqCompContext;
-    ACP_COMMAND_UPDATE_FILTVOL_CONTEXT updateFiltVolContext;
-    ACP_COMMAND_UPDATE_DMA_CONTEXT updateDmaContext;
-    ACP_COMMAND_ENABLE_OR_DISABLE_XMA_CONTEXTS enableOrDisableXmaContexts;
-    ACP_COMMAND_INCREMENT_DMA_POINTER incrementDmaPointer;
-    ACP_COMMAND_INCREMENT_PCM_WRITE_POINTER incrementPcmWritePointer;
-    ACP_COMMAND_INCREMENT_XMA_WRITE_BUFFER_OFFSET_READ incrementXmaWriteBufferOffsetRead;
-    ACP_COMMAND_UPDATE_XMA_READ_BUFFER updateXmaReadBuffer;
-    ACP_COMMAND_UPDATE_ALL_CONTEXTS updateAllContexts;
-    ACP_COMMAND_UPDATE_CONTEXTS updateContexts;
-    ACP_COMMAND_CONNECT connect;
-    ACP_COMMAND_DISCONNECT disconnect;
-    ACP_COMMAND_REGISTER_CONTEXT_ARRAYS registerContextArrays;
-    ACP_COMMAND_INIT_EVENT_LOG eventLog;
-  };
+    union
+    {
+        ACP_COMMAND_LOAD_SHAPE_FLOWGRAPH loadFlowgraph;
+        ACP_COMMAND_MESSAGE registerMessage;
+        ACP_COMMAND_ENABLE_OR_DISABLE_XMA_CONTEXT enableOrDisableXmaContext;
+        ACP_COMMAND_UPDATE_SRC_CONTEXT updateSrcContext;
+        ACP_COMMAND_UPDATE_XMA_CONTEXT updateXmaContext;
+        ACP_COMMAND_UPDATE_PCM_CONTEXT updatePcmContext;
+        ACP_COMMAND_UPDATE_EQCOMP_CONTEXT updateEqCompContext;
+        ACP_COMMAND_UPDATE_FILTVOL_CONTEXT updateFiltVolContext;
+        ACP_COMMAND_UPDATE_DMA_CONTEXT updateDmaContext;
+        ACP_COMMAND_ENABLE_OR_DISABLE_XMA_CONTEXTS enableOrDisableXmaContexts;
+        ACP_COMMAND_INCREMENT_DMA_POINTER incrementDmaPointer;
+        ACP_COMMAND_INCREMENT_PCM_WRITE_POINTER incrementPcmWritePointer;
+        ACP_COMMAND_INCREMENT_XMA_WRITE_BUFFER_OFFSET_READ incrementXmaWriteBufferOffsetRead;
+        ACP_COMMAND_UPDATE_XMA_READ_BUFFER updateXmaReadBuffer;
+        ACP_COMMAND_UPDATE_ALL_CONTEXTS updateAllContexts;
+        ACP_COMMAND_UPDATE_CONTEXTS updateContexts;
+        ACP_COMMAND_CONNECT connect;
+        ACP_COMMAND_DISCONNECT disconnect;
+        ACP_COMMAND_REGISTER_CONTEXT_ARRAYS registerContextArrays;
+        ACP_COMMAND_INIT_EVENT_LOG eventLog;
+    };
 };
 
 typedef union AcpCommandQueueEntry
@@ -563,7 +563,7 @@ typedef union AcpMessageQueueEntry
 {
     uint32_t state;
     ACP_MESSAGE message;
-    uint8_t padToAcpCacheLineSize[228];
+    uint8_t padToAcpCacheLineSize[256];
 };
 
 typedef union ACP_COMMAND_UPDATE_XMA_CONTEXT_ENTRY

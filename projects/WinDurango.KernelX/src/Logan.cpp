@@ -2,7 +2,7 @@
 
 PVOID LoganHeap::GetVirtualAddress(APU_ADDRESS ApuAddress, SIZE_T SizeInBytes)
 {
-    if (!ApuAddress)
+    if (!ApuAddress || (ApuAddress + SizeInBytes) >= _sizeInBytes)
         return nullptr;
     return (PVOID)((ULONG_PTR)_view + ApuAddress);
 }
@@ -20,8 +20,6 @@ HRESULT LoganHeap::GetDriverMemory(UINT32 index, LOGAN_PHYSICAL_MEMORY *memory)
 
 template <typename T> T *LoganHeap::GetVirtualAddress(APU_ADDRESS ApuAddress, SIZE_T Count)
 {
-    if (Count != 1)
-        Count = 1;
     return (T *)GetVirtualAddress(ApuAddress, sizeof(T) * Count);
 }
 
@@ -240,8 +238,11 @@ inline void DispatchLoganCommand(LOGAN_COMMAND_TYPE cmdType, T cmd)
     }
 }
 
-//THIS IS MEANT TO BE A WORKAROUND.
-void SendMessageFromACP(ACP_MESSAGE* pMessage)
+void SendMessageFromACP(ACP_MESSAGE *pMessage, AcpMessageQueueEntry *pMessageQueue, AcpState *pAcpState, UINT ClientIndex)
 {
-    return g_MessageQueue.push_back((*pMessage));
+    if (!pMessageQueue)
+        return;
+
+    memcpy(&pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].message, pMessage, sizeof(ACP_MESSAGE));
+    pAcpState->clientMessageQueueWritePointer[ClientIndex]++;
 }
