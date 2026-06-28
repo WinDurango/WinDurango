@@ -9,7 +9,7 @@ PVOID LoganHeap::GetVirtualAddress(APU_ADDRESS ApuAddress, SIZE_T SizeInBytes)
 
 APU_ADDRESS LoganHeap::GetAPUAddress(PVOID CpuAddress)
 {
-    return (APU_ADDRESS)((ULONG_PTR)_view - (ULONG_PTR)CpuAddress);
+    return (UINT64)CpuAddress - (UINT64)_view;
 }
 
 HRESULT LoganHeap::GetDriverMemory(UINT32 index, LOGAN_PHYSICAL_MEMORY *memory)
@@ -220,7 +220,21 @@ inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState* acpStat
     }
     else if (cmdType == ACP_COMMAND_TYPE_DISABLE_XMA_CONTEXT)
     {
+        ACP_COMMAND_ENABLE_OR_DISABLE_XMA_CONTEXT Command = Cmd.enableOrDisableXmaContext;
+        SHAPE_XMA_CONTEXT *ContextArray = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(g_LoganHeap._acpContextArrays.xmaContextArray, g_LoganHeap._acpContextArrays.numXmaContexts);
+        ZeroMemory(&ContextArray[Command.contextIndex], sizeof(SHAPE_XMA_CONTEXT));
 
+        printf("Disabled Xma Context at index %u.\n");
+    }
+    else if (cmdType == ACP_COMMAND_TYPE_UPDATE_XMA_CONTEXT)
+    {
+        ACP_COMMAND_UPDATE_XMA_CONTEXT Command = Cmd.updateXmaContext;
+        SHAPE_XMA_CONTEXT *ContextArray = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(g_LoganHeap._acpContextArrays.xmaContextArray, g_LoganHeap._acpContextArrays.numXmaContexts);
+
+        SHAPE_XMA_CONTEXT *UpdateContext = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(Command.contextData);
+        ContextArray[Command.contextIndex] = (*UpdateContext);
+
+        printf("Updated Xma Context at index %u.\n", Command.contextIndex);
     }
     else
     {
@@ -243,6 +257,6 @@ void SendMessageFromACP(ACP_MESSAGE *pMessage, AcpMessageQueueEntry *pMessageQue
     if (!pMessageQueue)
         return;
 
-    memcpy(&pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].message, pMessage, sizeof(ACP_MESSAGE));
+    //memcpy(&pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].message, pMessage, sizeof(ACP_MESSAGE));
     pAcpState->clientMessageQueueWritePointer[ClientIndex]++;
 }

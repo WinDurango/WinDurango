@@ -76,8 +76,9 @@ static BOOL ReadFromInternalACPRingBuffer(AcpCommand *OutBuffer, AcpInternalComm
     return TRUE;
 }
 
-static BOOL ReadFromXmaContextEntry(ACP_COMMAND_UPDATE_XMA_CONTEXT *OutBuffer, ACP_COMMAND_UPDATE_XMA_CONTEXT_ENTRY* InBuffer)
+static BOOL ReadFromXmaContext(SHAPE_XMA_CONTEXT *OutBuffer, SHAPE_XMA_CONTEXT *InBuffer, UINT ContextIndex)
 {
+    *OutBuffer = InBuffer[ContextIndex];
     return TRUE;
 }
 
@@ -165,9 +166,9 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
         {
             if (g_LoganHeap._acpConnectCommand[i].commandQueue != 0)
             {
-                AcpCommandQueueEntry *AcpClientCommandQueue = g_LoganHeap.GetVirtualAddress<AcpCommandQueueEntry>(g_LoganHeap._acpConnectCommand[i].commandQueue);
                 AcpState *pAcpState = g_LoganHeap.GetVirtualAddress<AcpState>(InitialCommand->acpState);
-                AcpMessageQueueEntry *AcpClientMessageQueue = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry>(g_LoganHeap._acpConnectCommand[i].messageQueue, sizeof(AcpMessageQueueEntry) * g_LoganHeap._acpConnectCommand[i].numMessages << 8);
+                AcpCommandQueueEntry *AcpClientCommandQueue = g_LoganHeap.GetVirtualAddress<AcpCommandQueueEntry>(g_LoganHeap._acpConnectCommand[i].commandQueue, g_LoganHeap._acpConnectCommand->numCommands);
+                AcpMessageQueueEntry *AcpClientMessageQueue = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry>(g_LoganHeap._acpConnectCommand[i].messageQueue, g_LoganHeap._acpConnectCommand->numMessages);
 
                 if (pAcpState != nullptr && AcpClientCommandQueue->command.commandType != 0)
                 {
@@ -236,6 +237,28 @@ EXTERN_C BOOL __stdcall EraDeviceIoControl(HANDLE hDevice, DWORD dwIoControlCode
             LOGAN_IOCTL_IN_ATTACH_CHANNEL *In = reinterpret_cast<LOGAN_IOCTL_IN_ATTACH_CHANNEL *>(lpInBuffer);
             LOGAN_CHANNEL *Channel = g_LoganHeap.GetVirtualAddress<LOGAN_CHANNEL>(In->apuAddress);
             std::thread LoganThread(LoganChannelProc, Channel);
+
+            if (In->core == LOGAN_CORE_SHAPE)
+            {
+                printf("Logan Core is LOGAN_CORE_SHAPE.\n");
+            }
+            else if (In->core == LOGAN_CORE_ACP)
+            {
+                printf("Logan Core is LOGAN_CORE_ACP.\n");
+            }
+            else if (In->core == LOGAN_CORE_NONE)
+            {
+                printf("Logan Core is LOGAN_CORE_NONE.\n");
+            }
+            else if (In->core == LOGAN_CORE_AVP)
+            {
+                printf("Logan Core is LOGAN_CORE_AVP.\n");
+            }
+            else if (In->core == LOGAN_CORE_ASP)
+            {
+                printf("Logan Core is LOGAN_CORE_ASP.\n");
+            }
+
             LoganThread.detach();
             SetLastError(ERROR_SUCCESS);
         }

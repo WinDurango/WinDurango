@@ -576,3 +576,52 @@ typedef union ACP_COMMAND_UPDATE_XMA_CONTEXT_ENTRY
     uint16_t writeBufferOffsetRead;
     uint16_t validBuffer;
 };
+
+typedef struct SHAPE_XMA_CONTEXT
+{
+    uint32_t sizeRead0 : 12;
+    uint32_t numLoops : 8;
+    uint32_t validBuffer : 2;
+    uint32_t sizeWrite : 5;
+    uint32_t offsetWrite : 5;
+    uint32_t : 0;
+    uint32_t sizeRead1 : 12;
+    uint32_t loopSubframeEnd : 2;
+    uint32_t : 3;
+    uint32_t loopSubframeSkip : 3;
+    uint32_t numSubframesToDecode : 4;
+    uint32_t numSubframesToSkip : 3;
+    uint32_t sampleRate : 2;
+    uint32_t numChannels : 1;
+    uint32_t : 1;
+    uint32_t validWrite : 1;
+    uint32_t : 0;
+    uint32_t offsetRead : 26;
+    uint32_t errorStatus : 5;
+    uint32_t errorSet : 1;
+    uint32_t : 0;
+    uint32_t loopStartOffset : 26;
+    uint32_t parserErrorStatus : 5;
+    uint32_t parserErrorSet : 1;
+    uint32_t : 0;
+    uint32_t loopEndOffset : 26;
+    uint32_t packetMetaData : 5;
+    uint32_t currentBuffer : 1;
+    uint32_t ptrRead0;
+    uint32_t ptrRead1;
+    uint32_t ptrWrite;
+    uint32_t ptrOverlapAdd;
+    uint32_t writeBufferOffsetRead : 5;
+    uint32_t : 25;
+    uint32_t stopWhenDone : 1;
+    uint32_t interruptWhenDone : 1;
+    uint32_t reserved[6];
+};
+
+typedef enum SHAPE_XMA_SAMPLE_RATE
+{
+  SHAPE_XMA_SAMPLE_RATE_24K = 0x0000,
+  SHAPE_XMA_SAMPLE_RATE_32K = 0x0001,
+  SHAPE_XMA_SAMPLE_RATE_44_1K = 0x0002,
+  SHAPE_XMA_SAMPLE_RATE_48K = 0x0003,
+};

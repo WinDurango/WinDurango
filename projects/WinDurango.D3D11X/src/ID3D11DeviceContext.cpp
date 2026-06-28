@@ -102,6 +102,14 @@ void D3D11DeviceContextX<ABI>::CheckDirtyFlags()
 {
     if constexpr (requires { this->m_ShaderUserDataManagerDraw; })
     {
+        //if that's the case, it means that this->m_ShaderUserDataManagerDraw is likely corrupted
+        //and must not be accessed, otherwise the game will likely crash. Shout out to Forza Horizon 2
+        //for this dumbass crash.
+        if (!D3D11X_HARDWARE_TO_TOPOLOGY_MAP.contains(this->m_ShaderUserDataManagerDraw.m_Topology))
+        {
+            return;
+        }
+
         // Topology
         if (this->m_ShaderUserDataManagerDraw.m_DirtyFlags & 0x46)
         {
