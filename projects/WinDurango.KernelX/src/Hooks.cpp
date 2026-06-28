@@ -301,6 +301,23 @@ HRESULT WINAPI WdRoGetActivationFactoryCore(
         return wrappedFactory.CopyTo(iid, factory);
     }
 
+    if (rss == std::string("Windows.Networking.Connectivity.NetworkInformation"))
+    {
+        ComPtr<IActivationFactory> realFactory;
+
+        HRESULT hr = RoGetActivationFactory(Microsoft::WRL::Wrappers::HStringReference::HStringReference(
+                                                RuntimeClass_Windows_Networking_Connectivity_NetworkInformation)
+                                                .Get(),
+                                            IID_PPV_ARGS(&realFactory));
+
+        if (FAILED(hr))
+            return hr;
+
+        ComPtr<NetworkInformationEra> wrappedFactory = Make<NetworkInformationEra>(realFactory);
+
+        return wrappedFactory.CopyTo(iid, factory);
+    }
+
     if (rss == std::string("Windows.UI.Core.CoreWindow"))
     {
         ComPtr<ICoreWindowStatic> coreWindowStatic;

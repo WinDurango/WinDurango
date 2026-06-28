@@ -16,6 +16,7 @@
 #include "CurrentApp.h"
 #include "EraCoreWindow.h"
 #include "EraCoreApplication.h"
+#include "EraNetworking.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
