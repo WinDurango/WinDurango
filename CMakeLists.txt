@@ -20,6 +20,7 @@ add_subdirectory(projects/WinDurango.D3D12X)
 add_subdirectory(projects/WinDurango.MMDevAPI)
 add_subdirectory(projects/WinDurango.MFPlat)
 add_subdirectory(projects/WinDurango.Watchdog)
+add_subdirectory(projects/WinDurango.PixEvt)
 
 add_custom_target(WinDurango ALL DEPENDS
     WinDurango.Common
@@ -35,3 +36,4 @@ add_custom_target(WinDurango ALL DEPENDS
     WinDurango.MFPlat
     WinDurango.Watchdog
 )
+
