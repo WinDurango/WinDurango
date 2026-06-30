@@ -2300,7 +2300,33 @@ void D3D11DeviceContextX<ABI>::UpdateSubresource1(gfx::ID3D11Resource<ABI> *pDst
                                                   D3D11_BOX const *pDstBox, void const *pSrcData, UINT SrcRowPitch,
                                                   UINT SrcDepthPitch, UINT CopyFlags)
 {
-    IMPLEMENT_STUB();
+    //TODO: align offsets if needed
+    if (pDstResource && pSrcData)
+    {
+        D3D11_RESOURCE_DIMENSION Type{};
+        pDstResource->GetType(&Type);
+
+        if (Type == D3D11_RESOURCE_DIMENSION_BUFFER)
+        {
+            m_pFunction->UpdateSubresource1(static_cast<D3D11Buffer<ABI>*>(pDstResource)->m_pFunction, DstSubresource, nullptr, pSrcData, SrcRowPitch, SrcDepthPitch, CopyFlags);
+        }
+        else if (Type == D3D11_RESOURCE_DIMENSION_TEXTURE1D)
+        {
+            m_pFunction->UpdateSubresource1(static_cast<D3D11Texture1D<ABI>*>(pDstResource)->m_pFunction, DstSubresource, pDstBox, pSrcData, SrcRowPitch, SrcDepthPitch, CopyFlags);
+        }
+        else if (Type == D3D11_RESOURCE_DIMENSION_TEXTURE2D)
+        {
+            m_pFunction->UpdateSubresource1(static_cast<D3D11Texture2D<ABI>*>(pDstResource)->m_pFunction, DstSubresource, pDstBox, pSrcData, SrcRowPitch, SrcDepthPitch, CopyFlags);
+        }
+        else if (Type == D3D11_RESOURCE_DIMENSION_TEXTURE3D)
+        {
+            m_pFunction->UpdateSubresource1(static_cast<D3D11Texture3D<ABI>*>(pDstResource)->m_pFunction, DstSubresource, pDstBox, pSrcData, SrcRowPitch, SrcDepthPitch, CopyFlags);
+        }
+        else if (Type == D3D11_RESOURCE_DIMENSION_UNKNOWN)
+        {
+            m_pFunction->UpdateSubresource1(static_cast<D3D11Resource<ABI>*>(pDstResource)->m_pFunction, DstSubresource, pDstBox, pSrcData, SrcRowPitch, SrcDepthPitch, CopyFlags);
+        }
+    }
 }
 
 template <abi_t ABI> void D3D11DeviceContextX<ABI>::DiscardResource(gfx::ID3D11Resource<ABI> *pResource)

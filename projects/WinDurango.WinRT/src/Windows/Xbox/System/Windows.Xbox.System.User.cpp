@@ -20,12 +20,12 @@ namespace winrt::Windows::Xbox::System::implementation
 
     winrt::event_token User::OnlineStateChanged(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::System::OnlineStateChangedEventArgs> const& handler)
     {
-        return {};
+        return m_OnlineStateChanged.add(handler);
     }
 
     void User::OnlineStateChanged(winrt::event_token const& token) noexcept
     {
-
+        m_OnlineStateChanged.remove(token);
     }
 
     winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::System::User> User::Users()
@@ -47,22 +47,22 @@ namespace winrt::Windows::Xbox::System::implementation
 
     winrt::event_token User::UserAdded(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::System::UserAddedEventArgs> const& handler)
     {
-        return {};
+        return m_UserAdded.add(handler);
     }
 
     void User::UserAdded(winrt::event_token const& token) noexcept
     {
-
+        m_UserAdded.remove(token);
     }
 
     winrt::event_token User::UserRemoved(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::System::UserRemovedEventArgs> const& handler)
     {
-        return {};
+        return m_UserRemoved.add(handler);
     }
 
     void User::UserRemoved(winrt::event_token const& token) noexcept
     {
-
+        m_UserRemoved.remove(token);
     }
 
     winrt::Windows::Xbox::System::User User::GetUserById(uint32_t Id)

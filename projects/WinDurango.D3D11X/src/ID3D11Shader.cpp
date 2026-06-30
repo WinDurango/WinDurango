@@ -5,8 +5,16 @@
 //
 template <abi_t ABI> HRESULT D3D11VertexShader<ABI>::QueryInterface(REFIID riid, void **ppvObject)
 {
+    if (riid == xcom::guid_of<gfx::ID3D11VertexShader>())
+    {
+        *ppvObject = this;
+        AddRef();
+        return S_OK;
+    }
+
     IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    *ppvObject = nullptr;
+    return E_NOINTERFACE;
 }
 
 template <abi_t ABI> ULONG D3D11VertexShader<ABI>::AddRef()
@@ -65,8 +73,16 @@ D3D11_DECLARE_ABI_TEMPLATES();
 //
 template <abi_t ABI> HRESULT D3D11PixelShader<ABI>::QueryInterface(REFIID riid, void **ppvObject)
 {
+    if (riid == xcom::guid_of<gfx::ID3D11PixelShader>())
+    {
+        *ppvObject = this;
+        AddRef();
+        return S_OK;
+    }
+
     IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    *ppvObject = nullptr;
+    return E_NOINTERFACE;
 }
 
 template <abi_t ABI> ULONG D3D11PixelShader<ABI>::AddRef()
@@ -125,8 +141,16 @@ D3D11_DECLARE_ABI_TEMPLATES();
 //
 template <abi_t ABI> HRESULT D3D11ComputeShader<ABI>::QueryInterface(REFIID riid, void **ppvObject)
 {
+    if (riid == xcom::guid_of<gfx::ID3D11ComputeShader>())
+    {
+        *ppvObject = this;
+        AddRef();
+        return S_OK;
+    }
+
     IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    *ppvObject = nullptr;
+    return E_NOINTERFACE;
 }
 
 template <abi_t ABI> ULONG D3D11ComputeShader<ABI>::AddRef()
@@ -186,8 +210,16 @@ D3D11_DECLARE_ABI_TEMPLATES();
 //
 template <abi_t ABI> HRESULT D3D11GeometryShader<ABI>::QueryInterface(REFIID riid, void **ppvObject)
 {
+    if (riid == xcom::guid_of<gfx::ID3D11GeometryShader>())
+    {
+        *ppvObject = this;
+        AddRef();
+        return S_OK;
+    }
+
     IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    *ppvObject = nullptr;
+    return E_NOINTERFACE;
 }
 
 template <abi_t ABI> ULONG D3D11GeometryShader<ABI>::AddRef()
@@ -247,8 +279,16 @@ D3D11_DECLARE_ABI_TEMPLATES();
 //
 template <abi_t ABI> HRESULT D3D11HullShader<ABI>::QueryInterface(REFIID riid, void **ppvObject)
 {
+    if (riid == xcom::guid_of<gfx::ID3D11HullShader>())
+    {
+        *ppvObject = this;
+        AddRef();
+        return S_OK;
+    }
+
     IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    *ppvObject = nullptr;
+    return E_NOINTERFACE;
 }
 
 template <abi_t ABI> ULONG D3D11HullShader<ABI>::AddRef()
@@ -306,8 +346,16 @@ D3D11_DECLARE_ABI_TEMPLATES();
 //
 template <abi_t ABI> HRESULT D3D11DomainShader<ABI>::QueryInterface(REFIID riid, void **ppvObject)
 {
+    if (riid == xcom::guid_of<gfx::ID3D11DomainShader>())
+    {
+        *ppvObject = this;
+        AddRef();
+        return S_OK;
+    }
+
     IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    *ppvObject = nullptr;
+    return E_NOINTERFACE;
 }
 
 template <abi_t ABI> ULONG D3D11DomainShader<ABI>::AddRef()
@@ -366,8 +414,16 @@ D3D11_DECLARE_ABI_TEMPLATES();
 //
 template <abi_t ABI> HRESULT D3D11InputLayout<ABI>::QueryInterface(REFIID riid, void **ppvObject)
 {
+    if (riid == xcom::guid_of<gfx::ID3D11InputLayout>())
+    {
+        *ppvObject = this;
+        AddRef();
+        return S_OK;
+    }
+
     IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    *ppvObject = nullptr;
+    return E_NOINTERFACE;
 }
 
 template <abi_t ABI> ULONG D3D11InputLayout<ABI>::AddRef()

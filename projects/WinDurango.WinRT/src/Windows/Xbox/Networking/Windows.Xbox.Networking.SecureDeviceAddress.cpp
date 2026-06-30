@@ -44,8 +44,9 @@ namespace winrt::Windows::Xbox::Networking::implementation
     }
     winrt::Windows::Storage::Streams::IBuffer SecureDeviceAddress::GetBuffer()
     {
-        p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Networking", "Unimplemented: GetBuffer");
-        throw hresult_not_implemented();
+        winrt::Windows::Storage::Streams::Buffer Buffer(64);
+        Buffer.Length(64);
+        return Buffer;
     }
     int32_t SecureDeviceAddress::Compare(winrt::Windows::Xbox::Networking::SecureDeviceAddress const& secureDeviceAddress)
     {

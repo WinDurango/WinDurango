@@ -14,7 +14,7 @@ namespace winrt::Windows::Xbox::System::implementation
 
     winrt::Windows::Xbox::System::UserOnlineState OnlineStateChangedEventArgs::State()
     {
-        return UserOnlineState::Offline;
+        return UserOnlineState::Online;
     }
 
     winrt::hresult GetPictureResult::Result()

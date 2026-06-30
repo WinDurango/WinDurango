@@ -816,7 +816,7 @@ EXTERN_C HANDLE __stdcall EraCreateFileA(LPCSTR lpFileName, DWORD dwDesiredAcces
     LPCWSTR FileName = A2W(lpFileName);
     FixRelativePath(FileName);
 
-    return CreateFileA(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition,
+    return CreateFileW(FileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition,
                        dwFlagsAndAttributes, hTemplateFile);
 }
 
