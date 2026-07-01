@@ -277,6 +277,12 @@ gfx::ID3D11Buffer<ABI> *g_HSFastConstantBuffers[D3D11_COMMONSHADER_CONSTANT_BUFF
 template <abi_t ABI>
 gfx::ID3D11Buffer<ABI> *g_DSFastConstantBuffers[D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT];
 
+template <abi_t ABI>
+gfx::ID3D11Buffer<ABI> *g_IAFastVertexBuffers[D3D11_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT];
+
+template <abi_t ABI>
+gfx::ID3D11Buffer<ABI> *g_IAFastIndexBuffer = nullptr;
+
 #undef ABI_INTERFACE
 #define ABI_INTERFACE(ABI) D3D11Buffer<ABI>
 D3D11_DECLARE_ABI_TEMPLATES(extern);

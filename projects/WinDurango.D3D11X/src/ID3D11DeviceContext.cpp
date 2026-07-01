@@ -143,12 +143,6 @@ void D3D11DeviceContextX<ABI>::CheckDirtyFlags()
     ExecuteBackgroundContexts();
 
     std::lock_guard PlacementUpdateLock(g_ResourceMapMutex);
-    UpdateShaderResources(g_VSFastShaderResources<ABI>);
-    UpdateShaderResources(g_PSFastShaderResources<ABI>);
-    UpdateShaderResources(g_GSFastShaderResources<ABI>);
-    UpdateShaderResources(g_HSFastShaderResources<ABI>);
-    UpdateShaderResources(g_DSFastShaderResources<ABI>);
-    UpdateShaderResources(g_CSFastShaderResources<ABI>);
 
     UpdateConstantBuffers(g_VSFastConstantBuffers<ABI>);
     UpdateConstantBuffers(g_PSFastConstantBuffers<ABI>);
@@ -156,6 +150,16 @@ void D3D11DeviceContextX<ABI>::CheckDirtyFlags()
     UpdateConstantBuffers(g_HSFastConstantBuffers<ABI>);
     UpdateConstantBuffers(g_DSFastConstantBuffers<ABI>);
     UpdateConstantBuffers(g_CSFastConstantBuffers<ABI>);
+
+    UpdateVertexBuffers(g_IAFastVertexBuffers<ABI>);
+    UpdateIndexBuffer(g_IAFastIndexBuffer<ABI>);
+
+    UpdateShaderResources(g_VSFastShaderResources<ABI>);
+    UpdateShaderResources(g_PSFastShaderResources<ABI>);
+    UpdateShaderResources(g_GSFastShaderResources<ABI>);
+    UpdateShaderResources(g_HSFastShaderResources<ABI>);
+    UpdateShaderResources(g_DSFastShaderResources<ABI>);
+    UpdateShaderResources(g_CSFastShaderResources<ABI>);
 }
 
 template <abi_t ABI> 
@@ -238,7 +242,7 @@ void D3D11DeviceContextX<ABI>::PSSetShaderResources(UINT StartSlot, UINT NumView
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
 
-            g_PSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_PSFastShaderResources<ABI>[StartSlot + i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->PSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -259,7 +263,7 @@ void D3D11DeviceContextX<ABI>::PSSetShaderResources(gfx::ID3D11ShaderResourceVie
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
 
-            g_PSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_PSFastShaderResources<ABI>[StartSlot + i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->PSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -445,6 +449,8 @@ void D3D11DeviceContextX<ABI>::IASetVertexBuffers(UINT StartSlot, UINT NumBuffer
         else
         {
             Buffers[i] = static_cast<D3D11Buffer<ABI> *>(ppVertexBuffers[i])->m_pFunction;
+
+            g_IAFastVertexBuffers<ABI>[StartSlot + i] = ppVertexBuffers[i];
         }
     }
 
@@ -460,6 +466,7 @@ void D3D11DeviceContextX<ABI>::IASetIndexBuffer(gfx::ID3D11Buffer<ABI> *pIndexBu
     if (pIndexBuffer)
     {
         Buffer = static_cast<D3D11Buffer<ABI> *>(pIndexBuffer)->m_pFunction;
+        g_IAFastIndexBuffer<ABI> = pIndexBuffer;
     }
 
     m_pFunction->IASetIndexBuffer(Buffer, (DXGI_FORMAT)HardwareIndexFormat, Offset);
@@ -518,6 +525,7 @@ void D3D11DeviceContextX<ABI>::IASetIndexBuffer(UINT HardwareIndexFormat, gfx::I
     if (pIndexBuffer)
     {
         Buffer = static_cast<D3D11Buffer<ABI> *>(pIndexBuffer)->m_pFunction;
+        g_IAFastIndexBuffer<ABI> = pIndexBuffer;
     }
 
     m_pFunction->IASetIndexBuffer(Buffer, Format, Offset);
@@ -577,7 +585,7 @@ void D3D11DeviceContextX<ABI>::VSSetShaderResources(UINT StartSlot, UINT NumView
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
 
-            g_VSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_VSFastShaderResources<ABI>[StartSlot + i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->VSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -598,7 +606,7 @@ void D3D11DeviceContextX<ABI>::VSSetShaderResources(gfx::ID3D11ShaderResourceVie
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
 
-            g_VSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_VSFastShaderResources<ABI>[StartSlot + i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->VSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -661,7 +669,7 @@ void D3D11DeviceContextX<ABI>::GSSetShaderResources(UINT StartSlot, UINT NumView
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
 
-            g_GSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_GSFastShaderResources<ABI>[StartSlot + i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->GSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -682,7 +690,7 @@ void D3D11DeviceContextX<ABI>::GSSetShaderResources(gfx::ID3D11ShaderResourceVie
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
 
-            g_GSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_GSFastShaderResources<ABI>[StartSlot + i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->GSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -1528,7 +1536,7 @@ void D3D11DeviceContextX<ABI>::HSSetShaderResources(UINT StartSlot, UINT NumView
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
 
-            g_HSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_HSFastShaderResources<ABI>[StartSlot + i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->HSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -1549,7 +1557,7 @@ void D3D11DeviceContextX<ABI>::HSSetShaderResources(gfx::ID3D11ShaderResourceVie
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
 
-            g_HSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_HSFastShaderResources<ABI>[StartSlot + i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->HSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -1621,7 +1629,7 @@ void D3D11DeviceContextX<ABI>::DSSetShaderResources(UINT StartSlot, UINT NumView
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI> *>(ppShaderResourceViews[i])->m_pFunction;
 
-            g_DSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_DSFastShaderResources<ABI>[StartSlot + i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->DSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -1642,7 +1650,7 @@ void D3D11DeviceContextX<ABI>::DSSetShaderResources(gfx::ID3D11ShaderResourceVie
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
 
-            g_DSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_DSFastShaderResources<ABI>[StartSlot + i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->DSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -1714,7 +1722,7 @@ void D3D11DeviceContextX<ABI>::CSSetShaderResources(UINT StartSlot, UINT NumView
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
 
-            g_CSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_CSFastShaderResources<ABI>[StartSlot + i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->CSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -1735,7 +1743,7 @@ void D3D11DeviceContextX<ABI>::CSSetShaderResources(gfx::ID3D11ShaderResourceVie
         {
             SRVs[i] = static_cast<D3D11ShaderResourceView<ABI>*>(ppShaderResourceViews[i])->m_pFunction;
 
-            g_CSFastShaderResources<ABI>[i] = ppShaderResourceViews[i];
+            g_CSFastShaderResources<ABI>[StartSlot + i] = ppShaderResourceViews[i];
         }
     }
     m_pFunction->CSSetShaderResources(StartSlot, NumViews, SRVs);
@@ -2857,7 +2865,8 @@ void D3D11DeviceContextX<ABI>::IASetFastVertexBuffer(UINT Slot, gfx::ID3D11Buffe
 template <abi_t ABI>
 void D3D11DeviceContextX<ABI>::IASetFastIndexBuffer(UINT HardwareIndexFormat, gfx::ID3D11Buffer<ABI> *pIndexBuffer)
 {
-    HardwareIndexFormat = HardwareIndexFormat != 0 ? DXGI_FORMAT_R32_UINT : DXGI_FORMAT_R16_UINT;
+    if (ABI >= abi_t{6,2,11294,0})
+        HardwareIndexFormat = HardwareIndexFormat != 0 ? DXGI_FORMAT_R32_UINT : DXGI_FORMAT_R16_UINT;
 
     IASetIndexBuffer(pIndexBuffer, HardwareIndexFormat, 0);
 }
@@ -3889,6 +3898,74 @@ void D3D11DeviceContextX<ABI>::UpdateConstantBuffers(gfx::ID3D11Buffer<ABI>** pp
 
         BufferWrapper->m_IsDirty = false;
     }
+}
+
+template <abi_t ABI>
+void D3D11DeviceContextX<ABI>::UpdateVertexBuffers(gfx::ID3D11Buffer<ABI>** ppBuffers)
+{
+    for (UINT i = 0; i < D3D11_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT; ++i)
+    {
+        auto* pBuffer = ppBuffers[i];
+        if (!pBuffer) continue;
+
+        auto* BufferWrapper = static_cast<D3D11Buffer<ABI>*>(pBuffer);
+        if (!pBuffer->m_pAllocationStart || !BufferWrapper->m_IsDirty)
+            continue;
+
+        D3D11_BUFFER_DESC Desc{};
+        pBuffer->GetDesc(&Desc);
+        if (Desc.Usage == D3D11_USAGE_DEFAULT)
+        {
+            UpdateSubresource(pBuffer, 0, nullptr, pBuffer->m_pAllocationStart, 0, 0);
+            DWORD OldProtect = 0;
+            VirtualProtect(pBuffer->m_pAllocationStart, 1, PAGE_READONLY, &OldProtect);
+        }
+        else
+        {
+            D3D11_MAPPED_SUBRESOURCE mapped{};
+            if (SUCCEEDED(Map(pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped)))
+            {
+                memcpy(mapped.pData, pBuffer->m_pAllocationStart, Desc.ByteWidth);
+                Unmap(pBuffer, 0);
+                DWORD OldProtect = 0;
+                VirtualProtect(pBuffer->m_pAllocationStart, 1, PAGE_READONLY, &OldProtect);
+            }
+        }
+
+        BufferWrapper->m_IsDirty = false;
+    }
+}
+
+template <abi_t ABI>
+void D3D11DeviceContextX<ABI>::UpdateIndexBuffer(gfx::ID3D11Buffer<ABI>* pBuffer)
+{
+    if (!pBuffer) return;
+
+    auto* BufferWrapper = static_cast<D3D11Buffer<ABI>*>(pBuffer);
+    if (!pBuffer->m_pAllocationStart || !BufferWrapper->m_IsDirty)
+        return;
+
+    D3D11_BUFFER_DESC Desc{};
+    pBuffer->GetDesc(&Desc);
+    if (Desc.Usage == D3D11_USAGE_DEFAULT)
+    {
+        UpdateSubresource(pBuffer, 0, nullptr, pBuffer->m_pAllocationStart, 0, 0);
+        DWORD OldProtect = 0;
+        VirtualProtect(pBuffer->m_pAllocationStart, 1, PAGE_READONLY, &OldProtect);
+    }
+    else
+    {
+        D3D11_MAPPED_SUBRESOURCE mapped{};
+        if (SUCCEEDED(Map(pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped)))
+        {
+            memcpy(mapped.pData, pBuffer->m_pAllocationStart, Desc.ByteWidth);
+            Unmap(pBuffer, 0);
+            DWORD OldProtect = 0;
+            VirtualProtect(pBuffer->m_pAllocationStart, 1, PAGE_READONLY, &OldProtect);
+        }
+    }
+
+    BufferWrapper->m_IsDirty = false;
 }
 
 template <abi_t ABI>

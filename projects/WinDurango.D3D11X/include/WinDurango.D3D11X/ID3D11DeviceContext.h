@@ -88,6 +88,8 @@ public:
     void RemoveBackgroundContext(ID3D11BackgroundContext *pContext);
     void UpdateShaderResources(gfx::ID3D11ShaderResourceView<ABI> **ppSRVs);
     void UpdateConstantBuffers(gfx::ID3D11Buffer<ABI> **ppBuffers);
+    void UpdateVertexBuffers(gfx::ID3D11Buffer<ABI> **ppBuffers);
+    void UpdateIndexBuffer(gfx::ID3D11Buffer<ABI> *pBuffers);
     void ExecuteDrawBundles(gfx::ID3D11CommandList<ABI> *pCommandList);
     void VSSetConstantBuffers(UINT StartSlot, UINT NumBuffers, gfx::ID3D11Buffer<ABI> *const *ppConstantBuffers);
     void PSSetShaderResources(UINT StartSlot, UINT NumViews,

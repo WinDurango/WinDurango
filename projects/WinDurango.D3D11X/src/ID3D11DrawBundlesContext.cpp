@@ -431,26 +431,7 @@ template <abi_t ABI>
 void D3D11DrawBundlesContext<ABI>::OMSetRenderTargets(UINT NumViews, gfx::ID3D11RenderTargetView<ABI> *const *ppRTVs,
                                                   gfx::ID3D11DepthStencilView<ABI> *pDepthStencilView)
 {
-    ID3D11DepthStencilView* DepthStencilView{};
-    ID3D11RenderTargetView* RenderTargetViews[D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT]{};
 
-    if (ppRTVs)
-    {
-        for (UINT i = 0; i < NumViews; i++)
-        {
-            if (!ppRTVs[i])
-                RenderTargetViews[i] = 0;
-            else
-                RenderTargetViews[i] = static_cast<D3D11RenderTargetView<ABI>*>(ppRTVs[i])->m_pFunction;
-        }
-    }
-
-    if (pDepthStencilView)
-    {
-        DepthStencilView = static_cast<D3D11DepthStencilView<ABI>*>(pDepthStencilView)->m_pFunction;
-    }
-
-    m_pFunction->OMSetRenderTargets(NumViews, RenderTargetViews, DepthStencilView);
 }
 
 template <abi_t ABI>

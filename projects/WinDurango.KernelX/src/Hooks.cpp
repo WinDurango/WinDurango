@@ -396,13 +396,13 @@ HRESULT WINAPI GetActivationFactoryRedirect(PCWSTR str, REFIID riid, void **ppFa
 {
     HRESULT hr = WdRoGetActivationFactory(HStringReference{str}.Get(), riid, ppFactory);
 
-    //if (FAILED(hr))
-    //{
+    if (FAILED(hr))
+    {
         const wchar_t *rawString = WindowsGetStringRawBuffer(HStringReference{str}.Get(), nullptr);
         std::wstring rsws(rawString);
         std::string rss(rsws.begin(), rsws.end());
         winDurango->log.Log("WinDurango::KernelX", "EraRoGetActivationFactory: {}", rss); 
-    //}
+    }
 
     return hr;
 }
