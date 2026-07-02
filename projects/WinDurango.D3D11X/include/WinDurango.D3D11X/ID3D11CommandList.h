@@ -330,7 +330,7 @@ public:
     }
     D3D11CommandList(std::vector<DrawBundlesCommand<ABI>> Commands)
     {
-        m_Commands = std::move(Commands);
+        m_Commands = Commands;
         m_IsDrawBundle = TRUE;
         InterlockedIncrement(&this->m_RefCount);
     }

@@ -1,5 +1,6 @@
 #include "ID3D11DrawBundlesContext.h"
 #include "ID3D11Device.h"
+#include "ID3D11DeviceContext.h"
 #include "ID3D11View.h"
 #include "ID3D11Resource.h"
 
@@ -18,7 +19,7 @@ template <abi_t ABI> HRESULT D3D11DrawBundlesContext<ABI>::QueryInterface(REFIID
     }
     if (riid == xcom::guid_of<xbox::IGraphicsUnwrap>())
     {
-        *ppvObject = m_pFunction;
+        if (m_pFunction) *ppvObject = m_pFunction;
         AddRef();
         return S_OK;
     }
@@ -30,57 +31,56 @@ template <abi_t ABI> HRESULT D3D11DrawBundlesContext<ABI>::QueryInterface(REFIID
 
 template <abi_t ABI> ULONG D3D11DrawBundlesContext<ABI>::AddRef()
 {
-    m_pFunction->AddRef();
+    if (m_pFunction) m_pFunction->AddRef();
     return InterlockedIncrement(&this->m_RefCount);
 }
 
 template <abi_t ABI> ULONG D3D11DrawBundlesContext<ABI>::Release()
 {
-    m_pFunction->Release();
-    ULONG RefCount = InterlockedDecrement(&this->m_RefCount);
-    if (!RefCount)
+    if (m_pFunction) m_pFunction->Release();
+
+    for (auto& command : m_CommandQueue)
     {
-        for (auto& command : m_CommandQueue)
+        if (command.m_CommandType == DrawBundlesCommandType::IASetVertexBuffers)
         {
-            if (command.m_CommandType == DrawBundlesCommandType::IASetVertexBuffers)
+            if (command.IASetVertexBuffers.ppVertexBuffers)
             {
-                if (command.IASetVertexBuffers.ppVertexBuffers)
-                {
-                    delete[] command.IASetVertexBuffers.ppVertexBuffers;
-                    command.IASetVertexBuffers.ppVertexBuffers = nullptr;
-                }
-                if (command.IASetVertexBuffers.pStrides)
-                {
-                    delete[] command.IASetVertexBuffers.pStrides;
-                    command.IASetVertexBuffers.pStrides = nullptr;
-                }
-                if (command.IASetVertexBuffers.pOffsets)
-                {
-                    delete[] command.IASetVertexBuffers.pOffsets;
-                    command.IASetVertexBuffers.pOffsets = nullptr;
-                }
+                delete[] command.IASetVertexBuffers.ppVertexBuffers;
+                command.IASetVertexBuffers.ppVertexBuffers = nullptr;
             }
-            else if (command.m_CommandType == DrawBundlesCommandType::VSSetShaderResourcesPC)
+            if (command.IASetVertexBuffers.pStrides)
             {
-                if (command.VSSetShaderResourcesPC.ppShaderResourceViews)
-                {
-                    delete[] command.VSSetShaderResourcesPC.ppShaderResourceViews;
-                    command.VSSetShaderResourcesPC.ppShaderResourceViews = nullptr;
-                }
+                delete[] command.IASetVertexBuffers.pStrides;
+                command.IASetVertexBuffers.pStrides = nullptr;
             }
-            else if (command.m_CommandType == DrawBundlesCommandType::PSSetShaderResourcesPC)
+            if (command.IASetVertexBuffers.pOffsets)
             {
-                if (command.PSSetShaderResourcesPC.ppShaderResourceViews)
-                {
-                    delete[] command.PSSetShaderResourcesPC.ppShaderResourceViews;
-                    command.PSSetShaderResourcesPC.ppShaderResourceViews = nullptr;
-                }
+                delete[] command.IASetVertexBuffers.pOffsets;
+                command.IASetVertexBuffers.pOffsets = nullptr;
             }
         }
-
-        m_CommandQueue.clear();
-        delete this;
+        else if (command.m_CommandType == DrawBundlesCommandType::VSSetShaderResourcesPC)
+        {
+            if (command.VSSetShaderResourcesPC.ppShaderResourceViews)
+            {
+                delete[] command.VSSetShaderResourcesPC.ppShaderResourceViews;
+                command.VSSetShaderResourcesPC.ppShaderResourceViews = nullptr;
+            }
+        }
+        else if (command.m_CommandType == DrawBundlesCommandType::PSSetShaderResourcesPC)
+        {
+            if (command.PSSetShaderResourcesPC.ppShaderResourceViews)
+            {
+                delete[] command.PSSetShaderResourcesPC.ppShaderResourceViews;
+                command.PSSetShaderResourcesPC.ppShaderResourceViews = nullptr;
+            }
+        }
     }
+
+    m_CommandQueue.clear();
+
+    ULONG RefCount = InterlockedDecrement(&this->m_RefCount);
+    if (!RefCount) delete this;
     return RefCount;
 }
 
@@ -94,7 +94,7 @@ void D3D11DrawBundlesContext<ABI>::GetDevice(gfx::ID3D11Device<ABI>** ppDevice)
     {
         ID3D11Device* dev{};
         ID3D11Device2* dev2{};
-        m_pFunction->GetDevice(&dev);
+        g_Context->GetDevice(&dev);
         dev->QueryInterface(&dev2);
         if (dev2) dev->Release();
 
@@ -974,7 +974,7 @@ template <abi_t ABI> UINT D3D11DrawBundlesContext<ABI>::GetContextFlags()
 template <abi_t ABI>
 HRESULT D3D11DrawBundlesContext<ABI>::FinishCommandList(BOOL RestoreDeferredContextState, gfx::ID3D11CommandList<ABI> **ppCommandList)
 {
-    *ppCommandList = new D3D11CommandList<ABI>(std::move(m_CommandQueue));
+    *ppCommandList = new D3D11CommandList<ABI>(m_CommandQueue);
     m_CommandQueue.clear();
     return S_OK;
 }

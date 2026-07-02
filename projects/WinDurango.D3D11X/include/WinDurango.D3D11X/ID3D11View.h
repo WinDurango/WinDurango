@@ -260,6 +260,9 @@ template <abi_t ABI> class D3D11UnorderedAccessView : public gfx::ID3D11Unordere
     void GetDesc(D3D11_UNORDERED_ACCESS_VIEW_DESC *pDesc);
 };
 
+template <abi_t ABI>
+gfx::ID3D11UnorderedAccessView<ABI> *g_CSFastUnorderedAccessViews[D3D11_1_UAV_SLOT_COUNT];
+
 #undef ABI_INTERFACE
 #define ABI_INTERFACE(ABI) D3D11UnorderedAccessView<ABI>
 D3D11_DECLARE_ABI_TEMPLATES(extern);

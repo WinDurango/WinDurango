@@ -87,6 +87,7 @@ public:
     void AddBackgroundContext(ID3D11BackgroundContext *pContext);
     void RemoveBackgroundContext(ID3D11BackgroundContext *pContext);
     void UpdateShaderResources(gfx::ID3D11ShaderResourceView<ABI> **ppSRVs);
+    void UpdateUnorderedAccessViews(gfx::ID3D11UnorderedAccessView<ABI> **ppUAVs);
     void UpdateConstantBuffers(gfx::ID3D11Buffer<ABI> **ppBuffers);
     void UpdateVertexBuffers(gfx::ID3D11Buffer<ABI> **ppBuffers);
     void UpdateIndexBuffer(gfx::ID3D11Buffer<ABI> *pBuffers);

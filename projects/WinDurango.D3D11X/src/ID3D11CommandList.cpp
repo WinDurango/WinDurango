@@ -22,7 +22,7 @@ ULONG D3D11CommandList<ABI>::Release()
 {
     if (m_pFunction) m_pFunction->Release();
     ULONG RefCount = InterlockedDecrement(&this->m_RefCount);
-    if (!RefCount)
+    if (RefCount <= 1)
     {
         for (auto& command : m_Commands)
         {
@@ -63,8 +63,9 @@ ULONG D3D11CommandList<ABI>::Release()
         }
 
         m_Commands.clear();
-        delete this;
     }
+
+    if (!RefCount) delete this;
     return RefCount;
 }
 

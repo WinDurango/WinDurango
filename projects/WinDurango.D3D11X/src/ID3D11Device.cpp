@@ -421,7 +421,10 @@ HRESULT D3D11DeviceX<ABI>::CreateVertexShader(void const *pBytecode, uint64_t By
     //Before some Unity versions create the swap chain, they pass
     //an invalid shader expecting this call to fail, but on PC, it
     //makes the D3D11 Device get removed.
-    if ((uintptr_t)pBytecode == 0x00007ff60f7ce540 && BytecodeLength == 3028)
+    if (((uintptr_t)pBytecode == 0x00007ff60f7ce540 || (uintptr_t)pBytecode == 0x00007ff6f179e540) && BytecodeLength == 3028)
+        return E_INVALIDARG;
+    
+    if (((uintptr_t)pBytecode == 0x00007ff7604168f0) && BytecodeLength == 3172)
         return E_INVALIDARG;
 
     ID3D11VertexShader *Shader{};
@@ -595,18 +598,18 @@ HRESULT D3D11DeviceX<ABI>::CreateCounter(D3D11_COUNTER_DESC const *pDesc, ID3D11
 template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreateDeferredContext(uint32_t Flags, gfx::ID3D11DeviceContext<ABI> **ppDeferredContext)
 {
+    if (Flags & D3D11_CREATE_DEFERRED_CONTEXT_DRAW_BUNDLES)
+    {
+        *ppDeferredContext = new D3D11DrawBundlesContext<ABI>(nullptr);
+        return S_OK;
+    }
+
     ID3D11DeviceContext* pContext{};
     ID3D11DeviceContext2* pContext2{};
     m_pFunction->CreateDeferredContext(0, &pContext);
 
     pContext->QueryInterface(IID_PPV_ARGS(&pContext2));
     pContext->Release();
-
-    if (Flags & D3D11_CREATE_DEFERRED_CONTEXT_DRAW_BUNDLES)
-    {
-        *ppDeferredContext = new D3D11DrawBundlesContext<ABI>(pContext2);
-        return S_OK;
-    }
 
     *ppDeferredContext = new D3D11DeviceContextX<ABI>(pContext2);
     return S_OK;
@@ -734,18 +737,18 @@ template <abi_t ABI> void D3D11DeviceX<ABI>::GetImmediateContext1(gfx::ID3D11Dev
 template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreateDeferredContext1(uint32_t Flags, gfx::ID3D11DeviceContext1<ABI> **ppDeferredContext1)
 {
+    if (Flags & D3D11_CREATE_DEFERRED_CONTEXT_DRAW_BUNDLES)
+    {
+        *ppDeferredContext1 = new D3D11DrawBundlesContext<ABI>(nullptr);
+        return S_OK;
+    }
+
     ID3D11DeviceContext* pContext{};
     ID3D11DeviceContext2* pContext2{};
     m_pFunction->CreateDeferredContext(0, &pContext);
 
     pContext->QueryInterface(IID_PPV_ARGS(&pContext2));
     pContext->Release();
-
-    if (Flags & D3D11_CREATE_DEFERRED_CONTEXT_DRAW_BUNDLES)
-    {
-        *ppDeferredContext1 = new D3D11DrawBundlesContext<ABI>(pContext2);
-        return S_OK;
-    }
 
     *ppDeferredContext1 = new D3D11DeviceContextX<ABI>(pContext2);
     return S_OK;
@@ -803,18 +806,18 @@ template <abi_t ABI> void D3D11DeviceX<ABI>::GetImmediateContext2(gfx::ID3D11Dev
 template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreateDeferredContext2(uint32_t Flags, gfx::ID3D11DeviceContext2<ABI> **ppDeferredContext)
 {
+    if (Flags & D3D11_CREATE_DEFERRED_CONTEXT_DRAW_BUNDLES)
+    {
+        *ppDeferredContext = new D3D11DrawBundlesContext<ABI>(nullptr);
+        return S_OK;
+    }
+
     ID3D11DeviceContext* pContext{};
     ID3D11DeviceContext2* pContext2{};
     m_pFunction->CreateDeferredContext(0, &pContext);
 
     pContext->QueryInterface(IID_PPV_ARGS(&pContext2));
     pContext->Release();
-
-    if (Flags & D3D11_CREATE_DEFERRED_CONTEXT_DRAW_BUNDLES)
-    {
-        *ppDeferredContext = new D3D11DrawBundlesContext<ABI>(pContext2);
-        return S_OK;
-    }
 
     *ppDeferredContext = new D3D11DeviceContextX<ABI>(pContext2);
     return S_OK;
@@ -1128,6 +1131,12 @@ HRESULT D3D11DeviceX<ABI>::CreateSamplerStateX(gfx::D3D11X_SAMPLER_DESC const *p
 template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreateDeferredContextX(UINT Flags, gfx::ID3D11DeviceContextX<ABI> **ppDeferredContext)
 {
+    if (Flags & D3D11_CREATE_DEFERRED_CONTEXT_DRAW_BUNDLES)
+    {
+        *ppDeferredContext = reinterpret_cast<gfx::ID3D11DeviceContextX<ABI>*>(new D3D11DrawBundlesContext<ABI>(nullptr));
+        return S_OK;
+    }
+
     ID3D11DeviceContext* pContext{};
     ID3D11DeviceContext2* pContext2{};
     m_pFunction->CreateDeferredContext(0, &pContext);

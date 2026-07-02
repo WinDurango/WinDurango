@@ -936,7 +936,7 @@ enum D3D11X_IMG_NUM_FORMAT
         template<abi_t ABI>
         struct ID3D11ResourceData
         {
-            void *m_pAllocationStart;
+            void *m_pAllocationStart = nullptr;
         };
     }
     
@@ -1232,7 +1232,7 @@ enum D3D11X_IMG_NUM_FORMAT
         template<abi_t ABI>
         struct ID3D11ShaderResourceViewData
         {
-            void *m_pAllocationStart;
+            void *m_pAllocationStart = nullptr;
         };
         
         template<abi_t ABI>
@@ -1240,7 +1240,7 @@ enum D3D11X_IMG_NUM_FORMAT
         struct ID3D11ShaderResourceViewData<ABI>
         {
             gfx::D3D11X_DESCRIPTOR_TEXTURE_VIEW m_Descriptor;
-            void *m_pAllocationStart;
+            void *m_pAllocationStart = nullptr;
             uint32_t DescriptorSize;
             gfx::D3D11X_CERAM_RESOURCE_TYPE CeRamType;
         };
@@ -1305,7 +1305,7 @@ enum D3D11X_IMG_NUM_FORMAT
         template<abi_t ABI>
         struct ID3D11UnorderedAccessViewData
         {
-            void *m_pAllocationStart;
+            void *m_pAllocationStart = nullptr;
         };
         
         template<abi_t ABI>
@@ -1313,7 +1313,7 @@ enum D3D11X_IMG_NUM_FORMAT
         struct ID3D11UnorderedAccessViewData<ABI>
         {
             gfx::D3D11X_DESCRIPTOR_TEXTURE_VIEW m_Descriptor;
-            void *m_pAllocationStart;
+            void *m_pAllocationStart = nullptr;
             uint32_t DescriptorSize;
             gfx::D3D11X_CERAM_RESOURCE_TYPE CeRamType;
         };
