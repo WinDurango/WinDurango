@@ -12,9 +12,17 @@ jobs:
     runs-on: windows-2025-vs2026
 
     steps:
-    - uses: actions/checkout@v4    
+    - uses: actions/checkout@v4
+
+    - name: Cache Windows SDK
+      id: cache-winsdk
+      uses: actions/cache@v5
+      with:
+        path: C:\Program Files (x86)\Windows Kits\10
+        key: windows-sdk-28000
     
     - uses: ChristopheLav/windows-sdk-install@v1
+      if: steps.cache-winsdk.outputs.cache-hit != 'true'
       with:
         version-sdk: 28000
         features: 'OptionId.UWPCPP,OptionId.DesktopCPParm64'
