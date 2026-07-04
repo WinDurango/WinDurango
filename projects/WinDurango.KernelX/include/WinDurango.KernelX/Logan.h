@@ -65,8 +65,7 @@ static BOOL ReadFromInternalACPRingBuffer(AcpCommand *OutBuffer, AcpInternalComm
 
     *OutBuffer = InBuffer[InBufferDesc->internalCommandQueueReadPointer].command;
 
-    APU_ADDRESS State = g_LoganHeap.GetAPUAddress(InBufferDesc);
-    InBuffer[InBufferDesc->internalCommandQueueReadPointer].state = State;
+    InBuffer[InBufferDesc->internalCommandQueueReadPointer].state = 0;
     InBufferDesc->internalCommandQueueReadPointer++;
     InBufferDesc->internalCommandQueueReadCounter++;
 
@@ -89,8 +88,7 @@ static BOOL ReadFromClientACPRingBuffer(AcpCommand *OutBuffer, AcpCommandQueueEn
 
     *OutBuffer = InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].command;
 
-    APU_ADDRESS State = g_LoganHeap.GetAPUAddress(InBufferDesc);
-    InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].state = State;
+    InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].state = 0;
     InBufferDesc->clientCommandQueueReadPointer[ClientIndex]++;
     InBufferDesc->clientCommandQueueReadCounter[ClientIndex]++;
 
@@ -136,9 +134,12 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                                                                           channel->commands.sizeInBlocks);
     auto messages = g_LoganHeap.GetVirtualAddress<LOGAN_MESSAGE_INTERNAL>(channel->messages.apuAddress,
                                                                           channel->messages.sizeInBlocks);
-    do
+
+    AcpState *pAcpState = nullptr;
+    while (true)
     {
-        LOGAN_COMMAND_INTERNAL command;
+        LOGAN_COMMAND_INTERNAL command{};
+
         while (ReadFromRingBuffer(&command, commands, &channel->commands))
         {
             DispatchLoganCommand((LOGAN_COMMAND_TYPE)command.commandType, g_LoganHeap.GetVirtualAddress(command.apuAddress, sizeof((LOGAN_COMMAND_TYPE)command.commandType)));
@@ -147,9 +148,9 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
         if (InitialCommand != nullptr)
         {
             AcpInternalCommandQueueEntry *AcpInternalCommandQueue = g_LoganHeap.GetVirtualAddress<AcpInternalCommandQueueEntry>(InitialCommand->acpCommandQueue);
-            AcpState *pAcpState = g_LoganHeap.GetVirtualAddress<AcpState>(InitialCommand->acpState);
+            if (!pAcpState) pAcpState = g_LoganHeap.GetVirtualAddress<AcpState>(InitialCommand->acpState);
 
-            if (pAcpState != nullptr && AcpInternalCommandQueue->command.commandType != 0)
+            if (pAcpState && AcpInternalCommandQueue)
             {
                 AcpCommand Command{};
                 while (ReadFromInternalACPRingBuffer(&Command, AcpInternalCommandQueue, pAcpState))
@@ -164,13 +165,12 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
 
         for (UINT i = 0; i < 1; i++)
         {
-            if (g_LoganHeap._acpConnectCommand[i].commandQueue != 0)
+            if (g_LoganHeap._acpConnectCommand[i].commandQueue && pAcpState)
             {
-                AcpState *pAcpState = g_LoganHeap.GetVirtualAddress<AcpState>(InitialCommand->acpState);
-                AcpCommandQueueEntry *AcpClientCommandQueue = g_LoganHeap.GetVirtualAddress<AcpCommandQueueEntry>(g_LoganHeap._acpConnectCommand[i].commandQueue, g_LoganHeap._acpConnectCommand->numCommands);
-                AcpMessageQueueEntry *AcpClientMessageQueue = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry>(g_LoganHeap._acpConnectCommand[i].messageQueue, g_LoganHeap._acpConnectCommand->numMessages);
+                AcpCommandQueueEntry *AcpClientCommandQueue = g_LoganHeap.GetVirtualAddress<AcpCommandQueueEntry>(g_LoganHeap._acpConnectCommand[i].commandQueue, g_LoganHeap._acpConnectCommand[i].numCommands * sizeof(AcpCommandQueueEntry));
+                AcpMessageQueueEntry *AcpClientMessageQueue = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry>(g_LoganHeap._acpConnectCommand[i].messageQueue, g_LoganHeap._acpConnectCommand[i].numMessages * sizeof(AcpMessageQueueEntry));
 
-                if (pAcpState != nullptr && AcpClientCommandQueue->command.commandType != 0)
+                if (pAcpState && AcpClientCommandQueue)
                 {
                     AcpCommand Command{};
                     while (ReadFromClientACPRingBuffer(&Command, AcpClientCommandQueue, pAcpState, i))
@@ -178,24 +178,12 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                         if (Command.commandType)
                         {
                             DispatchClientACPCommand((ACP_COMMAND_TYPE)Command.commandType, pAcpState, Command);
-                            if (g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_COMMAND_COMPLETED)
-                            {
-                                ACP_MESSAGE AcpMessage{};
-                                AcpMessage.type = ACP_MESSAGE_TYPE_COMMAND_COMPLETED;
-                                AcpMessage.commandCompleted.commandType = Command.commandType;
-                                AcpMessage.commandCompleted.audioFrame = Command.frame;
-                                AcpMessage.commandCompleted.commandId = Command.commandId;
-                                AcpMessage.droppedMessageCount = g_LoganHeap._droppedMessages;
-                                g_LoganHeap._droppedMessages++;
-                                SendMessageFromACP(&AcpMessage, AcpClientMessageQueue, pAcpState, i);
-                            }
                         }
                     }
                 }
             }
         }
-
-    } while (true);
+    }
 
     return 0;
 }

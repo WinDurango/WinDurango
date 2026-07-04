@@ -13,10 +13,6 @@
 // {f764922a-de30-40a5-a66e-c46cb191a1cd}
 DEFINE_GUID(GUID_DEVINTERFACE_LOGAN, 0xF764922A, 0xDE30, 0x40A5, 0xA6, 0x6E, 0xC4, 0x6C, 0xB1, 0x91, 0xA1, 0xCD);
 
-//
-// IOCTLs
-//
-
 #define IOCTL_LOGAN_BASE FILE_DEVICE_LOGAN
 #define IOCTL_LOGAN_ALLOC_MAP CTL_CODE(FILE_DEVICE_LOGAN, 0x0801, METHOD_NEITHER, FILE_READ_ACCESS | FILE_WRITE_ACCESS)
 #define IOCTL_LOGAN_ATTACH_CHANNEL                                                                                     \
@@ -34,14 +30,10 @@ DEFINE_GUID(GUID_DEVINTERFACE_LOGAN, 0xF764922A, 0xDE30, 0x40A5, 0xA6, 0x6E, 0xC
 #define IOCTL_LOGAN_GET_DRIVER_MEMORY                                                                                  \
     CTL_CODE(FILE_DEVICE_LOGAN, 0x0808, METHOD_NEITHER, FILE_READ_ACCESS | FILE_WRITE_ACCESS)
 
-//
-// Types
-// Genuine names obtained from PDBs
-//
-
 // Represents a physical memory address on the APU.
 typedef UINT32 APU_ADDRESS;
 
+//Logan
 typedef enum LOGAN_CORE
 {
     LOGAN_CORE_NONE = 0x00,  // (UNCONFIRMED)
@@ -117,10 +109,6 @@ typedef struct LOGAN_CONTEXT_ASP_SILK_DEC_DECODE
     UINT32 unknown[6];
 } LOGAN_CONTEXT_ASP_SILK_DEC_DECODE, *PLOGAN_CONTEXT_ASP_SILK_DEC_DECODE;
 
-//
-// Types
-//
-
 #define LOGAN_COMMAND_OFFSET_ASP 0xA0000000
 #define LOGAN_COMMAND_OFFSET_ACP 0xD0000000
 
@@ -149,6 +137,83 @@ typedef enum LOGAN_COMMAND_TYPE
     LOGAN_COMMAND_TYPE_ASP_8 = LOGAN_COMMAND_OFFSET_ASP + 0x8,
 } LOGAN_COMMAND_TYPE, *PLOGAN_COMMAND_TYPE;
 
+typedef struct _LOGAN_COMMAND_ACP_INIT
+{
+    UINT32 unknown0;             // Always '1'
+    APU_ADDRESS acpCommandQueue; // Physical address of the ACP internal command queue
+    APU_ADDRESS acpState;        // Store the command queue read/write addresses
+    UINT32 unknown2[2];
+} LOGAN_COMMAND_ACP_INIT, *PLOGAN_COMMAND_ACP_INIT;
+
+typedef enum _LOGAN_ALLOC_MAP_FLAGS
+{
+    LOGAN_ALLOC_MAP_FLAG_NONE = 0,
+    LOGAN_ALLOC_MAP_FLAG_NOCACHE = 1 << 0, // Allocated memory will not be cached
+} LOGAN_ALLOC_MAP_FLAGS, *PLOGAN_ALLOC_MAP_FLAGS;
+
+typedef struct _LOGAN_IOCTL_IN_ALLOC_MAP
+{
+    UINT32 sizeInBytes; // Number of bytes to allocate (aligned to 4K)
+    UINT32 flags;       // Bitmask of LOGAN_ALLOC_MAP_FLAGS values
+    LPVOID address;     // Virtual address to map APU memory into
+    LPVOID reserved[2];
+} LOGAN_IOCTL_IN_ALLOC_MAP, *PLOGAN_IOCTL_IN_ALLOC_MAP;
+
+typedef struct _LOGAN_IOCTL_OUT_ALLOC_MAP
+{
+    UINT32 allocated; // Number of bytes that were allocated
+    UINT32 reserved0;
+    LPVOID address;         // Virtual address that was mapped
+    APU_ADDRESS apuAddress; // Physical address of the mapped memory
+    UINT32 reserved1[3];
+} LOGAN_IOCTL_OUT_ALLOC_MAP, *PLOGAN_IOCTL_OUT_ALLOC_MAP;
+
+typedef struct _LOGAN_TRACE_MESSAGE
+{
+    UINT32 length;
+    CHAR buffer[252];
+} LOGAN_TRACE_MESSAGE, *PLOGAN_TRACE_MESSAGE;
+
+typedef struct _LOGAN_CHANNEL
+{
+    LOGAN_RING_BUFFER_DESCRIPTOR commands; // Command ring buffer
+    LOGAN_RING_BUFFER_DESCRIPTOR messages; // Message ring buffer
+    LOGAN_TRACE_MESSAGE trace;             // Trace message buffer (debug)
+} LOGAN_CHANNEL, *PLOGAN_CHANNEL;
+
+typedef struct _LOGAN_IOCTL_IN_ATTACH_CHANNEL
+{
+    LOGAN_CORE core;
+    APU_ADDRESS apuAddress; // Physical address of a LOGAN_CHANNEL structure
+} LOGAN_IOCTL_IN_ATTACH_CHANNEL, *PLOGAN_IOCTL_IN_ATTACH_CHANNEL;
+
+typedef struct _LOGAN_IOCTL_IN_LOAD_ACP_FIRMWARE
+{
+    UINT32 reserved[3];
+} LOGAN_IOCTL_IN_LOAD_ACP_FIRMWARE, *PLOGAN_IOCTL_IN_LOAD_ACP_FIRMWARE;
+
+typedef struct _LOGAN_IOCTL_IN_GET_DRIVER_MEMORY
+{
+    UINT32 type; // [0,3) (LoganHAL::GetXMA uses '1')
+    UINT32 reserved0[2];
+    UINT32 unknown0; // '1' when 'type' is not '2'
+    UINT32 unknown1; // '1' when 'type' is '2'
+    LOGAN_CORE core;
+    UINT32 reserved1;
+} LOGAN_IOCTL_IN_GET_DRIVER_MEMORY, *PLOGAN_IOCTL_IN_GET_DRIVER_MEMORY;
+
+typedef struct _LOGAN_IOCTL_OUT_GET_DRIVER_MEMORY
+{
+    LPVOID address;         // Virtual address of the memory
+    UINT32 sizeInBytes;     // Size of the memory in bytes
+    APU_ADDRESS apuAddress; // Physical address of the memory
+    UINT32 reserved[2];
+} LOGAN_IOCTL_OUT_GET_DRIVER_MEMORY, *PLOGAN_IOCTL_OUT_GET_DRIVER_MEMORY;
+
+
+//ACP
+#pragma pack(push)
+#pragma pack(1)
 typedef enum ACP_COMMAND_TYPE_INTERNAL
 {
   INTERNAL_ACP_COMMAND_TYPE_CONNECT = -2147483648,
@@ -255,79 +320,6 @@ typedef struct AcpState
     uint32_t clientCommandQueueReadCounter[4];
     uint32_t clientMessageQueueWritePointer[4];
 };
-
-typedef struct _LOGAN_COMMAND_ACP_INIT
-{
-    UINT32 unknown0;             // Always '1'
-    APU_ADDRESS acpCommandQueue; // Physical address of the ACP internal command queue
-    APU_ADDRESS acpState;        // Store the command queue read/write addresses
-    UINT32 unknown2[2];
-} LOGAN_COMMAND_ACP_INIT, *PLOGAN_COMMAND_ACP_INIT;
-
-typedef enum _LOGAN_ALLOC_MAP_FLAGS
-{
-    LOGAN_ALLOC_MAP_FLAG_NONE = 0,
-    LOGAN_ALLOC_MAP_FLAG_NOCACHE = 1 << 0, // Allocated memory will not be cached
-} LOGAN_ALLOC_MAP_FLAGS, *PLOGAN_ALLOC_MAP_FLAGS;
-
-typedef struct _LOGAN_IOCTL_IN_ALLOC_MAP
-{
-    UINT32 sizeInBytes; // Number of bytes to allocate (aligned to 4K)
-    UINT32 flags;       // Bitmask of LOGAN_ALLOC_MAP_FLAGS values
-    LPVOID address;     // Virtual address to map APU memory into
-    LPVOID reserved[2];
-} LOGAN_IOCTL_IN_ALLOC_MAP, *PLOGAN_IOCTL_IN_ALLOC_MAP;
-
-typedef struct _LOGAN_IOCTL_OUT_ALLOC_MAP
-{
-    UINT32 allocated; // Number of bytes that were allocated
-    UINT32 reserved0;
-    LPVOID address;         // Virtual address that was mapped
-    APU_ADDRESS apuAddress; // Physical address of the mapped memory
-    UINT32 reserved1[3];
-} LOGAN_IOCTL_OUT_ALLOC_MAP, *PLOGAN_IOCTL_OUT_ALLOC_MAP;
-
-typedef struct _LOGAN_TRACE_MESSAGE
-{
-    UINT32 length;
-    CHAR buffer[252];
-} LOGAN_TRACE_MESSAGE, *PLOGAN_TRACE_MESSAGE;
-
-typedef struct _LOGAN_CHANNEL
-{
-    LOGAN_RING_BUFFER_DESCRIPTOR commands; // Command ring buffer
-    LOGAN_RING_BUFFER_DESCRIPTOR messages; // Message ring buffer
-    LOGAN_TRACE_MESSAGE trace;             // Trace message buffer (debug)
-} LOGAN_CHANNEL, *PLOGAN_CHANNEL;
-
-typedef struct _LOGAN_IOCTL_IN_ATTACH_CHANNEL
-{
-    LOGAN_CORE core;
-    APU_ADDRESS apuAddress; // Physical address of a LOGAN_CHANNEL structure
-} LOGAN_IOCTL_IN_ATTACH_CHANNEL, *PLOGAN_IOCTL_IN_ATTACH_CHANNEL;
-
-typedef struct _LOGAN_IOCTL_IN_LOAD_ACP_FIRMWARE
-{
-    UINT32 reserved[3];
-} LOGAN_IOCTL_IN_LOAD_ACP_FIRMWARE, *PLOGAN_IOCTL_IN_LOAD_ACP_FIRMWARE;
-
-typedef struct _LOGAN_IOCTL_IN_GET_DRIVER_MEMORY
-{
-    UINT32 type; // [0,3) (LoganHAL::GetXMA uses '1')
-    UINT32 reserved0[2];
-    UINT32 unknown0; // '1' when 'type' is not '2'
-    UINT32 unknown1; // '1' when 'type' is '2'
-    LOGAN_CORE core;
-    UINT32 reserved1;
-} LOGAN_IOCTL_IN_GET_DRIVER_MEMORY, *PLOGAN_IOCTL_IN_GET_DRIVER_MEMORY;
-
-typedef struct _LOGAN_IOCTL_OUT_GET_DRIVER_MEMORY
-{
-    LPVOID address;         // Virtual address of the memory
-    UINT32 sizeInBytes;     // Size of the memory in bytes
-    APU_ADDRESS apuAddress; // Physical address of the memory
-    UINT32 reserved[2];
-} LOGAN_IOCTL_OUT_GET_DRIVER_MEMORY, *PLOGAN_IOCTL_OUT_GET_DRIVER_MEMORY;
 
 typedef struct ACP_COMMAND_INCREMENT_PCM_WRITE_POINTER
 {
@@ -493,18 +485,18 @@ typedef struct AcpCommand
     };
 };
 
-typedef union AcpCommandQueueEntry
+typedef struct AcpCommandQueueEntry
 { 
     uint32_t state;
     AcpCommand command;
-    uint8_t padToAcpCacheLineSize[256];
+    uint8_t padToAcpCacheLineSize[120];
 };
 
-typedef union AcpInternalCommandQueueEntry
+typedef struct AcpInternalCommandQueueEntry
 { 
     uint32_t state;
     AcpCommand command;
-    uint8_t padToAcpCacheLineSize[256];
+    uint8_t padToAcpCacheLineSize[120];
 };
 
 typedef struct ACP_MESSAGE_FLOWGRAPH_COMPLETED
@@ -558,15 +550,14 @@ typedef struct ACP_MESSAGE
     };
 };
 
-//Not sure if it should be a union? Gotta do some testing...
-typedef union AcpMessageQueueEntry
+typedef struct AcpMessageQueueEntry
 {
     uint32_t state;
     ACP_MESSAGE message;
-    uint8_t padToAcpCacheLineSize[256];
+    uint8_t padToAcpCacheLineSize[228];
 };
 
-typedef union ACP_COMMAND_UPDATE_XMA_CONTEXT_ENTRY
+typedef struct ACP_COMMAND_UPDATE_XMA_CONTEXT_ENTRY
 {
     uint32_t contextIndex;
     uint32_t ptrRead0;
@@ -625,3 +616,5 @@ typedef enum SHAPE_XMA_SAMPLE_RATE
   SHAPE_XMA_SAMPLE_RATE_44_1K = 0x0002,
   SHAPE_XMA_SAMPLE_RATE_48K = 0x0003,
 };
+
+#pragma pack(pop)

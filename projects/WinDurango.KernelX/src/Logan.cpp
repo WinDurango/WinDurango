@@ -224,7 +224,10 @@ inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState* acpStat
         SHAPE_XMA_CONTEXT *ContextArray = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(g_LoganHeap._acpContextArrays.xmaContextArray, g_LoganHeap._acpContextArrays.numXmaContexts);
         ZeroMemory(&ContextArray[Command.contextIndex], sizeof(SHAPE_XMA_CONTEXT));
 
-        printf("Disabled Xma Context at index %u.\n");
+        printf("Disabled Xma Context at index %u.\n", Command.contextIndex);
+
+        APU_ADDRESS NewContextArrayAPUAddress = g_LoganHeap.GetAPUAddress(ContextArray);
+        g_LoganHeap._acpContextArrays.xmaContextArray = NewContextArrayAPUAddress;
     }
     else if (cmdType == ACP_COMMAND_TYPE_UPDATE_XMA_CONTEXT)
     {
@@ -235,6 +238,9 @@ inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState* acpStat
         ContextArray[Command.contextIndex] = (*UpdateContext);
 
         printf("Updated Xma Context at index %u.\n", Command.contextIndex);
+
+        APU_ADDRESS NewContextArrayAPUAddress = g_LoganHeap.GetAPUAddress(ContextArray);
+        g_LoganHeap._acpContextArrays.xmaContextArray = NewContextArrayAPUAddress;
     }
     else
     {
