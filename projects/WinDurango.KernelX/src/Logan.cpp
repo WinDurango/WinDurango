@@ -140,6 +140,45 @@ inline void DispatchACPCommand(ACP_COMMAND_TYPE_INTERNAL cmdType, AcpState *acpS
 }
 
 template <typename T> 
+inline void DispatchACPCommandOld(ACP_COMMAND_TYPE_INTERNAL cmdType, AcpState_Old *acpState, T Cmd)
+{
+    if (cmdType == INTERNAL_ACP_COMMAND_TYPE_CONNECT)
+    {
+        g_LoganHeap._acpConnectCommandOld[Cmd.connect.instance - 1] = Cmd.connect;
+        printf("Registered main ACP command and message queues.\n");
+    }
+    else if (cmdType == INTERNAL_ACP_COMMAND_TYPE_DISCONNECT)
+    {
+        printf("Received Internal ACP command (INTERNAL_ACP_COMMAND_TYPE_DISCONNECT)\n");
+    }
+    else if (cmdType == INTERNAL_ACP_COMMAND_TYPE_REGISTER_CONTEXT_ARRAYS)
+    {
+        g_LoganHeap._acpContextArrays = Cmd.registerContextArrays;
+        printf("Registered ACP context arrays.\n");
+    }
+    else if (cmdType == INTERNAL_ACP_COMMAND_TYPE_EVENT_LOG_INIT)
+    {
+        printf("Received Internal ACP command (INTERNAL_ACP_COMMAND_TYPE_EVENT_LOG_INIT)\n");
+    }
+    else if (cmdType == INTERNAL_ACP_COMMAND_TYPE_EVENT_LOG_ENABLE)
+    {
+        printf("Received Internal ACP command (INTERNAL_ACP_COMMAND_TYPE_EVENT_LOG_ENABLE)\n");
+    }
+    else if (cmdType == INTERNAL_ACP_COMMAND_TYPE_EVENT_LOG_DISABLE)
+    {
+        printf("Received Internal ACP command (INTERNAL_ACP_COMMAND_TYPE_EVENT_LOG_DISABLE)\n");
+    }
+    else if (cmdType == INTERNAL_ACP_COMMAND_TYPE_TERMINATE)
+    {
+        printf("Received Internal ACP command (INTERNAL_ACP_COMMAND_TYPE_TERMINATE)\n");
+    }
+    else
+    {
+        printf("Received unknown Internal ACP command of type 0x%x\n", cmdType);
+    }
+}
+
+template <typename T> 
 inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState* acpState, T Cmd)
 {
     if (cmdType == ACP_COMMAND_TYPE_REGISTER_MESSAGE)
@@ -220,27 +259,104 @@ inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState* acpStat
     }
     else if (cmdType == ACP_COMMAND_TYPE_DISABLE_XMA_CONTEXT)
     {
-        ACP_COMMAND_ENABLE_OR_DISABLE_XMA_CONTEXT Command = Cmd.enableOrDisableXmaContext;
-        SHAPE_XMA_CONTEXT *ContextArray = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(g_LoganHeap._acpContextArrays.xmaContextArray, g_LoganHeap._acpContextArrays.numXmaContexts);
-        ZeroMemory(&ContextArray[Command.contextIndex], sizeof(SHAPE_XMA_CONTEXT));
-
-        printf("Disabled Xma Context at index %u.\n", Command.contextIndex);
-
-        APU_ADDRESS NewContextArrayAPUAddress = g_LoganHeap.GetAPUAddress(ContextArray);
-        g_LoganHeap._acpContextArrays.xmaContextArray = NewContextArrayAPUAddress;
+        printf("TODO: Disable Xma Context.\n");
     }
     else if (cmdType == ACP_COMMAND_TYPE_UPDATE_XMA_CONTEXT)
     {
-        ACP_COMMAND_UPDATE_XMA_CONTEXT Command = Cmd.updateXmaContext;
-        SHAPE_XMA_CONTEXT *ContextArray = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(g_LoganHeap._acpContextArrays.xmaContextArray, g_LoganHeap._acpContextArrays.numXmaContexts);
+        printf("TODO: Update Xma Context.\n");
+    }
+    else
+    {
+        printf("Received unknown Client ACP command of type 0x%x\n", cmdType);
+    }
+}
 
-        SHAPE_XMA_CONTEXT *UpdateContext = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(Command.contextData);
-        ContextArray[Command.contextIndex] = (*UpdateContext);
+template <typename T> 
+inline void DispatchClientACPCommandOld(ACP_COMMAND_TYPE cmdType, AcpState_Old *acpState, T Cmd)
+{
+    if (cmdType == ACP_COMMAND_TYPE_REGISTER_MESSAGE)
+    {
+        //Enables one or more message types. Uses the same struct as ACP_COMMAND_TYPE_UNREGISTER_MESSAGE
+        g_LoganHeap._enabledMessages |= Cmd.registerMessage.message;
 
-        printf("Updated Xma Context at index %u.\n", Command.contextIndex);
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_COMMAND_COMPLETED)
+        {
+            printf("Enabled command completed message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_ERROR)
+        {
+            printf("Enabled error message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_AUDIO_FRAME_START)
+        {
+            printf("Enabled frame start message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_DISCONNECTED)
+        {
+            printf("Enabled disconnected message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_FLOWGRAPH_COMPLETED)
+        {
+            printf("Enabled flowgraph completed message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_SRC_BLOCKED)
+        {
+            printf("Enabled Sample Rate Converter blocked message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_DMA_BLOCKED)
+        {
+            printf("Enabled DMA blocked message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_FLOWGRAPH_TERMINATED)
+        {
+            printf("Enabled flowgraph terminated message type.\n");
+        }
+    }
+    else if (cmdType == ACP_COMMAND_TYPE_UNREGISTER_MESSAGE)
+    {
+        //Disables one or more message types. Uses the same struct as ACP_COMMAND_TYPE_REGISTER_MESSAGE
+        g_LoganHeap._enabledMessages &= ~Cmd.registerMessage.message;
 
-        APU_ADDRESS NewContextArrayAPUAddress = g_LoganHeap.GetAPUAddress(ContextArray);
-        g_LoganHeap._acpContextArrays.xmaContextArray = NewContextArrayAPUAddress;
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_COMMAND_COMPLETED)
+        {
+            printf("Disabled command completed message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_ERROR)
+        {
+            printf("Disabled error message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_AUDIO_FRAME_START)
+        {
+            printf("Disabled frame start message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_DISCONNECTED)
+        {
+            printf("Disabled disconnected message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_FLOWGRAPH_COMPLETED)
+        {
+            printf("Disabled flowgraph completed message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_SRC_BLOCKED)
+        {
+            printf("Disabled Sample Rate Converter blocked message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_DMA_BLOCKED)
+        {
+            printf("Disabled DMA blocked message type.\n");
+        }
+        if (Cmd.registerMessage.message & ACP_MESSAGE_TYPE_FLOWGRAPH_TERMINATED)
+        {
+            printf("Disabled flowgraph terminated message type.\n");
+        }
+    }
+    else if (cmdType == ACP_COMMAND_TYPE_DISABLE_XMA_CONTEXT)
+    {
+        printf("TODO: Disable Xma Context.\n");
+    }
+    else if (cmdType == ACP_COMMAND_TYPE_UPDATE_XMA_CONTEXT)
+    {
+        printf("TODO: Update Xma Context.\n");
     }
     else
     {
@@ -254,7 +370,11 @@ inline void DispatchLoganCommand(LOGAN_COMMAND_TYPE cmdType, T cmd)
     if (cmdType == LOGAN_COMMAND_TYPE_ACP_INIT)
     {
         printf("Received Logan command (LOGAN_COMMAND_TYPE_ACP_INIT)\n");
-        InitialCommand = reinterpret_cast<LOGAN_COMMAND_ACP_INIT*>(cmd);
+
+        if (g_ABI <= abi_t{6,2,9894,0})
+            InitialCommandOld = reinterpret_cast<LOGAN_COMMAND_ACP_INIT_OLD*>(cmd);
+        else
+            InitialCommand = reinterpret_cast<LOGAN_COMMAND_ACP_INIT*>(cmd);
     }
 }
 
@@ -263,6 +383,21 @@ void SendMessageFromACP(ACP_MESSAGE *pMessage, AcpMessageQueueEntry *pMessageQue
     if (!pMessageQueue)
         return;
 
-    //memcpy(&pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].message, pMessage, sizeof(ACP_MESSAGE));
-    pAcpState->clientMessageQueueWritePointer[ClientIndex]++;
+    //TODO
+}
+
+void SendMessageFromACPOld(ACP_MESSAGE_OLD *pMessage, AcpMessageQueueEntry_Old *pMessageQueue, AcpState *pAcpState, UINT ClientIndex)
+{
+    if (!pMessageQueue)
+        return;
+
+    //TODO
+}
+
+void SendMessageFromACPOlder(ACP_MESSAGE_OLD *pMessage, AcpMessageQueueEntry_Old *pMessageQueue, AcpState_Old *pAcpState, UINT ClientIndex)
+{
+    if (!pMessageQueue)
+        return;
+
+    //TODO
 }

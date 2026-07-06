@@ -33,7 +33,8 @@ class LoganHeap
     LOGAN_PHYSICAL_MEMORY _driverMemory[3];
     static ULONGLONG constexpr c_XMemAttributes = 0xEC810000; 
     ACP_COMMAND_REGISTER_CONTEXT_ARRAYS _acpContextArrays;
-    ACP_COMMAND_CONNECT _acpConnectCommand[4]; //There can be 4 IAcpHal instances! (even though there are not any known games that use more than one)
+    ACP_COMMAND_CONNECT _acpConnectCommand[4];
+    ACP_COMMAND_CONNECT_OLD _acpConnectCommandOld[4];
     UINT32 _enabledMessages = 0;
     UINT32 _droppedMessages = 0;
 };
@@ -75,6 +76,22 @@ static BOOL ReadFromInternalACPRingBuffer(AcpCommand *OutBuffer, AcpInternalComm
     return TRUE;
 }
 
+static BOOL ReadFromInternalACPRingBufferOld(AcpCommand_Old *OutBuffer, AcpInternalCommandQueueEntry_Old* InBuffer, AcpState_Old *InBufferDesc)
+{
+    if (!InBuffer[InBufferDesc->internalCommandQueueReadPointer].command.commandType)
+        return FALSE;
+
+    *OutBuffer = InBuffer[InBufferDesc->internalCommandQueueReadPointer].command;
+
+    InBuffer[InBufferDesc->internalCommandQueueReadPointer].state = 0;
+    InBufferDesc->internalCommandQueueReadPointer++;
+
+    if (InBufferDesc->internalCommandQueueReadPointer >= 16)
+        InBufferDesc->internalCommandQueueReadPointer = 0;
+
+    return TRUE;
+}
+
 static BOOL ReadFromXmaContext(SHAPE_XMA_CONTEXT *OutBuffer, SHAPE_XMA_CONTEXT *InBuffer, UINT ContextIndex)
 {
     *OutBuffer = InBuffer[ContextIndex];
@@ -98,6 +115,22 @@ static BOOL ReadFromClientACPRingBuffer(AcpCommand *OutBuffer, AcpCommandQueueEn
     return TRUE;
 }
 
+static BOOL ReadFromClientACPRingBufferOld(AcpCommand_Old *OutBuffer, AcpCommandQueueEntry_Old *InBuffer, AcpState_Old *InBufferDesc, UINT ClientIndex)
+{
+    if (!InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].command.commandType)
+        return FALSE;
+
+    *OutBuffer = InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].command;
+
+    InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].state = 0;
+    InBufferDesc->clientCommandQueueReadPointer[ClientIndex]++;
+
+    if (InBufferDesc->clientCommandQueueReadPointer[ClientIndex] >= 16)
+        InBufferDesc->clientCommandQueueReadPointer[ClientIndex] = 0;
+
+    return TRUE;
+}
+
 BOOL(*P_PopMessage)(LPVOID, ACP_MESSAGE*);
 std::vector<ACP_MESSAGE> g_MessageQueue;
 
@@ -114,13 +147,20 @@ BOOL __fastcall D_PopMessage(LPVOID pIAcpHal, ACP_MESSAGE *pMessage)
 
 void SendMessageFromACP(ACP_MESSAGE *pMessage, AcpMessageQueueEntry *pMessageQueue, AcpState *pAcpState, UINT ClientIndex);
 
-LOGAN_COMMAND_ACP_INIT *InitialCommand;
+LOGAN_COMMAND_ACP_INIT *InitialCommand = nullptr;
+LOGAN_COMMAND_ACP_INIT_OLD *InitialCommandOld = nullptr;
 
 template <typename T> 
 inline void DispatchACPCommand(ACP_COMMAND_TYPE_INTERNAL cmdType, AcpState *acpState, T Cmd);
 
 template <typename T> 
+inline void DispatchACPCommandOld(ACP_COMMAND_TYPE_INTERNAL cmdType, AcpState_Old *acpState, T Cmd);
+
+template <typename T> 
 inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState *acpState, T Cmd);
+
+template <typename T> 
+inline void DispatchClientACPCommandOld(ACP_COMMAND_TYPE cmdType, AcpState_Old *acpState, T Cmd);
 
 template <typename T> 
 inline void DispatchLoganCommand(LOGAN_COMMAND_TYPE cmdType, T cmd);
@@ -136,6 +176,8 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                                                                           channel->messages.sizeInBlocks);
 
     AcpState *pAcpState = nullptr;
+    AcpState_Old *pAcpStateOld = nullptr;
+    CpuState *pCpuState = nullptr;
     while (true)
     {
         LOGAN_COMMAND_INTERNAL command{};
@@ -162,13 +204,30 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                 }
             }
         }
+        else if (InitialCommandOld != nullptr)
+        {
+            AcpInternalCommandQueueEntry_Old *AcpInternalCommandQueue = g_LoganHeap.GetVirtualAddress<AcpInternalCommandQueueEntry_Old>(InitialCommandOld->acpCommandQueue);
+            if (!pAcpStateOld) pAcpStateOld = g_LoganHeap.GetVirtualAddress<AcpState_Old>(InitialCommandOld->acpState);
+            if (!pCpuState) pCpuState = g_LoganHeap.GetVirtualAddress<CpuState>(InitialCommandOld->cpuState);
+            if (pAcpStateOld && AcpInternalCommandQueue)
+            {
+                AcpCommand_Old Command{};
+                while (ReadFromInternalACPRingBufferOld(&Command, AcpInternalCommandQueue, pAcpStateOld))
+                {
+                    if (Command.commandType)
+                    {
+                        DispatchACPCommandOld((ACP_COMMAND_TYPE_INTERNAL)Command.commandType, pAcpStateOld, Command);
+                    }
+                }
+            }
+        }
 
         for (UINT i = 0; i < 1; i++)
         {
             if (g_LoganHeap._acpConnectCommand[i].commandQueue && pAcpState)
             {
-                AcpCommandQueueEntry *AcpClientCommandQueue = g_LoganHeap.GetVirtualAddress<AcpCommandQueueEntry>(g_LoganHeap._acpConnectCommand[i].commandQueue, g_LoganHeap._acpConnectCommand[i].numCommands * sizeof(AcpCommandQueueEntry));
-                AcpMessageQueueEntry *AcpClientMessageQueue = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry>(g_LoganHeap._acpConnectCommand[i].messageQueue, g_LoganHeap._acpConnectCommand[i].numMessages * sizeof(AcpMessageQueueEntry));
+                AcpCommandQueueEntry *AcpClientCommandQueue = g_LoganHeap.GetVirtualAddress<AcpCommandQueueEntry>(g_LoganHeap._acpConnectCommand[i].commandQueue, g_LoganHeap._acpConnectCommand[i].numCommands);
+                AcpMessageQueueEntry *AcpClientMessageQueue = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry>(g_LoganHeap._acpConnectCommand[i].messageQueue, g_LoganHeap._acpConnectCommand[i].numMessages);
 
                 if (pAcpState && AcpClientCommandQueue)
                 {
@@ -178,6 +237,23 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                         if (Command.commandType)
                         {
                             DispatchClientACPCommand((ACP_COMMAND_TYPE)Command.commandType, pAcpState, Command);
+                        }
+                    }
+                }
+            }
+            else if (g_LoganHeap._acpConnectCommandOld[i].commandQueue && pAcpStateOld)
+            {
+                AcpCommandQueueEntry_Old *AcpClientCommandQueue = g_LoganHeap.GetVirtualAddress<AcpCommandQueueEntry_Old>( g_LoganHeap._acpConnectCommandOld[i].commandQueue, g_LoganHeap._acpConnectCommandOld[i].numCommands);
+                AcpMessageQueueEntry_Old *AcpClientMessageQueue = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry_Old>(g_LoganHeap._acpConnectCommandOld[i].messageQueue, g_LoganHeap._acpConnectCommandOld[i].numMessages);
+
+                if (pAcpStateOld && AcpClientCommandQueue)
+                {
+                    AcpCommand_Old Command{};
+                    while (ReadFromClientACPRingBufferOld(&Command, AcpClientCommandQueue, pAcpStateOld, i))
+                    {
+                        if (Command.commandType)
+                        {
+                            DispatchClientACPCommandOld((ACP_COMMAND_TYPE)Command.commandType, pAcpStateOld, Command);
                         }
                     }
                 }
@@ -289,6 +365,7 @@ EXTERN_C BOOL __stdcall EraDeviceIoControl(HANDLE hDevice, DWORD dwIoControlCode
 
 void LoganInit()
 {
+    GetCombaseVersion();
     hLoganMap = CreateFileMapping2(INVALID_HANDLE_VALUE, nullptr, FILE_MAP_READ | FILE_MAP_WRITE, PAGE_READWRITE, SEC_RESERVE, 0x20000000, nullptr, nullptr, 0);
     g_LoganHeap.AllocateDriverMemory();
     g_LoganHeap._view = MapViewOfFile(hLoganMap, FILE_MAP_WRITE, 0, 0, 0);

@@ -36,9 +36,8 @@ void GetCombaseVersion()
     if (!FileVersionSize)
     {
         MessageBoxW(nullptr,
-                    L"Couldn't get the combase version info size! Make sure you have EmbeddedXvd in the game "
-                    L"root/Mount folder.",
-                    L"D3D11.X Error!", MB_OK);
+                    L"Couldn't get the combase version info size! Make sure you have EmbeddedXvd in the game root/Mount folder.",
+                    L"D3D11.X Error!", MB_ICONERROR);
     }
 
     BYTE *Data = new BYTE[FileVersionSize];
@@ -48,7 +47,7 @@ void GetCombaseVersion()
         MessageBoxW(
             nullptr,
             L"Couldn't get the combase version info! Make sure you have EmbeddedXvd in the game root/Mount folder.",
-            L"D3D11.X Error!", MB_OK);
+            L"D3D11.X Error!", MB_ICONERROR);
         delete[] Data;
     }
 
@@ -61,7 +60,7 @@ void GetCombaseVersion()
         MessageBoxW(
             nullptr,
             L"Couldn't get the combase version value! Make sure you have EmbeddedXvd in the game root/Mount folder.",
-            L"D3D11.X Error!", MB_OK);
+            L"D3D11.X Error!", MB_ICONERROR);
         delete[] Data;
     }
 

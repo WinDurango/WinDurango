@@ -3,6 +3,63 @@
 #include <Windows.h>
 #include <thread>
 
+struct abi_t
+{
+    uint32_t Major = 0;
+    uint32_t Minor = 0;
+    uint32_t Build = 0;
+    uint32_t Revision = 0;
+    auto operator<=>(abi_t const &other) const noexcept = default;
+    bool operator==(abi_t const &other) const noexcept = default;
+};
+
+abi_t g_ABI;
+
+void GetCombaseVersion()
+{
+    DWORD FileVersionSize = GetFileVersionInfoSizeW(L".\\EmbeddedXvd\\Windows\\System32\\combase.dll", NULL);
+    if (!FileVersionSize)
+    {
+        MessageBoxW(nullptr,
+                    L"Couldn't get the combase version info size! Make sure you have EmbeddedXvd in the game root/Mount folder.",
+                    L"Logan Error!", MB_ICONERROR);
+    }
+
+    BYTE *Data = new BYTE[FileVersionSize];
+    BOOL ret = GetFileVersionInfoW(L".\\EmbeddedXvd\\Windows\\System32\\combase.dll", NULL, FileVersionSize, Data);
+    if (!ret)
+    {
+        MessageBoxW(
+            nullptr,
+            L"Couldn't get the combase version info! Make sure you have EmbeddedXvd in the game root/Mount folder.",
+            L"Logan Error!", MB_ICONERROR);
+        delete[] Data;
+    }
+
+    VS_FIXEDFILEINFO *pFixedFileInfo{};
+    UINT Length = 0;
+
+    VerQueryValueW(Data, L"\\", (LPVOID *)&pFixedFileInfo, &Length);
+    if (!pFixedFileInfo)
+    {
+        MessageBoxW(
+            nullptr,
+            L"Couldn't get the combase version value! Make sure you have EmbeddedXvd in the game root/Mount folder.",
+            L"Logan Error!", MB_ICONERROR);
+        delete[] Data;
+    }
+
+    DWORD major = HIWORD(pFixedFileInfo->dwProductVersionMS);
+    DWORD minor = LOWORD(pFixedFileInfo->dwProductVersionMS);
+    DWORD build = HIWORD(pFixedFileInfo->dwProductVersionLS);
+    DWORD revision = LOWORD(pFixedFileInfo->dwProductVersionLS);
+
+    g_ABI.Major = major;
+    g_ABI.Minor = minor;
+    g_ABI.Build = build;
+    g_ABI.Revision = revision;
+}
+
 // All of the types were provided by DaZombieKiller, a huge thanks to him!
 #include <winioctl.h>
 
@@ -341,14 +398,14 @@ typedef struct AcpState
 typedef struct AcpState_Old
 {
     uint32_t internalCommandQueueReadPointer;
-    uint32_t clientComamndQueueReadPointer[4];
+    uint32_t clientCommandQueueReadPointer[4];
     uint32_t clientMessageQueueWritePointer[4];
 };
 
 typedef struct CpuState
 {
     uint32_t internalCommandQueueWritePointer;
-    uint32_t clientComamndQueueWritePointer[4];
+    uint32_t clientCommandQueueWritePointer[4];
     uint32_t clientMessageQueueReadPointer[4];
 };
 
