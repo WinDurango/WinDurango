@@ -145,6 +145,15 @@ typedef struct _LOGAN_COMMAND_ACP_INIT
     UINT32 unknown2[2];
 } LOGAN_COMMAND_ACP_INIT, *PLOGAN_COMMAND_ACP_INIT;
 
+typedef struct _LOGAN_COMMAND_ACP_INIT_OLD
+{
+    UINT32 unknown0;             // Always '1'
+    APU_ADDRESS acpCommandQueue; // Physical address of the ACP internal command queue
+    APU_ADDRESS acpState;        // Store the command queue read/write addresses
+    APU_ADDRESS cpuState;        // Store the command queue read/write addresses
+    UINT32 unknown2[2];
+} LOGAN_COMMAND_ACP_INIT_OLD, *PLOGAN_COMMAND_ACP_INIT_OLD;
+
 typedef enum _LOGAN_ALLOC_MAP_FLAGS
 {
     LOGAN_ALLOC_MAP_FLAG_NONE = 0,
@@ -257,6 +266,16 @@ typedef enum ACP_COMMAND_TYPE
   ACP_COMMAND_TYPE_COUNT = 0x001b
 } ACP_COMMAND_TYPE, *PACP_COMMAND_TYPE;
 
+typedef struct ACP_COMMAND_CONNECT_OLD
+{
+    UINT32 instance;
+    UINT32 numCommands;
+    UINT32 numMessages;
+    APU_ADDRESS commandQueue;
+    APU_ADDRESS pendingCommandList;
+    APU_ADDRESS messageQueue;
+};
+
 typedef struct ACP_COMMAND_CONNECT
 {
     UINT32 instance;
@@ -308,8 +327,6 @@ typedef struct ACP_COMMAND_REGISTER_CONTEXT_ARRAYS
     APU_ADDRESS pcmContextArray;
 };
 
-
-//There can be 4 IAcpHal instances, which means 4 main command and message queues, hence client pointers/counters are arrays of 4.
 typedef struct AcpState
 {
     uint32_t internalCommandQueueReadPointer;
@@ -319,6 +336,20 @@ typedef struct AcpState
     uint32_t clientCommandQueueSendCounter[4];
     uint32_t clientCommandQueueReadCounter[4];
     uint32_t clientMessageQueueWritePointer[4];
+};
+
+typedef struct AcpState_Old
+{
+    uint32_t internalCommandQueueReadPointer;
+    uint32_t clientComamndQueueReadPointer[4];
+    uint32_t clientMessageQueueWritePointer[4];
+};
+
+typedef struct CpuState
+{
+    uint32_t internalCommandQueueWritePointer;
+    uint32_t clientComamndQueueWritePointer[4];
+    uint32_t clientMessageQueueReadPointer[4];
 };
 
 typedef struct ACP_COMMAND_INCREMENT_PCM_WRITE_POINTER
@@ -485,6 +516,37 @@ typedef struct AcpCommand
     };
 };
 
+typedef struct AcpCommand_Old
+{
+    uint32_t frame;
+    uint64_t commandId;
+    uint32_t commandType;
+    uint32_t notification;
+    union
+    {
+        ACP_COMMAND_LOAD_SHAPE_FLOWGRAPH loadFlowgraph;
+        ACP_COMMAND_MESSAGE registerMessage;
+        ACP_COMMAND_ENABLE_OR_DISABLE_XMA_CONTEXT enableOrDisableXmaContext;
+        ACP_COMMAND_UPDATE_SRC_CONTEXT updateSrcContext;
+        ACP_COMMAND_UPDATE_XMA_CONTEXT updateXmaContext;
+        ACP_COMMAND_UPDATE_PCM_CONTEXT updatePcmContext;
+        ACP_COMMAND_UPDATE_EQCOMP_CONTEXT updateEqCompContext;
+        ACP_COMMAND_UPDATE_FILTVOL_CONTEXT updateFiltVolContext;
+        ACP_COMMAND_UPDATE_DMA_CONTEXT updateDmaContext;
+        ACP_COMMAND_ENABLE_OR_DISABLE_XMA_CONTEXTS enableOrDisableXmaContexts;
+        ACP_COMMAND_INCREMENT_DMA_POINTER incrementDmaPointer;
+        ACP_COMMAND_INCREMENT_PCM_WRITE_POINTER incrementPcmWritePointer;
+        ACP_COMMAND_INCREMENT_XMA_WRITE_BUFFER_OFFSET_READ incrementXmaWriteBufferOffsetRead;
+        ACP_COMMAND_UPDATE_XMA_READ_BUFFER updateXmaReadBuffer;
+        ACP_COMMAND_UPDATE_ALL_CONTEXTS updateAllContexts;
+        ACP_COMMAND_UPDATE_CONTEXTS updateContexts;
+        ACP_COMMAND_CONNECT_OLD connect;
+        ACP_COMMAND_DISCONNECT disconnect;
+        ACP_COMMAND_REGISTER_CONTEXT_ARRAYS registerContextArrays;
+        ACP_COMMAND_INIT_EVENT_LOG eventLog;
+    };
+};
+
 typedef struct AcpCommandQueueEntry
 { 
     uint32_t state;
@@ -492,10 +554,24 @@ typedef struct AcpCommandQueueEntry
     uint8_t padToAcpCacheLineSize[120];
 };
 
+typedef struct AcpCommandQueueEntry_Old
+{ 
+    uint32_t state;
+    AcpCommand_Old command;
+    uint8_t padToAcpCacheLineSize[120];
+};
+
 typedef struct AcpInternalCommandQueueEntry
 { 
     uint32_t state;
     AcpCommand command;
+    uint8_t padToAcpCacheLineSize[120];
+};
+
+typedef struct AcpInternalCommandQueueEntry_Old
+{ 
+    uint32_t state;
+    AcpCommand_Old command;
     uint8_t padToAcpCacheLineSize[120];
 };
 
@@ -539,6 +615,22 @@ typedef struct ACP_MESSAGE
 {
     uint32_t type;
     uint32_t droppedMessageCount;
+    uint32_t usec;
+    union
+    {
+        ACP_MESSAGE_AUDIO_FRAME_START audioFrameStart;
+        ACP_MESSAGE_FLOWGRAPH_COMPLETED flowgraphCompleted;
+        ACP_MESSAGE_SHAPE_COMMAND_BLOCKED shapeCommandBlocked;
+        ACP_MESSAGE_COMMAND_COMPLETED commandCompleted;
+        ACP_MESSAGE_FLOWGRAPH_TERMINATED flowgraphTerminated;
+        ACP_MESSAGE_ERROR error;
+    };
+};
+
+typedef struct ACP_MESSAGE_OLD
+{
+    uint32_t type;
+    uint32_t droppedMessageCount;
     union
     {
         ACP_MESSAGE_AUDIO_FRAME_START audioFrameStart;
@@ -554,6 +646,13 @@ typedef struct AcpMessageQueueEntry
 {
     uint32_t state;
     ACP_MESSAGE message;
+    uint8_t padToAcpCacheLineSize[228];
+};
+
+typedef struct AcpMessageQueueEntry_Old
+{
+    uint32_t state;
+    ACP_MESSAGE_OLD message;
     uint8_t padToAcpCacheLineSize[228];
 };
 
