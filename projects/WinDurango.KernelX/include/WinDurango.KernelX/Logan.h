@@ -227,7 +227,13 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
             if (g_LoganHeap._acpConnectCommand[i].commandQueue && pAcpState)
             {
                 AcpCommandQueueEntry *AcpClientCommandQueue = g_LoganHeap.GetVirtualAddress<AcpCommandQueueEntry>(g_LoganHeap._acpConnectCommand[i].commandQueue, g_LoganHeap._acpConnectCommand[i].numCommands);
-                AcpMessageQueueEntry *AcpClientMessageQueue = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry>(g_LoganHeap._acpConnectCommand[i].messageQueue, g_LoganHeap._acpConnectCommand[i].numMessages);
+
+                AcpMessageQueueEntry *AcpClientMessageQueue = nullptr;
+                AcpMessageQueueEntry_Old *AcpClientMessageQueueOld = nullptr;
+                if (g_ABI >= abi_t{6,2,11785,0})
+                    AcpClientMessageQueue = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry>(g_LoganHeap._acpConnectCommand[i].messageQueue, g_LoganHeap._acpConnectCommand[i].numMessages);
+                else
+                    AcpClientMessageQueueOld = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry_Old>(g_LoganHeap._acpConnectCommandOld[i].messageQueue, g_LoganHeap._acpConnectCommandOld[i].numMessages);
 
                 if (pAcpState && AcpClientCommandQueue)
                 {
