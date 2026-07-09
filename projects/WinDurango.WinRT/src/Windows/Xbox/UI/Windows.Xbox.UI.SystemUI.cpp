@@ -136,7 +136,6 @@ namespace winrt::Windows::Xbox::UI::implementation
     void SystemUI::SetNotificationPositionHint(winrt::Windows::Xbox::UI::NotificationPositionHint const& value)
     {
         p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::UI", "Unimplemented: SetNotificationPositionHint");
-        throw hresult_not_implemented();
     }
     winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Xbox::UI::WebAuthenticationResult> SystemUI::AuthenticateWithCallbackUriAsync(winrt::Windows::Xbox::System::User requestingUser, winrt::Windows::Xbox::UI::WebAuthenticationOptions options, winrt::Windows::Foundation::Uri requestUri, winrt::Windows::Foundation::Uri callbackUri)
     {

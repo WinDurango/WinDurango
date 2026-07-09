@@ -13,7 +13,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, // handle to DLL module
     {
         GetCombaseVersion();
 
-        ID3D11GraphicsMemoryManager* MemoryManager;
+        ID3D11GraphicsMemoryManager* MemoryManager = nullptr;
         d3d11CreateInstance<D3D11GraphicsMemoryManager>(g_ABI, (void**)&MemoryManager);
         MemoryManager->RegisterVEH();
 

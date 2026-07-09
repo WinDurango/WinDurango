@@ -26,8 +26,8 @@ HRESULT MFCreateRGB32ToNV12ConverterX(void* pDevice, int64_t a2, int64_t a3)
 
 HRESULT MFResetDXGIDeviceManagerX()
 {
-	MessageBoxA(nullptr, "MFResetDXGIDeviceManagerX", "STUB", MB_ICONERROR);
-	return E_NOTIMPL;
+	//MessageBoxA(nullptr, "MFResetDXGIDeviceManagerX", "STUB", MB_ICONERROR);
+	return S_OK;
 }
 
 

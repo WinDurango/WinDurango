@@ -42,7 +42,7 @@ public:
         if (this->m_RefCount != 0)
             this->m_RefCount = 0;
         m_pFunction = pContext;
-        g_Context = m_pFunction;
+        //g_Context = m_pFunction;
         InterlockedIncrement(&this->m_RefCount);
         memcpy(&this->m_Function, *(void ***)this, sizeof(this->m_Function));
     }
@@ -50,7 +50,7 @@ public:
     {
         if (this->m_RefCount != 0)
             this->m_RefCount = 0;
-        m_pFunction = g_Context;
+        //m_pFunction = g_Context;
         InterlockedIncrement(&this->m_RefCount);
         memcpy(&this->m_Function, *(void ***)this, sizeof(this->m_Function));
     }

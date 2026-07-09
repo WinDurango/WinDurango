@@ -18,6 +18,8 @@ EXTERN_C HRESULT __stdcall EraD3D11CreateDevice(void *pAdapter, D3D_DRIVER_TYPE 
     ID3D11Runtime *pRuntime;
     d3d11CreateInstance<D3D11Runtime>(g_ABI, (void **)&pRuntime);
     auto hr = pRuntime->CreateDevice((void **)ppDevice, (void **)ppImmediateContext);
+    if (pFeatureLevel)
+        (*pFeatureLevel) = D3D_FEATURE_LEVEL_11_0;
     return hr;
 }
 

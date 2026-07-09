@@ -31,6 +31,9 @@ ULONG __stdcall MMDeviceEnumeratorWrapper::Release(void)
 HRESULT __stdcall MMDeviceEnumeratorWrapper::EnumAudioEndpoints(EDataFlow dataFlow, DWORD dwStateMask,
                                                                 IMMDeviceCollection **ppDevices)
 {
+    if (dwStateMask == 31)
+        dwStateMask = DEVICE_STATE_ACTIVE;
+
     return m_realEnumerator->EnumAudioEndpoints(dataFlow, dwStateMask, ppDevices);
 }
 
@@ -55,12 +58,13 @@ HRESULT __stdcall MMDeviceEnumeratorWrapper::UnregisterEndpointNotificationCallb
     return m_realEnumerator->UnregisterEndpointNotificationCallback(pClient);
 }
 
+
+// MMXboxDeviceEnumerator
 HRESULT __stdcall MMXboxDeviceEnumerator::QueryInterface(REFIID riid, void **ppvObject)
 {
     return m_realEnumerator->QueryInterface(riid, ppvObject);
 }
 
-// MMXboxDeviceEnumerator
 ULONG __stdcall MMXboxDeviceEnumerator::AddRef(void)
 {
     m_realEnumerator->AddRef();

@@ -27,7 +27,7 @@ template <abi_t ABI> struct D3D11Runtime : public ID3D11Runtime
         D3D_FEATURE_LEVEL FeatureLevels[] = {D3D_FEATURE_LEVEL_11_1, D3D_FEATURE_LEVEL_11_0};
         UINT Flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
         #ifdef _DEBUG
-            Flags |= D3D11_CREATE_DEVICE_DEBUG;
+            //Flags |= D3D11_CREATE_DEVICE_DEBUG;
         #endif
 
         auto hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, Flags, FeatureLevels, 2, D3D11_SDK_VERSION,

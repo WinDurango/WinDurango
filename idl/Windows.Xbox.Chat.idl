@@ -233,4 +233,19 @@ namespace Windows.Xbox.Chat
         ChatUserCorrelation();
         Windows.Xbox.System.User User { get; };
     }
+
+    [interface_name("IUserMuteStateChangedEventArgs", A6979C26-EE30-4DA3-A130-FB81ACABA8EA)]
+    runtimeclass UserMuteStateChangedEventArgs
+    {
+        Windows.Xbox.System.User User { get; };
+        String XboxUserId { get; };
+        Boolean Muted { get; };
+    }
+
+    [static_name("IChatMuteListStatics", 5FC153FB-B04D-4A8D-8E6B-AD4484B70342)]
+    runtimeclass ChatMuteList
+	{
+		//ChatMuteList();
+        static event Windows.Foundation.EventHandler<UserMuteStateChangedEventArgs> UserMuteStateChanged;
+	}
 }
