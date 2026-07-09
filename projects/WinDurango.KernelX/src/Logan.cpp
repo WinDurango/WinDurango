@@ -99,13 +99,12 @@ _Use_decl_annotations_ DWORD DispatchGetDriverMemory(DWORD IoControlCode, PVOID 
 
     return ERROR_SUCCESS;
 }
-
-template <typename T> 
-inline void DispatchACPCommand(ACP_COMMAND_TYPE_INTERNAL cmdType, AcpState *acpState, T Cmd)
+ 
+inline void DispatchACPCommand(ACP_COMMAND_TYPE_INTERNAL cmdType, AcpState *acpState, AcpCommand Cmd)
 {
     if (cmdType == INTERNAL_ACP_COMMAND_TYPE_CONNECT)
     {
-        g_LoganHeap._acpConnectCommand[Cmd.connect.index] = Cmd.connect;
+        g_LoganHeap._acpConnectCommand[Cmd.connect.index] = &Cmd;
         printf("Registered main ACP command and message queues.\n");
     }
     else if (cmdType == INTERNAL_ACP_COMMAND_TYPE_DISCONNECT)
@@ -139,12 +138,11 @@ inline void DispatchACPCommand(ACP_COMMAND_TYPE_INTERNAL cmdType, AcpState *acpS
     }
 }
 
-template <typename T> 
-inline void DispatchACPCommandOld(ACP_COMMAND_TYPE_INTERNAL cmdType, AcpState_Old *acpState, T Cmd)
+inline void DispatchACPCommandOld(ACP_COMMAND_TYPE_INTERNAL cmdType, AcpState_Old *acpState, AcpCommand_Old Cmd)
 {
     if (cmdType == INTERNAL_ACP_COMMAND_TYPE_CONNECT)
     {
-        g_LoganHeap._acpConnectCommandOld[Cmd.connect.instance - 1] = Cmd.connect;
+        g_LoganHeap._acpConnectCommandOld[Cmd.connect.instance - 1] = &Cmd;
         printf("Registered main ACP command and message queues.\n");
     }
     else if (cmdType == INTERNAL_ACP_COMMAND_TYPE_DISCONNECT)
@@ -265,6 +263,10 @@ inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState* acpStat
     {
         printf("TODO: Update Xma Context.\n");
     }
+    else if (cmdType == ACP_COMMAND_TYPE_DISABLE_XMA_CONTEXTS)
+    {
+        printf("TODO: Disable Xma Contexts.\n");
+    }
     else
     {
         printf("Received unknown Client ACP command of type 0x%x\n", cmdType);
@@ -358,6 +360,10 @@ inline void DispatchClientACPCommandOld(ACP_COMMAND_TYPE cmdType, AcpState_Old *
     {
         printf("TODO: Update Xma Context.\n");
     }
+    else if (cmdType == ACP_COMMAND_TYPE_DISABLE_XMA_CONTEXTS)
+    {
+        printf("TODO: Disable Xma Contexts.\n");
+    }
     else
     {
         printf("Received unknown Client ACP command of type 0x%x\n", cmdType);
@@ -383,7 +389,14 @@ void SendMessageFromACP(ACP_MESSAGE *pMessage, AcpMessageQueueEntry *pMessageQue
     if (!pMessageQueue)
         return;
 
-    //TODO
+    pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].message = *pMessage;
+    pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].state = 1;
+    pAcpState->clientMessageQueueWritePointer[ClientIndex]++;
+
+    if (pAcpState->clientMessageQueueWritePointer[ClientIndex] >= g_LoganHeap._acpConnectCommand[ClientIndex]->connect.numMessages)
+        pAcpState->clientMessageQueueWritePointer[ClientIndex] = 0;
+
+    printf("Sent ACP Message to the Client Message Queue.\n");
 }
 
 void SendMessageFromACPOld(ACP_MESSAGE_OLD *pMessage, AcpMessageQueueEntry_Old *pMessageQueue, AcpState *pAcpState, UINT ClientIndex)
@@ -391,13 +404,27 @@ void SendMessageFromACPOld(ACP_MESSAGE_OLD *pMessage, AcpMessageQueueEntry_Old *
     if (!pMessageQueue)
         return;
 
-    //TODO
+    pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].message = *pMessage;
+    pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].state = 1;
+    pAcpState->clientMessageQueueWritePointer[ClientIndex]++;
+
+    if (pAcpState->clientMessageQueueWritePointer[ClientIndex] >= g_LoganHeap._acpConnectCommand[ClientIndex]->connect.numMessages)
+        pAcpState->clientMessageQueueWritePointer[ClientIndex] = 0;
+
+    printf("Sent ACP Message to the Client Message Queue.\n");
 }
 
 void SendMessageFromACPOlder(ACP_MESSAGE_OLD *pMessage, AcpMessageQueueEntry_Old *pMessageQueue, AcpState_Old *pAcpState, UINT ClientIndex)
 {
-    if (!pMessageQueue)
+    if (!pMessageQueue || !pMessage || !pAcpState)
         return;
 
-    //TODO
+    pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].message = *pMessage;
+    pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].state = 1;
+    pAcpState->clientMessageQueueWritePointer[ClientIndex]++;
+
+    if (pAcpState->clientMessageQueueWritePointer[ClientIndex] >= g_LoganHeap._acpConnectCommandOld[ClientIndex]->connect.numMessages)
+        pAcpState->clientMessageQueueWritePointer[ClientIndex] = 0;
+
+    printf("Sent ACP Message to the Client Message Queue.\n");
 }

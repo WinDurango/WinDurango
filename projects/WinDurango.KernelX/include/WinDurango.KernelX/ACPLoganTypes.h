@@ -87,9 +87,11 @@ DEFINE_GUID(GUID_DEVINTERFACE_LOGAN, 0xF764922A, 0xDE30, 0x40A5, 0xA6, 0x6E, 0xC
 #define IOCTL_LOGAN_GET_DRIVER_MEMORY                                                                                  \
     CTL_CODE(FILE_DEVICE_LOGAN, 0x0808, METHOD_NEITHER, FILE_READ_ACCESS | FILE_WRITE_ACCESS)
 
+#pragma pack(push)
+#pragma pack(1)
 // Represents a physical memory address on the APU.
 typedef UINT32 APU_ADDRESS;
-
+#pragma pack(pop)
 //Logan
 typedef enum LOGAN_CORE
 {
@@ -703,7 +705,7 @@ typedef struct AcpMessageQueueEntry
 {
     uint32_t state;
     ACP_MESSAGE message;
-    uint8_t padToAcpCacheLineSize[228];
+    uint8_t padToAcpCacheLineSize[224];
 };
 
 typedef struct AcpMessageQueueEntry_Old
@@ -772,5 +774,13 @@ typedef enum SHAPE_XMA_SAMPLE_RATE
   SHAPE_XMA_SAMPLE_RATE_44_1K = 0x0002,
   SHAPE_XMA_SAMPLE_RATE_48K = 0x0003,
 };
+
+struct AcpPendingCommand
+{
+    APU_ADDRESS entry;
+    APU_ADDRESS next;
+    APU_ADDRESS prev;
+};
+
 
 #pragma pack(pop)

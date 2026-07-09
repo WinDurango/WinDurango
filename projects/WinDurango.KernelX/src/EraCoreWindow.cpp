@@ -81,12 +81,8 @@ HRESULT CoreWindowEra::_abi_remove_Activated(EventRegistrationToken token)
 HRESULT CoreWindowEra::_abi_add_CharacterReceived(
     ITypedEventHandler<CoreWindow *, CharacterReceivedEventArgs *> *handler, EventRegistrationToken *token)
 {
-    HRESULT hr = m_realWindow->add_CharacterReceived(handler, token);
-
-    if (FAILED(hr) || !token)
-        *token = EventRegistrationToken();
-
-    return S_OK;
+    *token = EventRegistrationToken();
+	return S_OK;
 }
 
 HRESULT CoreWindowEra::_abi_remove_CharacterReceived(EventRegistrationToken token)
@@ -97,12 +93,8 @@ HRESULT CoreWindowEra::_abi_remove_CharacterReceived(EventRegistrationToken toke
 HRESULT CoreWindowEra::_abi_add_Closed(ITypedEventHandler<CoreWindow *, CoreWindowEventArgs *> *handler,
                                        EventRegistrationToken *token)
 {
-    HRESULT hr = m_realWindow->add_Closed(handler, token);
-
-    if (FAILED(hr) || !token)
-        *token = EventRegistrationToken();
-
-    return S_OK;
+    *token = EventRegistrationToken();
+	return S_OK;
 }
 
 HRESULT CoreWindowEra::_abi_remove_Closed(EventRegistrationToken token)
@@ -129,12 +121,8 @@ HRESULT CoreWindowEra::_abi_remove_InputEnabled(EventRegistrationToken token)
 HRESULT CoreWindowEra::_abi_add_KeyDown(ITypedEventHandler<CoreWindow *, KeyEventArgs *> *handler,
                                         EventRegistrationToken *token)
 {
-    HRESULT hr = m_realWindow->add_KeyDown(handler, token);
-
-    if (FAILED(hr) || !token)
-        *token = EventRegistrationToken();
-
-    return S_OK;
+    *token = EventRegistrationToken();
+	return S_OK;
 }
 
 HRESULT CoreWindowEra::_abi_remove_KeyDown(EventRegistrationToken token)
