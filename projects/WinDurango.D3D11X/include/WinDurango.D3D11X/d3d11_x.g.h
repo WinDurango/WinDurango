@@ -1336,7 +1336,7 @@ enum D3D11X_IMG_NUM_FORMAT
         template<abi_t ABI>
         struct ID3D11DeviceContextData
         {
-            gfx::ID3D11DeviceContextXVtbl<ABI> m_Function;
+            gfx::ID3D11DeviceContextXVtbl<ABI> m_Function{};
         };
         
         template<abi_t ABI>
@@ -1348,34 +1348,34 @@ enum D3D11X_IMG_NUM_FORMAT
                 uint8_t m_OutOfLineFlags = 1; // Let us use SetFastResources_Debug instead of MakeCeSpace
                 uint32_t m_Reserved[16];
             };
-            gfx::ID3D11DeviceContextXVtbl<ABI> m_Function;
+            gfx::ID3D11DeviceContextXVtbl<ABI> m_Function{};
         };
         
         template<abi_t ABI>
         requires (ABI >= abi_t{6,2,11274,0} && ABI < abi_t{6,2,11294,0})
         struct ID3D11DeviceContextData<ABI>
         {
-            gfx::D3D11XTinyDevice m_TinyDevice;
+            gfx::D3D11XTinyDevice m_TinyDevice{};
             union
             {
                 uint8_t m_OutOfLineFlags = 1; // Let us use SetFastResources_Debug instead of MakeCeSpace
                 uint32_t m_Reserved[16];
             };
-            gfx::ID3D11DeviceContextXVtbl<ABI> m_Function;
+            gfx::ID3D11DeviceContextXVtbl<ABI> m_Function{};
         };
         
         template<abi_t ABI>
         requires (ABI >= abi_t{6,2,11294,0})
         struct ID3D11DeviceContextData<ABI>
         {
-            gfx::D3D11XTinyDevice m_TinyDevice;
-            gfx::D3D11XShaderUserDataManagerDraw<ABI> m_ShaderUserDataManagerDraw;
+            gfx::D3D11XTinyDevice m_TinyDevice{};
+            gfx::D3D11XShaderUserDataManagerDraw<ABI> m_ShaderUserDataManagerDraw{};
             union
             {
                 uint8_t m_OutOfLineFlags = 1; // Let us use SetFastResources_Debug instead of MakeCeSpace
                 uint32_t m_Reserved[16];
             };
-            gfx::ID3D11DeviceContextXVtbl<ABI> m_Function;
+            gfx::ID3D11DeviceContextXVtbl<ABI> m_Function{};
         };
     }
     
