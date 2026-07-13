@@ -25,14 +25,17 @@ inline UINT ConvertMiscFlags(UINT MiscFlags)
     return Flags;
 }
 
+ID3D11Device2 *g_Device = nullptr;
+
 template <abi_t ABI> class D3D11DeviceX : public gfx::ID3D11DeviceX<ABI>
 {
 public:
-    ID3D11Device2 *m_pFunction;
+    ID3D11Device2 *m_pFunction = nullptr;
 
     D3D11DeviceX(ID3D11Device2* pDevice)
     {
         m_pFunction = pDevice;
+        g_Device = m_pFunction;
         if (this->m_RefCount != 0)
             this->m_RefCount = 0;
         InterlockedIncrement(&this->m_RefCount);
@@ -164,7 +167,7 @@ public:
                                      void *pVirtualAddress, gfx::ID3D11Texture3D<ABI> **ppTexture3D);
     void GetTimestamps(UINT64 *pGpuTimestamp, UINT64 *pCpuRdtscTimestamp);
     HRESULT CreateComputeContextX(gfx::D3D11_COMPUTE_CONTEXT_DESC const *pComputeContextDesc,
-                                  gfx::ID3D11ComputeContextX **ppComputeContext);
+                                  gfx::ID3D11ComputeContextX<ABI> **ppComputeContext);
     HRESULT CreateSamplerStateX(gfx::D3D11X_SAMPLER_DESC const *pSamplerDesc,
                                 gfx::ID3D11SamplerState<ABI> **ppSamplerState);
     HRESULT CreateDeferredContextX(UINT Flags, gfx::ID3D11DeviceContextX<ABI> **ppDeferredContext);

@@ -261,7 +261,11 @@ inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState* acpStat
     }
     else if (cmdType == ACP_COMMAND_TYPE_UPDATE_XMA_CONTEXT)
     {
-        printf("TODO: Update Xma Context.\n");
+        ACP_COMMAND_UPDATE_XMA_CONTEXT Command = Cmd.updateXmaContext;
+        SHAPE_XMA_CONTEXT *XmaContextArray = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(g_LoganHeap._acpContextArrays.xmaContextArray, g_LoganHeap._acpContextArrays.numXmaContexts);
+        SHAPE_XMA_CONTEXT *UpdateXmaContext = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(Command.contextData);
+        XmaContextArray[Command.contextIndex] = (*UpdateXmaContext);
+        printf("Updated Xma Context at index %u.\n", Command.contextIndex);
     }
     else if (cmdType == ACP_COMMAND_TYPE_DISABLE_XMA_CONTEXTS)
     {
@@ -358,7 +362,11 @@ inline void DispatchClientACPCommandOld(ACP_COMMAND_TYPE cmdType, AcpState_Old *
     }
     else if (cmdType == ACP_COMMAND_TYPE_UPDATE_XMA_CONTEXT)
     {
-        printf("TODO: Update Xma Context.\n");
+        ACP_COMMAND_UPDATE_XMA_CONTEXT Command = Cmd.updateXmaContext;
+        SHAPE_XMA_CONTEXT *XmaContextArray = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(g_LoganHeap._acpContextArrays.xmaContextArray, g_LoganHeap._acpContextArrays.numXmaContexts);
+        SHAPE_XMA_CONTEXT *UpdateXmaContext = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(Command.contextData);
+        XmaContextArray[Command.contextIndex] = (*UpdateXmaContext);
+        printf("Updated Xma Context at index %u.\n", Command.contextIndex);
     }
     else if (cmdType == ACP_COMMAND_TYPE_DISABLE_XMA_CONTEXTS)
     {
@@ -386,11 +394,11 @@ inline void DispatchLoganCommand(LOGAN_COMMAND_TYPE cmdType, T cmd)
 
 void SendMessageFromACP(ACP_MESSAGE *pMessage, AcpMessageQueueEntry *pMessageQueue, AcpState *pAcpState, UINT ClientIndex)
 {
-    if (!pMessageQueue)
+    if (!pMessageQueue || !pMessage || !pAcpState)
         return;
 
-    pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].message = *pMessage;
     pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].state = 1;
+    pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].message = *pMessage;
     pAcpState->clientMessageQueueWritePointer[ClientIndex]++;
 
     if (pAcpState->clientMessageQueueWritePointer[ClientIndex] >= g_LoganHeap._acpConnectCommand[ClientIndex]->connect.numMessages)
@@ -401,11 +409,11 @@ void SendMessageFromACP(ACP_MESSAGE *pMessage, AcpMessageQueueEntry *pMessageQue
 
 void SendMessageFromACPOld(ACP_MESSAGE_OLD *pMessage, AcpMessageQueueEntry_Old *pMessageQueue, AcpState *pAcpState, UINT ClientIndex)
 {
-    if (!pMessageQueue)
+    if (!pMessageQueue || !pMessage || !pAcpState)
         return;
 
-    pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].message = *pMessage;
     pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].state = 1;
+    pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].message = *pMessage;
     pAcpState->clientMessageQueueWritePointer[ClientIndex]++;
 
     if (pAcpState->clientMessageQueueWritePointer[ClientIndex] >= g_LoganHeap._acpConnectCommand[ClientIndex]->connect.numMessages)
@@ -419,8 +427,8 @@ void SendMessageFromACPOlder(ACP_MESSAGE_OLD *pMessage, AcpMessageQueueEntry_Old
     if (!pMessageQueue || !pMessage || !pAcpState)
         return;
 
-    pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].message = *pMessage;
     pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].state = 1;
+    pMessageQueue[pAcpState->clientMessageQueueWritePointer[ClientIndex]].message = *pMessage;
     pAcpState->clientMessageQueueWritePointer[ClientIndex]++;
 
     if (pAcpState->clientMessageQueueWritePointer[ClientIndex] >= g_LoganHeap._acpConnectCommandOld[ClientIndex]->connect.numMessages)

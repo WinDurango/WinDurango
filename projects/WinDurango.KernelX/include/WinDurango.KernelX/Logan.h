@@ -64,6 +64,7 @@ static BOOL ReadFromInternalACPRingBuffer(AcpCommand *OutBuffer, AcpInternalComm
     if (InBufferDesc->internalCommandQueueReadCounter == InBufferDesc->internalCommandQueueSendCounter)
         return FALSE;
 
+    InBuffer[InBufferDesc->internalCommandQueueReadPointer].state = 1;
     *OutBuffer = InBuffer[InBufferDesc->internalCommandQueueReadPointer].command;
 
     InBufferDesc->internalCommandQueueReadPointer++;
@@ -80,6 +81,7 @@ static BOOL ReadFromInternalACPRingBufferOld(AcpCommand_Old *OutBuffer, AcpInter
     if (!InBuffer[InBufferDesc->internalCommandQueueReadPointer].command.commandType)
         return FALSE;
 
+    InBuffer[InBufferDesc->internalCommandQueueReadPointer].state = 1;
     *OutBuffer = InBuffer[InBufferDesc->internalCommandQueueReadPointer].command;
 
     InBufferDesc->internalCommandQueueReadPointer++;
@@ -101,6 +103,7 @@ static BOOL ReadFromClientACPRingBuffer(AcpCommand *OutBuffer, AcpCommandQueueEn
     if (InBufferDesc->clientCommandQueueReadCounter[ClientIndex] == InBufferDesc->clientCommandQueueSendCounter[ClientIndex])
         return FALSE;
 
+    InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].state = 1;
     *OutBuffer = InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].command;
 
     InBufferDesc->clientCommandQueueReadPointer[ClientIndex]++;
@@ -117,6 +120,7 @@ static BOOL ReadFromClientACPRingBufferOld(AcpCommand_Old *OutBuffer, AcpCommand
     if (!InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].command.commandType)
         return FALSE;
 
+    InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].state = 1;
     *OutBuffer = InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].command;
 
     InBufferDesc->clientCommandQueueReadPointer[ClientIndex]++;
@@ -127,11 +131,11 @@ static BOOL ReadFromClientACPRingBufferOld(AcpCommand_Old *OutBuffer, AcpCommand
     return TRUE;
 }
 
-BOOL(*P_PopMessage)(LPVOID, ACP_MESSAGE*);
+BOOL(*P_PopMessage)(LPVOID, ACP_MESSAGE_OLD*);
 std::vector<ACP_MESSAGE> g_MessageQueue;
 
 //THIS IS MEANT TO BE A WORKAROUND.
-BOOL __fastcall D_PopMessage(LPVOID pIAcpHal, ACP_MESSAGE *pMessage)
+BOOL __fastcall D_PopMessage(LPVOID pIAcpHal, ACP_MESSAGE_OLD *pMessage)
 {
     BOOL Result = P_PopMessage(pIAcpHal, pMessage);
 

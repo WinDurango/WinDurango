@@ -672,9 +672,9 @@ typedef struct ACP_MESSAGE_AUDIO_FRAME_START
 
 typedef struct ACP_MESSAGE
 {
-    uint32_t type;
-    uint32_t droppedMessageCount;
-    uint32_t usec;
+    uint32_t type = 0;
+    uint32_t droppedMessageCount = 0;
+    uint32_t usec = 0;
     union
     {
         ACP_MESSAGE_AUDIO_FRAME_START audioFrameStart;
@@ -688,8 +688,8 @@ typedef struct ACP_MESSAGE
 
 typedef struct ACP_MESSAGE_OLD
 {
-    uint32_t type;
-    uint32_t droppedMessageCount;
+    uint32_t type = 0;
+    uint32_t droppedMessageCount = 0;
     union
     {
         ACP_MESSAGE_AUDIO_FRAME_START audioFrameStart;
@@ -703,16 +703,16 @@ typedef struct ACP_MESSAGE_OLD
 
 typedef struct AcpMessageQueueEntry
 {
-    uint32_t state;
-    ACP_MESSAGE message;
-    uint8_t padToAcpCacheLineSize[224];
+    uint32_t state = 0;
+    ACP_MESSAGE message{};
+    uint8_t padToAcpCacheLineSize[224]{};
 };
 
 typedef struct AcpMessageQueueEntry_Old
 {
-    uint32_t state;
-    ACP_MESSAGE_OLD message;
-    uint8_t padToAcpCacheLineSize[228];
+    uint32_t state = 0;
+    ACP_MESSAGE_OLD message{};
+    uint8_t padToAcpCacheLineSize[228]{};
 };
 
 typedef struct ACP_COMMAND_UPDATE_XMA_CONTEXT_ENTRY

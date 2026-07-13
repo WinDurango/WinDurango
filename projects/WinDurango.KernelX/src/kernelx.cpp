@@ -773,7 +773,7 @@ EXTERN_C HANDLE __stdcall EraCreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAcce
         return LoganHandle;
     }
 
-    static std::wstring convert{};
+    /*static std::wstring convert{};
     std::wstring_view fileName(lpFileName);
 
     int length = fileName.length();
@@ -802,10 +802,18 @@ EXTERN_C HANDLE __stdcall EraCreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAcce
     else
     {
         FixRelativePath(lpFileName);
+    }*/
+
+    FixRelativePath(lpFileName);
+    HANDLE Result = CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition,
+                                dwFlagsAndAttributes, hTemplateFile);
+
+    if (Result == INVALID_HANDLE_VALUE)
+    {
+        wprintf(L"EraCreateFileW failed for file %s!\n", lpFileName);
     }
 
-    return CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition,
-                       dwFlagsAndAttributes, hTemplateFile);
+    return Result;
 }
 
 EXTERN_C HANDLE __stdcall EraCreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
@@ -816,15 +824,29 @@ EXTERN_C HANDLE __stdcall EraCreateFileA(LPCSTR lpFileName, DWORD dwDesiredAcces
     LPCWSTR FileName = A2W(lpFileName);
     FixRelativePath(FileName);
 
-    return CreateFileW(FileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition,
-                       dwFlagsAndAttributes, hTemplateFile);
+    HANDLE Result = CreateFileW(FileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition,
+                                dwFlagsAndAttributes, hTemplateFile);
+
+    if (Result == INVALID_HANDLE_VALUE)
+    {
+        wprintf(L"EraCreateFileA failed for file %s!\n", FileName);
+    }
+
+    return Result;
 }
 
 EXTERN_C HANDLE __stdcall EraCreateFile2(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
                                          DWORD dwCreationDisposition, LPCREATEFILE2_EXTENDED_PARAMETERS pCreateExParams)
 {
     FixRelativePath(lpFileName);
-    return CreateFile2(lpFileName, dwDesiredAccess, dwShareMode, dwCreationDisposition, pCreateExParams);
+    HANDLE Result = CreateFile2(lpFileName, dwDesiredAccess, dwShareMode, dwCreationDisposition, pCreateExParams);
+
+    if (Result == INVALID_HANDLE_VALUE)
+    {
+        wprintf(L"EraCreateFile2 failed for file %s!\n", lpFileName);
+    }
+
+    return Result;
 }
 
 EXTERN_C BOOL __stdcall EraCreateDirectoryA(LPCSTR lpPathName, LPSECURITY_ATTRIBUTES lpSecurityAttributes)

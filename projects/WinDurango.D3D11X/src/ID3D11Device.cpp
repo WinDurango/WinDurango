@@ -8,6 +8,7 @@
 #include "ID3D11DeviceContext.h"
 #include "ID3D11Runtime.h"
 #include "ID3D11DMAEngineContext.h"
+#include "ID3D11ComputeContext.h"
 #include "d3d11.x.h"
 #include <d3d12.h>
 #include <d3dcompiler.h>
@@ -53,7 +54,6 @@ template <abi_t ABI> HRESULT D3D11DeviceX<ABI>::QueryInterface(REFIID riid, void
         return E_NOINTERFACE;
     }
 
-    IMPLEMENT_STUB();
     *ppvObject = nullptr;
     return E_NOINTERFACE;
 }
@@ -418,15 +418,6 @@ template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreateVertexShader(void const *pBytecode, uint64_t BytecodeLength,
                                               ID3D11ClassLinkage *pClassLinkage, gfx::ID3D11VertexShader<ABI> **ppVS)
 {
-    //Before some Unity versions create the swap chain, they pass
-    //an invalid shader expecting this call to fail, but on PC, it
-    //makes the D3D11 Device get removed.
-    if (((uintptr_t)pBytecode == 0x00007ff60f7ce540 || (uintptr_t)pBytecode == 0x00007ff6f179e540) && BytecodeLength == 3028)
-        return E_INVALIDARG;
-    
-    if (((uintptr_t)pBytecode == 0x00007ff7604168f0) && BytecodeLength == 3172)
-        return E_INVALIDARG;
-
     ID3D11VertexShader *Shader{};
     HRESULT hr = m_pFunction->CreateVertexShader(pBytecode, BytecodeLength, pClassLinkage, &Shader);
     if (Shader)
@@ -1092,10 +1083,10 @@ template <abi_t ABI> void D3D11DeviceX<ABI>::GetTimestamps(UINT64 *pGpuTimestamp
 
 template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreateComputeContextX(gfx::D3D11_COMPUTE_CONTEXT_DESC const *pComputeContextDesc,
-                                                 gfx::ID3D11ComputeContextX **ppComputeContext)
+                                                 gfx::ID3D11ComputeContextX<ABI> **ppComputeContext)
 {
-    IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    *ppComputeContext = new D3D11ComputeContextX<ABI>();
+    return S_OK;
 }
 
 template <abi_t ABI>

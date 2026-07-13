@@ -214,7 +214,7 @@ HRESULT DXGIFactory2<ABI>::CreateSwapChainForCoreWindow(xbox::IGraphicsUnknown<A
     }
     else
     {
-        pDevice = new D3D11DeviceX<ABI>(pDev2);
+        pDevice = new D3D11DeviceX<ABI>(g_Device);
         pDevice->QueryInterface(__uuidof(xbox::IGraphicsUnwrap), (void **)&dev);
     }
 

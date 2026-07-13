@@ -1051,7 +1051,7 @@ template <abi_t ABI>
 void D3D11DeviceContextX<ABI>::CopyResource(gfx::ID3D11Resource<ABI> *pDstResource,
                                             gfx::ID3D11Resource<ABI> *pSrcResource)
 {
-    if (pDstResource)
+    if (pDstResource && pSrcResource)
     {
         D3D11_RESOURCE_DIMENSION DstType{};
         D3D11_RESOURCE_DIMENSION SrcType{};
