@@ -110,7 +110,7 @@ Make sure you have Visual Studio 2026 with the C++ Extension, vcpkg and cmake.
    ```
 5. Build WinDurango
    ```sh
-   cmake --build .
+   cmake .. -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
    ```
 
 ### Installation
@@ -134,9 +134,9 @@ Make sure you have Visual Studio 2026 with the C++ Extension, vcpkg and cmake.
 
 WinDurango does not have a fixed and correct minimum requirements list, as some games are more demands than others (e.g. Minecraft uses way less system resources than Forza). However, we can speculate system requirements that **should** supply the needs of most games:
 
-- A CPU with at least 4 Cores (e.g. Intel Core I5 4690K)
-- A GPU with at least 2gb of Video Memory (e.g. NVIDIA GeForce GTX 960)
-- 12gb of RAM (DDR3 or newer)
+- A CPU with at least 4 cores (e.g. Intel Core i5 4690K)
+- A GPU with at least 2GB of VRAM (e.g. NVIDIA GeForce GTX 960)
+- 12GB of RAM (DDR3 or newer)
 - Windows 10 or newer
 
 <!-- ROADMAP -->
