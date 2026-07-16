@@ -124,5 +124,14 @@ namespace xcom
 
 #define DECLARE_ABI_UUIDOF_HELPER(type, a, b, c, d, e, f, g, h, i, j, k)                                               \
     template <> inline constexpr GUID(::xcom::impl::guid_v<type<abi_t{}>>){a, b, c, {d, e, f, g, h, i, j, k}};
+
+// Because __if_exists and __if_not_exists are MSVC compiler extensions they confuse IntelliSense. We should replace these with macros that standards compliant.
+// Even Stephan T. Lavavej and Raymond Chen even agrees https://devblogs.microsoft.com/oldnewthing/20190828-00/?p=102812.
+// But for now this should resolve the annyoing red squiggles.
+#ifndef __INTELLISENSE__
+#define IMPLEMENT_STUB() ::xcom::StubHandler(__func__, nullptr)
+#define IMPLEMENT_TODO() ::xcom::TodoHandler(__func__, nullptr)
+#else
 #define IMPLEMENT_STUB() ::xcom::StubHandler(__func__, __if_exists(this) { this } __if_not_exists(this){nullptr})
 #define IMPLEMENT_TODO() ::xcom::TodoHandler(__func__, __if_exists(this) { this } __if_not_exists(this){nullptr})
+#endif
