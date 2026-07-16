@@ -65,9 +65,23 @@ test
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://github.com/WinDurango/WinDurango)
-
 WinDurango is an Xbox One Translation Layer which allows you to play various ERA based Games on Windows via UWP. Currently, WinDurango has implemented most of the essential Xbox WinRT interfaces, KernelX and D3D11.X. Kinect support is completely experimental and hasn't been tested, expect issues.
+
+
+
+## Screenshots
+
+| Minecraft | Forza Motorsport 6 |
+| --- | --- |
+| <img src="assets/screenshots/minecraft.png" width="400" alt="Minecraft"> | <img src="assets/screenshots/forza_motorsport_6.png" width="400" alt="Forza Motorsport 6"> |
+
+| Happy Dungeons | Peggle 2 |
+| --- | --- |
+| <img src="assets/screenshots/happy_dungeons.png" width="400" alt="Happy Dungeons"> | <img src="assets/screenshots/peggle_2.png" width="400" alt="Peggle 2"> |
+
+| Sonic Mania | Terraria |
+| --- | --- |
+| <img src="assets/screenshots/sonic_mania.png" width="400" alt="Sonic Mania"> | <img src="assets/screenshots/terraria.png" width="400" alt="Sonic Mania">
 
 
 
@@ -199,4 +213,3 @@ Thanks to
 [issues-url]: https://github.com/WinDurango/WinDurango/issues
 [license-shield]: https://img.shields.io/github/license/WinDurango/WinDurango.svg?style=for-the-badge
 [license-url]: https://github.com/WinDurango/WinDurango/blob/main/LICENSE.md
-[product-screenshot]: https://github.com/WinDurango/WinDurango/blob/main/assets/demo.png
