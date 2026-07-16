@@ -43,6 +43,9 @@ test
       <ul>
         <li><a href="#playable-games">Playable Games</a></li>
       </ul>
+      <ul>
+        <li><a href="#screenshots">Screenshots</a></li>
+      </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
