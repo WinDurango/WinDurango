@@ -782,5 +782,57 @@ struct AcpPendingCommand
     APU_ADDRESS prev;
 };
 
+enum SHAPE_SRC_COMMAND_TYPE
+{
+  SHAPE_SRC_COMMAND_TYPE_STOP_IMMEDIATE = 0x0000,
+  SHAPE_SRC_COMMAND_TYPE_START = 0x0001,
+  SHAPE_SRC_COMMAND_TYPE_STOP_END = 0x0002,
+};
+
+struct SHAPE_SRC_CONTEXT
+{
+    uint32_t timestamp : 21;
+    uint32_t blocksToSkip : 2;
+    uint32_t internalSaturate : 1;
+    uint32_t mixBufPeakMag : 4;
+    uint32_t peakMag : 4;
+    uint32_t : 0;
+    uint32_t samplingIncrement : 21;
+    uint32_t : 1;
+    uint32_t cmd : 2;
+    uint32_t mixBufPeakMag2 : 4;
+    uint32_t peakMag2 : 4;
+    uint32_t : 0;
+    uint32_t sampleCount : 32;
+    uint32_t : 0;
+    uint32_t samplePointer : 25;
+    uint32_t : 0;
+    uint32_t samplingIncrementTarget : 21;
+    uint32_t reserved[3];
+};
+
+struct SHAPE_DMA_CONTEXT
+{
+    uint32_t timestamp : 21;
+    uint32_t : 3;
+    uint32_t mixBufPeakMag : 4;
+    uint32_t peakMag : 4;
+    uint32_t : 0;
+    uint32_t readPointer : 5;
+    uint32_t : 3;
+    uint32_t writePointer : 5;
+    uint32_t : 3;
+    uint32_t full : 1;
+    uint32_t : 0;
+    uint32_t address : 23;
+    uint32_t : 0;
+    uint32_t numFrames : 5;
+    uint32_t : 3;
+    uint32_t floatConvert : 1;
+    uint32_t : 7;
+    uint32_t numChannels : 3;
+    uint32_t : 5;
+    uint32_t channel : 3;
+};
 
 #pragma pack(pop)

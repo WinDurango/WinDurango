@@ -27,6 +27,8 @@ class LoganHeap
     HRESULT GetDriverMemory(UINT32 index, LOGAN_PHYSICAL_MEMORY *memory);
     void AllocateDriverMemory();
     HRESULT Map(PVOID cpuAddress, APU_ADDRESS apuAddress, UINT32 sizeInBytes);
+    BOOL CheckForBlockedSampleRateConverterContexts(UINT *BlockedIndex);
+    BOOL CheckForBlockedDMAContexts(UINT *BlockedIndex);
 
     PVOID _view;
     SIZE_T _sizeInBytes;
@@ -64,7 +66,7 @@ static BOOL ReadFromInternalACPRingBuffer(AcpCommand *OutBuffer, AcpInternalComm
     if (InBufferDesc->internalCommandQueueReadCounter == InBufferDesc->internalCommandQueueSendCounter)
         return FALSE;
 
-    InBuffer[InBufferDesc->internalCommandQueueReadPointer].state = 1;
+    InBuffer[InBufferDesc->internalCommandQueueReadPointer].state = 0;
     *OutBuffer = InBuffer[InBufferDesc->internalCommandQueueReadPointer].command;
 
     InBufferDesc->internalCommandQueueReadPointer++;
@@ -81,7 +83,7 @@ static BOOL ReadFromInternalACPRingBufferOld(AcpCommand_Old *OutBuffer, AcpInter
     if (!InBuffer[InBufferDesc->internalCommandQueueReadPointer].command.commandType)
         return FALSE;
 
-    InBuffer[InBufferDesc->internalCommandQueueReadPointer].state = 1;
+    InBuffer[InBufferDesc->internalCommandQueueReadPointer].state = 0;
     *OutBuffer = InBuffer[InBufferDesc->internalCommandQueueReadPointer].command;
 
     InBufferDesc->internalCommandQueueReadPointer++;
@@ -103,7 +105,7 @@ static BOOL ReadFromClientACPRingBuffer(AcpCommand *OutBuffer, AcpCommandQueueEn
     if (InBufferDesc->clientCommandQueueReadCounter[ClientIndex] == InBufferDesc->clientCommandQueueSendCounter[ClientIndex])
         return FALSE;
 
-    InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].state = 1;
+    InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].state = 0;
     *OutBuffer = InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].command;
 
     InBufferDesc->clientCommandQueueReadPointer[ClientIndex]++;
@@ -120,7 +122,7 @@ static BOOL ReadFromClientACPRingBufferOld(AcpCommand_Old *OutBuffer, AcpCommand
     if (!InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].command.commandType)
         return FALSE;
 
-    InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].state = 1;
+    InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].state = 0;
     *OutBuffer = InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].command;
 
     InBufferDesc->clientCommandQueueReadPointer[ClientIndex]++;
@@ -230,16 +232,15 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
             if (g_LoganHeap._acpConnectCommand[i] && pAcpState)
             {
                 AcpCommandQueueEntry *AcpClientCommandQueue = g_LoganHeap.GetVirtualAddress<AcpCommandQueueEntry>(g_LoganHeap._acpConnectCommand[i]->connect.commandQueue, g_LoganHeap._acpConnectCommand[i]->connect.numCommands);
-
+                AcpPendingCommand *AcpClientPendingCommand = g_LoganHeap.GetVirtualAddress<AcpPendingCommand>(g_LoganHeap._acpConnectCommand[i]->connect.pendingCommandList);
                 AcpMessageQueueEntry *AcpClientMessageQueue = nullptr;
                 AcpMessageQueueEntry_Old *AcpClientMessageQueueOld = nullptr;
-
+                UINT BlockedIndex = 0;
                 if (g_ABI >= abi_t{6,2,11785,0})
                     AcpClientMessageQueue = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry>(g_LoganHeap._acpConnectCommand[i]->connect.messageQueue, g_LoganHeap._acpConnectCommand[i]->connect.numMessages);
                 else
                     AcpClientMessageQueueOld = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry_Old>(g_LoganHeap._acpConnectCommand[i]->connect.messageQueue, g_LoganHeap._acpConnectCommand[i]->connect.numMessages);
 
-                AcpPendingCommand *AcpClientPendingCommand = g_LoganHeap.GetVirtualAddress<AcpPendingCommand>(g_LoganHeap._acpConnectCommand[i]->connect.pendingCommandList);
                 if (pAcpState && AcpClientCommandQueue)
                 {
                     AcpCommand Command{};
@@ -258,7 +259,6 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                                 Message.droppedMessageCount = g_LoganHeap._droppedMessages;
                                 g_LoganHeap._droppedMessages++;
                                 SendMessageFromACPOld(&Message, AcpClientMessageQueueOld, pAcpState, i);
-
                             }
                             else if ((g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_COMMAND_COMPLETED) && AcpClientMessageQueue)
                             {
@@ -271,15 +271,60 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                                 g_LoganHeap._droppedMessages++;
                                 SendMessageFromACP(&Message, AcpClientMessageQueue, pAcpState, i);
                             }
+
+                            if (g_LoganHeap.CheckForBlockedSampleRateConverterContexts(&BlockedIndex))
+                            {
+                                if ((g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_SRC_BLOCKED) && AcpClientMessageQueue)
+                                {
+                                    ACP_MESSAGE Message{};
+                                    Message.type = ACP_MESSAGE_TYPE_SRC_BLOCKED;
+                                    Message.droppedMessageCount = g_LoganHeap._droppedMessages;
+                                    g_LoganHeap._droppedMessages++;
+                                    SendMessageFromACP(&Message, AcpClientMessageQueue, pAcpState, i);
+                                }
+                                else if ((g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_SRC_BLOCKED) && AcpClientMessageQueueOld)
+                                {
+                                    ACP_MESSAGE_OLD Message{};
+                                    Message.type = ACP_MESSAGE_TYPE_SRC_BLOCKED;
+                                    Message.droppedMessageCount = g_LoganHeap._droppedMessages;
+                                    g_LoganHeap._droppedMessages++;
+                                    SendMessageFromACPOld(&Message, AcpClientMessageQueueOld, pAcpState, i);
+                                }
+
+                                BlockedIndex = 0;
+                            }
+                            if (g_LoganHeap.CheckForBlockedDMAContexts(&BlockedIndex))
+                            {
+                                if ((g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_DMA_BLOCKED) && AcpClientMessageQueue)
+                                {
+                                    ACP_MESSAGE Message{};
+                                    Message.type = ACP_MESSAGE_TYPE_DMA_BLOCKED;
+                                    Message.droppedMessageCount = g_LoganHeap._droppedMessages;
+                                    g_LoganHeap._droppedMessages++;
+                                    SendMessageFromACP(&Message, AcpClientMessageQueue, pAcpState, i);
+                                }
+                                else if ((g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_DMA_BLOCKED) && AcpClientMessageQueueOld)
+                                {
+                                    ACP_MESSAGE_OLD Message{};
+                                    Message.type = ACP_MESSAGE_TYPE_DMA_BLOCKED;
+                                    Message.droppedMessageCount = g_LoganHeap._droppedMessages;
+                                    g_LoganHeap._droppedMessages++;
+                                    SendMessageFromACPOld(&Message, AcpClientMessageQueueOld, pAcpState, i);
+                                }
+
+                                BlockedIndex = 0;
+                            }
                         }
                     }
                 }
             }
             else if (g_LoganHeap._acpConnectCommandOld[i] && pAcpStateOld)
             {
-                AcpCommandQueueEntry_Old *AcpClientCommandQueue = g_LoganHeap.GetVirtualAddress<AcpCommandQueueEntry_Old>( g_LoganHeap._acpConnectCommandOld[i]->connect.commandQueue, g_LoganHeap._acpConnectCommandOld[i]->connect.numCommands);
+                AcpCommandQueueEntry_Old *AcpClientCommandQueue = g_LoganHeap.GetVirtualAddress<AcpCommandQueueEntry_Old>(g_LoganHeap._acpConnectCommandOld[i]->connect.commandQueue, g_LoganHeap._acpConnectCommandOld[i]->connect.numCommands);
                 AcpMessageQueueEntry_Old *AcpClientMessageQueue = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry_Old>(g_LoganHeap._acpConnectCommandOld[i]->connect.messageQueue, g_LoganHeap._acpConnectCommandOld[i]->connect.numMessages);
-                
+                AcpPendingCommand *AcpClientPendingCommand = g_LoganHeap.GetVirtualAddress<AcpPendingCommand>(g_LoganHeap._acpConnectCommandOld[i]->connect.pendingCommandList);
+                UINT BlockedIndex = 0;
+
                 if (pAcpStateOld && AcpClientCommandQueue)
                 {
                     AcpCommand_Old Command{};
@@ -298,6 +343,32 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                                 Message.droppedMessageCount = g_LoganHeap._droppedMessages;
                                 g_LoganHeap._droppedMessages++;
                                 SendMessageFromACPOlder(&Message, AcpClientMessageQueue, pAcpStateOld, i);
+                            }
+                            if (g_LoganHeap.CheckForBlockedSampleRateConverterContexts(&BlockedIndex))
+                            {
+                                if (g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_SRC_BLOCKED)
+                                {
+                                    ACP_MESSAGE_OLD Message{};
+                                    Message.type = ACP_MESSAGE_TYPE_SRC_BLOCKED;
+                                    Message.droppedMessageCount = g_LoganHeap._droppedMessages;
+                                    g_LoganHeap._droppedMessages++;
+                                    SendMessageFromACPOlder(&Message, AcpClientMessageQueue, pAcpStateOld, i);
+                                }
+                                
+                                BlockedIndex = 0;
+                            }
+                            if (g_LoganHeap.CheckForBlockedDMAContexts(&BlockedIndex))
+                            {
+                                if (g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_DMA_BLOCKED)
+                                {
+                                    ACP_MESSAGE_OLD Message{};
+                                    Message.type = ACP_MESSAGE_TYPE_DMA_BLOCKED;
+                                    Message.droppedMessageCount = g_LoganHeap._droppedMessages;
+                                    g_LoganHeap._droppedMessages++;
+                                    SendMessageFromACPOlder(&Message, AcpClientMessageQueue, pAcpStateOld, i);
+                                }
+
+                                BlockedIndex = 0;
                             }
                         }
                     }

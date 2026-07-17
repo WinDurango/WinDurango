@@ -436,3 +436,47 @@ void SendMessageFromACPOlder(ACP_MESSAGE_OLD *pMessage, AcpMessageQueueEntry_Old
 
     printf("Sent ACP Message to the Client Message Queue.\n");
 }
+
+BOOL LoganHeap::CheckForBlockedSampleRateConverterContexts(UINT *BlockedIndex)
+{
+    if (_acpContextArrays.srcContextArray)
+    {
+        SHAPE_SRC_CONTEXT *SrcContextArray = GetVirtualAddress<SHAPE_SRC_CONTEXT>(_acpContextArrays.srcContextArray, _acpContextArrays.numSrcContexts);
+        for (UINT i = 0; i < _acpContextArrays.numSrcContexts; i++)
+        {
+            if (!SrcContextArray[i].samplePointer)
+            {
+                (*BlockedIndex) = i;
+                return TRUE;
+            }
+            else
+            {
+                printf("Sample Rate Converter Context at index %u is not blocked!\n", i);
+            }
+        }
+    }
+
+    return FALSE;
+}
+
+BOOL LoganHeap::CheckForBlockedDMAContexts(UINT *BlockedIndex)
+{
+    if (_acpContextArrays.dmaContextArray)
+    {
+        SHAPE_DMA_CONTEXT *SrcContextArray = GetVirtualAddress<SHAPE_DMA_CONTEXT>(_acpContextArrays.dmaContextArray, _acpContextArrays.numDmaContexts);
+        for (UINT i = 0; i < _acpContextArrays.numDmaContexts; i++)
+        {
+            if (!SrcContextArray[i].address)
+            {
+                (*BlockedIndex) = i;
+                return TRUE;
+            }
+            else
+            {
+                printf("DMA Context at index %u is not blocked!\n", i);
+            }
+        }
+    }
+
+    return FALSE;
+}
