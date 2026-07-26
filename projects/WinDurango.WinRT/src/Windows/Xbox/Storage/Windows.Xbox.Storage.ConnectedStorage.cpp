@@ -49,10 +49,28 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collecti
 
     for (auto const &blobs : blobsToRead)
     {
-        winrt::Windows::Storage::IStorageFile file = co_await folder.GetFileAsync(blobs);
-        auto fileBuffer = co_await winrt::Windows::Storage::FileIO::ReadBufferAsync(file);
-        data.Insert(blobs, fileBuffer);
+        BOOL NeedsCreate = FALSE;
+        try
+        {
+            winrt::Windows::Storage::IStorageFile file = co_await folder.GetFileAsync(blobs);
+            auto fileBuffer = co_await winrt::Windows::Storage::FileIO::ReadBufferAsync(file);
+            data.Insert(blobs, fileBuffer);
+        } 
+        catch (winrt::hresult_error const& Exception)
+        {
+            if (Exception.code() == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))
+                NeedsCreate = TRUE;
+        }
+
+        if (NeedsCreate)
+        {
+            p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::ConnectedStorage", "File doesnt exist: {}", winrt::to_string(blobs));
+            auto file = co_await folder.CreateFileAsync(blobs, winrt::Windows::Storage::CreationCollisionOption::OpenIfExists);
+            auto fileBuffer = co_await winrt::Windows::Storage::FileIO::ReadBufferAsync(file);
+            data.Insert(blobs, fileBuffer);
+        }
     }
+
     co_await Read(containerName, data.GetView());
 
     co_return data.GetView();
@@ -225,7 +243,15 @@ winrt::Windows::Foundation::IAsyncOperation<bool> wd::WinRT::ConnectedStorage::D
 {
     try
     {
-        co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(path);
+        std::wstring Path = path.c_str();
+        UINT PathLength = path.size();
+        if (Path[PathLength - 1] != L'/')
+        {
+            Path.append(L"/");
+            path = Path.c_str();
+        }
+        std::replace(Path.begin(), Path.end(), L'/', L'\\');
+        co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(Path);
     }
     catch (...)
     {

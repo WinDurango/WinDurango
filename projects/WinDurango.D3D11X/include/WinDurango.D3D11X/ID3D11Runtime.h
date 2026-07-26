@@ -7,6 +7,7 @@
 #include <winrt/Windows.ApplicationModel.h>
 #include <winrt/windows.storage.provider.h>
 #include "EraCoreWindow.h"
+#include "WinDurango.h"
 
 static ID3D11Device2 *pDev2 = nullptr;
 static ID3D11DeviceContext2 *pCtx2 = nullptr;
@@ -74,6 +75,37 @@ template <abi_t ABI> struct D3D11Runtime : public ID3D11Runtime
 
         if (pWindow)
         {
+            ICoreWindowInterop *interop;
+            pWindow->QueryInterface(IID_PPV_ARGS(&interop));
+            HWND hwnd;
+            interop->get_WindowHandle(&hwnd);
+
+            auto desc = *pSwapChainDesc;
+            desc.Scaling = DXGI_SCALING_STRETCH;
+
+            if (pSwapChainDesc->SwapEffect != DXGI_SWAP_EFFECT_FLIP_DISCARD && pSwapChainDesc->SwapEffect != DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL)
+            {
+                if (pSwapChainDesc->SwapEffect == DXGI_SWAP_EFFECT_DISCARD)
+                    desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+                else if (pSwapChainDesc->SwapEffect == DXGI_SWAP_EFFECT_SEQUENTIAL)
+                    desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+            }
+
+            IDXGISwapChain1* SwapChain{};
+            hr = Factory->CreateSwapChainForHwnd(static_cast<D3D11DeviceX<ABI>*>(pDevice)->m_pFunction, hwnd, &desc, nullptr, nullptr, &SwapChain);
+            if (FAILED(hr))
+                return hr;
+
+            if (SwapChain)
+            {
+                *ppSwapChain = new DXGISwapChain1<ABI>(SwapChain);
+            }
+
+            return hr;
+        }
+        else if (g_pWindow)
+        {
+            pWindow = reinterpret_cast<CoreWindowEra*>(g_pWindow)->m_realWindow;
             ICoreWindowInterop *interop;
             pWindow->QueryInterface(IID_PPV_ARGS(&interop));
             HWND hwnd;

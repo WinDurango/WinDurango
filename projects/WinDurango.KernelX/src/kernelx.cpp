@@ -776,40 +776,9 @@ EXTERN_C HANDLE __stdcall EraCreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAcce
         return LoganHandle;
     }
 
-    /*static std::wstring convert{};
-    std::wstring_view fileName(lpFileName);
-
-    int length = fileName.length();
-    if (fileName[0] == '/')
-    {
-        static std::wstring trimPath{};
-        trimPath = fileName.substr(1);
-        fileName = trimPath.data();
-        convert = std::filesystem::current_path().c_str();
-        convert.append(L"\\");
-        convert.append(fileName);
-
-        lpFileName = convert.data();
-    }
-    else if (fileName[0] == '\\')
-    {
-    }
-    else if (fileName[length - 1] == '/')
-    {
-        convert = std::filesystem::current_path().c_str();
-        convert.append(L"\\");
-        convert.append(lpFileName);
-        std::replace(convert.begin(), convert.end(), L'/', L'\\');
-        lpFileName = convert.c_str();
-    }
-    else
-    {
-        FixRelativePath(lpFileName);
-    }*/
-
     FixRelativePath(lpFileName);
-    HANDLE Result = CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition,
-                                dwFlagsAndAttributes, hTemplateFile);
+    HANDLE Result = TrueCreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition,
+                                    dwFlagsAndAttributes, hTemplateFile);
 
     if (Result == INVALID_HANDLE_VALUE)
     {
@@ -827,8 +796,8 @@ EXTERN_C HANDLE __stdcall EraCreateFileA(LPCSTR lpFileName, DWORD dwDesiredAcces
     LPCWSTR FileName = A2W(lpFileName);
     FixRelativePath(FileName);
 
-    HANDLE Result = CreateFileW(FileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition,
-                                dwFlagsAndAttributes, hTemplateFile);
+    HANDLE Result = TrueCreateFileW(FileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition,
+                                    dwFlagsAndAttributes, hTemplateFile);
 
     if (Result == INVALID_HANDLE_VALUE)
     {
@@ -842,7 +811,7 @@ EXTERN_C HANDLE __stdcall EraCreateFile2(LPCWSTR lpFileName, DWORD dwDesiredAcce
                                          DWORD dwCreationDisposition, LPCREATEFILE2_EXTENDED_PARAMETERS pCreateExParams)
 {
     FixRelativePath(lpFileName);
-    HANDLE Result = CreateFile2(lpFileName, dwDesiredAccess, dwShareMode, dwCreationDisposition, pCreateExParams);
+    HANDLE Result = TrueCreateFile2(lpFileName, dwDesiredAccess, dwShareMode, dwCreationDisposition, pCreateExParams);
 
     if (Result == INVALID_HANDLE_VALUE)
     {
@@ -878,7 +847,7 @@ EXTERN_C HMODULE __stdcall EraLoadLibraryExA(LPCSTR lpLibFileName, _Reserved_ HA
         convert.append(fileName);
     }
 
-    HMODULE result = LoadLibraryExW(LibName, hFile, dwFlags);
+    HMODULE result = TrueLoadLibraryExW(LibName, hFile, dwFlags);
 
     PatchNeededImports(result, GetRuntimeModule(), "?GetActivationFactoryByPCWSTR@@YAJPEAXAEAVGuid@Platform@@PEAPEAX@Z",
                        GetActivationFactoryRedirect);
@@ -902,7 +871,7 @@ EXTERN_C HMODULE __stdcall EraLoadLibraryW(LPCWSTR lpLibFileName)
         lpLibFileName = convert.data();
     }
 
-    HMODULE result = LoadLibraryW(lpLibFileName);
+    HMODULE result = TrueLoadLibraryW(lpLibFileName);
     PatchNeededImports(result, GetRuntimeModule(), "?GetActivationFactoryByPCWSTR@@YAJPEAXAEAVGuid@Platform@@PEAPEAX@Z",
                        GetActivationFactoryRedirect);
     return result;
@@ -911,32 +880,32 @@ EXTERN_C HMODULE __stdcall EraLoadLibraryW(LPCWSTR lpLibFileName)
 EXTERN_C DWORD __stdcall EraGetFileAttributesW(LPCWSTR lpFileName)
 {
     FixRelativePath(lpFileName);
-    return GetFileAttributesW(lpFileName);
+    return TrueGetFileAttributesW(lpFileName);
 }
 
 EXTERN_C BOOL __stdcall EraGetFileAttributesExW(LPCWSTR lpFileName, GET_FILEEX_INFO_LEVELS fInfoLevelId,
                                                 LPVOID lpFileInformation)
 {
     FixRelativePath(lpFileName);
-    return GetFileAttributesExW(lpFileName, fInfoLevelId, lpFileInformation);
+    return TrueGetFileAttributesExW(lpFileName, fInfoLevelId, lpFileInformation);
 }
 
 EXTERN_C HANDLE __stdcall EraFindFirstFileW(LPCWSTR lpFileName, LPWIN32_FIND_DATAW lpFindFileData)
 {
     FixRelativePath(lpFileName);
-    return FindFirstFileW(lpFileName, lpFindFileData);
+    return TrueFindFirstFileW(lpFileName, lpFindFileData);
 }
 
 EXTERN_C BOOL __stdcall EraDeleteFileW(LPCWSTR lpFileName)
 {
     FixRelativePath(lpFileName);
-    return DeleteFileW(lpFileName);
+    return TrueDeleteFileW(lpFileName);
 }
 
 EXTERN_C HMODULE __stdcall EraLoadLibraryExW(LPCWSTR lpLibFileName, HANDLE hFile, DWORD dwFlags)
 {
     FixRelativePath(lpLibFileName);
-    return LoadLibraryExW(lpLibFileName, hFile, dwFlags);
+    return TrueLoadLibraryExW(lpLibFileName, hFile, dwFlags);
 }
 
 // Imports
@@ -981,7 +950,7 @@ EXTERN_C HMODULE __stdcall EraLoadLibraryExW(LPCWSTR lpLibFileName, HANDLE hFile
 #pragma comment(linker, "/export:CopyContext=kernel32.CopyContext")
 #pragma comment(linker, "/export:CopyFile2=kernel32.CopyFile2")
 #pragma comment(linker, "/export:CopyMemoryNonTemporal=kernelbase.CopyMemoryNonTemporal")
-#pragma comment(linker, "/export:CreateDirectoryA=EraCreateDirectoryA")
+#pragma comment(linker, "/export:CreateDirectoryA=kernel32.CreateDirectoryA")
 #pragma comment(linker, "/export:CreateDirectoryW=kernel32.CreateDirectoryW")
 #pragma comment(linker, "/export:CreateEventA=kernel32.CreateEventA")
 #pragma comment(linker, "/export:CreateEventExA=kernel32.CreateEventExA")
@@ -989,10 +958,10 @@ EXTERN_C HMODULE __stdcall EraLoadLibraryExW(LPCWSTR lpLibFileName, HANDLE hFile
 #pragma comment(linker, "/export:CreateEventW=kernel32.CreateEventW")
 #pragma comment(linker, "/export:CreateFiber=kernel32.CreateFiber")
 #pragma comment(linker, "/export:CreateFiberEx=kernel32.CreateFiberEx")
-#pragma comment(linker, "/export:CreateFile2=EraCreateFile2")
-#pragma comment(linker, "/export:CreateFileA=EraCreateFileA")
+#pragma comment(linker, "/export:CreateFile2=kernel32.CreateFile2")
+#pragma comment(linker, "/export:CreateFileA=kernel32.CreateFileA")
 #pragma comment(linker, "/export:CreateFileMappingW=kernel32.CreateFileMappingW")
-#pragma comment(linker, "/export:CreateFileW=EraCreateFileW")
+#pragma comment(linker, "/export:CreateFileW=kernel32.CreateFileW")
 #pragma comment(linker, "/export:CreateHardLinkW=kernel32.CreateHardLinkW")
 #pragma comment(linker, "/export:CreateIoCompletionPort=kernel32.CreateIoCompletionPort")
 #pragma comment(linker, "/export:CreateMutexA=kernel32.CreateMutexA")
@@ -1063,7 +1032,7 @@ EXTERN_C HMODULE __stdcall EraLoadLibraryExW(LPCWSTR lpLibFileName, HANDLE hFile
 #pragma comment(linker, "/export:FindFirstFileA=kernel32.FindFirstFileA")
 #pragma comment(linker, "/export:FindFirstFileExA=kernel32.FindFirstFileExA")
 #pragma comment(linker, "/export:FindFirstFileExW=kernel32.FindFirstFileExW")
-#pragma comment(linker, "/export:FindFirstFileW=EraFindFirstFileW")
+#pragma comment(linker, "/export:FindFirstFileW=kernel32.FindFirstFileW")
 #pragma comment(linker, "/export:FindNLSString=kernel32.FindNLSString")
 #pragma comment(linker, "/export:FindNLSStringEx=kernel32.FindNLSStringEx")
 #pragma comment(linker, "/export:FindNextFileA=kernel32.FindNextFileA")
@@ -1117,8 +1086,8 @@ EXTERN_C HMODULE __stdcall EraLoadLibraryExW(LPCWSTR lpLibFileName, HANDLE hFile
 #pragma comment(linker, "/export:GetExitCodeThread=kernel32.GetExitCodeThread")
 #pragma comment(linker, "/export:GetFileAttributesA=kernel32.GetFileAttributesA")
 #pragma comment(linker, "/export:GetFileAttributesExA=kernel32.GetFileAttributesExA")
-#pragma comment(linker, "/export:GetFileAttributesExW=EraGetFileAttributesExW")
-#pragma comment(linker, "/export:GetFileAttributesW=EraGetFileAttributesW")
+#pragma comment(linker, "/export:GetFileAttributesExW=kernel32.GetFileAttributesExW")
+#pragma comment(linker, "/export:GetFileAttributesW=kernel32.GetFileAttributesW")
 #pragma comment(linker, "/export:GetFileInformationByHandle=kernel32.GetFileInformationByHandle")
 #pragma comment(linker, "/export:GetFileInformationByHandleEx=kernel32.GetFileInformationByHandleEx")
 #pragma comment(linker, "/export:GetFileSize=kernel32.GetFileSize")
@@ -1248,9 +1217,9 @@ EXTERN_C HMODULE __stdcall EraLoadLibraryExW(LPCWSTR lpLibFileName, HANDLE hFile
 #pragma comment(linker, "/export:LeaveCriticalSection=kernel32.LeaveCriticalSection")
 #pragma comment(linker,                                                                                                \
                 "/export:LeaveCriticalSectionWhenCallbackReturns=kernel32.LeaveCriticalSectionWhenCallbackReturns")
-#pragma comment(linker, "/export:LoadLibraryExA=EraLoadLibraryExA")
-#pragma comment(linker, "/export:LoadLibraryExW=EraLoadLibraryExW")
-#pragma comment(linker, "/export:LoadLibraryW=EraLoadLibraryW")
+#pragma comment(linker, "/export:LoadLibraryExA=kernel32.LoadLibraryExA")
+#pragma comment(linker, "/export:LoadLibraryExW=kernel32.LoadLibraryExW")
+#pragma comment(linker, "/export:LoadLibraryW=kernel32.LoadLibraryW")
 #pragma comment(linker, "/export:LoadPackagedLibrary=kernel32.LoadPackagedLibrary")
 #pragma comment(linker, "/export:LoadResource=kernel32.LoadResource")
 #pragma comment(linker, "/export:LoadStringW=kernelbase.LoadStringW")

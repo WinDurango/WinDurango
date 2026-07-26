@@ -5,6 +5,8 @@
 
 #undef CreateFile
 
+void *g_pWindow = nullptr;
+
 namespace wd::common
 {
     std::shared_ptr<WinDurango> WinDurango::GetInstance()

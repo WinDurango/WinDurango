@@ -32,3 +32,5 @@ namespace wd::common
         std::shared_ptr<interfaces::storage::Directory> WinDurangoRoot;
     };
 } // namespace wd::common
+
+EXTERN_C WD_API void *g_pWindow; //Used for swap chain creation in D3D11.X.

@@ -217,3 +217,32 @@ static PXMEMALLOC_ROUTINE XmpAllocRoutine = XMemAllocDefault;
 static PXMEMFREE_ROUTINE XmpFreeRoutine = XMemFreeDefault;
 
 extern std::shared_ptr<wd::common::WinDurango> winDurango;
+
+EXTERN_C HANDLE __stdcall EraCreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
+                                         LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,
+                                         DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
+
+EXTERN_C HANDLE __stdcall EraCreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
+                                         LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,
+                                         DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
+
+EXTERN_C HANDLE __stdcall EraCreateFile2(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
+                                         DWORD dwCreationDisposition,
+                                         LPCREATEFILE2_EXTENDED_PARAMETERS pCreateExParams);
+
+EXTERN_C BOOL __stdcall EraCreateDirectoryA(LPCSTR lpPathName, LPSECURITY_ATTRIBUTES lpSecurityAttributes);
+
+EXTERN_C HMODULE __stdcall EraLoadLibraryExA(LPCSTR lpLibFileName, _Reserved_ HANDLE hFile, _In_ DWORD dwFlags);
+
+EXTERN_C HMODULE __stdcall EraLoadLibraryW(LPCWSTR lpLibFileName);
+
+EXTERN_C DWORD __stdcall EraGetFileAttributesW(LPCWSTR lpFileName);
+
+EXTERN_C BOOL __stdcall EraGetFileAttributesExW(LPCWSTR lpFileName, GET_FILEEX_INFO_LEVELS fInfoLevelId,
+                                                LPVOID lpFileInformation);
+
+EXTERN_C HANDLE __stdcall EraFindFirstFileW(LPCWSTR lpFileName, LPWIN32_FIND_DATAW lpFindFileData);
+
+EXTERN_C BOOL __stdcall EraDeleteFileW(LPCWSTR lpFileName);
+
+EXTERN_C HMODULE __stdcall EraLoadLibraryExW(LPCWSTR lpLibFileName, HANDLE hFile, DWORD dwFlags);

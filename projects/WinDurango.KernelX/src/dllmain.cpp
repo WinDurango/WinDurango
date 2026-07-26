@@ -83,36 +83,36 @@ void KernelxInitialize(HINSTANCE hinstDLL)
             DetourAttach(reinterpret_cast<PVOID*>(&pD3D11CreateDevice), &D3D11CreateDevice_Hook);
         }
 
-        /*WIN32_FILE_ATTRIBUTE_DATA AcpHalData{};
-        GetFileAttributesExW(L"acphal.dll", GetFileExInfoStandard, &AcpHalData);
-        if (AcpHalData.nFileSizeLow == 21504)
-        {
-            HMODULE AcpHal = GetModuleHandleW(L"acphal.dll");
-            if (!AcpHal)
-            {
-                HMODULE AcpHalModule = LoadLibraryW(L"acphal.dll");
-                AcpHal = GetModuleHandleW(L"acphal.dll");
-            }
-
-            if (AcpHal)
-            {
-                uintptr_t AcpHalSize = (uintptr_t)AcpHal;
-                *(void**)&P_PopMessage = (char*)AcpHalSize + 0x173C;
-                DetourAttach((void**)&P_PopMessage, &D_PopMessage);
-            }
-        }*/
-
-        DetourAttach(&reinterpret_cast<PVOID &>(TrueCoCreateInstance), EraCoCreateInstance);
-        DetourAttach(&reinterpret_cast<PVOID &>(TrueDeviceIoControl), EraDeviceIoControl);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueCoCreateInstance), EraCoCreateInstance);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueDeviceIoControl), EraDeviceIoControl);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueCreateDirectoryA), EraCreateDirectoryA);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueCreateFileW), EraCreateFileW);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueCreateFile2), EraCreateFile2);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueCreateFileA), EraCreateFileA);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueGetFileAttributesW), EraGetFileAttributesW);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueGetFileAttributesExW), EraGetFileAttributesExW);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueFindFirstFileW), EraFindFirstFileW);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueDeleteFileW), EraDeleteFileW);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueLoadLibraryW), EraLoadLibraryW);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueLoadLibraryExA), EraLoadLibraryExA);
         DetourTransactionCommit();
     }
     else if (ReasonForCall == DLL_PROCESS_DETACH || ReasonForCall == DLL_THREAD_DETACH)
     {
         DetourTransactionBegin();
         DetourUpdateThread(GetCurrentThread());
-        DetourDetach(&reinterpret_cast<PVOID &>(TrueCreateWindowInBandEx), EraCreateWindowInBandEx);
-        DetourDetach(&reinterpret_cast<PVOID &>(TrueCoCreateInstance), EraCoCreateInstance);
-        DetourDetach(&reinterpret_cast<PVOID &>(TrueDeviceIoControl), EraDeviceIoControl);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueCoCreateInstance), EraCoCreateInstance);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueDeviceIoControl), EraDeviceIoControl);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueCreateDirectoryA), EraCreateDirectoryA);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueCreateFileW), EraCreateFileW);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueCreateFile2), EraCreateFile2);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueCreateFileA), EraCreateFileA);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueGetFileAttributesW), EraGetFileAttributesW);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueGetFileAttributesExW), EraGetFileAttributesExW);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueFindFirstFileW), EraFindFirstFileW);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueDeleteFileW), EraDeleteFileW);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueLoadLibraryW), EraLoadLibraryW);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueLoadLibraryExA), EraLoadLibraryExA);
         DetourTransactionCommit();
     }
 }

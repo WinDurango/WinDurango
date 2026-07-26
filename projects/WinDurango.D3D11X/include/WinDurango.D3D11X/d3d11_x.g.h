@@ -2574,7 +2574,7 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,11064,0})
     struct ID3D11DeviceContext2<ABI> : gfx::ID3D11DeviceContext1<ABI>
     {
         virtual HRESULT UpdateTileMappings(gfx::ID3D11Resource<ABI> *pTiledResource, UINT NumTiledResourceRegions, D3D11_TILED_RESOURCE_COORDINATE const *pTiledResourceRegionStartCoordinates, D3D11_TILE_REGION_SIZE const *pTiledResourceRegionSizes, gfx::ID3D11Buffer<ABI> *pTilePool, UINT NumRanges, UINT const *pRangeFlags, UINT const *pTilePoolStartOffsets, UINT const *pRangeTileCounts, UINT Flags) = 0;
@@ -2591,7 +2591,7 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,11064,0})
     struct ID3D11DeviceContext2Vtbl<ABI> : gfx::ID3D11DeviceContext1Vtbl<ABI>
     {
         HRESULT(*UpdateTileMappings)(void *, gfx::ID3D11Resource<ABI> *pTiledResource, UINT NumTiledResourceRegions, D3D11_TILED_RESOURCE_COORDINATE const *pTiledResourceRegionStartCoordinates, D3D11_TILE_REGION_SIZE const *pTiledResourceRegionSizes, gfx::ID3D11Buffer<ABI> *pTilePool, UINT NumRanges, UINT const *pRangeFlags, UINT const *pTilePoolStartOffsets, UINT const *pRangeTileCounts, UINT Flags);
@@ -3361,7 +3361,7 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,11064,0})
     struct ID3D11DrawBundlesContext<ABI> : gfx::ID3D11DeviceContext2<ABI>
     {
         virtual INT PIXBeginEvent(LPCWSTR Name) = 0;
@@ -3567,7 +3567,7 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,11064,0})
     struct ID3D11DrawBundlesContextVtbl<ABI> : gfx::ID3D11DeviceContext2Vtbl<ABI>
     {
         INT(*PIXBeginEvent)(void *, LPCWSTR Name);
@@ -3856,7 +3856,7 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,11064,0})
     struct ID3D11Device2<ABI> : gfx::ID3D11Device1<ABI>
     {
         virtual void GetImmediateContext2(gfx::ID3D11DeviceContext2<ABI> **ppImmediateContext) = 0;
@@ -3871,7 +3871,7 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,11064,0})
     struct ID3D11Device2Vtbl<ABI> : gfx::ID3D11Device1Vtbl<ABI>
     {
         void(*GetImmediateContext2)(void *, gfx::ID3D11DeviceContext2<ABI> **ppImmediateContext);
@@ -3955,7 +3955,7 @@ namespace gfx
     };
 
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,10817,0} && ABI < abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,10817,0} && ABI < abi_t{6,2,11064,0})
     struct ID3D11DeviceX<ABI> : gfx::ID3D11Device2<ABI>
     {
         virtual void GetImmediateContextX(gfx::ID3D11DeviceContextX<ABI> **ppImmediateContextX) = 0;
@@ -3989,7 +3989,7 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0} && ABI < abi_t{10,0,14393,2171})
+    requires (ABI >= abi_t{6,2,11064,0} && ABI < abi_t{10,0,14393,2171})
     struct ID3D11DeviceX<ABI> : gfx::ID3D11Device2<ABI>
     {
         virtual void GetImmediateContextX(gfx::ID3D11DeviceContextX<ABI> **ppImmediateContextX) = 0;
@@ -4083,7 +4083,7 @@ namespace gfx
     };
 
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,10817,0} && ABI < abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,10817,0} && ABI < abi_t{6,2,11064,0})
     struct ID3D11DeviceXVtbl<ABI> : gfx::ID3D11Device2Vtbl<ABI>
     {
         void(*GetImmediateContextX)(void *, gfx::ID3D11DeviceContextX<ABI> **ppImmediateContextX);
@@ -4117,7 +4117,7 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0} && ABI < abi_t{10,0,14393,2171})
+    requires (ABI >= abi_t{6,2,11064,0} && ABI < abi_t{10,0,14393,2171})
     struct ID3D11DeviceXVtbl<ABI> : gfx::ID3D11Device2Vtbl<ABI>
     {
         void(*GetImmediateContextX)(void *, gfx::ID3D11DeviceContextX<ABI> **ppImmediateContextX);
@@ -4751,14 +4751,12 @@ inline HRESULT d3d11CreateInstance(abi_t ABI, void **ppvObject)
         *ppvObject = new T<abi_t{6,2,13004,0}>();
     else if (ABI >= abi_t{6,2,11294,0})
         *ppvObject = new T<abi_t{6,2,11294,0}>();
-    else if (ABI >= abi_t{6,2,11274,0})
-        *ppvObject = new T<abi_t{6,2,11274,0}>();
     else if (ABI >= abi_t{6,2,10817,0})
         *ppvObject = new T<abi_t{6,2,10817,0}>();
     else if (ABI >= abi_t{6,2,10698,0})
         *ppvObject = new T<abi_t{6,2,10698,0}>();
     else if (ABI >= abi_t{6,2,11064,0})
-        *ppvObject = new T<abi_t{6,2,11274,0}>();
+        *ppvObject = new T<abi_t{6,2,11064,0}>();
     else
         *ppvObject = new T<abi_t{}>();
     
@@ -4770,7 +4768,7 @@ inline HRESULT d3d11CreateInstance(abi_t ABI, void **ppvObject)
     prefix template class ABI_INTERFACE((abi_t{6,2,10698,0})); \
     prefix template class ABI_INTERFACE((abi_t{6,2,11064,0})); \
     prefix template class ABI_INTERFACE((abi_t{6,2,10817,0})); \
-    prefix template class ABI_INTERFACE((abi_t{6,2,11274,0})); \
+    prefix template class ABI_INTERFACE((abi_t{6,2,11064,0})); \
     prefix template class ABI_INTERFACE((abi_t{6,2,11294,0})); \
     prefix template class ABI_INTERFACE((abi_t{6,2,13004,0})); \
     prefix template class ABI_INTERFACE((abi_t{10,0,14393,2152})); \

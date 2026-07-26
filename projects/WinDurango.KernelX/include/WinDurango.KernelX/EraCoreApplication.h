@@ -5,6 +5,7 @@
 #include <winrt/Windows.UI.ViewManagement.h>
 #include <wrl.h>
 #include "EraCoreWindow.h"
+#include "WinDurango.h"
 
 using namespace ABI::Windows::ApplicationModel;
 using namespace ABI::Windows::ApplicationModel::Activation;
@@ -163,11 +164,11 @@ class FrameworkViewEra : public IFrameworkView
         m_realView->SetWindow(window);
 
         //Resizes game window to 1280x720 so it's not a square by default.
-        
         auto view = winrt::Windows::UI::ViewManagement::ApplicationView::GetForCurrentView();
         winrt::Windows::Foundation::Size desiredSize{1280.0f, 720.0f};
         view.TryResizeView(desiredSize);
 
+        g_pWindow = window;
         return S_OK;
     }
 
