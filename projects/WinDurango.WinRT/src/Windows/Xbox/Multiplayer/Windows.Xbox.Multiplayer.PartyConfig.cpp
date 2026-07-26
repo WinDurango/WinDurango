@@ -3,6 +3,8 @@
 
 namespace winrt::Windows::Xbox::Multiplayer::implementation
 {
+    bool g_suppressGameSessionReadyToast = false;
+
     hstring PartyChatMember::XboxUserId()
     {
         return userId;
@@ -18,17 +20,11 @@ namespace winrt::Windows::Xbox::Multiplayer::implementation
     }
     bool PartyConfig::SuppressGameSessionReadyToast()
     {
-        p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Multiplayer", "Unimplemented: SuppressGameSessionReadyToast");
-        throw hresult_not_implemented();
+        return g_suppressGameSessionReadyToast;
     }
     void PartyConfig::SuppressGameSessionReadyToast(bool value)
     {
-        p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Multiplayer", "Unimplemented: SuppressGameSessionReadyToast(bool)");
-        if (value) {
-            p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Multiplayer", "Suppressing Game Session Ready Toast");
-        } else {
-            p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Multiplayer", "Enabling Game Session Ready Toast");
-        }
+        g_suppressGameSessionReadyToast = value;
     }
     winrt::Windows::Xbox::Multiplayer::SuppressGameSessionReadyToastMode PartyConfig::SuppressGameSessionReadyToastMode()
     {
