@@ -303,3 +303,348 @@ class FrameworkViewSourceEra : public IFrameworkViewSource
     ULONG m_RefCount = 0;
     IFrameworkViewSource *m_realViewSource;
 };
+
+MIDL_INTERFACE("4207a996-ca2f-42f7-bde8-8b10457a7f30")
+IStorageItemEra : public IInspectable
+{
+public:
+    virtual HRESULT STDMETHODCALLTYPE get_Name(HSTRING* value) = 0;
+    virtual HRESULT STDMETHODCALLTYPE get_Path(HSTRING* value) = 0;
+    virtual HRESULT STDMETHODCALLTYPE get_Attributes(ABI::Windows::Storage::FileAttributes* value) = 0;
+    virtual HRESULT STDMETHODCALLTYPE get_DateCreated(ABI::Windows::Foundation::DateTime* value) = 0;
+    virtual HRESULT STDMETHODCALLTYPE IsOfType(ABI::Windows::Storage::StorageItemTypes type,boolean* value) = 0;
+};
+
+MIDL_INTERFACE("72d1cb78-b3ef-4f75-a80b-6fd9dae2944b")
+IStorageFolderEra : public IStorageItemEra
+{
+public:
+};
+
+class StorageFolderEra : public IStorageFolderEra
+{
+public:
+    StorageFolderEra(ComPtr<ABI::Windows::Storage::IStorageFolder> realFolder)
+    {
+        m_realFolder = realFolder;
+        m_realFolder.As(&m_realItem);
+        InterlockedIncrement(&m_RefCount);
+    }
+
+    HRESULT STDMETHODCALLTYPE get_Name(HSTRING* value) override
+    {
+        return m_realItem->get_Name(value);
+    }
+
+    HRESULT STDMETHODCALLTYPE get_Path(HSTRING* value) override
+    {
+        return m_realItem->get_Path(value);
+    }
+
+    HRESULT STDMETHODCALLTYPE get_Attributes(ABI::Windows::Storage::FileAttributes* value) override
+    {
+        return m_realItem->get_Attributes(value);
+    }
+
+    HRESULT STDMETHODCALLTYPE get_DateCreated(ABI::Windows::Foundation::DateTime* value) override
+    {
+        return m_realItem->get_DateCreated(value);
+    }
+
+    HRESULT STDMETHODCALLTYPE IsOfType(ABI::Windows::Storage::StorageItemTypes type, boolean* value) override
+    {
+        return m_realItem->IsOfType(type, value);
+    }
+
+    HRESULT QueryInterface(const IID& riid, void** ppvObject) override
+    {
+        if (riid == __uuidof(IUnknown) || riid == __uuidof(IInspectable) || riid == __uuidof(IStorageFolderEra) ||
+            riid == __uuidof(IStorageItemEra))
+        {
+            *ppvObject = this;
+            AddRef();
+            return S_OK;
+        }
+
+        char iidstr[sizeof("{AAAAAAAA-BBBB-CCCC-DDEE-FFGGHHIIJJKK}")];
+        OLECHAR iidwstr[sizeof(iidstr)];
+        StringFromGUID2(riid, iidwstr, ARRAYSIZE(iidwstr));
+        WideCharToMultiByte(CP_UTF8, 0, iidwstr, -1, iidstr, sizeof(iidstr), nullptr, nullptr);
+        MessageBoxA(nullptr, iidstr, typeid(*this).name(), MB_OK);
+
+        *ppvObject = nullptr;
+        return E_NOINTERFACE;
+    }
+
+    ULONG AddRef() override
+    {
+        return InterlockedIncrement(&m_RefCount);
+    }
+
+    ULONG Release() override
+    {
+        ULONG RefCount = InterlockedDecrement(&m_RefCount);
+        if (!RefCount) delete this;
+        return RefCount;
+    }
+
+    HRESULT GetIids(ULONG* iidCount, IID** iids) override
+    {
+        return m_realFolder->GetIids(iidCount, iids);
+    }
+
+    HRESULT GetRuntimeClassName(HSTRING* className) override
+    {
+        return m_realFolder->GetRuntimeClassName(className);
+    }
+
+    HRESULT GetTrustLevel(TrustLevel* trustLevel) override
+    {
+        return m_realFolder->GetTrustLevel(trustLevel);
+    }
+
+private:
+    ComPtr<ABI::Windows::Storage::IStorageFolder> m_realFolder;
+    ComPtr<ABI::Windows::Storage::IStorageItem> m_realItem;
+    ULONG m_RefCount = 0;
+};
+
+MIDL_INTERFACE("c3da6fb7-b744-4b45-b0b8-223a0938d0dc")
+IApplicationDataEra : public IInspectable
+{
+public:
+    virtual HRESULT STDMETHODCALLTYPE get_LocalFolder(IStorageFolderEra** value) = 0;
+};
+
+MIDL_INTERFACE("5612147b-e843-45e3-94d8-06169e3c8e17")
+IApplicationDataStaticsEra : public IInspectable
+{
+public:
+    virtual HRESULT STDMETHODCALLTYPE get_Current(IApplicationDataEra** value) = 0;
+};
+
+class ApplicationDataEra : public RuntimeClass<IActivationFactory, IApplicationDataEra, IApplicationDataStaticsEra>
+{
+public:
+    ApplicationDataEra(ComPtr<IActivationFactory> realFactory)
+    {
+        m_realFactory = realFactory;
+        HRESULT hr = m_realFactory.As(&m_realApplicationDataStatics);
+        m_realApplicationDataStatics->get_Current(&m_realApplicationData);
+        InterlockedIncrement(&m_RefCount);
+    }
+
+    HRESULT get_LocalFolder(IStorageFolderEra** value) override
+    {
+        ComPtr<ABI::Windows::Storage::IStorageFolder> Folder;
+        HRESULT hr = m_realApplicationData->get_LocalFolder(Folder.GetAddressOf());
+        if (SUCCEEDED(hr))
+        {
+            *value = new StorageFolderEra(Folder);
+        }
+        
+        return hr;
+    }
+
+    HRESULT STDMETHODCALLTYPE get_Current(IApplicationDataEra** value) override
+    {
+        *value = static_cast<IApplicationDataEra*>(this);
+        AddRef();
+        return S_OK;
+    }
+
+    HRESULT STDMETHODCALLTYPE ActivateInstance(__RPC__deref_out_opt IInspectable **instance) override
+    {
+        return m_realFactory->ActivateInstance(instance);
+    }
+
+    HRESULT QueryInterface(const IID& riid, void** ppvObject) override
+    {
+        if (riid == __uuidof(IActivationFactory) || riid == __uuidof(IUnknown))
+        {
+            *ppvObject = static_cast<IActivationFactory *>(this);
+            AddRef();
+            return S_OK;
+        }
+        if (riid == __uuidof(IApplicationDataEra))
+        {
+            *ppvObject = static_cast<IApplicationDataEra *>(this);
+            AddRef();
+            return S_OK;
+        }
+        if (riid == __uuidof(IApplicationDataStaticsEra))
+        {
+            *ppvObject = static_cast<IApplicationDataStaticsEra *>(this);
+            AddRef();
+            return S_OK;
+        }
+
+        char iidstr[sizeof("{AAAAAAAA-BBBB-CCCC-DDEE-FFGGHHIIJJKK}")];
+        OLECHAR iidwstr[sizeof(iidstr)];
+        StringFromGUID2(riid, iidwstr, ARRAYSIZE(iidwstr));
+        WideCharToMultiByte(CP_UTF8, 0, iidwstr, -1, iidstr, sizeof(iidstr), nullptr, nullptr);
+        MessageBoxA(nullptr, iidstr, typeid(*this).name(), MB_OK);
+
+        *ppvObject = nullptr;
+        return E_NOINTERFACE;
+    }
+
+    ULONG AddRef() override
+    {
+        return InterlockedIncrement(&m_RefCount);
+    }
+
+    ULONG Release() override
+    {
+        ULONG RefCount = InterlockedDecrement(&m_RefCount);
+        if (!RefCount) delete this;
+        return RefCount;
+    }
+
+    HRESULT GetIids(ULONG* iidCount, IID** iids) override
+    {
+        return m_realFactory->GetIids(iidCount, iids);
+    }
+
+    HRESULT GetRuntimeClassName(HSTRING* className) override
+    {
+        return m_realFactory->GetRuntimeClassName(className);
+    }
+
+    HRESULT GetTrustLevel(TrustLevel* trustLevel) override
+    {
+        return m_realFactory->GetTrustLevel(trustLevel);
+    }
+
+private:
+    ComPtr<ABI::Windows::Storage::IApplicationDataStatics> m_realApplicationDataStatics;
+    ComPtr<ABI::Windows::Storage::IApplicationData> m_realApplicationData;
+    ComPtr<IActivationFactory> m_realFactory;
+    ULONG m_RefCount = 0;
+};
+
+MIDL_INTERFACE("163C792F-BD75-413C-BF23-B1FE7B95D825")
+IPackageEra : public IInspectable
+{
+public:
+    virtual HRESULT STDMETHODCALLTYPE get_Id(ABI::Windows::ApplicationModel::IPackageId **value) = 0;
+    virtual HRESULT STDMETHODCALLTYPE get_InstalledLocation(IStorageFolderEra **value) = 0;
+    virtual HRESULT STDMETHODCALLTYPE get_IsFramework(boolean *value) = 0;
+};
+
+MIDL_INTERFACE("4E534BDF-2960-4878-97A4-9624DEB72F2D")
+IPackageStaticsEra : public IInspectable
+{
+public:
+    virtual HRESULT STDMETHODCALLTYPE get_Current(IPackageEra **value) = 0;
+};
+
+class PackageEra : public RuntimeClass<IActivationFactory, IPackageEra, IPackageStaticsEra>
+{
+public:
+    PackageEra(ComPtr<IActivationFactory> realFactory)
+    {
+        m_realFactory = realFactory;
+        HRESULT hr = m_realFactory.As(&m_realPackageStatics);
+        m_realPackageStatics->get_Current(&m_realPackage);
+        InterlockedIncrement(&m_RefCount);
+    }
+
+    HRESULT STDMETHODCALLTYPE get_Id(ABI::Windows::ApplicationModel::IPackageId **value) override
+    {
+        return m_realPackage->get_Id(value);
+    }
+
+    HRESULT STDMETHODCALLTYPE get_InstalledLocation(IStorageFolderEra **value) override
+    {
+        ComPtr<ABI::Windows::Storage::IStorageFolder> Folder;
+        HRESULT hr = m_realPackage->get_InstalledLocation(Folder.GetAddressOf());
+        if (SUCCEEDED(hr))
+        {
+            *value = new StorageFolderEra(Folder);
+        }
+
+        return hr;
+    }
+
+    HRESULT STDMETHODCALLTYPE get_IsFramework(boolean *value) override
+    {
+        return m_realPackage->get_IsFramework(value);
+    }
+
+    HRESULT STDMETHODCALLTYPE get_Current(IPackageEra **value) override
+    {
+        *value = static_cast<IPackageEra*>(this);
+        AddRef();
+        return S_OK;
+    }
+
+    HRESULT STDMETHODCALLTYPE ActivateInstance(__RPC__deref_out_opt IInspectable **instance) override
+    {
+        return m_realFactory->ActivateInstance(instance);
+    }
+
+    HRESULT QueryInterface(const IID& riid, void** ppvObject) override
+    {
+        if (riid == __uuidof(IActivationFactory) || riid == __uuidof(IUnknown))
+        {
+            *ppvObject = static_cast<IActivationFactory *>(this);
+            AddRef();
+            return S_OK;
+        }
+        if (riid == __uuidof(IPackageEra))
+        {
+            *ppvObject = static_cast<IPackageEra *>(this);
+            AddRef();
+            return S_OK;
+        }
+        if (riid == __uuidof(IPackageStaticsEra))
+        {
+            *ppvObject = static_cast<IPackageStaticsEra *>(this);
+            AddRef();
+            return S_OK;
+        }
+
+        char iidstr[sizeof("{AAAAAAAA-BBBB-CCCC-DDEE-FFGGHHIIJJKK}")];
+        OLECHAR iidwstr[sizeof(iidstr)];
+        StringFromGUID2(riid, iidwstr, ARRAYSIZE(iidwstr));
+        WideCharToMultiByte(CP_UTF8, 0, iidwstr, -1, iidstr, sizeof(iidstr), nullptr, nullptr);
+        MessageBoxA(nullptr, iidstr, typeid(*this).name(), MB_OK);
+
+        *ppvObject = nullptr;
+        return E_NOINTERFACE;
+    }
+
+    ULONG AddRef() override
+    {
+        return InterlockedIncrement(&m_RefCount);
+    }
+
+    ULONG Release() override
+    {
+        ULONG RefCount = InterlockedDecrement(&m_RefCount);
+        if (!RefCount) delete this;
+        return RefCount;
+    }
+
+    HRESULT GetIids(ULONG* iidCount, IID** iids) override
+    {
+        return m_realFactory->GetIids(iidCount, iids);
+    }
+
+    HRESULT GetRuntimeClassName(HSTRING* className) override
+    {
+        return m_realFactory->GetRuntimeClassName(className);
+    }
+
+    HRESULT GetTrustLevel(TrustLevel* trustLevel) override
+    {
+        return m_realFactory->GetTrustLevel(trustLevel);
+    }
+
+private:
+    ComPtr<ABI::Windows::ApplicationModel::IPackageStatics> m_realPackageStatics;
+    ComPtr<ABI::Windows::ApplicationModel::IPackage> m_realPackage;
+    ComPtr<IActivationFactory> m_realFactory;
+    ULONG m_RefCount = 0;
+};

@@ -4,25 +4,20 @@
 
 namespace winrt::Windows::Xbox::Multiplayer::implementation
 {
-    struct PartyChat : PartyChatT<PartyChat>
+    struct PartyChat
     {
         PartyChat() = default;
 
-        winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Xbox::Multiplayer::PartyChatView> GetPartyChatViewAsync();
-        winrt::event_token PartyChatViewChanged(winrt::Windows::Foundation::EventHandler<winrt::Windows::Foundation::IInspectable> const& handler);
-        void PartyChatViewChanged(winrt::event_token const& token) noexcept;
-        bool IsPartyChatActive();
-        bool IsPartyChatSuppressed();
-        void IsPartyChatSuppressed(bool value);
-        winrt::event_token IsPartyChatActiveChanged(winrt::Windows::Foundation::EventHandler<bool> const& handler);
-        void IsPartyChatActiveChanged(winrt::event_token const& token) noexcept;
-        winrt::event_token IsPartyChatSuppressedChanged(winrt::Windows::Foundation::EventHandler<bool> const& handler);
-        void IsPartyChatSuppressedChanged(winrt::event_token const& token) noexcept;
-    private:
-        winrt::event<winrt::Windows::Foundation::EventHandler<winrt::Windows::Foundation::IInspectable>> e_PartyChatViewChanged;
-        winrt::event<winrt::Windows::Foundation::EventHandler<bool>> e_IsPartyChatActiveChanged;
-        winrt::event<winrt::Windows::Foundation::EventHandler<bool>> e_IsPartyChatSuppressedChanged;
-        bool isPartyChatSuppressed = false;
+        static winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Xbox::Multiplayer::PartyChatView> GetPartyChatViewAsync();
+        static winrt::event_token PartyChatViewChanged(winrt::Windows::Foundation::EventHandler<winrt::Windows::Foundation::IInspectable> const& handler);
+        static void PartyChatViewChanged(winrt::event_token const& token) noexcept;
+        static bool IsPartyChatActive();
+        static bool IsPartyChatSuppressed();
+        static void IsPartyChatSuppressed(bool value);
+        static winrt::event_token IsPartyChatActiveChanged(winrt::Windows::Foundation::EventHandler<bool> const& handler);
+        static void IsPartyChatActiveChanged(winrt::event_token const& token) noexcept;
+        static winrt::event_token IsPartyChatSuppressedChanged(winrt::Windows::Foundation::EventHandler<bool> const& handler);
+        static void IsPartyChatSuppressedChanged(winrt::event_token const& token) noexcept;
     };
 }
 namespace winrt::Windows::Xbox::Multiplayer::factory_implementation
@@ -31,3 +26,5 @@ namespace winrt::Windows::Xbox::Multiplayer::factory_implementation
     {
     };
 }
+
+

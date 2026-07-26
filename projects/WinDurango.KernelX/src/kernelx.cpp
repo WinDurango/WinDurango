@@ -715,12 +715,13 @@ void FixRelativePath(LPCWSTR &lpFileName)
         trimPath = fileName.substr(2);
         fileName = trimPath.data();
         convert = std::filesystem::current_path().c_str();
-        if (length != '\\')
+        if (convert.back() != '\\')
         {
             convert.append(L"\\");
         }
         convert.append(fileName);
 
+        std::replace(convert.begin(), convert.end(), L'/', L'\\');
         lpFileName = convert.data();
 
         return;
@@ -731,17 +732,18 @@ void FixRelativePath(LPCWSTR &lpFileName)
         convert.append(L"\\");
         convert.append(fileName);
 
+        std::replace(convert.begin(), convert.end(), L'/', L'\\');
         lpFileName = convert.data();
     }
     else if ((fileName[0] == 'G' || fileName[0] == 'g') && fileName[1] == ':')
     {
-
         static std::wstring trimPath{};
         trimPath = fileName.substr(2);
         fileName = trimPath.data();
         convert = std::filesystem::current_path().c_str();
         convert.append(fileName);
 
+        std::replace(convert.begin(), convert.end(), L'/', L'\\');
         lpFileName = convert.data();
     }
     else if ((fileName[0] == 'T' || fileName[0] == 't') && fileName[1] == ':')
@@ -753,6 +755,7 @@ void FixRelativePath(LPCWSTR &lpFileName)
         convert = winrt::Windows::Storage::ApplicationData::Current().TemporaryFolder().Path();
         convert.append(fileName);
 
+        std::replace(convert.begin(), convert.end(), L'/', L'\\');
         lpFileName = convert.data();
     }
 }

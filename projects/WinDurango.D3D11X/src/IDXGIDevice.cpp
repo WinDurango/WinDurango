@@ -122,8 +122,7 @@ template <abi_t ABI> HRESULT DXGIDevice2<ABI>::SetMaximumFrameLatency(uint32_t M
 
 template <abi_t ABI> HRESULT DXGIDevice2<ABI>::GetMaximumFrameLatency(uint32_t *pMaxLatency)
 {
-    IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    return m_pFunction->GetMaximumFrameLatency(pMaxLatency);
 }
 
 //

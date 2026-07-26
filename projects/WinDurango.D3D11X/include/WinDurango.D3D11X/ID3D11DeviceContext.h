@@ -4,6 +4,8 @@
 #include <mutex>
 #include <vector>
 
+#define D3D11_MAP_FLAG_ALLOW_USAGE_DEFAULT 0x00200000
+
 ID3D11DeviceContext2 *g_Context = nullptr;
 
 static std::map<UINT64, int> D3D11X_HARDWARE_TO_TOPOLOGY_MAP = {
@@ -322,8 +324,10 @@ public:
     // ID3D11DeviceContextX
     //
     INT PIXBeginEvent(LPCWSTR Name);
+    INT PIXBeginEventEx(const void *pEvent, UINT Flags);
     INT PIXEndEvent();
     void PIXSetMarker(LPCWSTR Name);
+    void PIXSetMarkerEx(const void *pMarker, UINT Flags);
     BOOL PIXGetStatus();
     HRESULT PIXGpuCaptureNextFrame(UINT Flags, LPCWSTR lpOutputFileName);
     HRESULT PIXGpuBeginCapture(UINT Flags, LPCWSTR lpOutputFileName);

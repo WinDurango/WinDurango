@@ -6,8 +6,31 @@
 //
 template <abi_t ABI> HRESULT D3D11Resource<ABI>::QueryInterface(REFIID riid, void **ppvObject)
 {
+    if (riid == xcom::guid_of<gfx::ID3D11Resource>())
+    {
+        *ppvObject = this;
+        AddRef();
+        return S_OK;
+    }
+    else if (riid == xcom::guid_of<gfx::ID3D11Texture2D>())
+    {
+        ::ID3D11Texture2D *pTex2D = nullptr;
+        HRESULT hr = m_pFunction->QueryInterface(IID_PPV_ARGS(&pTex2D));
+        if (SUCCEEDED(hr))
+        {
+            *ppvObject = new D3D11Texture2D<ABI>(pTex2D);
+            return S_OK;
+        }
+        else
+        {
+            *ppvObject = nullptr;
+            return E_NOINTERFACE;
+        }
+    }
+
     IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    *ppvObject = nullptr;
+    return E_NOINTERFACE;
 }
 
 template <abi_t ABI> ULONG D3D11Resource<ABI>::AddRef()

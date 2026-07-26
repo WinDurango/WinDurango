@@ -116,6 +116,13 @@ template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::GetBuffer(UINT Buffer, REFIID 
         *ppSurface = new D3D11Texture3D<ABI>(tex3D);
         return hr;
     }
+    else if (riid == xcom::guid_of<gfx::ID3D11Resource>())
+    {
+        ::ID3D11Resource *resource{};
+        HRESULT hr = m_pFunction->GetBuffer(Buffer, IID_PPV_ARGS(&resource));
+        *ppSurface = new D3D11Resource<ABI>(resource);
+        return hr;
+    }
 
     IMPLEMENT_STUB();
     return E_NOINTERFACE;

@@ -25,8 +25,7 @@ namespace winrt::Windows::Xbox::Networking::implementation
     }
     winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Networking::SecureDeviceAssociationTemplate> SecureDeviceAssociationTemplate::Templates()
     {
-        p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Networking", "Unimplemented: Templates");
-        throw hresult_not_implemented();
+        return winrt::single_threaded_vector<winrt::Windows::Xbox::Networking::SecureDeviceAssociationTemplate>().GetView();
     }
     winrt::event_token SecureDeviceAssociationTemplate::AssociationIncoming(winrt::Windows::Foundation::TypedEventHandler<winrt::Windows::Xbox::Networking::SecureDeviceAssociationTemplate, winrt::Windows::Xbox::Networking::SecureDeviceAssociationIncomingEventArgs> const& handler)
     {

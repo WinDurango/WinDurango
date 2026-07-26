@@ -981,7 +981,7 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,10817,0})
     struct ID3D11Resource<ABI> : gfx::ID3D11DeviceChild<ABI>, details::ID3D11ResourceData<ABI>
     {
         virtual void GetType(D3D11_RESOURCE_DIMENSION *pDimension) = 0;
@@ -999,7 +999,7 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,10817,0})
     struct ID3D11ResourceVtbl<ABI> : gfx::ID3D11DeviceChildVtbl<ABI>
     {
         void(*GetType)(void *, D3D11_RESOURCE_DIMENSION *pDimension);
@@ -1052,7 +1052,7 @@ namespace gfx
         };
         
         template<abi_t ABI>
-        requires (ABI >= abi_t{6,2,11274,0})
+        requires (ABI >= abi_t{6,2,10817,0})
         struct ID3D11BufferData<ABI>
         {
             uint32_t DescriptorSize;
@@ -1162,7 +1162,7 @@ namespace gfx
         };
         
         template<abi_t ABI>
-        requires (ABI >= abi_t{6,2,11274,0})
+        requires (ABI >= abi_t{6,2,10817,0})
         struct ID3D11SamplerStateData<ABI>
         {
             gfx::D3D11X_DESCRIPTOR_SAMPLER_STATE m_Descriptor;
@@ -1216,7 +1216,7 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,10817,0})
     struct ID3D11DepthStencilState<ABI> : gfx::ID3D11DeviceChild<ABI>
     {
         virtual void GetDesc(D3D11_DEPTH_STENCIL_DESC *pDesc) = 0;
@@ -1230,7 +1230,7 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,10817,0})
     struct ID3D11DepthStencilStateVtbl<ABI> : gfx::ID3D11DeviceChildVtbl<ABI>
     {
         void(*GetDesc)(void *, D3D11_DEPTH_STENCIL_DESC *pDesc);
@@ -1268,7 +1268,7 @@ namespace gfx
         };
         
         template<abi_t ABI>
-        requires (ABI >= abi_t{6,2,11274,0})
+        requires (ABI >= abi_t{6,2,10817,0})
         struct ID3D11ShaderResourceViewData<ABI>
         {
             gfx::D3D11X_DESCRIPTOR_TEXTURE_VIEW m_Descriptor;
@@ -1285,7 +1285,7 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,10817,0})
     struct ID3D11ShaderResourceView<ABI> : gfx::ID3D11View<ABI>, details::ID3D11ShaderResourceViewData<ABI>
     {
         virtual void GetDesc(D3D11_SHADER_RESOURCE_VIEW_DESC *pDesc) = 0;
@@ -1300,7 +1300,7 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,10817,0})
     struct ID3D11ShaderResourceViewVtbl<ABI> : gfx::ID3D11ViewVtbl<ABI>
     {
         void(*GetDesc)(void *, D3D11_SHADER_RESOURCE_VIEW_DESC *pDesc);
@@ -1341,7 +1341,7 @@ namespace gfx
         };
         
         template<abi_t ABI>
-        requires (ABI >= abi_t{6,2,11274,0})
+        requires (ABI >= abi_t{6,2,10817,0})
         struct ID3D11UnorderedAccessViewData<ABI>
         {
             gfx::D3D11X_DESCRIPTOR_TEXTURE_VIEW m_Descriptor;
@@ -1372,7 +1372,7 @@ namespace gfx
         };
         
         template<abi_t ABI>
-        requires (ABI >= abi_t{6,2,10698,0} && ABI < abi_t{6,2,11274,0})
+        requires (ABI >= abi_t{6,2,10698,0} && ABI < abi_t{6,2,10817,0})
         struct ID3D11DeviceContextData<ABI>
         {
             union
@@ -1384,7 +1384,7 @@ namespace gfx
         };
         
         template<abi_t ABI>
-        requires (ABI >= abi_t{6,2,11274,0} && ABI < abi_t{6,2,11294,0})
+        requires (ABI >= abi_t{6,2,10817,0} && ABI < abi_t{6,2,11294,0})
         struct ID3D11DeviceContextData<ABI>
         {
             gfx::D3D11XTinyDevice m_TinyDevice{};
@@ -2673,12 +2673,150 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0})
+    requires (ABI >= abi_t{6,2,10817,0} && ABI < abi_t{6,2,13346,0})
     struct ID3D11DeviceContextX<ABI> : gfx::ID3D11DeviceContext2<ABI>
     {
         virtual INT PIXBeginEvent(LPCWSTR Name) = 0;
         virtual INT PIXEndEvent() = 0;
         virtual void PIXSetMarker(LPCWSTR Name) = 0;
+        virtual BOOL PIXGetStatus() = 0;
+        virtual HRESULT PIXGpuCaptureNextFrame(UINT Flags, LPCWSTR lpOutputFileName) = 0;
+        virtual HRESULT PIXGpuBeginCapture(UINT Flags, LPCWSTR lpOutputFileName) = 0;
+        virtual HRESULT PIXGpuEndCapture() = 0;
+        virtual void StartCounters(ID3D11CounterSetX *pCounterSet) = 0;
+        virtual void SampleCounters(ID3D11CounterSampleX *pCounterSample) = 0;
+        virtual void StopCounters() = 0;
+        virtual HRESULT GetCounterData(ID3D11CounterSampleX *pCounterSample, D3D11X_COUNTER_DATA *pData, UINT GetCounterDataFlags) = 0;
+        virtual void FlushGpuCaches(gfx::ID3D11Resource<ABI> *pResource) = 0;
+        virtual void FlushGpuCacheRange(UINT Flags, void *pBaseAddress, SIZE_T SizeInBytes) = 0;
+        virtual void InsertWaitUntilIdle(UINT Flags) = 0;
+        virtual UINT64 InsertFence(UINT Flags) = 0;
+        virtual void InsertWaitOnFence(UINT Flags, UINT64 Fence) = 0;
+        virtual void RemapConstantBufferInheritance(D3D11_STAGE Stage, UINT Slot, D3D11_STAGE InheritStage, UINT InheritSlot) = 0;
+        virtual void RemapShaderResourceInheritance(D3D11_STAGE Stage, UINT Slot, D3D11_STAGE InheritStage, UINT InheritSlot) = 0;
+        virtual void RemapSamplerInheritance(D3D11_STAGE Stage, UINT Slot, D3D11_STAGE InheritStage, UINT InheritSlot) = 0;
+        virtual void RemapVertexBufferInheritance(UINT Slot, UINT InheritSlot) = 0;
+        virtual void PSSetFastConstantBuffer(UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer) = 0;
+        virtual void PSSetFastShaderResource(UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView) = 0;
+        virtual void PSSetFastSampler(UINT Slot, gfx::ID3D11SamplerState<ABI> *pSampler) = 0;
+        virtual void VSSetFastConstantBuffer(UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer) = 0;
+        virtual void VSSetFastShaderResource(UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView) = 0;
+        virtual void VSSetFastSampler(UINT Slot, gfx::ID3D11SamplerState<ABI> *pSampler) = 0;
+        virtual void GSSetFastConstantBuffer(UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer) = 0;
+        virtual void GSSetFastShaderResource(UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView) = 0;
+        virtual void GSSetFastSampler(UINT Slot, gfx::ID3D11SamplerState<ABI> *pSampler) = 0;
+        virtual void CSSetFastConstantBuffer(UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer) = 0;
+        virtual void CSSetFastShaderResource(UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView) = 0;
+        virtual void CSSetFastSampler(UINT Slot, gfx::ID3D11SamplerState<ABI> *pSampler) = 0;
+        virtual void HSSetFastConstantBuffer(UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer) = 0;
+        virtual void HSSetFastShaderResource(UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView) = 0;
+        virtual void HSSetFastSampler(UINT Slot, gfx::ID3D11SamplerState<ABI> *pSampler) = 0;
+        virtual void DSSetFastConstantBuffer(UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer) = 0;
+        virtual void DSSetFastShaderResource(UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView) = 0;
+        virtual void DSSetFastSampler(UINT Slot, gfx::ID3D11SamplerState<ABI> *pSampler) = 0;
+        virtual void IASetFastVertexBuffer(UINT Slot, gfx::ID3D11Buffer<ABI> *pVertexBuffer, UINT Stride) = 0;
+        virtual void IASetFastIndexBuffer(UINT HardwareIndexFormat, gfx::ID3D11Buffer<ABI> *pIndexBuffer) = 0;
+        virtual void PSSetPlacementConstantBuffer(UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer, void *pBaseAddress) = 0;
+        virtual void PSSetPlacementShaderResource(UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView, void *pBaseAddress) = 0;
+        virtual void VSSetPlacementConstantBuffer(UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer, void *pBaseAddress) = 0;
+        virtual void VSSetPlacementShaderResource(UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView, void *pBaseAddress) = 0;
+        virtual void GSSetPlacementConstantBuffer(UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer, void *pBaseAddress) = 0;
+        virtual void GSSetPlacementShaderResource(UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView, void *pBaseAddress) = 0;
+        virtual void CSSetPlacementConstantBuffer(UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer, void *pBaseAddress) = 0;
+        virtual void CSSetPlacementShaderResource(UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView, void *pBaseAddress) = 0;
+        virtual void HSSetPlacementConstantBuffer(UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer, void *pBaseAddress) = 0;
+        virtual void HSSetPlacementShaderResource(UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView, void *pBaseAddress) = 0;
+        virtual void DSSetPlacementConstantBuffer(UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer, void *pBaseAddress) = 0;
+        virtual void DSSetPlacementShaderResource(UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView, void *pBaseAddress) = 0;
+        virtual void IASetPlacementVertexBuffer(UINT Slot, gfx::ID3D11Buffer<ABI> *pVertexBuffer, void *pBaseAddress, UINT Stride) = 0;
+        virtual void IASetPlacementIndexBuffer(UINT HardwareIndexFormat, gfx::ID3D11Buffer<ABI> *pIndexBuffer, void *pBaseAddress) = 0;
+        virtual void HSSetTessellationParameters(D3D11X_TESSELLATION_PARAMETERS const *pTessellationParameters) = 0;
+        virtual void HSGetLastUsedTessellationParameters(D3D11X_TESSELLATION_PARAMETERS *pTessellationParameters) = 0;
+        virtual void CSEnableAutomaticGpuFlush(BOOL Enable) = 0;
+        virtual void GpuSendPipelinedEvent(D3D11X_GPU_PIPELINED_EVENT Event) = 0;
+        virtual HRESULT Suspend(UINT Flags) = 0;
+        virtual HRESULT Resume() = 0;
+        virtual void BeginCommandListExecution(UINT Flags) = 0;
+        virtual void EndCommandListExecution() = 0;
+        virtual void SetGraphicsShaderLimits(D3D11X_GRAPHICS_SHADER_LIMITS const *pShaderLimits) = 0;
+        virtual void SetComputeShaderLimits(D3D11X_COMPUTE_SHADER_LIMITS const *pShaderLimits) = 0;
+        virtual void SetPredicationBuffer(gfx::ID3D11Buffer<ABI> *pBuffer, UINT Offset, UINT Flags) = 0;
+        virtual void OMSetDepthBounds(FLOAT min, FLOAT max) = 0;
+        virtual void OMSetDepthStencilStateX(gfx::ID3D11DepthStencilState<ABI> *pDepthStencilState) = 0;
+        virtual void OMSetSampleMask(UINT64 QuadSampleMask) = 0;
+        virtual UINT32 *MakeCeSpace() = 0;
+        virtual void SetFastResources_Debug(UINT *pTableStart, UINT *pTableEnd) = 0;
+        virtual void BeginResourceBatch(void *pBuffer, UINT BufferSize) = 0;
+        virtual UINT EndResourceBatch(UINT *pSizeNeeded) = 0;
+        virtual void SetFastResourcesFromBatch_Debug(void *pBatch, UINT Size) = 0;
+        virtual void CSPlaceUnorderedAccessView(UINT Slot, D3D11X_DESCRIPTOR_UNORDERED_ACCESS_VIEW *const pDescriptor, UINT64 Offset) = 0;
+        virtual void WriteValueEndOfPipe(void *pDestination, UINT Value, UINT Flags) = 0;
+        virtual void CopyMemoryToMemory(void *pDstAddress, void *pSrcAddress, SIZE_T SizeBytes) = 0;
+        virtual void FillMemoryWithValue(void *pDstAddress, SIZE_T SizeBytes, UINT FillValue) = 0;
+        virtual void BeginProcessVideoResource(gfx::ID3D11Resource<ABI> *pResource, UINT SubResource) = 0;
+        virtual void EndProcessVideoResource(gfx::ID3D11Resource<ABI> *pResource, UINT SubResource) = 0;
+        virtual HRESULT StartThreadTrace(D3D11X_THREAD_TRACE_DESC const *pDesc, void *pDstAddressShaderEngine0, void *pDstAddressShaderEngine1, SIZE_T BufferSizeBytes) = 0;
+        virtual void StopThreadTrace(void *pDstAddressTraceSize) = 0;
+        virtual void InsertThreadTraceMarker(UINT Marker) = 0;
+        virtual void IASetPrimitiveResetIndex(UINT ResetIndex) = 0;
+        virtual void SetShaderResourceViewMinLOD(gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView, FLOAT MinLOD) = 0;
+        virtual void InsertWaitOnPresent(UINT Flags, gfx::ID3D11Resource<ABI> *pBackBuffer) = 0;
+        virtual void ClearRenderTargetViewX(gfx::ID3D11RenderTargetView<ABI> *pRenderTargetView, UINT Flags, FLOAT const ColorRGBA[4]) = 0;
+        virtual UINT GetResourceCompression(gfx::ID3D11Resource<ABI> *pResource) = 0;
+        virtual UINT GetResourceCompressionX(gfx::D3D11X_DESCRIPTOR_RESOURCE const *pResource) = 0;
+        virtual void DecompressResource(gfx::ID3D11Resource<ABI> *pDstResource, UINT DstSubresource, D3D11X_POINT const *pDstPoint, gfx::ID3D11Resource<ABI> *pSrcResource, UINT SrcSubresource, D3D11X_RECT const *pSrcRect, DXGI_FORMAT DecompressFormat, UINT DecompressFlags) = 0;
+        virtual void DecompressResourceX(gfx::D3D11X_DESCRIPTOR_RESOURCE *pDstResource, UINT DstSubresource, D3D11X_POINT const *pDstPoint, gfx::D3D11X_DESCRIPTOR_RESOURCE *pSrcResource, UINT SrcSubresource, D3D11X_RECT const *pSrcRect, D3D11X_FORMAT DecompressFormat, UINT DecompressFlags) = 0;
+        virtual void GSSetParameters(D3D11X_GS_PARAMETERS const *pGsParameters) = 0;
+        virtual void GSGetLastUsedParameters(D3D11X_GS_PARAMETERS *pGsParameters) = 0;
+        virtual void MultiDrawIndexedInstancedIndirect(UINT PrimitiveCount, gfx::ID3D11Buffer<ABI> *pBufferForArgs, UINT AlignedByteOffsetForArgs, UINT StrideByteOffsetForArgs, UINT Flags) = 0;
+        virtual void MultiDrawInstancedIndirect(UINT PrimitiveCount, gfx::ID3D11Buffer<ABI> *pBufferForArgs, UINT AlignedByteOffsetForArgs, UINT StrideByteOffsetForArgs, UINT Flags) = 0;
+        virtual void MultiDrawIndexedInstancedIndirectAuto(gfx::ID3D11Buffer<ABI> *pBufferForPrimitiveCount, UINT AlignedByteOffsetForPrimitiveCount, gfx::ID3D11Buffer<ABI> *pBufferForArgs, UINT AlignedByteOffsetForArgs, UINT StrideByteOffsetForArgs, UINT Flags) = 0;
+        virtual void MultiDrawInstancedIndirectAuto(gfx::ID3D11Buffer<ABI> *pBufferForPrimitiveCount, UINT AlignedByteOffsetForPrimitiveCount, gfx::ID3D11Buffer<ABI> *pBufferForArgs, UINT AlignedByteOffsetForArgs, UINT StrideByteOffsetForArgs, UINT Flags) = 0;
+        virtual HRESULT RSGetMSAASettingsForQuality(D3D11X_MSAA_SCAN_CONVERTER_SETTINGS *pMSAASCSettings, D3D11X_MSAA_EQAA_SETTINGS *pEQAASettings, D3D11X_MSAA_SAMPLE_PRIORITIES *pCentroidPriorities, D3D11X_MSAA_SAMPLE_POSITIONS *pSamplePositions, UINT LogSampleCount, UINT SampleQuality) = 0;
+        virtual void RSSetScanConverterMSAASettings(D3D11X_MSAA_SCAN_CONVERTER_SETTINGS const *pMSAASCSettings) = 0;
+        virtual void RSSetEQAASettings(D3D11X_MSAA_EQAA_SETTINGS const *pEQAASettings) = 0;
+        virtual void RSSetSamplePositions(D3D11X_MSAA_SAMPLE_PRIORITIES const *pSamplesPriorities, D3D11X_MSAA_SAMPLE_POSITIONS const *pSamplePositions) = 0;
+        virtual void SetResourceCompression(gfx::ID3D11Resource<ABI> *pResource, UINT Compression) = 0;
+        virtual void SetResourceCompressionX(gfx::D3D11X_DESCRIPTOR_RESOURCE const *pResource, UINT Compression) = 0;
+        virtual void SetGDSRange(D3D11X_GDS_REGION_TYPE RegionType, UINT OffsetDwords, UINT NumDwords) = 0;
+        virtual void WriteGDS(D3D11X_GDS_REGION_TYPE RegionType, UINT OffsetDwords, UINT NumDwords, UINT const *pCounterValues, UINT Flags) = 0;
+        virtual void ReadGDS(D3D11X_GDS_REGION_TYPE RegionType, UINT OffsetDwords, UINT NumDwords, UINT *pCounterValues, UINT Flags) = 0;
+        virtual void VSSetShaderUserData(UINT StartSlot, UINT NumRegisters, UINT const *pData) = 0;
+        virtual void HSSetShaderUserData(UINT StartSlot, UINT NumRegisters, UINT const *pData) = 0;
+        virtual void DSSetShaderUserData(UINT StartSlot, UINT NumRegisters, UINT const *pData) = 0;
+        virtual void GSSetShaderUserData(UINT StartSlot, UINT NumRegisters, UINT const *pData) = 0;
+        virtual void PSSetShaderUserData(UINT StartSlot, UINT NumRegisters, UINT const *pData) = 0;
+        virtual void CSSetShaderUserData(UINT StartSlot, UINT NumRegisters, UINT const *pData) = 0;
+        virtual void InsertWaitOnMemory(void const *pAddress, UINT Flags, D3D11_COMPARISON_FUNC ComparisonFunction, UINT ReferenceValue, UINT Mask) = 0;
+        virtual void WriteTimestampToMemory(void *pDstAddress) = 0;
+        virtual void WriteTimestampToBuffer(gfx::ID3D11Buffer<ABI> *pBuffer, UINT OffsetBytes) = 0;
+        virtual void StoreConstantRam(UINT Flags, gfx::ID3D11Buffer<ABI> *pBuffer, UINT BufferOffsetInBytes, UINT CeRamOffsetInBytes, UINT SizeInBytes) = 0;
+        virtual void LoadConstantRam(UINT Flags, gfx::ID3D11Buffer<ABI> *pBuffer, UINT BufferOffsetInBytes, UINT CeRamOffsetInBytes, UINT SizeInBytes) = 0;
+        virtual void WriteQuery(D3D11_QUERY QueryType, UINT QueryIndex, UINT Flags, gfx::ID3D11Buffer<ABI> *pBuffer, UINT OffsetInBytes, UINT StrideInBytes) = 0;
+        virtual void ResetQuery(D3D11_QUERY QueryType, UINT QueryIndex, UINT Flags) = 0;
+        virtual void ConfigureQuery(D3D11_QUERY QueryType, void const *pConfiguration, UINT ConfigurationSize) = 0;
+        virtual void SetShaderUserData(D3D11X_HW_STAGE ShaderStage, UINT StartSlot, UINT NumRegisters, UINT const *pData) = 0;
+        virtual void SetPixelShaderDepthForceZOrder(BOOL ForceOrder) = 0;
+        virtual void SetPredicationFromQuery(D3D11_QUERY QueryType, gfx::ID3D11Buffer<ABI> *pBuffer, UINT OffsetInBytes, UINT Flags) = 0;
+        virtual void SetBorderColorPalette(gfx::ID3D11Buffer<ABI> *pBuffer, UINT OffsetInBytes, UINT Flags) = 0;
+        virtual void WriteValueEndOfPipe64(void *pDestination, UINT64 Value, UINT Flags) = 0;
+        virtual void InsertWaitOnMemory64(void const *pAddress, UINT Flags, D3D11_COMPARISON_FUNC ComparisonFunction, UINT64 ReferenceValue) = 0;
+        virtual void LoadConstantRamImmediate(UINT Flags, void const *pBuffer, UINT CeRamOffsetInBytes, UINT SizeInBytes) = 0;
+        virtual void SetScreenExtentsQuery(UINT Value) = 0;
+        virtual void CollectScreenExtents(UINT Flags, UINT AddressCount, UINT64 const *pDestinationAddresses, USHORT ZMin, USHORT ZMax) = 0;
+        virtual void FillResourceWithValue(gfx::ID3D11Resource<ABI> *pDstResource, UINT FillValue) = 0;
+        virtual void SetDrawBalancing(UINT BalancingMode, UINT Flags) = 0;
+    };
+
+    template<abi_t ABI>
+    requires (ABI >= abi_t{6,2,13346,0})
+    struct ID3D11DeviceContextX<ABI> : gfx::ID3D11DeviceContext2<ABI>
+    {
+        virtual INT PIXBeginEvent(LPCWSTR Name) = 0;
+        virtual INT PIXBeginEventEx(const void *pEvent, UINT Flags) = 0;
+        virtual INT PIXEndEvent() = 0;
+        virtual void PIXSetMarker(LPCWSTR Name) = 0;
+        virtual void PIXSetMarkerEx(const void *pMarker, UINT Flags) = 0;
         virtual BOOL PIXGetStatus() = 0;
         virtual HRESULT PIXGpuCaptureNextFrame(UINT Flags, LPCWSTR lpOutputFileName) = 0;
         virtual HRESULT PIXGpuBeginCapture(UINT Flags, LPCWSTR lpOutputFileName) = 0;
@@ -2879,12 +3017,150 @@ namespace gfx
     };
     
     template<abi_t ABI>
-    requires (ABI >= abi_t{6,2,11274,0})
+        requires(ABI >= abi_t{6, 2, 10817, 0} && ABI < abi_t{6, 2, 13346, 0})
     struct ID3D11DeviceContextXVtbl<ABI> : gfx::ID3D11DeviceContext2Vtbl<ABI>
     {
         INT(*PIXBeginEvent)(void *, LPCWSTR Name);
         INT(*PIXEndEvent)(void *);
         void(*PIXSetMarker)(void *, LPCWSTR Name);
+        BOOL(*PIXGetStatus)(void *);
+        HRESULT(*PIXGpuCaptureNextFrame)(void *, UINT Flags, LPCWSTR lpOutputFileName);
+        HRESULT(*PIXGpuBeginCapture)(void *, UINT Flags, LPCWSTR lpOutputFileName);
+        HRESULT(*PIXGpuEndCapture)(void *);
+        void(*StartCounters)(void *, ID3D11CounterSetX *pCounterSet);
+        void(*SampleCounters)(void *, ID3D11CounterSampleX *pCounterSample);
+        void(*StopCounters)(void *);
+        HRESULT(*GetCounterData)(void *, ID3D11CounterSampleX *pCounterSample, D3D11X_COUNTER_DATA *pData, UINT GetCounterDataFlags);
+        void(*FlushGpuCaches)(void *, gfx::ID3D11Resource<ABI> *pResource);
+        void(*FlushGpuCacheRange)(void *, UINT Flags, void *pBaseAddress, SIZE_T SizeInBytes);
+        void(*InsertWaitUntilIdle)(void *, UINT Flags);
+        UINT64(*InsertFence)(void *, UINT Flags);
+        void(*InsertWaitOnFence)(void *, UINT Flags, UINT64 Fence);
+        void(*RemapConstantBufferInheritance)(void *, D3D11_STAGE Stage, UINT Slot, D3D11_STAGE InheritStage, UINT InheritSlot);
+        void(*RemapShaderResourceInheritance)(void *, D3D11_STAGE Stage, UINT Slot, D3D11_STAGE InheritStage, UINT InheritSlot);
+        void(*RemapSamplerInheritance)(void *, D3D11_STAGE Stage, UINT Slot, D3D11_STAGE InheritStage, UINT InheritSlot);
+        void(*RemapVertexBufferInheritance)(void *, UINT Slot, UINT InheritSlot);
+        void(*PSSetFastConstantBuffer)(void *, UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer);
+        void(*PSSetFastShaderResource)(void *, UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView);
+        void(*PSSetFastSampler)(void *, UINT Slot, gfx::ID3D11SamplerState<ABI> *pSampler);
+        void(*VSSetFastConstantBuffer)(void *, UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer);
+        void(*VSSetFastShaderResource)(void *, UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView);
+        void(*VSSetFastSampler)(void *, UINT Slot, gfx::ID3D11SamplerState<ABI> *pSampler);
+        void(*GSSetFastConstantBuffer)(void *, UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer);
+        void(*GSSetFastShaderResource)(void *, UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView);
+        void(*GSSetFastSampler)(void *, UINT Slot, gfx::ID3D11SamplerState<ABI> *pSampler);
+        void(*CSSetFastConstantBuffer)(void *, UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer);
+        void(*CSSetFastShaderResource)(void *, UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView);
+        void(*CSSetFastSampler)(void *, UINT Slot, gfx::ID3D11SamplerState<ABI> *pSampler);
+        void(*HSSetFastConstantBuffer)(void *, UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer);
+        void(*HSSetFastShaderResource)(void *, UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView);
+        void(*HSSetFastSampler)(void *, UINT Slot, gfx::ID3D11SamplerState<ABI> *pSampler);
+        void(*DSSetFastConstantBuffer)(void *, UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer);
+        void(*DSSetFastShaderResource)(void *, UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView);
+        void(*DSSetFastSampler)(void *, UINT Slot, gfx::ID3D11SamplerState<ABI> *pSampler);
+        void(*IASetFastVertexBuffer)(void *, UINT Slot, gfx::ID3D11Buffer<ABI> *pVertexBuffer, UINT Stride);
+        void(*IASetFastIndexBuffer)(void *, UINT HardwareIndexFormat, gfx::ID3D11Buffer<ABI> *pIndexBuffer);
+        void(*PSSetPlacementConstantBuffer)(void *, UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer, void *pBaseAddress);
+        void(*PSSetPlacementShaderResource)(void *, UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView, void *pBaseAddress);
+        void(*VSSetPlacementConstantBuffer)(void *, UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer, void *pBaseAddress);
+        void(*VSSetPlacementShaderResource)(void *, UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView, void *pBaseAddress);
+        void(*GSSetPlacementConstantBuffer)(void *, UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer, void *pBaseAddress);
+        void(*GSSetPlacementShaderResource)(void *, UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView, void *pBaseAddress);
+        void(*CSSetPlacementConstantBuffer)(void *, UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer, void *pBaseAddress);
+        void(*CSSetPlacementShaderResource)(void *, UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView, void *pBaseAddress);
+        void(*HSSetPlacementConstantBuffer)(void *, UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer, void *pBaseAddress);
+        void(*HSSetPlacementShaderResource)(void *, UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView, void *pBaseAddress);
+        void(*DSSetPlacementConstantBuffer)(void *, UINT Slot, gfx::ID3D11Buffer<ABI> *pConstantBuffer, void *pBaseAddress);
+        void(*DSSetPlacementShaderResource)(void *, UINT Slot, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView, void *pBaseAddress);
+        void(*IASetPlacementVertexBuffer)(void *, UINT Slot, gfx::ID3D11Buffer<ABI> *pVertexBuffer, void *pBaseAddress, UINT Stride);
+        void(*IASetPlacementIndexBuffer)(void *, UINT HardwareIndexFormat, gfx::ID3D11Buffer<ABI> *pIndexBuffer, void *pBaseAddress);
+        void(*HSSetTessellationParameters)(void *, D3D11X_TESSELLATION_PARAMETERS const *pTessellationParameters);
+        void(*HSGetLastUsedTessellationParameters)(void *, D3D11X_TESSELLATION_PARAMETERS *pTessellationParameters);
+        void(*CSEnableAutomaticGpuFlush)(void *, BOOL Enable);
+        void(*GpuSendPipelinedEvent)(void *, D3D11X_GPU_PIPELINED_EVENT Event);
+        HRESULT(*Suspend)(void *, UINT Flags);
+        HRESULT(*Resume)(void *);
+        void(*BeginCommandListExecution)(void *, UINT Flags);
+        void(*EndCommandListExecution)(void *);
+        void(*SetGraphicsShaderLimits)(void *, D3D11X_GRAPHICS_SHADER_LIMITS const *pShaderLimits);
+        void(*SetComputeShaderLimits)(void *, D3D11X_COMPUTE_SHADER_LIMITS const *pShaderLimits);
+        void(*SetPredicationBuffer)(void *, gfx::ID3D11Buffer<ABI> *pBuffer, UINT Offset, UINT Flags);
+        void(*OMSetDepthBounds)(void *, FLOAT min, FLOAT max);
+        void(*OMSetDepthStencilStateX)(void *, gfx::ID3D11DepthStencilState<ABI> *pDepthStencilState);
+        void(*OMSetSampleMask)(void *, UINT64 QuadSampleMask);
+        UINT32 *(*MakeCeSpace)(void *);
+        void(*SetFastResources_Debug)(void *, UINT *pTableStart, UINT *pTableEnd);
+        void(*BeginResourceBatch)(void *, void *pBuffer, UINT BufferSize);
+        UINT(*EndResourceBatch)(void *, UINT *pSizeNeeded);
+        void(*SetFastResourcesFromBatch_Debug)(void *, void *pBatch, UINT Size);
+        void(*CSPlaceUnorderedAccessView)(void *, UINT Slot, D3D11X_DESCRIPTOR_UNORDERED_ACCESS_VIEW *const pDescriptor, UINT64 Offset);
+        void(*WriteValueEndOfPipe)(void *, void *pDestination, UINT Value, UINT Flags);
+        void(*CopyMemoryToMemory)(void *, void *pDstAddress, void *pSrcAddress, SIZE_T SizeBytes);
+        void(*FillMemoryWithValue)(void *, void *pDstAddress, SIZE_T SizeBytes, UINT FillValue);
+        void(*BeginProcessVideoResource)(void *, gfx::ID3D11Resource<ABI> *pResource, UINT SubResource);
+        void(*EndProcessVideoResource)(void *, gfx::ID3D11Resource<ABI> *pResource, UINT SubResource);
+        HRESULT(*StartThreadTrace)(void *, D3D11X_THREAD_TRACE_DESC const *pDesc, void *pDstAddressShaderEngine0, void *pDstAddressShaderEngine1, SIZE_T BufferSizeBytes);
+        void(*StopThreadTrace)(void *, void *pDstAddressTraceSize);
+        void(*InsertThreadTraceMarker)(void *, UINT Marker);
+        void(*IASetPrimitiveResetIndex)(void *, UINT ResetIndex);
+        void(*SetShaderResourceViewMinLOD)(void *, gfx::ID3D11ShaderResourceView<ABI> *pShaderResourceView, FLOAT MinLOD);
+        void(*InsertWaitOnPresent)(void *, UINT Flags, gfx::ID3D11Resource<ABI> *pBackBuffer);
+        void(*ClearRenderTargetViewX)(void *, gfx::ID3D11RenderTargetView<ABI> *pRenderTargetView, UINT Flags, FLOAT const ColorRGBA[4]);
+        UINT(*GetResourceCompression)(void *, gfx::ID3D11Resource<ABI> *pResource);
+        UINT(*GetResourceCompressionX)(void *, gfx::D3D11X_DESCRIPTOR_RESOURCE const *pResource);
+        void(*DecompressResource)(void *, gfx::ID3D11Resource<ABI> *pDstResource, UINT DstSubresource, D3D11X_POINT const *pDstPoint, gfx::ID3D11Resource<ABI> *pSrcResource, UINT SrcSubresource, D3D11X_RECT const *pSrcRect, DXGI_FORMAT DecompressFormat, UINT DecompressFlags);
+        void(*DecompressResourceX)(void *, gfx::D3D11X_DESCRIPTOR_RESOURCE *pDstResource, UINT DstSubresource, D3D11X_POINT const *pDstPoint, gfx::D3D11X_DESCRIPTOR_RESOURCE *pSrcResource, UINT SrcSubresource, D3D11X_RECT const *pSrcRect, D3D11X_FORMAT DecompressFormat, UINT DecompressFlags);
+        void(*GSSetParameters)(void *, D3D11X_GS_PARAMETERS const *pGsParameters);
+        void(*GSGetLastUsedParameters)(void *, D3D11X_GS_PARAMETERS *pGsParameters);
+        void(*MultiDrawIndexedInstancedIndirect)(void *, UINT PrimitiveCount, gfx::ID3D11Buffer<ABI> *pBufferForArgs, UINT AlignedByteOffsetForArgs, UINT StrideByteOffsetForArgs, UINT Flags);
+        void(*MultiDrawInstancedIndirect)(void *, UINT PrimitiveCount, gfx::ID3D11Buffer<ABI> *pBufferForArgs, UINT AlignedByteOffsetForArgs, UINT StrideByteOffsetForArgs, UINT Flags);
+        void(*MultiDrawIndexedInstancedIndirectAuto)(void *, gfx::ID3D11Buffer<ABI> *pBufferForPrimitiveCount, UINT AlignedByteOffsetForPrimitiveCount, gfx::ID3D11Buffer<ABI> *pBufferForArgs, UINT AlignedByteOffsetForArgs, UINT StrideByteOffsetForArgs, UINT Flags);
+        void(*MultiDrawInstancedIndirectAuto)(void *, gfx::ID3D11Buffer<ABI> *pBufferForPrimitiveCount, UINT AlignedByteOffsetForPrimitiveCount, gfx::ID3D11Buffer<ABI> *pBufferForArgs, UINT AlignedByteOffsetForArgs, UINT StrideByteOffsetForArgs, UINT Flags);
+        HRESULT(*RSGetMSAASettingsForQuality)(void *, D3D11X_MSAA_SCAN_CONVERTER_SETTINGS *pMSAASCSettings, D3D11X_MSAA_EQAA_SETTINGS *pEQAASettings, D3D11X_MSAA_SAMPLE_PRIORITIES *pCentroidPriorities, D3D11X_MSAA_SAMPLE_POSITIONS *pSamplePositions, UINT LogSampleCount, UINT SampleQuality);
+        void(*RSSetScanConverterMSAASettings)(void *, D3D11X_MSAA_SCAN_CONVERTER_SETTINGS const *pMSAASCSettings);
+        void(*RSSetEQAASettings)(void *, D3D11X_MSAA_EQAA_SETTINGS const *pEQAASettings);
+        void(*RSSetSamplePositions)(void *, D3D11X_MSAA_SAMPLE_PRIORITIES const *pSamplesPriorities, D3D11X_MSAA_SAMPLE_POSITIONS const *pSamplePositions);
+        void(*SetResourceCompression)(void *, gfx::ID3D11Resource<ABI> *pResource, UINT Compression);
+        void(*SetResourceCompressionX)(void *, gfx::D3D11X_DESCRIPTOR_RESOURCE const *pResource, UINT Compression);
+        void(*SetGDSRange)(void *, D3D11X_GDS_REGION_TYPE RegionType, UINT OffsetDwords, UINT NumDwords);
+        void(*WriteGDS)(void *, D3D11X_GDS_REGION_TYPE RegionType, UINT OffsetDwords, UINT NumDwords, UINT const *pCounterValues, UINT Flags);
+        void(*ReadGDS)(void *, D3D11X_GDS_REGION_TYPE RegionType, UINT OffsetDwords, UINT NumDwords, UINT *pCounterValues, UINT Flags);
+        void(*VSSetShaderUserData)(void *, UINT StartSlot, UINT NumRegisters, UINT const *pData);
+        void(*HSSetShaderUserData)(void *, UINT StartSlot, UINT NumRegisters, UINT const *pData);
+        void(*DSSetShaderUserData)(void *, UINT StartSlot, UINT NumRegisters, UINT const *pData);
+        void(*GSSetShaderUserData)(void *, UINT StartSlot, UINT NumRegisters, UINT const *pData);
+        void(*PSSetShaderUserData)(void *, UINT StartSlot, UINT NumRegisters, UINT const *pData);
+        void(*CSSetShaderUserData)(void *, UINT StartSlot, UINT NumRegisters, UINT const *pData);
+        void(*InsertWaitOnMemory)(void *, void const *pAddress, UINT Flags, D3D11_COMPARISON_FUNC ComparisonFunction, UINT ReferenceValue, UINT Mask);
+        void(*WriteTimestampToMemory)(void *, void *pDstAddress);
+        void(*WriteTimestampToBuffer)(void *, gfx::ID3D11Buffer<ABI> *pBuffer, UINT OffsetBytes);
+        void(*StoreConstantRam)(void *, UINT Flags, gfx::ID3D11Buffer<ABI> *pBuffer, UINT BufferOffsetInBytes, UINT CeRamOffsetInBytes, UINT SizeInBytes);
+        void(*LoadConstantRam)(void *, UINT Flags, gfx::ID3D11Buffer<ABI> *pBuffer, UINT BufferOffsetInBytes, UINT CeRamOffsetInBytes, UINT SizeInBytes);
+        void(*WriteQuery)(void *, D3D11_QUERY QueryType, UINT QueryIndex, UINT Flags, gfx::ID3D11Buffer<ABI> *pBuffer, UINT OffsetInBytes, UINT StrideInBytes);
+        void(*ResetQuery)(void *, D3D11_QUERY QueryType, UINT QueryIndex, UINT Flags);
+        void(*ConfigureQuery)(void *, D3D11_QUERY QueryType, void const *pConfiguration, UINT ConfigurationSize);
+        void(*SetShaderUserData)(void *, D3D11X_HW_STAGE ShaderStage, UINT StartSlot, UINT NumRegisters, UINT const *pData);
+        void(*SetPixelShaderDepthForceZOrder)(void *, BOOL ForceOrder);
+        void(*SetPredicationFromQuery)(void *, D3D11_QUERY QueryType, gfx::ID3D11Buffer<ABI> *pBuffer, UINT OffsetInBytes, UINT Flags);
+        void(*SetBorderColorPalette)(void *, gfx::ID3D11Buffer<ABI> *pBuffer, UINT OffsetInBytes, UINT Flags);
+        void(*WriteValueEndOfPipe64)(void *, void *pDestination, UINT64 Value, UINT Flags);
+        void(*InsertWaitOnMemory64)(void *, void const *pAddress, UINT Flags, D3D11_COMPARISON_FUNC ComparisonFunction, UINT64 ReferenceValue);
+        void(*LoadConstantRamImmediate)(void *, UINT Flags, void const *pBuffer, UINT CeRamOffsetInBytes, UINT SizeInBytes);
+        void(*SetScreenExtentsQuery)(void *, UINT Value);
+        void(*CollectScreenExtents)(void *, UINT Flags, UINT AddressCount, UINT64 const *pDestinationAddresses, USHORT ZMin, USHORT ZMax);
+        void(*FillResourceWithValue)(void *, gfx::ID3D11Resource<ABI> *pDstResource, UINT FillValue);
+        void(*SetDrawBalancing)(void *, UINT BalancingMode, UINT Flags);
+    };
+
+    template<abi_t ABI>
+        requires (ABI >= abi_t{6,2,13346,0})
+    struct ID3D11DeviceContextXVtbl<ABI> : gfx::ID3D11DeviceContext2Vtbl<ABI>
+    {
+        INT(*PIXBeginEvent)(void *, LPCWSTR Name);
+        INT(*PIXBeginEventEx)(void *, const void *pEvent, UINT Flags);
+        INT(*PIXEndEvent)(void *);
+        void(*PIXSetMarker)(void *, LPCWSTR Name);
+        void(*PIXSetMarkerEx)(void *, const void *pEvent, UINT Flags);
         BOOL(*PIXGetStatus)(void *);
         HRESULT(*PIXGpuCaptureNextFrame)(void *, UINT Flags, LPCWSTR lpOutputFileName);
         HRESULT(*PIXGpuBeginCapture)(void *, UINT Flags, LPCWSTR lpOutputFileName);
@@ -3677,6 +3953,40 @@ namespace gfx
         virtual HRESULT CreateComputeContextX(D3D11_COMPUTE_CONTEXT_DESC const *pComputeContextDesc, ID3D11ComputeContextX<ABI> **ppComputeContext) = 0;
         virtual HRESULT CreateSamplerStateX(D3D11X_SAMPLER_DESC const *pSamplerDesc, gfx::ID3D11SamplerState<ABI> **ppSamplerState) = 0;
     };
+
+    template<abi_t ABI>
+    requires (ABI >= abi_t{6,2,10817,0} && ABI < abi_t{6,2,11274,0})
+    struct ID3D11DeviceX<ABI> : gfx::ID3D11Device2<ABI>
+    {
+        virtual void GetImmediateContextX(gfx::ID3D11DeviceContextX<ABI> **ppImmediateContextX) = 0;
+        virtual HRESULT CreateCounterSet(D3D11X_COUNTER_SET_DESC const *pCounterSetDesc, ID3D11CounterSetX **ppCounterSet) = 0;
+        virtual HRESULT CreateCounterSample(ID3D11CounterSampleX **ppCounterSample) = 0;
+        virtual HRESULT SetDriverHint(UINT Feature, UINT Value) = 0;
+        virtual HRESULT CreateDmaEngineContext(D3D11_DMA_ENGINE_CONTEXT_DESC const *pDmaEngineContextDesc, ID3D11DMAEngineContextX<ABI> **ppDmaDeviceContext) = 0;
+        virtual BOOL IsFencePending(UINT64 Fence) = 0;
+        virtual BOOL IsResourcePending(gfx::ID3D11Resource<ABI> *pResource) = 0;
+        virtual HRESULT CreatePlacementBuffer(D3D11_BUFFER_DESC const *pDesc, void *pVirtualAddress, gfx::ID3D11Buffer<ABI> **ppBuffer) = 0;
+        virtual HRESULT CreatePlacementTexture1D(D3D11_TEXTURE1D_DESC const *pDesc, UINT TileModeIndex, UINT Pitch, void *pVirtualAddress, gfx::ID3D11Texture1D<ABI> **ppTexture1D) = 0;
+        virtual HRESULT CreatePlacementTexture2D(D3D11_TEXTURE2D_DESC const *pDesc, UINT TileModeIndex, UINT Pitch, void *pVirtualAddress, gfx::ID3D11Texture2D<ABI> **ppTexture2D) = 0;
+        virtual HRESULT CreatePlacementTexture3D(D3D11_TEXTURE3D_DESC const *pDesc, UINT TileModeIndex, UINT Pitch, void *pVirtualAddress, gfx::ID3D11Texture3D<ABI> **ppTexture3D) = 0;
+        virtual void GetTimestamps(UINT64 *pGpuTimestamp, UINT64 *pCpuRdtscTimestamp) = 0;
+        virtual HRESULT CreateSamplerStateX(D3D11X_SAMPLER_DESC const *pSamplerDesc, gfx::ID3D11SamplerState<ABI> **ppSamplerState) = 0;
+        virtual HRESULT CreateDeferredContextX(UINT Flags, gfx::ID3D11DeviceContextX<ABI> **ppDeferredContext) = 0;
+        virtual void GarbageCollect(UINT Flags) = 0;
+        virtual HRESULT CreateDepthStencilStateX(D3D11_DEPTH_STENCIL_DESC const *pDepthStencilStateDesc, gfx::ID3D11DepthStencilState<ABI> **ppDepthStencilState) = 0;
+        virtual HRESULT CreatePlacementRenderableTexture2D(D3D11_TEXTURE2D_DESC const *pDesc, UINT TileModeIndex, UINT Pitch, D3D11X_RENDERABLE_TEXTURE_ADDRESSES const *pAddresses, gfx::ID3D11Texture2D<ABI> **ppTexture2D) = 0;
+        virtual void GetDriverStatistics(UINT StructSize, D3D11X_DRIVER_STATISTICS *pStatistics) = 0;
+        virtual HRESULT CreateComputeContextX(D3D11_COMPUTE_CONTEXT_DESC const *pComputeContextDesc, ID3D11ComputeContextX<ABI> **ppComputeContext) = 0;
+        virtual HRESULT GetDescriptorSize(D3D11X_DESCRIPTOR_TYPE DescriptorType) = 0;
+        virtual void ComposeShaderResourceView(gfx::D3D11X_DESCRIPTOR_RESOURCE const *pDescriptorResource, D3D11X_RESOURCE_VIEW_DESC const *pViewDesc, D3D11X_DESCRIPTOR_SHADER_RESOURCE_VIEW *pDescriptorSrv) = 0;
+        virtual void ComposeUnorderedAccessView(gfx::D3D11X_DESCRIPTOR_RESOURCE const *pDescriptorResource, D3D11X_RESOURCE_VIEW_DESC const *pViewDesc, D3D11X_DESCRIPTOR_UNORDERED_ACCESS_VIEW *pDescriptorUav) = 0;
+        virtual void ComposeConstantBufferView(gfx::D3D11X_DESCRIPTOR_RESOURCE const *pDescriptorResource, D3D11X_RESOURCE_VIEW_DESC const *pViewDesc, D3D11X_DESCRIPTOR_CONSTANT_BUFFER_VIEW *pDescriptorCb) = 0;
+        virtual void ComposeVertexBufferView(gfx::D3D11X_DESCRIPTOR_RESOURCE const *pDescriptorResource, D3D11X_RESOURCE_VIEW_DESC const *pViewDesc, D3D11X_DESCRIPTOR_VERTEX_BUFFER_VIEW *pDescriptorVb) = 0;
+        virtual void ComposeSamplerState(D3D11X_SAMPLER_STATE_DESC const *pSamplerDesc, gfx::D3D11X_DESCRIPTOR_SAMPLER_STATE *pDescriptorSamplerState) = 0;
+        virtual void PlaceSwapChainView(gfx::ID3D11Resource<ABI> *pSwapChainBuffer, gfx::ID3D11View<ABI> *pView) = 0;
+        virtual void SetDebugFlags(UINT Flags) = 0;
+        virtual uint32_t GetDebugFlags() = 0;
+    };
     
     template<abi_t ABI>
     requires (ABI >= abi_t{6,2,11274,0} && ABI < abi_t{10,0,14393,2171})
@@ -3770,6 +4080,40 @@ namespace gfx
         void(*GetTimestamps)(void *, UINT64 *pGpuTimestamp, UINT64 *pCpuRdtscTimestamp);
         HRESULT(*CreateComputeContextX)(void *, D3D11_COMPUTE_CONTEXT_DESC const *pComputeContextDesc, ID3D11ComputeContextX<ABI> **ppComputeContext);
         HRESULT(*CreateSamplerStateX)(void *, D3D11X_SAMPLER_DESC const *pSamplerDesc, gfx::ID3D11SamplerState<ABI> **ppSamplerState);
+    };
+
+    template<abi_t ABI>
+    requires (ABI >= abi_t{6,2,10817,0} && ABI < abi_t{6,2,11274,0})
+    struct ID3D11DeviceXVtbl<ABI> : gfx::ID3D11Device2Vtbl<ABI>
+    {
+        void(*GetImmediateContextX)(void *, gfx::ID3D11DeviceContextX<ABI> **ppImmediateContextX);
+        HRESULT(*CreateCounterSet)(void *, D3D11X_COUNTER_SET_DESC const *pCounterSetDesc, ID3D11CounterSetX **ppCounterSet);
+        HRESULT(*CreateCounterSample)(void *, ID3D11CounterSampleX **ppCounterSample);
+        HRESULT(*SetDriverHint)(void *, UINT Feature, UINT Value);
+        HRESULT (*CreateDmaEngineContext)(void *, D3D11_DMA_ENGINE_CONTEXT_DESC const *pDmaEngineContextDesc, ID3D11DMAEngineContextX<ABI> **ppDmaDeviceContext);
+        BOOL(*IsFencePending)(void *, UINT64 Fence);
+        BOOL(*IsResourcePending)(void *, gfx::ID3D11Resource<ABI> *pResource);
+        HRESULT(*CreatePlacementBuffer)(void *, D3D11_BUFFER_DESC const *pDesc, void *pVirtualAddress, gfx::ID3D11Buffer<ABI> **ppBuffer);
+        HRESULT(*CreatePlacementTexture1D)(void *, D3D11_TEXTURE1D_DESC const *pDesc, UINT TileModeIndex, UINT Pitch, void *pVirtualAddress, gfx::ID3D11Texture1D<ABI> **ppTexture1D);
+        HRESULT(*CreatePlacementTexture2D)(void *, D3D11_TEXTURE2D_DESC const *pDesc, UINT TileModeIndex, UINT Pitch, void *pVirtualAddress, gfx::ID3D11Texture2D<ABI> **ppTexture2D);
+        HRESULT(*CreatePlacementTexture3D)(void *, D3D11_TEXTURE3D_DESC const *pDesc, UINT TileModeIndex, UINT Pitch, void *pVirtualAddress, gfx::ID3D11Texture3D<ABI> **ppTexture3D);
+        void(*GetTimestamps)(void *, UINT64 *pGpuTimestamp, UINT64 *pCpuRdtscTimestamp);
+        HRESULT(*CreateSamplerStateX)(void *, D3D11X_SAMPLER_DESC const *pSamplerDesc, gfx::ID3D11SamplerState<ABI> **ppSamplerState);
+        HRESULT(*CreateDeferredContextX)(void *, UINT Flags, gfx::ID3D11DeviceContextX<ABI> **ppDeferredContext);
+        void(*GarbageCollect)(void *, UINT Flags);
+        HRESULT(*CreateDepthStencilStateX)(void *, D3D11_DEPTH_STENCIL_DESC const *pDepthStencilStateDesc, gfx::ID3D11DepthStencilState<ABI> **ppDepthStencilState);
+        HRESULT(*CreatePlacementRenderableTexture2D)(void *, D3D11_TEXTURE2D_DESC const *pDesc, UINT TileModeIndex, UINT Pitch, D3D11X_RENDERABLE_TEXTURE_ADDRESSES const *pAddresses, gfx::ID3D11Texture2D<ABI> **ppTexture2D);
+        void(*GetDriverStatistics)(void *, UINT StructSize, D3D11X_DRIVER_STATISTICS *pStatistics);
+        HRESULT(*CreateComputeContextX)(void *, D3D11_COMPUTE_CONTEXT_DESC const *pComputeContextDesc, ID3D11ComputeContextX<ABI> **ppComputeContext);
+        HRESULT(*GetDescriptorSize)(void *, D3D11X_DESCRIPTOR_TYPE DescriptorType);
+        void(*ComposeShaderResourceView)(void *, gfx::D3D11X_DESCRIPTOR_RESOURCE const *pDescriptorResource, D3D11X_RESOURCE_VIEW_DESC const *pViewDesc, D3D11X_DESCRIPTOR_SHADER_RESOURCE_VIEW *pDescriptorSrv);
+        void(*ComposeUnorderedAccessView)(void *, gfx::D3D11X_DESCRIPTOR_RESOURCE const *pDescriptorResource, D3D11X_RESOURCE_VIEW_DESC const *pViewDesc, D3D11X_DESCRIPTOR_UNORDERED_ACCESS_VIEW *pDescriptorUav);
+        void(*ComposeConstantBufferView)(void *, gfx::D3D11X_DESCRIPTOR_RESOURCE const *pDescriptorResource, D3D11X_RESOURCE_VIEW_DESC const *pViewDesc, D3D11X_DESCRIPTOR_CONSTANT_BUFFER_VIEW *pDescriptorCb);
+        void(*ComposeVertexBufferView)(void *, gfx::D3D11X_DESCRIPTOR_RESOURCE const *pDescriptorResource, D3D11X_RESOURCE_VIEW_DESC const *pViewDesc, D3D11X_DESCRIPTOR_VERTEX_BUFFER_VIEW *pDescriptorVb);
+        void(*ComposeSamplerState)(void *, D3D11X_SAMPLER_STATE_DESC const *pSamplerDesc, gfx::D3D11X_DESCRIPTOR_SAMPLER_STATE *pDescriptorSamplerState);
+        void(*PlaceSwapChainView)(void *, gfx::ID3D11Resource<ABI> *pSwapChainBuffer, gfx::ID3D11View<ABI> *pView);
+        void(*SetDebugFlags)(void *, UINT Flags);
+        uint32_t(*GetDebugFlags)(void *);
     };
     
     template<abi_t ABI>
@@ -4409,6 +4753,8 @@ inline HRESULT d3d11CreateInstance(abi_t ABI, void **ppvObject)
         *ppvObject = new T<abi_t{6,2,11294,0}>();
     else if (ABI >= abi_t{6,2,11274,0})
         *ppvObject = new T<abi_t{6,2,11274,0}>();
+    else if (ABI >= abi_t{6,2,10817,0})
+        *ppvObject = new T<abi_t{6,2,10817,0}>();
     else if (ABI >= abi_t{6,2,10698,0})
         *ppvObject = new T<abi_t{6,2,10698,0}>();
     else if (ABI >= abi_t{6,2,11064,0})
@@ -4423,6 +4769,7 @@ inline HRESULT d3d11CreateInstance(abi_t ABI, void **ppvObject)
     prefix template class ABI_INTERFACE((abi_t{0,0,0,0})); \
     prefix template class ABI_INTERFACE((abi_t{6,2,10698,0})); \
     prefix template class ABI_INTERFACE((abi_t{6,2,11064,0})); \
+    prefix template class ABI_INTERFACE((abi_t{6,2,10817,0})); \
     prefix template class ABI_INTERFACE((abi_t{6,2,11274,0})); \
     prefix template class ABI_INTERFACE((abi_t{6,2,11294,0})); \
     prefix template class ABI_INTERFACE((abi_t{6,2,13004,0})); \

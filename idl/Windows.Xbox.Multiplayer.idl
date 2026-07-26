@@ -174,16 +174,15 @@ namespace Windows.Xbox.Multiplayer
         }
     }
 
-    [interface_name("IPartyChatStatics", CC1BCF39-99F3-42A2-AFB6-CDC07B29755F)]
+    [static_name("IPartyChatStatics", CC1BCF39-99F3-42A2-AFB6-CDC07B29755F)]
     runtimeclass PartyChat
     {
-        PartyChat();
-        Windows.Foundation.IAsyncOperation<PartyChatView> GetPartyChatViewAsync();
-        event Windows.Foundation.EventHandler<Object> PartyChatViewChanged;
-        Boolean IsPartyChatActive { get; };
-        Boolean IsPartyChatSuppressed { get; set; };
-        event Windows.Foundation.EventHandler<Boolean> IsPartyChatActiveChanged;
-        event Windows.Foundation.EventHandler<Boolean> IsPartyChatSuppressedChanged;
+        static Windows.Foundation.IAsyncOperation<PartyChatView> GetPartyChatViewAsync();
+        static event Windows.Foundation.EventHandler<Object> PartyChatViewChanged;
+        static Boolean IsPartyChatActive { get; };
+        static Boolean IsPartyChatSuppressed { get; set; };
+        static event Windows.Foundation.EventHandler<Boolean> IsPartyChatActiveChanged;
+        static event Windows.Foundation.EventHandler<Boolean> IsPartyChatSuppressedChanged;
     }
 
     static runtimeclass Party

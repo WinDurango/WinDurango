@@ -1,6 +1,7 @@
 #include "Windows.Xbox.Multiplayer.PartyChat.h"
 #include "WinDurangoWinRT.h"
 
+static bool g_isChatSuppresed = false;
 namespace winrt::Windows::Xbox::Multiplayer::implementation
 {
     winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Xbox::Multiplayer::PartyChatView> PartyChat::GetPartyChatViewAsync()
@@ -10,11 +11,11 @@ namespace winrt::Windows::Xbox::Multiplayer::implementation
     }
     winrt::event_token PartyChat::PartyChatViewChanged(winrt::Windows::Foundation::EventHandler<winrt::Windows::Foundation::IInspectable> const& handler)
     {
-        return e_PartyChatViewChanged.add(handler);
+        return {};
     }
     void PartyChat::PartyChatViewChanged(winrt::event_token const& token) noexcept
     {
-        return e_PartyChatViewChanged.remove(token);
+
     }
     bool PartyChat::IsPartyChatActive()
     {
@@ -23,26 +24,26 @@ namespace winrt::Windows::Xbox::Multiplayer::implementation
     }
     bool PartyChat::IsPartyChatSuppressed()
     {
-        return isPartyChatSuppressed;
+        return g_isChatSuppresed;
     }
     void PartyChat::IsPartyChatSuppressed(bool value)
     {
-        isPartyChatSuppressed = value;
+        g_isChatSuppresed = value;
     }
     winrt::event_token PartyChat::IsPartyChatActiveChanged(winrt::Windows::Foundation::EventHandler<bool> const& handler)
     {
-        return e_IsPartyChatActiveChanged.add(handler);
+        return {};
     }
     void PartyChat::IsPartyChatActiveChanged(winrt::event_token const& token) noexcept
     {
-        e_IsPartyChatActiveChanged.remove(token);
+
     }
     winrt::event_token PartyChat::IsPartyChatSuppressedChanged(winrt::Windows::Foundation::EventHandler<bool> const& handler)
     {
-        return e_IsPartyChatSuppressedChanged.add(handler);
+        return {};
     }
     void PartyChat::IsPartyChatSuppressedChanged(winrt::event_token const& token) noexcept
     {
-        e_IsPartyChatSuppressedChanged.remove(token);
+
     }
 }

@@ -1,5 +1,9 @@
 #pragma once
 #include "d3d11_x.g.h"
+#include <d3dkmthk.h>
+#include <wrl.h>
+
+using namespace Microsoft::WRL;
 
 #define D3D11X_MISC_FLAGS_MASK (0x4000000 | 0x8000000 | 0x20000 | 0x40000 | 0x80000 | 0x100000 | 0x200000)
 #define D3D11_MISC_FLAGS_MASK                                                                                          \
@@ -11,6 +15,24 @@
      D3D11_RESOURCE_MISC_RESTRICT_SHARED_RESOURCE | D3D11_RESOURCE_MISC_RESTRICT_SHARED_RESOURCE_DRIVER |              \
      D3D11_RESOURCE_MISC_GUARDED)
 #define D3D11_CREATE_DEFERRED_CONTEXT_DRAW_BUNDLES 0x20000
+
+//Implementation provided by DaZombieKiller back in GenERA!
+HRESULT OpenAdapterFromDevice(_In_ ID3D11Device *pDevice, _Out_ D3DKMT_HANDLE *phAdapter)
+{
+    RETURN_HR_IF_NULL(E_INVALIDARG, pDevice);
+    RETURN_HR_IF_NULL(E_POINTER, phAdapter);
+    *phAdapter = 0;
+    ComPtr<IDXGIDevice> pDxgiDevice;
+    RETURN_IF_FAILED(pDevice->QueryInterface(IID_PPV_ARGS(&pDxgiDevice)));
+    ComPtr<IDXGIAdapter> pAdapter;
+    RETURN_IF_FAILED(pDxgiDevice->GetAdapter(&pAdapter));
+    DXGI_ADAPTER_DESC AdapterDesc;
+    RETURN_IF_FAILED(pAdapter->GetDesc(&AdapterDesc));
+    D3DKMT_OPENADAPTERFROMLUID OpenAdapterFromLuid = { AdapterDesc.AdapterLuid };
+    RETURN_IF_NTSTATUS_FAILED(D3DKMTOpenAdapterFromLuid(&OpenAdapterFromLuid));
+    *phAdapter = OpenAdapterFromLuid.hAdapter;
+    RETURN_HR(S_OK);
+}
 
 inline UINT ConvertMiscFlags(UINT MiscFlags)
 {

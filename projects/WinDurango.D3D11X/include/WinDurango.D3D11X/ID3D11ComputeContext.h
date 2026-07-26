@@ -2,10 +2,35 @@
 #include "d3d11_x.g.h"
 #include "ID3D11DeviceContext.h"
 
+template <abi_t ABI> struct ComputeInsertWaitOnFenceCommand;
+template <abi_t ABI> struct ComputeInsertFenceCommand;
+
+template <abi_t ABI> struct ComputeCommands
+{
+  public:
+    enum class ComputeCommandType
+    {
+        ComputeInsertFence,
+        ComputeInsertWaitOnFence,
+    };
+
+    union
+    {
+        ComputeInsertFenceCommand<ABI> ComputeInsertFence;
+        ComputeInsertWaitOnFenceCommand<ABI> ComputeInsertWaitOnFence;
+    };
+
+    ComputeCommandType m_ComputeCommandType;
+};
+
+BOOL ComputeFences[1024]{};
+UINT ComputeFenceIndex = 0;
+
 template<abi_t ABI>
 class D3D11ComputeContextX : public gfx::ID3D11ComputeContextX<ABI>, ID3D11BackgroundContext
 {
 public:
+    std::vector<ComputeCommands<ABI>> m_ComputeCommandQueue;
     D3D11DeviceContextX<ABI> *m_pImmediateContext;
 
     D3D11ComputeContextX()
@@ -92,6 +117,28 @@ public:
 
     BOOL ExecuteContext() override;
     UINT m_CommandIndex = 0;
+};
+
+template <abi_t ABI> struct ComputeInsertFenceCommand
+{
+    UINT Flags;
+    UINT64 Fence;
+
+    BOOL Execute(D3D11ComputeContextX<ABI> *pContext)
+    {
+        return !*reinterpret_cast<BOOL volatile *>(Fence);
+    }
+};
+
+template <abi_t ABI> struct ComputeInsertWaitOnFenceCommand
+{
+    UINT Flags;
+    UINT64 Fence;
+
+    BOOL Execute(D3D11ComputeContextX<ABI> *pContext)
+    {
+        return !*reinterpret_cast<BOOL volatile *>(Fence);
+    }
 };
 
 #undef ABI_INTERFACE

@@ -189,11 +189,19 @@ HRESULT DXGIFactory2<ABI>::CreateSwapChainForHwnd(xbox::IGraphicsUnknown<ABI> *p
     return E_NOTIMPL;
 }
 
+IDXGISwapChain1 *g_pOldSwapChain = nullptr;
+
 template <abi_t ABI>
 HRESULT DXGIFactory2<ABI>::CreateSwapChainForCoreWindow(xbox::IGraphicsUnknown<ABI> *pDevice, IUnknown *pWindow,
                                                         DXGI_SWAP_CHAIN_DESC1 *pDesc, IDXGIOutput *pRestrictToOutput,
                                                         gfx::IDXGISwapChain1<ABI> **ppSwapChain)
 {
+    if (g_pOldSwapChain)
+    {
+        *ppSwapChain = new DXGISwapChain1<ABI>(g_pOldSwapChain);
+        return S_OK;
+    }
+
     auto pDesc2 = *pDesc;
     pDesc2.Scaling = DXGI_SCALING_STRETCH;
     pDesc2.Flags = 0;
@@ -237,6 +245,7 @@ HRESULT DXGIFactory2<ABI>::CreateSwapChainForCoreWindow(xbox::IGraphicsUnknown<A
         if (SwapChain)
         {
             *ppSwapChain = new DXGISwapChain1<ABI>(SwapChain);
+            g_pOldSwapChain = SwapChain;
         }
 
         return hr;
@@ -260,6 +269,7 @@ HRESULT DXGIFactory2<ABI>::CreateSwapChainForCoreWindow(xbox::IGraphicsUnknown<A
     if (SwapChain)
     {
         *ppSwapChain = new DXGISwapChain1<ABI>(SwapChain);
+        g_pOldSwapChain = SwapChain;
     }
 
     return hr;

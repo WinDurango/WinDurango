@@ -38,6 +38,15 @@ void KernelxInitialize(HINSTANCE hinstDLL)
             DetourAttach(&reinterpret_cast<PVOID &>(TrueCreateWindowInBandEx), EraCreateWindowInBandEx);
         }
 
+        //Halo 5: Guardians
+        if (winrt::Windows::ApplicationModel::Package::Current().Id().FamilyName() == L"Halo5-Guardians_8wekyb3d8bbwe")
+        {
+            HMODULE XboxLiveWrapper = LoadLibraryW(L"XboxLiveServicesWrapperLib_Release.dll");
+            XWinePatchImport(XboxLiveWrapper, GetRuntimeModule(),
+                         "?GetActivationFactoryByPCWSTR@@YAJPEAXAEAVGuid@Platform@@PEAPEAX@Z",
+                         GetActivationFactoryRedirect);
+        }
+
         //Forza Horizon 2 Demo
         if (winrt::Windows::ApplicationModel::Package::Current().Id().FamilyName() == L"265E1020-Anthem_8wekyb3d8bbwe")
         {
@@ -74,7 +83,7 @@ void KernelxInitialize(HINSTANCE hinstDLL)
             DetourAttach(reinterpret_cast<PVOID*>(&pD3D11CreateDevice), &D3D11CreateDevice_Hook);
         }
 
-        WIN32_FILE_ATTRIBUTE_DATA AcpHalData{};
+        /*WIN32_FILE_ATTRIBUTE_DATA AcpHalData{};
         GetFileAttributesExW(L"acphal.dll", GetFileExInfoStandard, &AcpHalData);
         if (AcpHalData.nFileSizeLow == 21504)
         {
@@ -91,7 +100,7 @@ void KernelxInitialize(HINSTANCE hinstDLL)
                 *(void**)&P_PopMessage = (char*)AcpHalSize + 0x173C;
                 DetourAttach((void**)&P_PopMessage, &D_PopMessage);
             }
-        }
+        }*/
 
         DetourAttach(&reinterpret_cast<PVOID &>(TrueCoCreateInstance), EraCoCreateInstance);
         DetourAttach(&reinterpret_cast<PVOID &>(TrueDeviceIoControl), EraDeviceIoControl);

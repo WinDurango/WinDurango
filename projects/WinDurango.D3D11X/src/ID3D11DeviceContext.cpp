@@ -2533,6 +2533,12 @@ template <abi_t ABI> INT D3D11DeviceContextX<ABI>::PIXBeginEvent(LPCWSTR Name)
     return {};
 }
 
+template <abi_t ABI> INT D3D11DeviceContextX<ABI>::PIXBeginEventEx(const void *pEvent, UINT Flags)
+{
+    IMPLEMENT_STUB();
+    return {};
+}
+
 template <abi_t ABI> INT D3D11DeviceContextX<ABI>::PIXEndEvent()
 {
     IMPLEMENT_STUB();
@@ -2540,6 +2546,11 @@ template <abi_t ABI> INT D3D11DeviceContextX<ABI>::PIXEndEvent()
 }
 
 template <abi_t ABI> void D3D11DeviceContextX<ABI>::PIXSetMarker(LPCWSTR Name)
+{
+    IMPLEMENT_STUB();
+}
+
+template <abi_t ABI> void D3D11DeviceContextX<ABI>::PIXSetMarkerEx(const void *pMarker, UINT Flags)
 {
     IMPLEMENT_STUB();
 }
@@ -3044,7 +3055,14 @@ template <abi_t ABI> void D3D11DeviceContextX<ABI>::OMSetDepthBounds(FLOAT min, 
 template <abi_t ABI>
 void D3D11DeviceContextX<ABI>::OMSetDepthStencilStateX(gfx::ID3D11DepthStencilState<ABI> *pDepthStencilState)
 {
-    IMPLEMENT_STUB();
+    ID3D11DepthStencilState *State{};
+
+    if (pDepthStencilState)
+    {
+        State = static_cast<D3D11DepthStencilState<ABI> *>(pDepthStencilState)->m_pFunction;
+    }
+
+    m_pFunction->OMSetDepthStencilState(State, 1);
 }
 
 template <abi_t ABI> void D3D11DeviceContextX<ABI>::OMSetSampleMask(UINT64 QuadSampleMask)

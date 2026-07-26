@@ -66,10 +66,37 @@ EXTERN_C HRESULT __stdcall D3D11XCreateDeviceXAndSwapChain1(const D3D11X_CREATE_
     return hr;
 }
 
-EXTERN_C HRESULT __stdcall D3DAllocateGraphicsMemory(SIZE_T dwSize, UINT64 a2, void *a3, int a4, void **a5)
+enum D3D11_GRAPHICS_MEMORY_ACCESS_FLAG
 {
-    IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    D3D11_GRAPHICS_MEMORY_ACCESS_CPU_CACHE_COHERENT = 0x0000,
+    D3D11_GRAPHICS_MEMORY_ACCESS_CPU_WRITECOMBINE_NONCOHERENT = 0x0001,
+    D3D11_GRAPHICS_MEMORY_ACCESS_CPU_CACHE_NONCOHERENT_GPU_READONLY = 0x0002,
+};
+
+EXTERN_C HRESULT __stdcall D3DAllocateGraphicsMemory(SIZE_T SizeInBytes, UINT64 AlignmentBytes, UINT64 DesiredGpuVirtualAddress, UINT Flags, LPVOID *ppAddress)
+{
+    DWORD flAllocationType = -1879035904;
+    DWORD flProtect = 0;
+
+    if (!ppAddress || AlignmentBytes > 0x20000) //Alignment must be less than 128KB.
+        return E_INVALIDARG;
+
+    if (AlignmentBytes <= 0x10000) 
+        flAllocationType = 805318656;
+
+    if (Flags == D3D11_GRAPHICS_MEMORY_ACCESS_CPU_CACHE_COHERENT)
+        flProtect = 65540;
+    else if (Flags == D3D11_GRAPHICS_MEMORY_ACCESS_CPU_WRITECOMBINE_NONCOHERENT)
+        flProtect = 1028;
+    else if (Flags == D3D11_GRAPHICS_MEMORY_ACCESS_CPU_CACHE_NONCOHERENT_GPU_READONLY)
+        flProtect = 262148;
+
+    (*ppAddress) = VirtualAlloc((LPVOID)DesiredGpuVirtualAddress, SizeInBytes, flAllocationType, flProtect);
+
+    if (!(*ppAddress))
+            return E_OUTOFMEMORY;
+
+    return S_OK;
 }
 
 EXTERN_C HRESULT __stdcall D3DConfigureVirtualMemory(UINT64 a1)

@@ -678,8 +678,7 @@ HRESULT D3D11DeviceX<ABI>::SetPrivateDataInterfaceGraphics(_GUID const &guid, xb
 
 template <abi_t ABI> D3D_FEATURE_LEVEL D3D11DeviceX<ABI>::GetFeatureLevel()
 {
-    IMPLEMENT_STUB();
-    return {};
+    return m_pFunction->GetFeatureLevel();
 }
 
 template <abi_t ABI> uint32_t D3D11DeviceX<ABI>::GetCreationFlags()
@@ -722,7 +721,14 @@ template <abi_t ABI> uint32_t D3D11DeviceX<ABI>::GetExceptionMode()
 //
 template <abi_t ABI> void D3D11DeviceX<ABI>::GetImmediateContext1(gfx::ID3D11DeviceContext1<ABI> **ppImmediateContext)
 {
-    IMPLEMENT_STUB();
+    ID3D11DeviceContext* pContext{};
+    ID3D11DeviceContext2* pContext2{};
+    m_pFunction->GetImmediateContext(&pContext);
+
+    pContext->QueryInterface(IID_PPV_ARGS(&pContext2));
+    pContext->Release();
+
+    *ppImmediateContext = new D3D11DeviceContextX<ABI>(pContext2);
 }
 
 template <abi_t ABI>
@@ -828,8 +834,8 @@ template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CheckMultisampleQualityLevels1(DXGI_FORMAT Format, uint32_t SampleCount, uint32_t Flags,
                                                           uint32_t *pNumQualityLevels)
 {
-    IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    Flags = 0;
+    return m_pFunction->CheckMultisampleQualityLevels1(Format, SampleCount, Flags, pNumQualityLevels);
 }
 
 //
@@ -856,8 +862,7 @@ template <abi_t ABI> HRESULT D3D11DeviceX<ABI>::CreateCounterSample(gfx::ID3D11C
 
 template <abi_t ABI> HRESULT D3D11DeviceX<ABI>::SetDriverHint(UINT Feature, UINT Value)
 {
-    IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    return S_OK;
 }
 
 template <abi_t ABI>
@@ -875,8 +880,7 @@ template <abi_t ABI> BOOL D3D11DeviceX<ABI>::IsFencePending(UINT64 Fence)
 
 template <abi_t ABI> BOOL D3D11DeviceX<ABI>::IsResourcePending(gfx::ID3D11Resource<ABI> *pResource)
 {
-    IMPLEMENT_STUB();
-    return {};
+    return FALSE;
 }
 
 template <abi_t ABI>
@@ -1076,9 +1080,22 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture3D(D3D11_TEXTURE3D_DESC const *
     return S_OK;
 }
 
+//Implementation provided by DaZombieKiller back in GenERA!
 template <abi_t ABI> void D3D11DeviceX<ABI>::GetTimestamps(UINT64 *pGpuTimestamp, UINT64 *pCpuRdtscTimestamp)
 {
-    IMPLEMENT_STUB();
+    D3DKMT_HANDLE D3DKMTAdapter = 0;
+    OpenAdapterFromDevice(m_pFunction, &D3DKMTAdapter);
+    D3DKMT_QUERYCLOCKCALIBRATION QueryClockCalibration{ D3DKMTAdapter, 0, 0 };
+
+    if (FAILED_NTSTATUS(D3DKMTQueryClockCalibration(&QueryClockCalibration)))
+    {
+        *pGpuTimestamp = 0;
+        *pCpuRdtscTimestamp = 0;
+        return;
+    }
+
+    *pGpuTimestamp = QueryClockCalibration.ClockData.GpuClockCounter;
+    *pCpuRdtscTimestamp = QueryClockCalibration.ClockData.CpuClockCounter;
 }
 
 template <abi_t ABI>
@@ -1163,8 +1180,15 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementRenderableTexture2D(D3D11_TEXTURE2D_DE
                                                               gfx::D3D11X_RENDERABLE_TEXTURE_ADDRESSES const *pAddresses,
                                                               gfx::ID3D11Texture2D<ABI> **ppTexture2D)
 {
-    IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    std::lock_guard<std::mutex> lock(g_ResourceMapMutex);
+    auto pDesc2 = *pDesc;
+    pDesc2.MipLevels = 1;
+    if (pDesc2.Usage == D3D11_USAGE_IMMUTABLE)
+    {
+        pDesc2.Usage = D3D11_USAGE_DEFAULT;
+    }
+
+    return CreateTexture2D(&pDesc2, nullptr, ppTexture2D);
 }
 
 template <abi_t ABI>

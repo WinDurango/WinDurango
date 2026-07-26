@@ -155,14 +155,33 @@ void D3D11ComputeContextX<ABI>::ClearUnorderedAccessViewFloat(gfx::ID3D11Unorder
 template<abi_t ABI>
 uint64_t D3D11ComputeContextX<ABI>::InsertFence(uint32_t a1)
 {
-    IMPLEMENT_STUB();
-    return 0;
+    ComputeCommands<ABI> Command{};
+    Command.m_ComputeCommandType = ComputeCommands<ABI>::ComputeCommandType::ComputeInsertFence;
+    Command.ComputeInsertFence.Flags = a1;
+    m_ComputeCommandQueue.push_back(Command);
+
+    if (ComputeFenceIndex >= 1024)
+    {
+        ComputeFenceIndex = 0;
+    }
+
+    UINT FenceIndex = ComputeFenceIndex;
+    ComputeFences[FenceIndex] = TRUE;
+    ComputeFenceIndex++;
+    Command.ComputeInsertFence.Fence = (UINT64)&ComputeFences[FenceIndex];
+    m_ComputeCommandQueue.push_back(Command);
+
+    return (UINT64)&ComputeFences[FenceIndex];
 }
 
 template<abi_t ABI>
 void D3D11ComputeContextX<ABI>::InsertWaitOnFence(uint32_t a1, uint64_t a2)
 {
-    IMPLEMENT_STUB();
+    ComputeCommands<ABI> Command{};
+    Command.m_ComputeCommandType = ComputeCommands<ABI>::ComputeCommandType::ComputeInsertWaitOnFence;
+    Command.ComputeInsertWaitOnFence.Flags = a1;
+    Command.ComputeInsertWaitOnFence.Fence = a2;
+    m_ComputeCommandQueue.push_back(Command);
 }
 
 template<abi_t ABI>

@@ -215,7 +215,7 @@ static void WdRoInitializeLibraries()
         L"Microsoft.XBox.Services.dll",
         L"windows.media.devices.dll",
         L"SystemUI.Api.dll",
-        L"XboxUI.Api.dll"
+        L"XboxUI.Api.dll",
     };
 
     for (auto name : s_RoLibraryNames)
@@ -297,6 +297,40 @@ HRESULT WINAPI WdRoGetActivationFactoryCore(
             return hr;
 
         ComPtr<CoreApplicationEra> wrappedFactory = Make<CoreApplicationEra>(realFactory);
+
+        return wrappedFactory.CopyTo(iid, factory);
+    }
+
+    if (rss == std::string("Windows.Storage.ApplicationData"))
+    {
+        ComPtr<IActivationFactory> realFactory;
+
+        HRESULT hr = RoGetActivationFactory(Microsoft::WRL::Wrappers::HStringReference::HStringReference(
+                                                RuntimeClass_Windows_Storage_ApplicationData)
+                                                .Get(),
+                                            IID_PPV_ARGS(&realFactory));
+
+        if (FAILED(hr))
+            return hr;
+
+        ComPtr<ApplicationDataEra> wrappedFactory = Make<ApplicationDataEra>(realFactory);
+
+        return wrappedFactory.CopyTo(iid, factory);
+    }
+
+    if (rss == std::string("Windows.ApplicationModel.Package"))
+    {
+        ComPtr<IActivationFactory> realFactory;
+
+        HRESULT hr = RoGetActivationFactory(Microsoft::WRL::Wrappers::HStringReference::HStringReference(
+                                                RuntimeClass_Windows_ApplicationModel_Package)
+                                                .Get(),
+                                            IID_PPV_ARGS(&realFactory));
+
+        if (FAILED(hr))
+            return hr;
+
+        ComPtr<PackageEra> wrappedFactory = Make<PackageEra>(realFactory);
 
         return wrappedFactory.CopyTo(iid, factory);
     }
