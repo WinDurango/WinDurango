@@ -249,7 +249,7 @@ winrt::Windows::Foundation::IAsyncAction wd::WinRT::ConnectedStorage::CreateDire
         co_await folder.CreateFolderAsync(L"WinDurango");
     }
 
-    folderPath = winrt::hstring { (std::filesystem::path(folderPath.c_str()) / std::filesystem::path(storageType.c_str())).c_str() };
+    folderPath = winrt::hstring { (std::filesystem::path(folderPath.c_str()) / std::filesystem::path(storageType)).c_str() };
 
     if (!co_await DoesFolderExist(folderPath))
     {
