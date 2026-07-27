@@ -31,15 +31,15 @@ namespace Windows.Xbox.Multiplayer
 
     enum SessionJoinability
     {
-        InviteOnly = 0,
-        JoinableByFriends = 1,
-        Closed = 2,
+        InviteOnly = 0x0,
+        JoinableByFriends = 0x1,
+        Closed = 0x2,
     };
 
     [flags]
     enum PartyFlags
     {
-        PartyViewDefault = 0,
+        PartyViewDefault = 0x0,
     };
 
     // From @Zombie

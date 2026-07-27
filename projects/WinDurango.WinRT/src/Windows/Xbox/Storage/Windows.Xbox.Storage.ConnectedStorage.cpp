@@ -3,7 +3,8 @@
 
 winrt::Windows::Foundation::IAsyncAction wd::WinRT::ConnectedStorage::CreateContainer(winrt::hstring name) const
 {
-    if (!co_await DoesFolderExist(m_storagePath + L"\\" + name))
+    winrt::hstring l_path { (std::filesystem::path(m_storagePath.c_str()) / std::filesystem::path(name.c_str())).c_str() };
+    if (!co_await DoesFolderExist(l_path))
     {
         auto folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(m_storagePath);
         co_await folder.CreateFolderAsync(name);
@@ -12,12 +13,13 @@ winrt::Windows::Foundation::IAsyncAction wd::WinRT::ConnectedStorage::CreateCont
 
 winrt::Windows::Foundation::IAsyncAction wd::WinRT::ConnectedStorage::Read(winrt::hstring containerName, winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Storage::Streams::IBuffer> data) const
 {
-    if (!DoesFolderExist(m_storagePath + L"\\" + containerName))
+    winrt::hstring l_path { (std::filesystem::path(m_storagePath.c_str()) / std::filesystem::path(containerName.c_str())).c_str() };
+    if (!DoesFolderExist(l_path))
     {
         co_await CreateContainer(containerName);
     }
 
-    auto folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(m_storagePath + L"\\" + containerName);
+    auto folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(l_path);
 
     for (auto const &pair : data)
     {
@@ -39,13 +41,14 @@ winrt::Windows::Foundation::IAsyncAction wd::WinRT::ConnectedStorage::Read(winrt
 
 winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Storage::Streams::IBuffer>> wd::WinRT::ConnectedStorage::Get(winrt::hstring containerName, winrt::Windows::Foundation::Collections::IIterable<winrt::hstring> blobsToRead) const
 {
-    if (!co_await DoesFolderExist(m_storagePath + L"\\" + containerName))
+    winrt::hstring l_path { (std::filesystem::path(m_storagePath.c_str()) / std::filesystem::path(containerName.c_str())).c_str() };
+    if (!co_await DoesFolderExist(l_path))
     {
         co_await CreateContainer(containerName);
     }
 
     winrt::Windows::Foundation::Collections::IMap<winrt::hstring, winrt::Windows::Storage::Streams::IBuffer> data = winrt::single_threaded_map<winrt::hstring, winrt::Windows::Storage::Streams::IBuffer>();
-    auto folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(m_storagePath + L"\\" + containerName);
+    auto folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(l_path);
 
     for (auto const &blobs : blobsToRead)
     {
@@ -58,8 +61,10 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collecti
         } 
         catch (winrt::hresult_error const& Exception)
         {
-            if (Exception.code() == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))
+            if (Exception.code() == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND)) 
+            {
                 NeedsCreate = TRUE;
+            }
         }
 
         if (NeedsCreate)
@@ -78,36 +83,40 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collecti
 
 winrt::Windows::Foundation::IAsyncAction wd::WinRT::ConnectedStorage::Upload(winrt::hstring containerName, winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Storage::Streams::IBuffer> blobsToWrite, winrt::Windows::Foundation::Collections::IIterable<winrt::hstring> blobsToDelete, winrt::hstring displayName) const
 {
-    if (!co_await DoesFolderExist(m_storagePath + L"\\" + containerName))
+    winrt::hstring l_path { (std::filesystem::path(m_storagePath.c_str()) / std::filesystem::path(containerName.c_str())).c_str() };
+    if (!co_await DoesFolderExist(l_path))
     {
         co_await CreateContainer(containerName);
     }
 
     if (!displayName.empty())
     {
-        auto folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(m_storagePath + L"\\" + containerName);
+        auto folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(l_path);
         auto file = co_await folder.CreateFileAsync(L"DisplayName.txt", winrt::Windows::Storage::CreationCollisionOption::ReplaceExisting);
         co_await winrt::Windows::Storage::FileIO::WriteTextAsync(file, displayName);
     }
 
-    auto folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(m_storagePath + L"\\" + containerName);
+    auto folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(l_path);
 
     if (blobsToWrite != nullptr)
+    {
         for (auto const &pair : blobsToWrite)
         {
             auto fileName = pair.Key();
             auto dataBuffer = pair.Value();
-            auto file = co_await folder.CreateFileAsync(
-                fileName, winrt::Windows::Storage::CreationCollisionOption::ReplaceExisting);
+            auto file = co_await folder.CreateFileAsync(fileName, winrt::Windows::Storage::CreationCollisionOption::ReplaceExisting);
             co_await winrt::Windows::Storage::FileIO::WriteBufferAsync(file, dataBuffer);
         }
+    }
 
     if (blobsToDelete != nullptr)
+    {
         for (auto const &blobName : blobsToDelete)
         {
             auto file = co_await folder.GetFileAsync(blobName);
             co_await file.DeleteAsync();
         }
+    }
 
     co_return;
 }
@@ -117,18 +126,23 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collecti
     winrt::Windows::Foundation::Collections::IVector<winrt::Windows::Xbox::Storage::BlobInfo> blobInfoVector = winrt::single_threaded_vector<winrt::Windows::Xbox::Storage::BlobInfo>();
     winrt::hstring s_prefix = blobNamePrefix;
 
-    winrt::hstring storagePath = m_storagePath + L"\\" + parentContainerName;
-    if (!co_await DoesFolderExist(storagePath))
+    winrt::hstring storagePath { (std::filesystem::path(m_storagePath.c_str()) / std::filesystem::path(parentContainerName.c_str())).c_str() };
+
+    if (!co_await DoesFolderExist(storagePath)) 
+    {
         co_return blobInfoVector.GetView();
+    }
 
     auto storageFolder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(storagePath);
     auto files = co_await storageFolder.GetFilesAsync();
 
     for (auto file : files)
     {
-        std::wstring_view str_view{file.Name()};
+        std::wstring_view str_view { file.Name() };
         if (!str_view._Starts_with(s_prefix))
+        {
             continue;
+        }
 
         winrt::Windows::Storage::FileProperties::BasicProperties folderProperties = co_await file.GetBasicPropertiesAsync();
 
@@ -136,6 +150,7 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collecti
 
         blobInfoVector.Append({file.Name(), size});
     }
+
     co_return blobInfoVector.GetView();
 }
 
@@ -162,10 +177,13 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collecti
         }
 
         if (displayName.empty())
+        {
             displayName = folder.DisplayName();
+        }
 
         containerInfoVector.Append({folder.Name(), size, displayName, date, false});
     }
+
     co_return containerInfoVector.GetView();
 }
 
@@ -192,16 +210,19 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collecti
         }
 
         if (displayName.empty())
+        {
             displayName = folder.DisplayName();
+        }
 
         containerInfoVector.Append({folder.Name()});
     }
+
     co_return containerInfoVector.GetView();
 }
 
 winrt::Windows::Foundation::IAsyncAction wd::WinRT::ConnectedStorage::DeleteContainer(winrt::hstring containerName)
 {
-    winrt::hstring containerPath = m_storagePath + L"\\" + containerName;
+    winrt::hstring containerPath { (std::filesystem::path(m_storagePath.c_str()) / std::filesystem::path(containerName.c_str())).c_str() };
     if (co_await DoesFolderExist(containerPath))
     {
         auto folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(containerPath);
@@ -220,7 +241,7 @@ winrt::Windows::Foundation::IAsyncAction wd::WinRT::ConnectedStorage::CreateDire
         co_return;
     }
 
-    winrt::hstring folderPath = winrt::Windows::Storage::ApplicationData::Current().LocalFolder().Path() + L"\\WinDurango";
+    winrt::hstring folderPath { (std::filesystem::path(winrt::Windows::Storage::ApplicationData::Current().LocalFolder().Path().c_str()) / std::filesystem::path("WinDurango")).c_str() };
 
     if (!co_await DoesFolderExist(folderPath))
     {
@@ -228,11 +249,12 @@ winrt::Windows::Foundation::IAsyncAction wd::WinRT::ConnectedStorage::CreateDire
         co_await folder.CreateFolderAsync(L"WinDurango");
     }
 
-    folderPath = folderPath + L"\\" + storageType;
+    folderPath = winrt::hstring { (std::filesystem::path(folderPath.c_str()) / std::filesystem::path(storageType.c_str())).c_str() };
 
     if (!co_await DoesFolderExist(folderPath))
     {
-        auto folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(winrt::Windows::Storage::ApplicationData::Current().LocalFolder().Path() + L"\\WinDurango");
+        winrt::hstring l_path { (std::filesystem::path(winrt::Windows::Storage::ApplicationData::Current().LocalFolder().Path().c_str()) / std::filesystem::path("WinDurango")).c_str() };
+        auto folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(l_path);
         co_await folder.CreateFolderAsync(storageType);
     }
 
@@ -243,14 +265,11 @@ winrt::Windows::Foundation::IAsyncOperation<bool> wd::WinRT::ConnectedStorage::D
 {
     try
     {
-        std::wstring Path = path.c_str();
-        UINT PathLength = path.size();
-        if (Path[PathLength - 1] != L'/')
+        std::wstring Path = std::filesystem::path(path.c_str()).make_preferred().native();
+        if (!Path.empty() && Path.back() != L'\\')
         {
-            Path.append(L"/");
-            path = Path.c_str();
+            Path += L'\\';
         }
-        std::replace(Path.begin(), Path.end(), L'/', L'\\');
         co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(Path);
     }
     catch (...)

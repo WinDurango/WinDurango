@@ -5,8 +5,8 @@ namespace Windows.Xbox.Networking
     [flags]
     enum CreateSecureDeviceAssociationBehavior
     {
-        Default = 0,
-        Reevaluate = 1,
+        Default = 0x0,
+        Reevaluate = 0x1,
     };
 
     enum MultiplayerSessionRequirement
@@ -63,36 +63,36 @@ namespace Windows.Xbox.Networking
     [flags]
     enum SecureDeviceAssociationUsage
     {
-        Default = 0,
-        InitiateFromMicrosoftConsole = 1,
-        InitiateFromXboxLiveCompute = 2,
-        InitiateFromOtherDevice = 4,
-        InitiateFromWindowsDesktop = 8,
-        AcceptOnMicrosoftConsole = 256,
-        AcceptOnXboxLiveCompute = 512,
-        AcceptOnOtherDevice = 1024,
-        AcceptOnWindowsDesktop = 2048,
+        Default = 0x0,
+        InitiateFromMicrosoftConsole = 0x1,
+        InitiateFromXboxLiveCompute = 0x2,
+        InitiateFromOtherDevice = 0x4,
+        InitiateFromWindowsDesktop = 0x8,
+        AcceptOnMicrosoftConsole = 0x100,
+        AcceptOnXboxLiveCompute = 0x200,
+        AcceptOnOtherDevice = 0x400,
+        AcceptOnWindowsDesktop = 0x800,
     };
 
     [flags]
     enum SecureDeviceSocketUsage
     {
-        Initiate = 1U,
-        Accept = 2U,
-        SendChat = 256U,
-        SendGameData = 512U,
-        SendDebug = 1024U,
-        SendInsecure = 2048U,
-        ReceiveChat = 65536U,
-        ReceiveGameData = 131072U,
-        ReceiveDebug = 262144U,
-        ReceiveInsecure = 524288U,
+        Initiate = 0x1U,
+        Accept = 0x2U,
+        SendChat = 0x100U,
+        SendGameData = 0x200U,
+        SendDebug = 0x400U,
+        SendInsecure = 0x800U,
+        ReceiveChat = 0x10000U,
+        ReceiveGameData = 0x20000U,
+        ReceiveDebug = 0x40000U,
+        ReceiveInsecure = 0x80000U,
     };
 
     enum SecureIpProtocol
     {
-        Udp = 1,
-        Tcp = 2,
+        Udp = 0x1,
+        Tcp = 0x2,
     };
 
     struct ProtocolParserDescription
