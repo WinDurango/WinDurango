@@ -835,4 +835,85 @@ struct SHAPE_DMA_CONTEXT
     uint32_t channel : 3;
 };
 
+struct SHAPE_FLOWGRAPH_SRC_COMMAND
+{
+    uint64_t command : 5;
+    uint64_t queued : 1;
+    uint64_t disabled : 1;
+    uint64_t error : 1;
+    uint64_t : 5;
+    uint64_t contextId : 12; 
+    uint64_t mixBuffer0 : 13;
+    uint64_t mixBuffer1 : 13;
+};
+
+struct SHAPE_FLOWGRAPH_COMMAND_HEADER
+{
+    uint64_t command : 5;
+    uint64_t queued : 1;
+    uint64_t disabled : 1;
+    uint64_t error : 1;
+};
+
+struct SHAPE_FLOWGRAPH_EQCOMP_COMMAND
+{
+    uint64_t command : 5;
+    uint64_t queued : 1;
+    uint64_t disabled : 1;
+    uint64_t error : 1;
+    uint64_t : 5;
+    uint64_t contextId : 12;
+    uint64_t inputMixBuffer : 13;
+    uint64_t sideChainMixBuffer : 13;
+    uint64_t outputMixBuffer : 13;
+};
+
+struct SHAPE_FLOWGRAPH_FILTVOL_COMMAND
+{
+    uint64_t command : 5;
+    uint64_t queued : 1;
+    uint64_t disabled : 1;
+    uint64_t error : 1;
+    uint64_t : 5;
+    uint64_t contextId : 12;
+    uint64_t inputMixBuffer : 13;
+    uint64_t outputMixBuffer : 13;
+};
+
+struct SHAPE_FLOWGRAPH_DMA_COMMAND 
+{
+    uint64_t command : 5;
+    uint64_t queued : 1;
+    uint64_t disabled : 1;
+    uint64_t error : 1;
+    uint64_t : 5;
+    uint64_t write : 1;
+    uint64_t mixBuffer : 13;
+    uint64_t contextId : 12;
+};
+
+struct SHAPE_FLOWGRAPH_ALLOC_MIXBUFFER_COMMAND
+{
+    uint64_t command : 5;
+    uint64_t queued : 1;
+    uint64_t disabled : 1;
+    uint64_t error : 1;
+    uint64_t : 5;
+    uint64_t numIn : 10;
+    uint64_t numOut : 10;
+    uint64_t virtualId : 13;
+    uint64_t attenuate : 3;
+};
+
+union SHAPE_FLOWGRAPH_COMMAND
+{
+    uint64_t entry;
+    SHAPE_FLOWGRAPH_COMMAND_HEADER header;
+    SHAPE_FLOWGRAPH_ALLOC_MIXBUFFER_COMMAND allocMixBuffer;
+    SHAPE_FLOWGRAPH_SRC_COMMAND src;
+    SHAPE_FLOWGRAPH_EQCOMP_COMMAND eqComp;
+    SHAPE_FLOWGRAPH_FILTVOL_COMMAND filtVol;
+    SHAPE_FLOWGRAPH_DMA_COMMAND dma;
+};
+
 #pragma pack(pop)

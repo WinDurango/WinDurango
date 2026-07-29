@@ -424,6 +424,11 @@ HRESULT D3D11DeviceX<ABI>::CreateVertexShader(void const *pBytecode, uint64_t By
     {
         *ppVS = new D3D11VertexShader<ABI>(Shader);
     }
+    if (FAILED(hr))
+    {
+        printf("CreateVertexShader failed with HRESULT 0x%X! D3D11 Device might have been removed.\n", hr);
+    }
+
     return hr;
 }
 
@@ -438,6 +443,11 @@ HRESULT D3D11DeviceX<ABI>::CreateGeometryShader(void const *pBytecode, uint64_t 
     {
         *ppGS = new D3D11GeometryShader<ABI>(Shader);
     }
+    if (FAILED(hr))
+    {
+        printf("CreateGeometryShader failed with HRESULT 0x%X! D3D11 Device might have been removed.\n", hr);
+    }
+
     return hr;
 }
 
@@ -457,6 +467,11 @@ HRESULT D3D11DeviceX<ABI>::CreateGeometryShaderWithStreamOutput(void const *pByt
     {
         *ppGS = new D3D11GeometryShader<ABI>(Shader);
     }
+    if (FAILED(hr))
+    {
+        printf("CreateGeometryShaderWithStreamOutput failed with HRESULT 0x%X! D3D11 Device might have been removed.\n", hr);
+    }
+
     return hr;
 }
 
@@ -470,6 +485,11 @@ HRESULT D3D11DeviceX<ABI>::CreatePixelShader(void const *pBytecode, uint64_t Byt
     {
         *ppPS = new D3D11PixelShader<ABI>(Shader);
     }
+    if (FAILED(hr))
+    {
+        printf("CreatePixelShader failed with HRESULT 0x%X! D3D11 Device might have been removed.\n", hr);
+    }
+
     return hr;
 }
 
@@ -483,6 +503,11 @@ HRESULT D3D11DeviceX<ABI>::CreateHullShader(void const *pBytecode, uint64_t Byte
     {
         *ppHS = new D3D11HullShader<ABI>(Shader);
     }
+    if (FAILED(hr))
+    {
+        printf("CreateHullShader failed with HRESULT 0x%X! D3D11 Device might have been removed.\n", hr);
+    }
+
     return hr;
 }
 
@@ -496,6 +521,11 @@ HRESULT D3D11DeviceX<ABI>::CreateDomainShader(void const *pBytecode, uint64_t By
     {
         *ppDS = new D3D11DomainShader<ABI>(Shader);
     }
+    if (FAILED(hr))
+    {
+        printf("CreateDomainShader failed with HRESULT 0x%X! D3D11 Device might have been removed.\n", hr);
+    }
+
     return hr;
 }
 
@@ -509,6 +539,11 @@ HRESULT D3D11DeviceX<ABI>::CreateComputeShader(void const *pBytecode, uint64_t B
     {
         *ppCS = new D3D11ComputeShader<ABI>(Shader);
     }
+    if (FAILED(hr))
+    {
+        printf("CreateComputeShader failed with HRESULT 0x%X! D3D11 Device might have been removed.\n", hr);
+    }
+
     return hr;
 }
 

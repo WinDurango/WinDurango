@@ -720,9 +720,10 @@ void FixRelativePath(LPCWSTR &lpFileName)
             convert.append(L"\\");
         }
         convert.append(fileName);
+        std::replace(convert.begin(), convert.end(), L'\\', L'/');
+        std::replace(convert.begin(), convert.end(), L'//', L'/');
 
         lpFileName = convert.data();
-
         return;
     }
     if (fileName[1] != ':')
@@ -730,6 +731,8 @@ void FixRelativePath(LPCWSTR &lpFileName)
         convert = std::filesystem::current_path().c_str();
         convert.append(L"\\");
         convert.append(fileName);
+        std::replace(convert.begin(), convert.end(), L'\\', L'/');
+        std::replace(convert.begin(), convert.end(), L'//', L'/');
 
         lpFileName = convert.data();
     }
@@ -740,6 +743,8 @@ void FixRelativePath(LPCWSTR &lpFileName)
         fileName = trimPath.data();
         convert = std::filesystem::current_path().c_str();
         convert.append(fileName);
+        std::replace(convert.begin(), convert.end(), L'\\', L'/');
+        std::replace(convert.begin(), convert.end(), L'//', L'/');
 
         lpFileName = convert.data();
     }
@@ -751,7 +756,9 @@ void FixRelativePath(LPCWSTR &lpFileName)
         fileName = trimPath.data();
         convert = winrt::Windows::Storage::ApplicationData::Current().TemporaryFolder().Path();
         convert.append(fileName);
-        
+        std::replace(convert.begin(), convert.end(), L'\\', L'/');
+        std::replace(convert.begin(), convert.end(), L'//', L'/');
+
         lpFileName = convert.data();
     }
 }

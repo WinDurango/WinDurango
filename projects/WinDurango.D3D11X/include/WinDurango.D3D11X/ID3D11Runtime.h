@@ -26,7 +26,7 @@ template <abi_t ABI> struct D3D11Runtime : public ID3D11Runtime
         ID3D11DeviceContext *pContext = nullptr;
 
         D3D_FEATURE_LEVEL FeatureLevels[] = {D3D_FEATURE_LEVEL_11_1, D3D_FEATURE_LEVEL_11_0};
-        UINT Flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+        UINT Flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT | D3D11_CREATE_DEVICE_DISABLE_GPU_TIMEOUT;
         #ifdef _DEBUG
             Flags |= D3D11_CREATE_DEVICE_DEBUG;
         #endif

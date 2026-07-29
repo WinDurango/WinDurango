@@ -263,13 +263,20 @@ inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState* acpStat
     {
         ACP_COMMAND_UPDATE_XMA_CONTEXT Command = Cmd.updateXmaContext;
         SHAPE_XMA_CONTEXT *XmaContextArray = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(g_LoganHeap._acpContextArrays.xmaContextArray, g_LoganHeap._acpContextArrays.numXmaContexts);
-        SHAPE_XMA_CONTEXT *UpdateXmaContext = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(Command.contextData);
-        XmaContextArray[Command.contextIndex] = (*UpdateXmaContext);
+        SHAPE_XMA_CONTEXT *UpdateXmaContextEntry = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(Command.updateMask);
+        XmaContextArray[Command.contextIndex] = *UpdateXmaContextEntry;
         printf("Updated Xma Context at index %u.\n", Command.contextIndex);
     }
     else if (cmdType == ACP_COMMAND_TYPE_DISABLE_XMA_CONTEXTS)
     {
         printf("TODO: Disable Xma Contexts.\n");
+    }
+    else if (cmdType == ACP_COMMAND_TYPE_LOAD_SHAPE_FLOWGRAPH)
+    {
+        ACP_COMMAND_LOAD_SHAPE_FLOWGRAPH Command = Cmd.loadFlowgraph;
+        g_LoganHeap._flowgraph = g_LoganHeap.GetVirtualAddress<SHAPE_FLOWGRAPH_COMMAND>(Command.flowgraph, Command.numCommands);
+        g_LoganHeap._numCommandsInFlowgraph = Command.numCommands;
+        printf("Loaded SHAPE Flowgraph with %u commands.\n", Command.numCommands);
     }
     else
     {
@@ -364,13 +371,20 @@ inline void DispatchClientACPCommandOld(ACP_COMMAND_TYPE cmdType, AcpState_Old *
     {
         ACP_COMMAND_UPDATE_XMA_CONTEXT Command = Cmd.updateXmaContext;
         SHAPE_XMA_CONTEXT *XmaContextArray = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(g_LoganHeap._acpContextArrays.xmaContextArray, g_LoganHeap._acpContextArrays.numXmaContexts);
-        SHAPE_XMA_CONTEXT *UpdateXmaContext = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(Command.contextData);
-        XmaContextArray[Command.contextIndex] = (*UpdateXmaContext);
+        SHAPE_XMA_CONTEXT *UpdateXmaContextEntry = g_LoganHeap.GetVirtualAddress<SHAPE_XMA_CONTEXT>(Command.updateMask);
+        XmaContextArray[Command.contextIndex] = *UpdateXmaContextEntry;
         printf("Updated Xma Context at index %u.\n", Command.contextIndex);
     }
     else if (cmdType == ACP_COMMAND_TYPE_DISABLE_XMA_CONTEXTS)
     {
         printf("TODO: Disable Xma Contexts.\n");
+    }
+    else if (cmdType == ACP_COMMAND_TYPE_LOAD_SHAPE_FLOWGRAPH)
+    {
+        ACP_COMMAND_LOAD_SHAPE_FLOWGRAPH Command = Cmd.loadFlowgraph;
+        g_LoganHeap._flowgraph = g_LoganHeap.GetVirtualAddress<SHAPE_FLOWGRAPH_COMMAND>(Command.flowgraph, Command.numCommands);
+        g_LoganHeap._numCommandsInFlowgraph = Command.numCommands;
+        printf("Loaded SHAPE Flowgraph with %u commands.\n", Command.numCommands);
     }
     else
     {
