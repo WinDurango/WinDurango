@@ -2,6 +2,7 @@
 #include "Logan.h"
 #include <atlbase.h>
 #include "Hooks.h"
+#include <winternl.h>
 
 EXTERN_C CONSOLE_TYPE __stdcall GetConsoleType()
 {
@@ -132,9 +133,30 @@ EXTERN_C BOOL __stdcall GetThreadName(HANDLE hThread, PWSTR lpThreadName, SIZE_T
 
 EXTERN_C BOOL __stdcall TitleMemoryStatus(LPTITLEMEMORYSTATUS lpBuffer)
 {
-    UNREFERENCED_PARAMETER(lpBuffer);
-    SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
-    return FALSE;
+    if (lpBuffer->dwLength != 64)
+    {
+        SetLastError(ERROR_INVALID_PARAMETER);
+        return FALSE;
+    }
+
+    INT64 ProcessInformation[7]{};
+    NTSTATUS Result = NtQueryInformationProcess(GetCurrentProcess(), (PROCESSINFOCLASS)(0x3A | 0x3A), ProcessInformation, 56, 0);
+    if (!NT_SUCCESS(Result))
+    {
+        SetLastError(Result);
+        return FALSE;
+    }
+
+    lpBuffer->ullTotalMem = ProcessInformation[0];
+    lpBuffer->ullAvailMem = ProcessInformation[0] - ProcessInformation[1];
+    lpBuffer->ullLegacyUsed = ProcessInformation[2];
+    lpBuffer->ullLegacyAvail = ProcessInformation[4] - ProcessInformation[2];
+    lpBuffer->ullLegacyPeak = ProcessInformation[3];
+    lpBuffer->ullTitleUsed = ProcessInformation[5];
+    lpBuffer->ullTitleAvail = ProcessInformation[6] - ProcessInformation[5];
+
+    SetLastError(ERROR_SUCCESS);
+    return TRUE;
 }
 
 EXTERN_C BOOL __stdcall JobTitleMemoryStatus(LPTITLEMEMORYSTATUS lpBuffer)
@@ -829,8 +851,27 @@ EXTERN_C BOOL __stdcall EraCreateDirectoryA(LPCSTR lpPathName, LPSECURITY_ATTRIB
     USES_CONVERSION;
     LPCWSTR PathName = A2W(lpPathName);
     FixRelativePath(PathName);
+    BOOL Result = TrueCreateDirectoryW(PathName, lpSecurityAttributes);
 
-    return CreateDirectoryW(PathName, lpSecurityAttributes);
+    if (!Result)
+    {
+        wprintf(L"EraCreateDirectoryA failed for directory %s!\n", PathName);
+    }
+
+    return Result;
+}
+
+EXTERN_C BOOL __stdcall EraCreateDirectoryW(LPCWSTR lpPathName, LPSECURITY_ATTRIBUTES lpSecurityAttributes)
+{
+    FixRelativePath(lpPathName);
+    BOOL Result = TrueCreateDirectoryW(lpPathName, lpSecurityAttributes);
+
+    if (!Result)
+    {
+        wprintf(L"EraCreateDirectoryW failed for directory %s!\n", lpPathName);
+    }
+
+    return Result;
 }
 
 EXTERN_C HMODULE __stdcall EraLoadLibraryExA(LPCSTR lpLibFileName, _Reserved_ HANDLE hFile, _In_ DWORD dwFlags)

@@ -23,6 +23,7 @@ add_library(WinDurango.KernelX SHARED ${FILES} "include/WinDurango.KernelX/EraCo
 target_link_libraries(WinDurango.KernelX PRIVATE 
     WinDurango.Common 
     WinDurango.Implementation.WinRT 
+    ntdll
     ${DETOURS_LIBRARY}
 )
 

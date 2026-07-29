@@ -273,25 +273,6 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                                 g_LoganHeap._droppedMessages++;
                                 SendMessageFromACP(&Message, AcpClientMessageQueue, pAcpState, i);
                             }
-
-                            if ((g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_FLOWGRAPH_COMPLETED) && AcpClientMessageQueueOld && Command.commandType == ACP_COMMAND_TYPE_LOAD_SHAPE_FLOWGRAPH)
-                            {
-                                ACP_MESSAGE_OLD Message{};
-                                Message.type = ACP_MESSAGE_TYPE_FLOWGRAPH_COMPLETED;
-                                Message.flowgraphCompleted.flowgraph = g_LoganHeap.GetAPUAddress(g_LoganHeap._flowgraph);
-                                Message.droppedMessageCount = g_LoganHeap._droppedMessages;
-                                g_LoganHeap._droppedMessages++;
-                                SendMessageFromACPOld(&Message, AcpClientMessageQueueOld, pAcpState, i);
-                            }
-                            else if ((g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_FLOWGRAPH_COMPLETED) && AcpClientMessageQueue && Command.commandType == ACP_COMMAND_TYPE_LOAD_SHAPE_FLOWGRAPH)
-                            {
-                                ACP_MESSAGE Message{};
-                                Message.type = ACP_MESSAGE_TYPE_FLOWGRAPH_COMPLETED;
-                                Message.flowgraphCompleted.flowgraph = g_LoganHeap.GetAPUAddress(g_LoganHeap._flowgraph);
-                                Message.droppedMessageCount = g_LoganHeap._droppedMessages;
-                                g_LoganHeap._droppedMessages++;
-                                SendMessageFromACP(&Message, AcpClientMessageQueue, pAcpState, i);
-                            }
                         }
                     }
                 }

@@ -86,6 +86,7 @@ void KernelxInitialize(HINSTANCE hinstDLL)
         DetourAttach(&reinterpret_cast<PVOID&>(TrueCoCreateInstance), EraCoCreateInstance);
         DetourAttach(&reinterpret_cast<PVOID&>(TrueDeviceIoControl), EraDeviceIoControl);
         DetourAttach(&reinterpret_cast<PVOID&>(TrueCreateDirectoryA), EraCreateDirectoryA);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueCreateDirectoryW), EraCreateDirectoryW);
         DetourAttach(&reinterpret_cast<PVOID&>(TrueCreateFileW), EraCreateFileW);
         DetourAttach(&reinterpret_cast<PVOID&>(TrueCreateFile2), EraCreateFile2);
         DetourAttach(&reinterpret_cast<PVOID&>(TrueCreateFileA), EraCreateFileA);
@@ -104,6 +105,7 @@ void KernelxInitialize(HINSTANCE hinstDLL)
         DetourDetach(&reinterpret_cast<PVOID&>(TrueCoCreateInstance), EraCoCreateInstance);
         DetourDetach(&reinterpret_cast<PVOID&>(TrueDeviceIoControl), EraDeviceIoControl);
         DetourDetach(&reinterpret_cast<PVOID&>(TrueCreateDirectoryA), EraCreateDirectoryA);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueCreateDirectoryW), EraCreateDirectoryW);
         DetourDetach(&reinterpret_cast<PVOID&>(TrueCreateFileW), EraCreateFileW);
         DetourDetach(&reinterpret_cast<PVOID&>(TrueCreateFile2), EraCreateFile2);
         DetourDetach(&reinterpret_cast<PVOID&>(TrueCreateFileA), EraCreateFileA);
