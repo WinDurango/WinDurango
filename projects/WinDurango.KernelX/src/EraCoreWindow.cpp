@@ -247,17 +247,14 @@ HRESULT CoreWindowEra::QueryInterface(const IID &riid, void **ppvObject)
 
 ULONG CoreWindowEra::AddRef()
 {
-    if (m_realWindow)
-        m_realWindow->AddRef();
+    m_realWindow->AddRef();
     return InterlockedIncrement(&m_RefCount);
 }
 
 ULONG CoreWindowEra::Release()
 {
-    if (m_realWindow)
-        m_realWindow->Release();
-    ULONG refCount = InterlockedDecrement(&m_RefCount);
-    if (refCount == 0)
-        delete this;
-    return refCount;
+    m_realWindow->Release();
+    ULONG RefCount = InterlockedDecrement(&m_RefCount);
+    if (!RefCount) delete this;
+    return RefCount;
 }

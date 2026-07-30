@@ -242,6 +242,37 @@ HRESULT DXGIFactory2<ABI>::CreateSwapChainForCoreWindow(xbox::IGraphicsUnknown<A
         IDXGISwapChain1 *SwapChain{};
         hr = m_pFunction->CreateSwapChainForHwnd(dev, hwnd, &pDesc2, nullptr, nullptr, &SwapChain);
 
+        if (hr == DXGI_ERROR_DEVICE_REMOVED)
+        {
+            HRESULT RemovedReason = static_cast<D3D11DeviceX<ABI>*>(pDevice)->GetDeviceRemovedReason();
+            printf("D3D11 Error: Swap Chain creation failed due to device being removed! Device Removed reason: 0x%X\n", RemovedReason);
+        }
+
+        if (SwapChain)
+        {
+            *ppSwapChain = new DXGISwapChain1<ABI>(SwapChain);
+            g_pOldSwapChain = SwapChain;
+        }
+
+        return hr;
+    }
+    else if (g_pWindow)
+    {
+        ICoreWindow* Window = reinterpret_cast<CoreWindowEra*>(g_pWindow)->m_realWindow;
+        ICoreWindowInterop *interop = nullptr;
+        Window->QueryInterface(IID_PPV_ARGS(&interop));
+        HWND hwnd;
+        interop->get_WindowHandle(&hwnd);
+
+        IDXGISwapChain1 *SwapChain{};
+        hr = m_pFunction->CreateSwapChainForHwnd(dev, hwnd, &pDesc2, nullptr, nullptr, &SwapChain);
+
+        if (hr == DXGI_ERROR_DEVICE_REMOVED)
+        {
+            HRESULT RemovedReason = static_cast<D3D11DeviceX<ABI>*>(pDevice)->GetDeviceRemovedReason();
+            printf("D3D11 Error: Swap Chain creation failed due to device being removed! Device Removed reason: 0x%X\n", RemovedReason);
+        }
+
         if (SwapChain)
         {
             *ppSwapChain = new DXGISwapChain1<ABI>(SwapChain);
@@ -252,7 +283,7 @@ HRESULT DXGIFactory2<ABI>::CreateSwapChainForCoreWindow(xbox::IGraphicsUnknown<A
     }
 
     ICoreWindow* Window = reinterpret_cast<CoreWindowEra*>(pWindow)->m_realWindow;
-    ICoreWindowInterop *interop;
+    ICoreWindowInterop *interop = nullptr;
     Window->QueryInterface(IID_PPV_ARGS(&interop));
     HWND hwnd;
     interop->get_WindowHandle(&hwnd);

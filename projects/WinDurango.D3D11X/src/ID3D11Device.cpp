@@ -186,6 +186,7 @@ HRESULT D3D11DeviceX<ABI>::CreateShaderResourceView(gfx::ID3D11Resource<ABI> *pR
         {
             D3D11_TEXTURE2D_DESC Desc{};
             static_cast<D3D11Texture2D<ABI> *>(pResource)->GetDesc(&Desc);
+            auto pDesc2 = *pDesc;
 
             if (IsFloatFormat(Desc.Format) && IsUINTFormat(pDesc->Format))
             {
@@ -194,6 +195,17 @@ HRESULT D3D11DeviceX<ABI>::CreateShaderResourceView(gfx::ID3D11Resource<ABI> *pR
             else if (IsUnormFormat(Desc.Format) && IsUINTFormat(pDesc->Format))
             {
                 printf("D3D11 Warning: Game is trying to create an UINT SRV over an UNORM resource!\n");
+            }
+            else if (IsTypelessFormat(Desc.Format) && IsTypelessFormat(pDesc->Format))
+            {
+                printf("D3D11 Warning: Game is trying to create an typeless SRV! Creating it as a UNORM instead.\n");
+                if (Desc.Format == DXGI_FORMAT_R8G8B8A8_TYPELESS)
+                    pDesc2.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+                hr = m_pFunction->CreateShaderResourceView(static_cast<D3D11Texture2D<ABI> *>(pResource)->m_pFunction, &pDesc2,
+                                                           &pView);
+
+                goto WrapperCreation;
             }
         }
         hr = m_pFunction->CreateShaderResourceView(static_cast<D3D11Texture2D<ABI> *>(pResource)->m_pFunction, pDesc,
@@ -210,6 +222,7 @@ HRESULT D3D11DeviceX<ABI>::CreateShaderResourceView(gfx::ID3D11Resource<ABI> *pR
                                                    &pView);
     }
 
+WrapperCreation:
     if (pView)
     {
         *ppSRV = new D3D11ShaderResourceView<ABI>(pView);

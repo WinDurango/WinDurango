@@ -3,6 +3,7 @@
 #include "Windows.Xbox.Chat.ChatDecoder.h"
 #include "Windows.Xbox.Chat.Format.h"
 #include "WinDurangoWinRT.h"
+#include "Windows.Xbox.System.User.h"
 
 namespace winrt::Windows::Xbox::Chat::implementation
 {
@@ -70,8 +71,7 @@ namespace winrt::Windows::Xbox::Chat::implementation
     }
     winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Chat::ChatChannel> ChatSession::Channels()
     {
-        p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Chat::ChatSession", "Unimplemented: Channels");
-        throw hresult_not_implemented();
+        return winrt::single_threaded_vector<winrt::Windows::Xbox::Chat::ChatChannel>().GetView();
     }
     winrt::event_token ChatSession::StateChangedEvent(winrt::Windows::Xbox::Chat::ChatSessionStateChangedHandler const& handler)
     {

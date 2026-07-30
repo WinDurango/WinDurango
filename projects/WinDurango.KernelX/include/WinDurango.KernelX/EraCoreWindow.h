@@ -62,12 +62,12 @@ ICoreWindowEra : public IInspectable
 
 class CoreWindowEra : public ICoreWindowEra
 {
-  public:
-    ICoreWindow *m_realWindow;
+public:
+    ICoreWindow *m_realWindow = nullptr;
 
     CoreWindowEra(CoreWindow *realWind)
     {
-        m_realWindow = reinterpret_cast<ICoreWindow *>(realWind);
+        m_realWindow = reinterpret_cast<ICoreWindow*>(realWind);
         InterlockedIncrement(&m_RefCount);
     }
 
