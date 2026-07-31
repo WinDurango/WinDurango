@@ -257,7 +257,9 @@ inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState* acpStat
     }
     else if (cmdType == ACP_COMMAND_TYPE_DISABLE_XMA_CONTEXT)
     {
-        printf("TODO: Disable Xma Context.\n");
+        ACP_COMMAND_ENABLE_OR_DISABLE_XMA_CONTEXT Command = Cmd.enableOrDisableXmaContext;
+        g_LoganHeap._disabledXmaContexts[Command.contextIndex] = TRUE;
+        printf("Disabled Xma Context at index %u.\n", Command.contextIndex);
     }
     else if (cmdType == ACP_COMMAND_TYPE_UPDATE_XMA_CONTEXT)
     {
@@ -269,6 +271,7 @@ inline void DispatchClientACPCommand(ACP_COMMAND_TYPE cmdType, AcpState* acpStat
     }
     else if (cmdType == ACP_COMMAND_TYPE_DISABLE_XMA_CONTEXTS)
     {
+        ACP_COMMAND_ENABLE_OR_DISABLE_XMA_CONTEXTS Command = Cmd.enableOrDisableXmaContexts;
         printf("TODO: Disable Xma Contexts.\n");
     }
     else if (cmdType == ACP_COMMAND_TYPE_LOAD_SHAPE_FLOWGRAPH)
@@ -365,7 +368,9 @@ inline void DispatchClientACPCommandOld(ACP_COMMAND_TYPE cmdType, AcpState_Old *
     }
     else if (cmdType == ACP_COMMAND_TYPE_DISABLE_XMA_CONTEXT)
     {
-        printf("TODO: Disable Xma Context.\n");
+        ACP_COMMAND_ENABLE_OR_DISABLE_XMA_CONTEXT Command = Cmd.enableOrDisableXmaContext;
+        g_LoganHeap._disabledXmaContexts[Command.contextIndex] = TRUE;
+        printf("Disabled Xma Context at index %u.\n", Command.contextIndex);
     }
     else if (cmdType == ACP_COMMAND_TYPE_UPDATE_XMA_CONTEXT)
     {
@@ -377,6 +382,7 @@ inline void DispatchClientACPCommandOld(ACP_COMMAND_TYPE cmdType, AcpState_Old *
     }
     else if (cmdType == ACP_COMMAND_TYPE_DISABLE_XMA_CONTEXTS)
     {
+        ACP_COMMAND_ENABLE_OR_DISABLE_XMA_CONTEXTS Command = Cmd.enableOrDisableXmaContexts;
         printf("TODO: Disable Xma Contexts.\n");
     }
     else if (cmdType == ACP_COMMAND_TYPE_LOAD_SHAPE_FLOWGRAPH)

@@ -933,6 +933,21 @@ EXTERN_C BOOL __stdcall EraGetFileAttributesExW(LPCWSTR lpFileName, GET_FILEEX_I
     FixRelativePath(lpFileName);
     return TrueGetFileAttributesExW(lpFileName, fInfoLevelId, lpFileInformation);
 }
+EXTERN_C DWORD __stdcall EraGetFileAttributesA(LPCSTR lpFileName)
+{
+    USES_CONVERSION;
+    LPCWSTR FileName = A2W(lpFileName);
+    FixRelativePath(FileName);
+
+    DWORD Result = TrueGetFileAttributesW(FileName);
+
+    if (Result == INVALID_FILE_ATTRIBUTES)
+    {
+        printf("EraGetFileAttributesA failed for file %s!\n", lpFileName);
+    }
+
+    return Result;
+}
 
 EXTERN_C HANDLE __stdcall EraFindFirstFileW(LPCWSTR lpFileName, LPWIN32_FIND_DATAW lpFindFileData)
 {
@@ -950,6 +965,102 @@ EXTERN_C HMODULE __stdcall EraLoadLibraryExW(LPCWSTR lpLibFileName, HANDLE hFile
 {
     FixRelativePath(lpLibFileName);
     return TrueLoadLibraryExW(lpLibFileName, hFile, dwFlags);
+}
+
+EXTERN_C BOOL __stdcall EraSetFileAttributesA(LPCSTR lpFileName, DWORD dwFileAttributes)
+{
+    USES_CONVERSION;
+    LPCWSTR WideFileName = A2W(lpFileName);
+    FixRelativePath(WideFileName);
+    
+    LPCSTR FileName = W2A(WideFileName);
+
+    BOOL Result = TrueSetFileAttributesA(FileName, dwFileAttributes);
+
+    if (!Result)
+    {
+        printf("EraSetFileAttributesA failed for file %s!\n", lpFileName);
+    }
+
+    return Result;
+}
+
+EXTERN_C HANDLE __stdcall EraFindFirstFileA(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileData)
+{
+    USES_CONVERSION;
+    LPCWSTR WideFileName = A2W(lpFileName);
+    FixRelativePath(WideFileName);
+    
+    LPCSTR FileName = W2A(WideFileName);
+
+    HANDLE Result = TrueFindFirstFileA(FileName, lpFindFileData);
+
+    if (Result == INVALID_HANDLE_VALUE)
+    {
+        printf("EraFindFirstFileA failed for file %s!\n", lpFileName);
+    }
+
+    return Result;
+}
+
+EXTERN_C BOOL __stdcall EraFindNextFileA(HANDLE hFindFile, LPWIN32_FIND_DATAA lpFindFileData)
+{
+    BOOL Result = TrueFindNextFileA(hFindFile, lpFindFileData);
+
+    if (!Result)
+    {
+        printf("EraFindNextFileA failed!\n");
+    }
+
+    return Result;
+}
+
+EXTERN_C BOOL __stdcall EraFindNextFileW(HANDLE hFindFile, LPWIN32_FIND_DATAW lpFindFileData)
+{
+    BOOL Result = TrueFindNextFileW(hFindFile, lpFindFileData);
+
+    if (!Result)
+    {
+        printf("EraFindNextFileW failed!\n");
+    }
+
+    return Result;
+}
+
+EXTERN_C BOOL __stdcall EraGetFileInformationByHandleEx(HANDLE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, LPVOID lpFileInformation, DWORD dwBufferSize)
+{
+    BOOL Result = TrueGetFileInformationByHandleEx(hFile, FileInformationClass, lpFileInformation, dwBufferSize);
+
+    if (!Result)
+    {
+        printf("EraGetFileInformationByHandleEx failed!\n");
+    }
+
+    return Result;
+}
+
+EXTERN_C BOOL __stdcall EraReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped)
+{
+    BOOL Result = TrueReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
+
+    if (!Result)
+    {
+        printf("EraReadFile failed!\n");
+    }
+
+    return Result;
+}
+
+EXTERN_C BOOL __stdcall EraWriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped)
+{
+    BOOL Result = TrueWriteFile(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
+
+    if (!Result)
+    {
+        printf("EraWriteFile Failed!\n");
+    }
+
+    return Result;
 }
 
 // Imports

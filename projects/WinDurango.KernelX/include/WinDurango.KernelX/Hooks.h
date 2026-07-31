@@ -113,4 +113,20 @@ HMODULE(WINAPI* TrueLoadLibraryExW)(LPCWSTR lpLibFileName, HANDLE  hFile, DWORD 
 HMODULE(WINAPI* TrueLoadLibraryExA)(LPCSTR lpLibFileName, HANDLE  hFile, DWORD dwFlags) = LoadLibraryExA;
 HMODULE(WINAPI* TrueLoadLibraryW)(LPCWSTR lpLibFileName) = LoadLibraryW;
 
+DWORD(WINAPI *TrueGetFileAttributesA)(LPCSTR lpFileName) = GetFileAttributesA;
+
+BOOL(WINAPI *TrueSetFileAttributesA)(LPCSTR lpFileName, DWORD dwFileAttributes) = SetFileAttributesA;
+
+HANDLE(WINAPI* TrueFindFirstFileA)(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileData) = FindFirstFileA;
+
+BOOL(WINAPI* TrueFindNextFileA)(HANDLE hFindFile, LPWIN32_FIND_DATAA lpFindFileData) = FindNextFileA;
+
+BOOL(WINAPI* TrueFindNextFileW)(HANDLE hFindFile, LPWIN32_FIND_DATAW lpFindFileData) = FindNextFileW;
+
+BOOL(WINAPI *TrueGetFileInformationByHandleEx)(HANDLE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, LPVOID lpFileInformation, DWORD dwBufferSize) = GetFileInformationByHandleEx;
+
+BOOL(WINAPI* TrueReadFile)(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped) = ReadFile;
+
+BOOL(WINAPI* TrueWriteFile)(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped) = WriteFile;
+
 HMODULE User32 = nullptr;

@@ -248,3 +248,19 @@ EXTERN_C HANDLE __stdcall EraFindFirstFileW(LPCWSTR lpFileName, LPWIN32_FIND_DAT
 EXTERN_C BOOL __stdcall EraDeleteFileW(LPCWSTR lpFileName);
 
 EXTERN_C HMODULE __stdcall EraLoadLibraryExW(LPCWSTR lpLibFileName, HANDLE hFile, DWORD dwFlags);
+
+EXTERN_C DWORD __stdcall EraGetFileAttributesA(LPCSTR lpFileName);
+
+EXTERN_C BOOL __stdcall EraSetFileAttributesA(LPCSTR lpFileName, DWORD dwFileAttributes);
+
+EXTERN_C HANDLE __stdcall EraFindFirstFileA(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileData);
+
+EXTERN_C BOOL __stdcall EraFindNextFileA(HANDLE hFindFile, LPWIN32_FIND_DATAA lpFindFileData);
+
+EXTERN_C BOOL __stdcall EraFindNextFileW(HANDLE hFindFile, LPWIN32_FIND_DATAW lpFindFileData);
+
+EXTERN_C BOOL __stdcall EraGetFileInformationByHandleEx(HANDLE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, LPVOID lpFileInformation, DWORD dwBufferSize);
+
+EXTERN_C BOOL __stdcall EraReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped);
+
+EXTERN_C BOOL __stdcall EraWriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped);

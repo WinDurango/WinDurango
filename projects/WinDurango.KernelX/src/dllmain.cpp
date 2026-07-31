@@ -91,11 +91,19 @@ void KernelxInitialize(HINSTANCE hinstDLL)
         DetourAttach(&reinterpret_cast<PVOID&>(TrueCreateFile2), EraCreateFile2);
         DetourAttach(&reinterpret_cast<PVOID&>(TrueCreateFileA), EraCreateFileA);
         DetourAttach(&reinterpret_cast<PVOID&>(TrueGetFileAttributesW), EraGetFileAttributesW);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueGetFileAttributesA), EraGetFileAttributesA);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueSetFileAttributesA), EraSetFileAttributesA);
         DetourAttach(&reinterpret_cast<PVOID&>(TrueGetFileAttributesExW), EraGetFileAttributesExW);
         DetourAttach(&reinterpret_cast<PVOID&>(TrueFindFirstFileW), EraFindFirstFileW);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueFindFirstFileA), EraFindFirstFileA);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueFindNextFileA), EraFindNextFileA);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueFindNextFileW), EraFindNextFileW);
         DetourAttach(&reinterpret_cast<PVOID&>(TrueDeleteFileW), EraDeleteFileW);
         DetourAttach(&reinterpret_cast<PVOID&>(TrueLoadLibraryW), EraLoadLibraryW);
         DetourAttach(&reinterpret_cast<PVOID&>(TrueLoadLibraryExA), EraLoadLibraryExA);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueGetFileInformationByHandleEx), EraGetFileInformationByHandleEx);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueReadFile), EraReadFile);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueWriteFile), EraWriteFile);
         DetourTransactionCommit();
     }
     else if (ReasonForCall == DLL_PROCESS_DETACH || ReasonForCall == DLL_THREAD_DETACH)
@@ -110,11 +118,19 @@ void KernelxInitialize(HINSTANCE hinstDLL)
         DetourDetach(&reinterpret_cast<PVOID&>(TrueCreateFile2), EraCreateFile2);
         DetourDetach(&reinterpret_cast<PVOID&>(TrueCreateFileA), EraCreateFileA);
         DetourDetach(&reinterpret_cast<PVOID&>(TrueGetFileAttributesW), EraGetFileAttributesW);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueGetFileAttributesA), EraGetFileAttributesA);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueSetFileAttributesA), EraSetFileAttributesA);
         DetourDetach(&reinterpret_cast<PVOID&>(TrueGetFileAttributesExW), EraGetFileAttributesExW);
         DetourDetach(&reinterpret_cast<PVOID&>(TrueFindFirstFileW), EraFindFirstFileW);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueFindFirstFileA), EraFindFirstFileA);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueFindNextFileA), EraFindNextFileA);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueFindNextFileW), EraFindNextFileW);
         DetourDetach(&reinterpret_cast<PVOID&>(TrueDeleteFileW), EraDeleteFileW);
         DetourDetach(&reinterpret_cast<PVOID&>(TrueLoadLibraryW), EraLoadLibraryW);
         DetourDetach(&reinterpret_cast<PVOID&>(TrueLoadLibraryExA), EraLoadLibraryExA);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueGetFileInformationByHandleEx), EraGetFileInformationByHandleEx);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueReadFile), EraReadFile);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueWriteFile), EraWriteFile);
         DetourTransactionCommit();
     }
 }

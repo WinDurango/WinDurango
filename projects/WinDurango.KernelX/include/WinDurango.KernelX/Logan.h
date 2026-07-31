@@ -41,6 +41,7 @@ class LoganHeap
     UINT32 _numCommandsInFlowgraph = 0;
     UINT32 _enabledMessages = 0;
     UINT32 _droppedMessages = 0;
+    BOOL _disabledXmaContexts[512]{};
 };
 
 template <typename T> void _declspec(dllexport) DispatchLoganCommand(LOGAN_COMMAND_TYPE cmdType, T cmd);
