@@ -20,6 +20,10 @@ void KernelxInitialize(HINSTANCE hinstDLL)
         SetConsoleTitleW(L"WinDurango");
     }
 
+    auto AppxManifestFile = ReadFile(L"AppxManifest.xml");
+    auto TitleID = ExtractAttribute(AppxManifestFile, L"TitleId");
+    auto Version = ExtractAttribute(AppxManifestFile, L"Version");
+
     if (ReasonForCall == DLL_PROCESS_ATTACH || ReasonForCall == DLL_THREAD_ATTACH)
     {
         DetourRestoreAfterWith();
@@ -39,7 +43,7 @@ void KernelxInitialize(HINSTANCE hinstDLL)
         }
 
         //Halo 5: Guardians
-        if (winrt::Windows::ApplicationModel::Package::Current().Id().FamilyName() == L"Halo5-Guardians_8wekyb3d8bbwe")
+        if (TitleID == L"0D174C79")
         {
             HMODULE XboxLiveWrapper = LoadLibraryW(L"XboxLiveServicesWrapperLib_Release.dll");
             XWinePatchImport(XboxLiveWrapper, GetRuntimeModule(),
@@ -48,28 +52,30 @@ void KernelxInitialize(HINSTANCE hinstDLL)
         }
 
         //Forza Horizon 2 Demo
-        if (winrt::Windows::ApplicationModel::Package::Current().Id().FamilyName() == L"265E1020-Anthem_8wekyb3d8bbwe")
+        if (TitleID == L"265E1020" && Version == L"1.0.0.5")
         {
             *(void**)&P_StartForzaThread = (char*)GetModuleHandleW(nullptr) + 0xFE6920;
             DetourAttach((void**)&P_StartForzaThread, &D_StartForzaThread);
         }
+
         //Forza Horizon 2
-        if (winrt::Windows::ApplicationModel::Package::Current().Id().FamilyName() == L"Anthem_8wekyb3d8bbwe")
+        if (TitleID == L"1A96545B" && Version == L"1.0.0.64")
         {
             *(void**)&P_StartForzaThread = (char*)GetModuleHandleW(nullptr) + 0x1081A90;
             DetourAttach((void**)&P_StartForzaThread, &D_StartForzaThread);
             *(void**)&P_FmodThreadProc = (char*)GetModuleHandleW(nullptr) + 0x19D3F80;
             DetourAttach((void**)&P_FmodThreadProc, &D_FmodThreadProc);
         }
+
         //Forza Horizon 2 Presents Fast & Furious
-        if (winrt::Windows::ApplicationModel::Package::Current().Id().FamilyName() == L"Spire_8wekyb3d8bbwe")
+        if (TitleID == L"5A9771A4" && Version == L"1.0.0.6")
         {
             *(void**)&P_StartForzaThread = (char*)GetModuleHandleW(nullptr) + 0x10A7C00;
             DetourAttach((void**)&P_StartForzaThread, &D_StartForzaThread);
         }
 
         //Peggle 2
-        if (winrt::Windows::ApplicationModel::Package::Current().Id().FamilyName() == L"Peggle2_zjr0dfhgjwvde")
+        if (TitleID == L"32966611" && Version == L"1.0.7.0")
         {
             HRESULT hr = CreateDXGIFactory2(0, IID_PPV_ARGS(&g_pFactory));
             if (FAILED(hr)) printf("Peggle 2: Failed to create the DXGI Factory object! Error: 0x%X\n", hr);
@@ -104,6 +110,7 @@ void KernelxInitialize(HINSTANCE hinstDLL)
         DetourAttach(&reinterpret_cast<PVOID&>(TrueGetFileInformationByHandleEx), EraGetFileInformationByHandleEx);
         DetourAttach(&reinterpret_cast<PVOID&>(TrueReadFile), EraReadFile);
         DetourAttach(&reinterpret_cast<PVOID&>(TrueWriteFile), EraWriteFile);
+        DetourAttach(&reinterpret_cast<PVOID&>(TrueGetProcAddress), EraGetProcAddress);
         DetourTransactionCommit();
     }
     else if (ReasonForCall == DLL_PROCESS_DETACH || ReasonForCall == DLL_THREAD_DETACH)
@@ -131,6 +138,7 @@ void KernelxInitialize(HINSTANCE hinstDLL)
         DetourDetach(&reinterpret_cast<PVOID&>(TrueGetFileInformationByHandleEx), EraGetFileInformationByHandleEx);
         DetourDetach(&reinterpret_cast<PVOID&>(TrueReadFile), EraReadFile);
         DetourDetach(&reinterpret_cast<PVOID&>(TrueWriteFile), EraWriteFile);
+        DetourDetach(&reinterpret_cast<PVOID&>(TrueGetProcAddress), EraGetProcAddress);
         DetourTransactionCommit();
     }
 }

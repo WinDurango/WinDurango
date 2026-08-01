@@ -15,7 +15,7 @@ HRESULT MFCreateDxvaSampleRendererX()
 HRESULT MFCreateNV12ToRGB32ConverterX(void *pDevice, int64_t a2, int64_t a3)
 {
 	MessageBoxA(nullptr, "MFCreateNV12ToRGB32ConverterX", "STUB", MB_ICONERROR);
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 HRESULT MFCreateRGB32ToNV12ConverterX(void* pDevice, int64_t a2, int64_t a3)

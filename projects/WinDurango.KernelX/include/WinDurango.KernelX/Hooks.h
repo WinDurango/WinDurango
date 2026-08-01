@@ -129,4 +129,6 @@ BOOL(WINAPI* TrueReadFile)(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesTo
 
 BOOL(WINAPI* TrueWriteFile)(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped) = WriteFile;
 
+FARPROC(WINAPI* TrueGetProcAddress)(HMODULE hModule, LPCSTR lpProcName) = GetProcAddress;
+
 HMODULE User32 = nullptr;

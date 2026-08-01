@@ -264,3 +264,42 @@ EXTERN_C BOOL __stdcall EraGetFileInformationByHandleEx(HANDLE hFile, FILE_INFO_
 EXTERN_C BOOL __stdcall EraReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped);
 
 EXTERN_C BOOL __stdcall EraWriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped);
+
+inline std::wstring ExtractAttribute(const std::wstring& xml, const std::wstring& attr)
+{
+    std::wstring key = attr + L"=\"";
+
+    size_t start = xml.find(key);
+    if (start == std::wstring::npos) return L"";
+
+    start += key.length();
+    size_t end = xml.find(L"\"", start);
+    if (end == std::wstring::npos) return L"";
+
+    return xml.substr(start, end - start);
+}
+
+inline std::wstring ReadFile(const std::wstring& path)
+{
+    FILE* f = _wfopen(path.c_str(), L"rb");
+    if (!f)
+        return L"";
+
+    fseek(f, 0, SEEK_END);
+    size_t size = ftell(f);
+    rewind(f);
+
+    std::string buffer(size, '\0');
+    fread(buffer.data(), 1, size, f);
+    fclose(f);
+
+    int len = MultiByteToWideChar(CP_UTF8, 0, buffer.data(), (int)buffer.size(), NULL, 0);
+    std::wstring wstr(len, 0);
+    MultiByteToWideChar(CP_UTF8, 0, buffer.data(), (int)buffer.size(), &wstr[0], len);
+
+    return wstr;
+}
+
+EXTERN_C void __stdcall NtEnable32BitProcess(HANDLE hProcess, UINT Flags, LPVOID lpAddress, UINT16 Unknown); //Used by Xeo3.
+
+EXTERN_C FARPROC _stdcall EraGetProcAddress(HMODULE hModule, LPCSTR lpProcName);

@@ -1063,6 +1063,27 @@ EXTERN_C BOOL __stdcall EraWriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumb
     return Result;
 }
 
+EXTERN_C void __stdcall NtEnable32BitProcess(HANDLE hProcess, UINT Flags, LPVOID lpAddress, UINT16 Unknown)
+{
+    //TODO
+    printf("TODO: NtEnable32BitProcess\n");
+    lpAddress = EraVirtualAllocEx(hProcess, (LPVOID)0x100000000, 0x100000000, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE); //In theory, 0x100000000 is the starting address?
+}
+
+EXTERN_C FARPROC _stdcall EraGetProcAddress(HMODULE hModule, LPCSTR lpProcName)
+{
+    HMODULE ntdll = GetModuleHandleW(L"ntdll.dll");
+    if (hModule == ntdll)
+    {
+        if (!strcmp(lpProcName, "NtEnable32BitProcess"))
+        {
+            return (FARPROC)NtEnable32BitProcess;
+        }
+    }
+
+    return TrueGetProcAddress(hModule, lpProcName);
+}
+
 // Imports
 #pragma comment(lib, "onecore.lib")
 #pragma comment(lib, "kernel32.lib")
