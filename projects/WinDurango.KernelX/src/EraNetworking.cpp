@@ -73,9 +73,9 @@ ULONG NetworkInformationEra::AddRef()
 
 ULONG NetworkInformationEra::Release()
 {
-    ULONG refCount = InterlockedDecrement(&m_RefCount);
-    if (!refCount) delete this;
-    return refCount;
+    ULONG RefCount = InterlockedDecrement(&m_RefCount);
+    if (!RefCount) delete this;
+    return RefCount;
 }
 
 HRESULT NetworkInformationEra::GetIids(ULONG *iidCount, IID **iids)

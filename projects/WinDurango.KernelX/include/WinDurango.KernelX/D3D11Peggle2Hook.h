@@ -84,10 +84,6 @@ _COM_Outptr_opt_ ID3D11Device **ppDevice,
 _Out_opt_ D3D_FEATURE_LEVEL *pFeatureLevel,
 _COM_Outptr_opt_ ID3D11DeviceContext **ppImmediateContext)
 {
-#ifdef _DEBUG
-    Flags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif
-
     SDKVersion = D3D11_SDK_VERSION;
     D3D_FEATURE_LEVEL featurelevels[] = { D3D_FEATURE_LEVEL_11_1, D3D_FEATURE_LEVEL_11_0 };
     auto flags = Flags & CREATE_DEVICE_FLAG_MASK;

@@ -303,3 +303,5 @@ inline std::wstring ReadFile(const std::wstring& path)
 EXTERN_C void __stdcall NtEnable32BitProcess(HANDLE hProcess, UINT Flags, LPVOID lpAddress, UINT16 Unknown); //Used by Xeo3.
 
 EXTERN_C FARPROC _stdcall EraGetProcAddress(HMODULE hModule, LPCSTR lpProcName);
+
+EXTERN_C HRESULT __stdcall EraCoCreateInstanceEx(REFCLSID Clsid, IUnknown *punkOuter, DWORD dwClsCtx, COSERVERINFO *pServerInfo, DWORD dwCount, MULTI_QI *pResults);

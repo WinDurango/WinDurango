@@ -64,6 +64,11 @@ file(GLOB WINRT_FILES
 )
 
 add_library(WinDurango.Kinect SHARED ${SOURCES} ${WINRT_FILES} WinDurango.Kinect.def)
+
+target_include_directories(WinDurango.Kinect BEFORE PUBLIC
+    "$ENV{WindowsSdkDir}Include/$ENV{WindowsSdkVersion}/cppwinrt"
+)
+
 target_include_directories(WinDurango.Kinect PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/WinDurango.Kinect"

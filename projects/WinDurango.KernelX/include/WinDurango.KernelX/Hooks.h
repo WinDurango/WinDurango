@@ -131,4 +131,6 @@ BOOL(WINAPI* TrueWriteFile)(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytes
 
 FARPROC(WINAPI* TrueGetProcAddress)(HMODULE hModule, LPCSTR lpProcName) = GetProcAddress;
 
+HRESULT(WINAPI* TrueCoCreateInstanceEx)(REFCLSID Clsid, IUnknown* punkOuter, DWORD dwClsCtx, COSERVERINFO* pServerInfo, DWORD dwCount, MULTI_QI* pResults) = CoCreateInstanceEx;
+
 HMODULE User32 = nullptr;

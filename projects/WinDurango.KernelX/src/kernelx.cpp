@@ -3,6 +3,7 @@
 #include <atlbase.h>
 #include "Hooks.h"
 #include <winternl.h>
+#include "EraCoreApplication.h"
 
 EXTERN_C CONSOLE_TYPE __stdcall GetConsoleType()
 {
@@ -801,14 +802,39 @@ EXTERN_C HANDLE __stdcall EraCreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAcce
         return LoganHandle;
     }
 
-    FixRelativePath(lpFileName);
+    static std::wstring convert{};
+    std::wstring_view fileName(lpFileName);
+
+    int length = fileName.length();
+    if (fileName[0] == '/')
+    {
+        static std::wstring trimPath{};
+        trimPath = fileName.substr(1);
+        fileName = trimPath.data();
+        convert = std::filesystem::current_path().c_str();
+        convert.append(L"\\");
+        convert.append(fileName);
+
+        lpFileName = convert.data();
+    }
+    else if (fileName[0] == '\\')
+    {
+    }
+    else if (fileName[length - 1] == '/')
+    {
+        convert = std::filesystem::current_path().c_str();
+        convert.append(L"\\");
+        convert.append(lpFileName);
+        std::replace(convert.begin(), convert.end(), L'/', L'\\');
+        lpFileName = convert.c_str();
+    }
+    else
+    {
+        FixRelativePath(lpFileName);
+    }
+
     HANDLE Result = TrueCreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition,
                                     dwFlagsAndAttributes, hTemplateFile);
-
-    if (Result == INVALID_HANDLE_VALUE)
-    {
-        wprintf(L"EraCreateFileW failed for file %s!\n", lpFileName);
-    }
 
     return Result;
 }
@@ -824,11 +850,6 @@ EXTERN_C HANDLE __stdcall EraCreateFileA(LPCSTR lpFileName, DWORD dwDesiredAcces
     HANDLE Result = TrueCreateFileW(FileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition,
                                     dwFlagsAndAttributes, hTemplateFile);
 
-    if (Result == INVALID_HANDLE_VALUE)
-    {
-        wprintf(L"EraCreateFileA failed for file %s!\n", FileName);
-    }
-
     return Result;
 }
 
@@ -837,11 +858,6 @@ EXTERN_C HANDLE __stdcall EraCreateFile2(LPCWSTR lpFileName, DWORD dwDesiredAcce
 {
     FixRelativePath(lpFileName);
     HANDLE Result = TrueCreateFile2(lpFileName, dwDesiredAccess, dwShareMode, dwCreationDisposition, pCreateExParams);
-
-    if (Result == INVALID_HANDLE_VALUE)
-    {
-        wprintf(L"EraCreateFile2 failed for file %s!\n", lpFileName);
-    }
 
     return Result;
 }
@@ -853,11 +869,6 @@ EXTERN_C BOOL __stdcall EraCreateDirectoryA(LPCSTR lpPathName, LPSECURITY_ATTRIB
     FixRelativePath(PathName);
     BOOL Result = TrueCreateDirectoryW(PathName, lpSecurityAttributes);
 
-    if (!Result)
-    {
-        wprintf(L"EraCreateDirectoryA failed for directory %s!\n", PathName);
-    }
-
     return Result;
 }
 
@@ -865,11 +876,6 @@ EXTERN_C BOOL __stdcall EraCreateDirectoryW(LPCWSTR lpPathName, LPSECURITY_ATTRI
 {
     FixRelativePath(lpPathName);
     BOOL Result = TrueCreateDirectoryW(lpPathName, lpSecurityAttributes);
-
-    if (!Result)
-    {
-        wprintf(L"EraCreateDirectoryW failed for directory %s!\n", lpPathName);
-    }
 
     return Result;
 }
@@ -941,11 +947,6 @@ EXTERN_C DWORD __stdcall EraGetFileAttributesA(LPCSTR lpFileName)
 
     DWORD Result = TrueGetFileAttributesW(FileName);
 
-    if (Result == INVALID_FILE_ATTRIBUTES)
-    {
-        printf("EraGetFileAttributesA failed for file %s!\n", lpFileName);
-    }
-
     return Result;
 }
 
@@ -977,11 +978,6 @@ EXTERN_C BOOL __stdcall EraSetFileAttributesA(LPCSTR lpFileName, DWORD dwFileAtt
 
     BOOL Result = TrueSetFileAttributesA(FileName, dwFileAttributes);
 
-    if (!Result)
-    {
-        printf("EraSetFileAttributesA failed for file %s!\n", lpFileName);
-    }
-
     return Result;
 }
 
@@ -995,22 +991,12 @@ EXTERN_C HANDLE __stdcall EraFindFirstFileA(LPCSTR lpFileName, LPWIN32_FIND_DATA
 
     HANDLE Result = TrueFindFirstFileA(FileName, lpFindFileData);
 
-    if (Result == INVALID_HANDLE_VALUE)
-    {
-        printf("EraFindFirstFileA failed for file %s!\n", lpFileName);
-    }
-
     return Result;
 }
 
 EXTERN_C BOOL __stdcall EraFindNextFileA(HANDLE hFindFile, LPWIN32_FIND_DATAA lpFindFileData)
 {
     BOOL Result = TrueFindNextFileA(hFindFile, lpFindFileData);
-
-    if (!Result)
-    {
-        printf("EraFindNextFileA failed!\n");
-    }
 
     return Result;
 }
@@ -1019,11 +1005,6 @@ EXTERN_C BOOL __stdcall EraFindNextFileW(HANDLE hFindFile, LPWIN32_FIND_DATAW lp
 {
     BOOL Result = TrueFindNextFileW(hFindFile, lpFindFileData);
 
-    if (!Result)
-    {
-        printf("EraFindNextFileW failed!\n");
-    }
-
     return Result;
 }
 
@@ -1031,36 +1012,17 @@ EXTERN_C BOOL __stdcall EraGetFileInformationByHandleEx(HANDLE hFile, FILE_INFO_
 {
     BOOL Result = TrueGetFileInformationByHandleEx(hFile, FileInformationClass, lpFileInformation, dwBufferSize);
 
-    if (!Result)
-    {
-        printf("EraGetFileInformationByHandleEx failed!\n");
-    }
-
     return Result;
 }
 
 EXTERN_C BOOL __stdcall EraReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped)
 {
-    BOOL Result = TrueReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
-
-    if (!Result)
-    {
-        printf("EraReadFile failed!\n");
-    }
-
-    return Result;
+    return TrueReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
 }
 
 EXTERN_C BOOL __stdcall EraWriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped)
 {
-    BOOL Result = TrueWriteFile(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
-
-    if (!Result)
-    {
-        printf("EraWriteFile Failed!\n");
-    }
-
-    return Result;
+    return TrueWriteFile(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
 }
 
 EXTERN_C void __stdcall NtEnable32BitProcess(HANDLE hProcess, UINT Flags, LPVOID lpAddress, UINT16 Unknown)
@@ -1082,6 +1044,19 @@ EXTERN_C FARPROC _stdcall EraGetProcAddress(HMODULE hModule, LPCSTR lpProcName)
     }
 
     return TrueGetProcAddress(hModule, lpProcName);
+}
+
+HRESULT __stdcall EraCoCreateInstanceEx(REFCLSID Clsid, IUnknown *punkOuter, DWORD dwClsCtx, COSERVERINFO *pServerInfo, DWORD dwCount, MULTI_QI *pResults)
+{
+    if (Clsid == __uuidof(IPersistentLocalStorageManagerEra))
+    {
+        pResults->hr = S_OK;
+        pResults->pIID = &Clsid;
+        pResults->pItf = new PersistentLocalStorageManagerEra();
+        return S_OK;
+    }
+
+    return TrueCoCreateInstanceEx(Clsid, punkOuter, dwClsCtx, pServerInfo, dwCount, pResults);
 }
 
 // Imports

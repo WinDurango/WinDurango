@@ -649,3 +649,68 @@ private:
     ComPtr<IActivationFactory> m_realFactory;
     ULONG m_RefCount = 0;
 };
+
+MIDL_INTERFACE("4DA91FDC-76F1-4CC0-8AF2-46B9C5DF86D5")
+IPersistentLocalStorageManagerEra : public IInspectable
+{
+    //TODO: Find (somehow) the vtable or methods
+};
+
+class PersistentLocalStorageManagerEra : public IPersistentLocalStorageManagerEra
+{
+public:
+    PersistentLocalStorageManagerEra()
+    {
+        InterlockedIncrement(&m_RefCount);
+    }
+
+    HRESULT QueryInterface(const IID& riid, void** ppvObject) override
+    {
+        if (riid == __uuidof(IActivationFactory) || riid == __uuidof(IPersistentLocalStorageManagerEra))
+        {
+            *ppvObject = this;
+            AddRef();
+            return S_OK;
+        }
+
+        char iidstr[sizeof("{AAAAAAAA-BBBB-CCCC-DDEE-FFGGHHIIJJKK}")];
+        OLECHAR iidwstr[sizeof(iidstr)];
+        StringFromGUID2(riid, iidwstr, ARRAYSIZE(iidwstr));
+        WideCharToMultiByte(CP_UTF8, 0, iidwstr, -1, iidstr, sizeof(iidstr), nullptr, nullptr);
+        MessageBoxA(nullptr, iidstr, typeid(*this).name(), MB_OK);
+
+        *ppvObject = nullptr;
+        return E_NOINTERFACE;
+    }
+
+    ULONG AddRef() override
+    {
+        return InterlockedIncrement(&m_RefCount);
+    }
+
+    ULONG Release() override
+    {
+        ULONG RefCount = InterlockedDecrement(&m_RefCount);
+        if (!RefCount) delete this;
+        return RefCount;
+    }
+
+    HRESULT GetIids(ULONG* iidCount, IID** iids) override
+    {
+        return E_NOTIMPL;
+    }
+
+    HRESULT GetRuntimeClassName(HSTRING* className) override
+    {
+        return E_NOTIMPL;
+    }
+
+    HRESULT GetTrustLevel(TrustLevel* trustLevel) override
+    {
+        return E_NOTIMPL;
+    }
+
+private:
+    ULONG m_RefCount = 0;
+};
+

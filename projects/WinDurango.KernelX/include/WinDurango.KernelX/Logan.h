@@ -69,7 +69,7 @@ static BOOL ReadFromInternalACPRingBuffer(AcpCommand *OutBuffer, AcpInternalComm
     if (InBufferDesc->internalCommandQueueReadCounter == InBufferDesc->internalCommandQueueSendCounter)
         return FALSE;
 
-    InBuffer[InBufferDesc->internalCommandQueueReadPointer].state = 0;
+    InBuffer[InBufferDesc->internalCommandQueueReadPointer].state = 1;
     *OutBuffer = InBuffer[InBufferDesc->internalCommandQueueReadPointer].command;
 
     InBufferDesc->internalCommandQueueReadPointer++;
@@ -86,7 +86,7 @@ static BOOL ReadFromInternalACPRingBufferOld(AcpCommand_Old *OutBuffer, AcpInter
     if (!InBuffer[InBufferDesc->internalCommandQueueReadPointer].command.commandType)
         return FALSE;
 
-    InBuffer[InBufferDesc->internalCommandQueueReadPointer].state = 0;
+    InBuffer[InBufferDesc->internalCommandQueueReadPointer].state = 1;
     *OutBuffer = InBuffer[InBufferDesc->internalCommandQueueReadPointer].command;
 
     InBufferDesc->internalCommandQueueReadPointer++;
@@ -97,24 +97,18 @@ static BOOL ReadFromInternalACPRingBufferOld(AcpCommand_Old *OutBuffer, AcpInter
     return TRUE;
 }
 
-static BOOL ReadFromXmaContext(SHAPE_XMA_CONTEXT *OutBuffer, SHAPE_XMA_CONTEXT *InBuffer, UINT ContextIndex)
-{
-    *OutBuffer = InBuffer[ContextIndex];
-    return TRUE;
-}
-
 static BOOL ReadFromClientACPRingBuffer(AcpCommand *OutBuffer, AcpCommandQueueEntry *InBuffer, AcpState *InBufferDesc, UINT ClientIndex)
 {
     if (InBufferDesc->clientCommandQueueReadCounter[ClientIndex] == InBufferDesc->clientCommandQueueSendCounter[ClientIndex])
         return FALSE;
 
-    InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].state = 0;
+    InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].state = 1;
     *OutBuffer = InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].command;
 
     InBufferDesc->clientCommandQueueReadPointer[ClientIndex]++;
     InBufferDesc->clientCommandQueueReadCounter[ClientIndex]++;
 
-    if (InBufferDesc->clientCommandQueueReadPointer[ClientIndex] >= 16)
+    if (InBufferDesc->clientCommandQueueReadPointer[ClientIndex] >= g_LoganHeap._acpConnectCommand[ClientIndex]->connect.numCommands)
         InBufferDesc->clientCommandQueueReadPointer[ClientIndex] = 0;
 
     return TRUE;
@@ -125,29 +119,15 @@ static BOOL ReadFromClientACPRingBufferOld(AcpCommand_Old *OutBuffer, AcpCommand
     if (!InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].command.commandType)
         return FALSE;
 
-    InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].state = 0;
+    InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].state = 1;
     *OutBuffer = InBuffer[InBufferDesc->clientCommandQueueReadPointer[ClientIndex]].command;
 
     InBufferDesc->clientCommandQueueReadPointer[ClientIndex]++;
 
-    if (InBufferDesc->clientCommandQueueReadPointer[ClientIndex] >= 16)
+    if (InBufferDesc->clientCommandQueueReadPointer[ClientIndex] >= g_LoganHeap._acpConnectCommandOld[ClientIndex]->connect.numCommands)
         InBufferDesc->clientCommandQueueReadPointer[ClientIndex] = 0;
 
     return TRUE;
-}
-
-BOOL(*P_PopMessage)(LPVOID, ACP_MESSAGE_OLD*);
-std::vector<ACP_MESSAGE> g_MessageQueue;
-
-//THIS IS MEANT TO BE A WORKAROUND.
-BOOL __fastcall D_PopMessage(LPVOID pIAcpHal, ACP_MESSAGE_OLD *pMessage)
-{
-    BOOL Result = P_PopMessage(pIAcpHal, pMessage);
-
-    if (Result)
-        printf("PopMessage returned a message!\n");
-
-    return Result;
 }
 
 void SendMessageFromACP(ACP_MESSAGE *pMessage, AcpMessageQueueEntry *pMessageQueue, AcpState *pAcpState, UINT ClientIndex);
@@ -217,6 +197,7 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
             AcpInternalCommandQueueEntry_Old *AcpInternalCommandQueue = g_LoganHeap.GetVirtualAddress<AcpInternalCommandQueueEntry_Old>(InitialCommandOld->acpCommandQueue);
             if (!pAcpStateOld) pAcpStateOld = g_LoganHeap.GetVirtualAddress<AcpState_Old>(InitialCommandOld->acpState);
             if (!pCpuState) pCpuState = g_LoganHeap.GetVirtualAddress<CpuState>(InitialCommandOld->cpuState);
+
             if (pAcpStateOld && AcpInternalCommandQueue)
             {
                 AcpCommand_Old Command{};
@@ -238,7 +219,6 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                 AcpPendingCommand *AcpClientPendingCommand = g_LoganHeap.GetVirtualAddress<AcpPendingCommand>(g_LoganHeap._acpConnectCommand[i]->connect.pendingCommandList);
                 AcpMessageQueueEntry *AcpClientMessageQueue = nullptr;
                 AcpMessageQueueEntry_Old *AcpClientMessageQueueOld = nullptr;
-                UINT BlockedIndex = 0;
                 if (g_ABI >= abi_t{6,2,11785,0})
                     AcpClientMessageQueue = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry>(g_LoganHeap._acpConnectCommand[i]->connect.messageQueue, g_LoganHeap._acpConnectCommand[i]->connect.numMessages);
                 else
@@ -254,24 +234,24 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                             DispatchClientACPCommand((ACP_COMMAND_TYPE)Command.commandType, pAcpState, Command);
                             if ((g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_COMMAND_COMPLETED) && AcpClientMessageQueueOld)
                             {
+                                g_LoganHeap._droppedMessages++;
                                 ACP_MESSAGE_OLD Message{};
                                 Message.type = ACP_MESSAGE_TYPE_COMMAND_COMPLETED;
                                 Message.commandCompleted.commandId = Command.commandId;
                                 Message.commandCompleted.commandType = Command.commandType;
                                 Message.commandCompleted.audioFrame = Command.frame;
                                 Message.droppedMessageCount = g_LoganHeap._droppedMessages;
-                                g_LoganHeap._droppedMessages++;
                                 SendMessageFromACPOld(&Message, AcpClientMessageQueueOld, pAcpState, i);
                             }
                             else if ((g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_COMMAND_COMPLETED) && AcpClientMessageQueue)
                             {
+                                g_LoganHeap._droppedMessages++;
                                 ACP_MESSAGE Message{};
                                 Message.type = ACP_MESSAGE_TYPE_COMMAND_COMPLETED;
                                 Message.commandCompleted.commandId = Command.commandId;
                                 Message.commandCompleted.commandType = Command.commandType;
                                 Message.commandCompleted.audioFrame = Command.frame;
                                 Message.droppedMessageCount = g_LoganHeap._droppedMessages;
-                                g_LoganHeap._droppedMessages++;
                                 SendMessageFromACP(&Message, AcpClientMessageQueue, pAcpState, i);
                             }
                         }
@@ -283,7 +263,6 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                 AcpCommandQueueEntry_Old *AcpClientCommandQueue = g_LoganHeap.GetVirtualAddress<AcpCommandQueueEntry_Old>(g_LoganHeap._acpConnectCommandOld[i]->connect.commandQueue, g_LoganHeap._acpConnectCommandOld[i]->connect.numCommands);
                 AcpMessageQueueEntry_Old *AcpClientMessageQueue = g_LoganHeap.GetVirtualAddress<AcpMessageQueueEntry_Old>(g_LoganHeap._acpConnectCommandOld[i]->connect.messageQueue, g_LoganHeap._acpConnectCommandOld[i]->connect.numMessages);
                 AcpPendingCommand *AcpClientPendingCommand = g_LoganHeap.GetVirtualAddress<AcpPendingCommand>(g_LoganHeap._acpConnectCommandOld[i]->connect.pendingCommandList);
-                UINT BlockedIndex = 0;
 
                 if (pAcpStateOld && AcpClientCommandQueue)
                 {
@@ -295,13 +274,13 @@ static DWORD WINAPI LoganChannelProc(LPVOID lpThreadParameter)
                             DispatchClientACPCommandOld((ACP_COMMAND_TYPE)Command.commandType, pAcpStateOld, Command);
                             if (g_LoganHeap._enabledMessages & ACP_MESSAGE_TYPE_COMMAND_COMPLETED)
                             {
+                                g_LoganHeap._droppedMessages++;
                                 ACP_MESSAGE_OLD Message{};
                                 Message.type = ACP_MESSAGE_TYPE_COMMAND_COMPLETED;
                                 Message.commandCompleted.commandId = Command.commandId;
                                 Message.commandCompleted.commandType = Command.commandType;
                                 Message.commandCompleted.audioFrame = Command.frame;
                                 Message.droppedMessageCount = g_LoganHeap._droppedMessages;
-                                g_LoganHeap._droppedMessages++;
                                 SendMessageFromACPOlder(&Message, AcpClientMessageQueue, pAcpStateOld, i);
                             }
                         }
@@ -334,7 +313,7 @@ EXTERN_C BOOL __stdcall EraDeviceIoControl(HANDLE hDevice, DWORD dwIoControlCode
             UINT Size = (InMap->sizeInBytes + ((1ULL << 16) - 1)) & ~((1ULL << 16) - 1);
             UINT NumPages = Size / (1ULL << 16);
             DWORD ApuAddress = BumpAlloc(Size);
-            g_LoganHeap.Map(InMap->address, ApuAddress, Size);
+            g_LoganHeap.Map(InMap->address, ApuAddress, InMap->sizeInBytes);
 
             LOGAN_IOCTL_OUT_ALLOC_MAP outMap{};
             outMap.allocated = InMap->sizeInBytes;

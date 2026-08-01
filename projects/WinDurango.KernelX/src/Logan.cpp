@@ -410,6 +410,10 @@ inline void DispatchLoganCommand(LOGAN_COMMAND_TYPE cmdType, T cmd)
         else
             InitialCommand = reinterpret_cast<LOGAN_COMMAND_ACP_INIT*>(cmd);
     }
+    else
+    {
+        printf("Received unimplemented Logan command: 0x%u.\n", cmdType);
+    }
 }
 
 void SendMessageFromACP(ACP_MESSAGE *pMessage, AcpMessageQueueEntry *pMessageQueue, AcpState *pAcpState, UINT ClientIndex)

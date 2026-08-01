@@ -159,10 +159,9 @@ ULONG CoreApplicationEra::AddRef()
 
 ULONG CoreApplicationEra::Release()
 {
-    ULONG refCount = InterlockedDecrement(&m_RefCount);
-    if (!refCount)
-        delete this;
-    return refCount;
+    ULONG RefCount = InterlockedDecrement(&m_RefCount);
+    if (!RefCount) delete this;
+    return RefCount;
 }
 
 HRESULT CoreApplicationEra::GetIids(ULONG *iidCount, IID **iids)
