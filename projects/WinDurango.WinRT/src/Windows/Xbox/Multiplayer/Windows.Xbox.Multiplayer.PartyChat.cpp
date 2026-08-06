@@ -19,7 +19,7 @@ namespace winrt::Windows::Xbox::Multiplayer::implementation
     }
     bool PartyChat::IsPartyChatActive()
     {
-        throw false;
+        return false;
     }
     bool PartyChat::IsPartyChatSuppressed()
     {

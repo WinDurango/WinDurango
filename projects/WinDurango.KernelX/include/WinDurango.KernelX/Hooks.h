@@ -146,7 +146,9 @@ LONG D_Halo5VectoredExceptionHandler(_EXCEPTION_POINTERS *ExceptionInfo)
             ULONG LastProtect = 0;
             LPVOID ExceptionAddress = (LPVOID)ExceptionInfo->ExceptionRecord->ExceptionInformation[1];
             VirtualProtect(ExceptionAddress, 1, PAGE_READWRITE, &LastProtect);
+
+            return EXCEPTION_CONTINUE_EXECUTION;
         }
     }
-    return EXCEPTION_CONTINUE_EXECUTION;
+    return EXCEPTION_CONTINUE_SEARCH;
 }
