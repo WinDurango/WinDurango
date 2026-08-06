@@ -134,3 +134,19 @@ FARPROC(WINAPI* TrueGetProcAddress)(HMODULE hModule, LPCSTR lpProcName) = GetPro
 HRESULT(WINAPI* TrueCoCreateInstanceEx)(REFCLSID Clsid, IUnknown* punkOuter, DWORD dwClsCtx, COSERVERINFO* pServerInfo, DWORD dwCount, MULTI_QI* pResults) = CoCreateInstanceEx;
 
 HMODULE User32 = nullptr;
+
+LONG(WINAPI *P_Halo5VectoredExceptionHandler)(_EXCEPTION_POINTERS *ExceptionInfo) = nullptr;
+
+LONG D_Halo5VectoredExceptionHandler(_EXCEPTION_POINTERS *ExceptionInfo)
+{
+    if (ExceptionInfo->ExceptionRecord->ExceptionCode == EXCEPTION_ACCESS_VIOLATION)
+    {
+        if (ExceptionInfo->ExceptionRecord->ExceptionInformation[0] == 1)
+        {
+            ULONG LastProtect = 0;
+            LPVOID ExceptionAddress = (LPVOID)ExceptionInfo->ExceptionRecord->ExceptionInformation[1];
+            VirtualProtect(ExceptionAddress, 1, PAGE_READWRITE, &LastProtect);
+        }
+    }
+    return EXCEPTION_CONTINUE_EXECUTION;
+}

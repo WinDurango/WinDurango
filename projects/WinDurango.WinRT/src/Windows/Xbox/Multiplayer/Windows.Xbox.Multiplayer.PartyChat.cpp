@@ -19,8 +19,7 @@ namespace winrt::Windows::Xbox::Multiplayer::implementation
     }
     bool PartyChat::IsPartyChatActive()
     {
-        p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Multiplayer", "Unimplemented: IsPartyChatActive");
-        throw hresult_not_implemented();
+        throw false;
     }
     bool PartyChat::IsPartyChatSuppressed()
     {

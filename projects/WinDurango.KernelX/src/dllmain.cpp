@@ -49,6 +49,9 @@ void KernelxInitialize(HINSTANCE hinstDLL)
             XWinePatchImport(XboxLiveWrapper, GetRuntimeModule(),
                          "?GetActivationFactoryByPCWSTR@@YAJPEAXAEAVGuid@Platform@@PEAPEAX@Z",
                          GetActivationFactoryRedirect);
+
+            *(void**)&P_Halo5VectoredExceptionHandler = (char*)GetModuleHandleW(nullptr) + 0xA54024;
+            DetourAttach((void**)&P_Halo5VectoredExceptionHandler, &D_Halo5VectoredExceptionHandler);
         }
 
         //Forza Horizon 2 Demo

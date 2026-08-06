@@ -982,11 +982,11 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture1D(D3D11_TEXTURE1D_DESC const *
                                                     void *pVirtualAddress, gfx::ID3D11Texture1D<ABI> **ppTexture1D)
 {
     std::lock_guard<std::mutex> lock(g_ResourceMapMutex);
-    std::vector<D3D11_SUBRESOURCE_DATA> initialData(pDesc->ArraySize);
+    std::vector<D3D11_SUBRESOURCE_DATA> initialData(pDesc->ArraySize * pDesc->MipLevels);
     UINT RowPitch = 0;
     UINT SlicePitch = 0;
     auto pDesc2 = *pDesc;
-    pDesc2.MipLevels = 1;
+    //pDesc2.MipLevels = 1;
     if (pDesc2.Usage == D3D11_USAGE_IMMUTABLE)
     {
         pDesc2.Usage = D3D11_USAGE_DEFAULT;
@@ -1025,11 +1025,11 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture2D(D3D11_TEXTURE2D_DESC const *
                                                     void *pVirtualAddress, gfx::ID3D11Texture2D<ABI> **ppTexture2D)
 {
     std::lock_guard<std::mutex> lock(g_ResourceMapMutex);
-    std::vector<D3D11_SUBRESOURCE_DATA> initialData(pDesc->ArraySize);
+    std::vector<D3D11_SUBRESOURCE_DATA> initialData(pDesc->ArraySize * pDesc->MipLevels);
     UINT RowPitch = 0;
     UINT SlicePitch = 0;
     auto pDesc2 = *pDesc;
-    pDesc2.MipLevels = 1;
+    //pDesc2.MipLevels = 1;
     if (pDesc2.Usage == D3D11_USAGE_IMMUTABLE)
     {
         pDesc2.Usage = D3D11_USAGE_DEFAULT;
@@ -1090,11 +1090,11 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture3D(D3D11_TEXTURE3D_DESC const *
                                                     void *pVirtualAddress, gfx::ID3D11Texture3D<ABI> **ppTexture3D)
 {
     std::lock_guard<std::mutex> lock(g_ResourceMapMutex);
-    std::vector<D3D11_SUBRESOURCE_DATA> initialData(1);
+    std::vector<D3D11_SUBRESOURCE_DATA> initialData(pDesc->MipLevels);
     UINT RowPitch = 0;
     UINT SlicePitch = 0;
     auto pDesc2 = *pDesc;
-    pDesc2.MipLevels = 1;
+    //pDesc2.MipLevels = 1;
     if (pDesc2.Usage == D3D11_USAGE_IMMUTABLE)
     {
         pDesc2.Usage = D3D11_USAGE_DEFAULT;
@@ -1230,7 +1230,7 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementRenderableTexture2D(D3D11_TEXTURE2D_DE
 {
     std::lock_guard<std::mutex> lock(g_ResourceMapMutex);
     auto pDesc2 = *pDesc;
-    pDesc2.MipLevels = 1;
+    //pDesc2.MipLevels = 1;
     if (pDesc2.Usage == D3D11_USAGE_IMMUTABLE)
     {
         pDesc2.Usage = D3D11_USAGE_DEFAULT;
