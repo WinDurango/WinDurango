@@ -2,7 +2,9 @@
 #include "wil/result_macros.h"
 #include <compare>
 #include <cstdint>
+#include <cstdio>
 #include <objbase.h>
+#include <Windows.h>
 #ifdef _CPPRTTI
 #include <rttidata.h>
 #include <typeinfo>
@@ -62,6 +64,17 @@ namespace xcom
         return guid_of<T<abi_t{}>>();
     }
 
+    inline bool NonFatalStubsEnabled()
+    {
+        static int enabled = -1;
+        if (enabled < 0)
+        {
+            char buffer[4]{};
+            enabled = GetEnvironmentVariableA("WIN_DURANGO_NON_FATAL_STUBS", buffer, sizeof(buffer)) > 0 ? 1 : 0;
+        }
+        return enabled == 1;
+    }
+
     inline void StubHandler(char const *name, void *object)
     {
 #ifdef _CPPRTTI
@@ -69,6 +82,13 @@ namespace xcom
 #else
         char const *type = "STUB";
 #endif
+        if (NonFatalStubsEnabled())
+        {
+            printf("[WinDurango STUB] %s (%s)\n", name, type);
+            fflush(stdout);
+            return;
+        }
+
         MessageBoxA(nullptr, name, type, MB_ICONERROR);
 #ifdef _DEBUG
         DebugBreak();

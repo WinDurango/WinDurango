@@ -60,6 +60,30 @@ ULONG D3D11CommandList<ABI>::Release()
                     command.PSSetShaderResourcesPC.ppShaderResourceViews = nullptr;
                 }
             }
+            else if (command.m_CommandType == DrawBundlesCommandType::OMSetRenderTargets)
+            {
+                if (command.OMSetRenderTargets.ppRenderTargetViews)
+                {
+                    delete[] command.OMSetRenderTargets.ppRenderTargetViews;
+                    command.OMSetRenderTargets.ppRenderTargetViews = nullptr;
+                }
+            }
+            else if (command.m_CommandType == DrawBundlesCommandType::RSSetViewports)
+            {
+                if (command.RSSetViewports.pViewports)
+                {
+                    delete[] command.RSSetViewports.pViewports;
+                    command.RSSetViewports.pViewports = nullptr;
+                }
+            }
+            else if (command.m_CommandType == DrawBundlesCommandType::RSSetScissorRects)
+            {
+                if (command.RSSetScissorRects.pRects)
+                {
+                    delete[] command.RSSetScissorRects.pRects;
+                    command.RSSetScissorRects.pRects = nullptr;
+                }
+            }
         }
 
         m_Commands.clear();

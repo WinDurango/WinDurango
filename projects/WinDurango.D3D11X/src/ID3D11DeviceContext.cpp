@@ -3344,7 +3344,12 @@ template <abi_t ABI> UINT D3D11DeviceContextX<ABI>::EndResourceBatch(UINT *pSize
 
 template <abi_t ABI> void D3D11DeviceContextX<ABI>::SetFastResourcesFromBatch_Debug(void *pBatch, UINT Size)
 {
-    IMPLEMENT_STUB();
+    if (!pBatch || Size < sizeof(UINT))
+        return;
+
+    auto *pTableStart = reinterpret_cast<UINT *>(pBatch);
+    auto *pTableEnd = pTableStart + (Size / sizeof(UINT));
+    SetFastResources_Debug(pTableStart, pTableEnd);
 }
 
 template <abi_t ABI>
@@ -4239,6 +4244,27 @@ void D3D11DeviceContextX<ABI>::ExecuteDrawBundles(gfx::ID3D11CommandList<ABI> *p
             break;
         case DrawBundlesCommandType::Draw:
             Draw(cmd.Draw.VertexCount, cmd.Draw.StartVertexLocation);
+            break;
+        case DrawBundlesCommandType::OMSetRenderTargets:
+            OMSetRenderTargets(cmd.OMSetRenderTargets.NumViews, cmd.OMSetRenderTargets.ppRenderTargetViews,
+                               cmd.OMSetRenderTargets.pDepthStencilView);
+            break;
+        case DrawBundlesCommandType::OMSetBlendState:
+            OMSetBlendState(cmd.OMSetBlendState.pBlendState, cmd.OMSetBlendState.BlendFactor,
+                            cmd.OMSetBlendState.SampleMask);
+            break;
+        case DrawBundlesCommandType::OMSetDepthStencilState:
+            OMSetDepthStencilState(cmd.OMSetDepthStencilState.pDepthStencilState,
+                                   cmd.OMSetDepthStencilState.StencilRef);
+            break;
+        case DrawBundlesCommandType::RSSetState:
+            RSSetState(cmd.RSSetState.pRasterizerState);
+            break;
+        case DrawBundlesCommandType::RSSetViewports:
+            RSSetViewports(cmd.RSSetViewports.NumViewports, cmd.RSSetViewports.pViewports);
+            break;
+        case DrawBundlesCommandType::RSSetScissorRects:
+            RSSetScissorRects(cmd.RSSetScissorRects.NumRects, cmd.RSSetScissorRects.pRects);
             break;
         default:
             MessageBoxA(NULL, "Unknown Bundle Context command!", "Error!", MB_OK);

@@ -65,8 +65,7 @@ namespace winrt::Windows::Xbox::Storage::implementation
     }
     hstring ConnectedStorageSpace::ServiceConfigurationId()
     {
-        p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Storage", "Unimplemented: ServiceConfigurationId");
-        throw hresult_not_implemented();
+        return L"";
     }
     bool ConnectedStorageSpace::IsReadOnly()
     {

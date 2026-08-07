@@ -3,6 +3,7 @@
 #include "ID3D11DeviceContext.h"
 #include "ID3D11View.h"
 #include "ID3D11Resource.h"
+#include "DrawBundlesDiagnostics.h"
 
 //
 // IUnknown
@@ -431,7 +432,20 @@ template <abi_t ABI>
 void D3D11DrawBundlesContext<ABI>::OMSetRenderTargets(UINT NumViews, gfx::ID3D11RenderTargetView<ABI> *const *ppRTVs,
                                                   gfx::ID3D11DepthStencilView<ABI> *pDepthStencilView)
 {
+    DrawBundlesCommand<ABI> Command{};
+    Command.m_CommandType = DrawBundlesCommandType::OMSetRenderTargets;
+    Command.OMSetRenderTargets.NumViews = NumViews;
+    Command.OMSetRenderTargets.pDepthStencilView = pDepthStencilView;
 
+    if (ppRTVs && NumViews > 0)
+    {
+        auto RenderTargetViews = new gfx::ID3D11RenderTargetView<ABI> *[NumViews];
+        memcpy(RenderTargetViews, ppRTVs, NumViews * sizeof(*RenderTargetViews));
+        Command.OMSetRenderTargets.ppRenderTargetViews = RenderTargetViews;
+    }
+
+    m_CommandQueue.push_back(Command);
+    WinDurangoLogDrawBundle("OMSetRenderTargets");
 }
 
 template <abi_t ABI>
@@ -440,20 +454,33 @@ void D3D11DrawBundlesContext<ABI>::OMSetRenderTargetsAndUnorderedAccessViews(
     UINT UAVStartSlot, UINT NumUAVs, gfx::ID3D11UnorderedAccessView<ABI> *const *ppUnorderedAccessViews,
     UINT const *pUAVInitialCounts)
 {
-    IMPLEMENT_STUB();
+    OMSetRenderTargets(NumRTVs, ppRTVs, pDepthStencilView);
+    WinDurangoLogDrawBundle("OMSetRenderTargetsAndUnorderedAccessViews (RTV path only)");
 }
 
 template <abi_t ABI>
 void D3D11DrawBundlesContext<ABI>::OMSetBlendState(gfx::ID3D11BlendState<ABI> *pBlendState, FLOAT const BlendFactor[4],
                                                UINT SampleMask)
 {
-    IMPLEMENT_STUB();
+    DrawBundlesCommand<ABI> Command{};
+    Command.m_CommandType = DrawBundlesCommandType::OMSetBlendState;
+    Command.OMSetBlendState.pBlendState = pBlendState;
+    Command.OMSetBlendState.SampleMask = SampleMask;
+    if (BlendFactor)
+        memcpy(Command.OMSetBlendState.BlendFactor, BlendFactor, sizeof(Command.OMSetBlendState.BlendFactor));
+    m_CommandQueue.push_back(Command);
+    WinDurangoLogDrawBundle("OMSetBlendState");
 }
 template <abi_t ABI>
 void D3D11DrawBundlesContext<ABI>::OMSetDepthStencilState(gfx::ID3D11DepthStencilState<ABI> *pDepthStencilState,
                                                       UINT StencilRef)
 {
-    IMPLEMENT_STUB();
+    DrawBundlesCommand<ABI> Command{};
+    Command.m_CommandType = DrawBundlesCommandType::OMSetDepthStencilState;
+    Command.OMSetDepthStencilState.pDepthStencilState = pDepthStencilState;
+    Command.OMSetDepthStencilState.StencilRef = StencilRef;
+    m_CommandQueue.push_back(Command);
+    WinDurangoLogDrawBundle("OMSetDepthStencilState");
 }
 
 template <abi_t ABI>
@@ -503,17 +530,45 @@ void D3D11DrawBundlesContext<ABI>::DispatchIndirect(gfx::ID3D11Buffer<ABI>* pBuf
 
 template <abi_t ABI> void D3D11DrawBundlesContext<ABI>::RSSetState(gfx::ID3D11RasterizerState<ABI> *pRasterizerState)
 {
-    IMPLEMENT_STUB();
+    DrawBundlesCommand<ABI> Command{};
+    Command.m_CommandType = DrawBundlesCommandType::RSSetState;
+    Command.RSSetState.pRasterizerState = pRasterizerState;
+    m_CommandQueue.push_back(Command);
+    WinDurangoLogDrawBundle("RSSetState");
 }
 
 template <abi_t ABI> void D3D11DrawBundlesContext<ABI>::RSSetViewports(UINT NumViewports, D3D11_VIEWPORT const *pViewports)
 {
-    IMPLEMENT_STUB();
+    DrawBundlesCommand<ABI> Command{};
+    Command.m_CommandType = DrawBundlesCommandType::RSSetViewports;
+    Command.RSSetViewports.NumViewports = NumViewports;
+
+    if (pViewports && NumViewports > 0)
+    {
+        auto Viewports = new D3D11_VIEWPORT[NumViewports];
+        memcpy(Viewports, pViewports, NumViewports * sizeof(D3D11_VIEWPORT));
+        Command.RSSetViewports.pViewports = Viewports;
+    }
+
+    m_CommandQueue.push_back(Command);
+    WinDurangoLogDrawBundle("RSSetViewports");
 }
 
 template <abi_t ABI> void D3D11DrawBundlesContext<ABI>::RSSetScissorRects(UINT NumRects, D3D11_RECT const *pRects)
 {
-    IMPLEMENT_STUB();
+    DrawBundlesCommand<ABI> Command{};
+    Command.m_CommandType = DrawBundlesCommandType::RSSetScissorRects;
+    Command.RSSetScissorRects.NumRects = NumRects;
+
+    if (pRects && NumRects > 0)
+    {
+        auto Rects = new D3D11_RECT[NumRects];
+        memcpy(Rects, pRects, NumRects * sizeof(D3D11_RECT));
+        Command.RSSetScissorRects.pRects = Rects;
+    }
+
+    m_CommandQueue.push_back(Command);
+    WinDurangoLogDrawBundle("RSSetScissorRects");
 }
 
 template <abi_t ABI>
@@ -1932,7 +1987,13 @@ template <abi_t ABI> UINT D3D11DrawBundlesContext<ABI>::EndResourceBatch(UINT *p
 
 template <abi_t ABI> void D3D11DrawBundlesContext<ABI>::SetFastResourcesFromBatch_Debug(void *pBatch, UINT Size)
 {
-    IMPLEMENT_STUB();
+    if (!pBatch || Size < sizeof(UINT))
+        return;
+
+    auto *pTableStart = reinterpret_cast<UINT *>(pBatch);
+    auto *pTableEnd = pTableStart + (Size / sizeof(UINT));
+    SetFastResources_Debug(pTableStart, pTableEnd);
+    WinDurangoLogDrawBundle("SetFastResourcesFromBatch_Debug");
 }
 
 template <abi_t ABI>

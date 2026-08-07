@@ -18,6 +18,9 @@ void KernelxInitialize(HINSTANCE hinstDLL)
         freopen_s(&f, "CONIN$", "r", stdin);
 
         SetConsoleTitleW(L"WinDurango");
+        printf("WinDurango FH2 diagnostics: set WIN_DURANGO_DRAW_BUNDLE_LOG=1 to log Draw Bundles pipeline state.\n");
+        printf("WinDurango FH2 diagnostics: set WIN_DURANGO_NON_FATAL_STUBS=1 to log D3D11 stubs without crashing.\n");
+        fflush(stdout);
     }
 
     auto AppxManifestFile = ReadFile(L"AppxManifest.xml");

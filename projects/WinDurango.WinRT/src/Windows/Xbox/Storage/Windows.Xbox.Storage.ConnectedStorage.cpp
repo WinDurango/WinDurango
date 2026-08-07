@@ -69,7 +69,9 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collecti
 
         if (NeedsCreate)
         {
-            p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::ConnectedStorage", "File doesnt exist: {}", winrt::to_string(blobs));
+            p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::ConnectedStorage",
+                           "Creating missing blob for Forza profile path: {}/{}", winrt::to_string(containerName),
+                           winrt::to_string(blobs));
             auto file = co_await folder.CreateFileAsync(blobs, winrt::Windows::Storage::CreationCollisionOption::OpenIfExists);
             auto fileBuffer = co_await winrt::Windows::Storage::FileIO::ReadBufferAsync(file);
             data.Insert(blobs, fileBuffer);

@@ -38,6 +38,12 @@ enum class DrawBundlesCommandType
     DrawIndexedInstancedIndirect,
     Draw,
     ClearState,
+    OMSetRenderTargets,
+    OMSetBlendState,
+    OMSetDepthStencilState,
+    RSSetState,
+    RSSetViewports,
+    RSSetScissorRects,
 };
 
 template <abi_t ABI>
@@ -270,6 +276,47 @@ struct ClearStateCommand
 };
 
 template <abi_t ABI>
+struct OMSetRenderTargetsCommand
+{
+    UINT NumViews;
+    gfx::ID3D11RenderTargetView<ABI> *const *ppRenderTargetViews;
+    gfx::ID3D11DepthStencilView<ABI> *pDepthStencilView;
+};
+
+template <abi_t ABI>
+struct OMSetBlendStateCommand
+{
+    gfx::ID3D11BlendState<ABI> *pBlendState;
+    FLOAT BlendFactor[4];
+    UINT SampleMask;
+};
+
+template <abi_t ABI>
+struct OMSetDepthStencilStateCommand
+{
+    gfx::ID3D11DepthStencilState<ABI> *pDepthStencilState;
+    UINT StencilRef;
+};
+
+template <abi_t ABI>
+struct RSSetStateCommand
+{
+    gfx::ID3D11RasterizerState<ABI> *pRasterizerState;
+};
+
+struct RSSetViewportsCommand
+{
+    UINT NumViewports;
+    D3D11_VIEWPORT *pViewports;
+};
+
+struct RSSetScissorRectsCommand
+{
+    UINT NumRects;
+    D3D11_RECT *pRects;
+};
+
+template <abi_t ABI>
 struct DrawBundlesCommand
 {
 public:
@@ -309,6 +356,12 @@ public:
         DrawIndexedInstancedIndirectCommand<ABI> DrawIndexedInstancedIndirect;
         DrawCommand Draw;
         ClearStateCommand ClearState;
+        OMSetRenderTargetsCommand<ABI> OMSetRenderTargets;
+        OMSetBlendStateCommand<ABI> OMSetBlendState;
+        OMSetDepthStencilStateCommand<ABI> OMSetDepthStencilState;
+        RSSetStateCommand<ABI> RSSetState;
+        RSSetViewportsCommand RSSetViewports;
+        RSSetScissorRectsCommand RSSetScissorRects;
     };
 
     DrawBundlesCommandType m_CommandType;
