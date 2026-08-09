@@ -759,7 +759,8 @@ void FixRelativePath(LPCWSTR &lpFileName)
 
         lpFileName = convert.data();
     }
-    else if ((fileName[0] == 'G' || fileName[0] == 'g') && fileName[1] == ':')
+
+    if ((fileName[0] == 'G' || fileName[0] == 'g') && fileName[1] == ':')
     {
         static std::wstring trimPath{};
         trimPath = fileName.substr(2);

@@ -332,30 +332,55 @@ struct XG_SUBRESOURCE_TILING
     uint16_t DepthInTiles;
     uint32_t StartTileIndexInOverallResource;
 };
-struct XGTextureAddressComputer_vtable;
+
+struct XG_DESCRIPTOR_TEXTURE_VIEW
+{
+    uint32_t Dword[8];
+};
+
+struct XGTextureAddressComputer_vtable_Old
+{
+    uint32_t(*AddRef)(void*);
+    uint32_t(*Release)(void*);
+    int32_t(*GetResourceLayout)(void*, XG_RESOURCE_LAYOUT*);
+    uint64_t(*GetMipLevelOffsetBytes)(void*, uint32_t, uint32_t);
+    uint64_t(*GetTexelElementOffsetBytes)(void*, uint32_t, uint32_t, uint64_t, uint32_t, uint32_t, uint32_t);
+    int32_t(*CopyIntoSubresource)(void*, void*, uint32_t, uint32_t, const void*, uint32_t, uint32_t);
+    int32_t(*CopyFromSubresource)(void*, void*, uint32_t, uint32_t, const void*, uint32_t, uint32_t);
+    int32_t(*GetResourceTiling)(void*, uint32_t*, XG_PACKED_MIP_DESC*, XG_TILE_SHAPE*, uint32_t*, uint32_t, XG_SUBRESOURCE_TILING*);
+};
+
+struct XGTextureAddressComputer_Old
+{
+    XGTextureAddressComputer_vtable_Old* vt;
+};
+
+struct XGTextureAddressComputer_vtable
+{
+    uint32_t(*AddRef)(void*);
+    uint32_t(*Release)(void*);
+    int32_t(*GetResourceLayout)(void*, XG_RESOURCE_LAYOUT*);
+    uint64_t(*GetResourceSizeBytes)(void*);
+    uint64_t(*GetResourceSizePages)(void*);
+    uint64_t(*GetResourceBaseAlignmentBytes)(void*);
+    uint64_t(*GetMipLevelOffsetBytes)(void*, uint32_t, uint32_t);
+    uint64_t(*GetTexelElementOffsetBytes)(void*, uint32_t, uint32_t, uint64_t, uint32_t, uint32_t, uint32_t);
+    int32_t(*CopyIntoSubresource)(void*, void*, uint32_t, uint32_t, const void*, uint32_t, uint32_t);
+    int32_t(*CopyFromSubresource)(void*, void*, uint32_t, uint32_t, const void*, uint32_t, uint32_t);
+    int32_t(*GetResourceTiling)(void*, uint32_t*, XG_PACKED_MIP_DESC*, XG_TILE_SHAPE*, uint32_t*, uint32_t, XG_SUBRESOURCE_TILING*);
+    int32_t(*GetTextureViewDescriptor)(void*, uint32_t, XG_DESCRIPTOR_TEXTURE_VIEW*);
+};
 
 struct XGTextureAddressComputer
 {
     XGTextureAddressComputer_vtable* vt;
 };
 
-struct XGTextureAddressComputer_vtable
-{
-    uint32_t(*AddRef)(XGTextureAddressComputer*);
-    uint32_t(*Release)(XGTextureAddressComputer*);
-    int32_t(*GetResourceLayout)(XGTextureAddressComputer*, XG_RESOURCE_LAYOUT*);
-    uint64_t(*GetMipLevelOffsetBytes)(XGTextureAddressComputer*, uint32_t, uint32_t);
-    uint64_t(*GetTexelElementOffsetBytes)(XGTextureAddressComputer*, uint32_t, uint32_t, uint64_t, uint32_t, uint32_t, uint32_t);
-    int32_t(*CopyIntoSubresource)(XGTextureAddressComputer*, void*, uint32_t, uint32_t, const void*, uint32_t, uint32_t);
-    int32_t(*CopyFromSubresource)(XGTextureAddressComputer*, void*, uint32_t, uint32_t, const void*, uint32_t, uint32_t);
-    int32_t(*GetResourceTiling)(XGTextureAddressComputer*, uint32_t*, XG_PACKED_MIP_DESC*, XG_TILE_SHAPE*, uint32_t*, uint32_t, XG_SUBRESOURCE_TILING*);
-};
-
 extern "C"
 {
-    typedef int (*XGCreateTexture1DComputer)(XG_TEXTURE1D_DESC* desc, XGTextureAddressComputer** computer);
-    typedef int (*XGCreateTexture2DComputer)(XG_TEXTURE2D_DESC* desc, XGTextureAddressComputer** computer);
-    typedef int (*XGCreateTexture3DComputer)(XG_TEXTURE3D_DESC* desc, XGTextureAddressComputer** computer);
+    typedef int (*XGCreateTexture1DComputer)(XG_TEXTURE1D_DESC* desc, void** computer);
+    typedef int (*XGCreateTexture2DComputer)(XG_TEXTURE2D_DESC* desc, void** computer);
+    typedef int (*XGCreateTexture3DComputer)(XG_TEXTURE3D_DESC* desc, void** computer);
 }
 
 HMODULE g_XboxGraphicsModule = nullptr;
@@ -374,7 +399,20 @@ HRESULT CopyFromSubresourceChecked(XGTextureAddressComputer* Computer, UINT Subr
     }
 }
 
-HRESULT DetileTexture2D(UINT TileModeIndex, D3D11_TEXTURE2D_DESC* pDesc, void* pVirtualAddress, BYTE** DetiledData, UINT RowPitch, UINT SlicePitch)
+HRESULT CopyFromSubresourceChecked_Old(XGTextureAddressComputer_Old* Computer, UINT Subresource, void* pVirtualAddress, UINT RowPitch, UINT SlicePitch, BYTE* DetiledData)
+{
+    __try
+    {
+        Computer->vt->CopyFromSubresource(Computer, DetiledData, 0, Subresource, pVirtualAddress, RowPitch, SlicePitch);
+        return S_OK;
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER)
+    {
+        return E_FAIL;
+    }
+}
+
+HRESULT DetileTexture2D(UINT TileModeIndex, D3D11_TEXTURE2D_DESC* pDesc, void* pVirtualAddress, BYTE* DetiledData, UINT RowPitch, UINT SlicePitch)
 {
     if (!pDesc)
         return E_FAIL;
@@ -403,22 +441,44 @@ HRESULT DetileTexture2D(UINT TileModeIndex, D3D11_TEXTURE2D_DESC* pDesc, void* p
 
     if (g_XboxGraphicsModule)
     {
-        XGTextureAddressComputer* compWrapper = {};
+        XGTextureAddressComputer_Old* compWrapperOld = nullptr;
+        XGTextureAddressComputer* compWrapper = nullptr;
+        HRESULT hr = 0;
 
         if (!g_XGCreateTexture2DComputer)
             g_XGCreateTexture2DComputer = (XGCreateTexture2DComputer)GetProcAddress(g_XboxGraphicsModule, "XGCreateTexture2DComputer");
 
-        HRESULT hr = g_XGCreateTexture2DComputer(&desc, &compWrapper);
+        if (g_ABI >= abi_t{10,0,16232,1064})
+            hr = g_XGCreateTexture2DComputer(&desc, (void**)&compWrapper);
+        else
+            hr = g_XGCreateTexture2DComputer(&desc, (void**)&compWrapperOld);
         if (FAILED(hr))
             return hr;
 
-        if (!compWrapper || !compWrapper->vt)
+        if (g_ABI >= abi_t{ 10,0,16232,1064 })
         {
-            return E_FAIL;
+            if (!compWrapper || !compWrapper->vt)
+            {
+                return E_FAIL;
+            }
+        }
+        else
+        {
+            if (!compWrapperOld || !compWrapperOld->vt)
+            {
+                return E_FAIL;
+            }
         }
 
-        hr = CopyFromSubresourceChecked(compWrapper, 0, pVirtualAddress, RowPitch, SlicePitch, (*DetiledData));
-        compWrapper->vt->Release(compWrapper);
+        if (g_ABI >= abi_t{10,0,16232,1064})
+            hr = CopyFromSubresourceChecked(compWrapper, 0, pVirtualAddress, RowPitch, SlicePitch, DetiledData);
+        else
+            hr = CopyFromSubresourceChecked_Old(compWrapperOld, 0, pVirtualAddress, RowPitch, SlicePitch, DetiledData);
+
+        if (g_ABI >= abi_t{10,0,16232,1064} && compWrapper)
+            compWrapper->vt->Release(compWrapper);
+        else if (compWrapperOld)
+            compWrapperOld->vt->Release(compWrapperOld);
 
         return hr;
     }

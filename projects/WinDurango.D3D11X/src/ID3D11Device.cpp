@@ -891,7 +891,14 @@ HRESULT D3D11DeviceX<ABI>::CheckMultisampleQualityLevels1(DXGI_FORMAT Format, ui
 //
 template <abi_t ABI> void D3D11DeviceX<ABI>::GetImmediateContextX(gfx::ID3D11DeviceContextX<ABI> **ppImmediateContextX)
 {
-    IMPLEMENT_STUB();
+    ID3D11DeviceContext* pContext{};
+    ID3D11DeviceContext2* pContext2{};
+    m_pFunction->GetImmediateContext(&pContext);
+
+    pContext->QueryInterface(IID_PPV_ARGS(&pContext2));
+    pContext->Release();
+
+    *ppImmediateContextX = new D3D11DeviceContextX<ABI>(pContext2);
 }
 
 template <abi_t ABI>

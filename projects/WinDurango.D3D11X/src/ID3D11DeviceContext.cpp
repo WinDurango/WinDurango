@@ -3828,7 +3828,7 @@ void D3D11DeviceContextX<ABI>::UpdateShaderResources(gfx::ID3D11ShaderResourceVi
                                     BYTE *DetiledData = new BYTE[SlicePitch];
                                     HRESULT hr = DetileTexture2D(
                                         static_cast<D3D11Texture2D<ABI> *>(pTexture)->m_TileModeIndex, &Desc,
-                                        pSRV->m_pAllocationStart, &DetiledData, RowPitch, SlicePitch);
+                                        pSRV->m_pAllocationStart, DetiledData, RowPitch, SlicePitch);
                                     if (SUCCEEDED(hr) && Desc.Usage == D3D11_USAGE_DEFAULT)
                                     {
                                         UpdateSubresource(pTexture, 0, nullptr, DetiledData, RowPitch, SlicePitch);
@@ -3950,7 +3950,7 @@ void D3D11DeviceContextX<ABI>::UpdateUnorderedAccessViews(gfx::ID3D11UnorderedAc
                                     BYTE *DetiledData = new BYTE[SlicePitch];
                                     HRESULT hr = DetileTexture2D(
                                         static_cast<D3D11Texture2D<ABI> *>(pTexture)->m_TileModeIndex, &Desc,
-                                        pUAV->m_pAllocationStart, &DetiledData, RowPitch, SlicePitch);
+                                        pUAV->m_pAllocationStart, DetiledData, RowPitch, SlicePitch);
                                     if (SUCCEEDED(hr) && Desc.Usage == D3D11_USAGE_DEFAULT)
                                     {
                                         UpdateSubresource(pTexture, 0, nullptr, DetiledData, RowPitch, SlicePitch);
