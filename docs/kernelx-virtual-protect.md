@@ -70,13 +70,19 @@ calls with adjacent mapped views and deliberately uncommitted placeholders.
 | Patched WinDurango | 16 | 0 |
 
 Local validation used MSVC 19.44, Windows SDK 10.0.26100.0, and an x64 Release
-build with `/W4 /WX /permissive-`. GitHub Actions runs the standalone target too;
-the remote workflow has not yet been run for this patch.
+build with `/W4 /WX /permissive-`. A fresh run on the isolated KernelX branch
+using Visual Studio 2026 / MSVC 19.51 also passed all 16 checks. The GitHub Actions
+workflow includes the standalone target; the remote workflow has not yet been
+run for this patch. See the [complete-build validation record](kernelx-build-validation.md)
+for the build environment, failures, and follow-up attempts.
 
 The tests populate the production registry directly rather than exercising all
-allocation/remapping code. A complete WinDurango DLL build, retail Xbox behavior,
-and game compatibility remain unverified. This change does not establish that
-another title is playable.
+allocation/remapping code. The complete x64 Release build subsequently succeeded
+with the dependency/toolchain setup recorded in the build notes, including
+`kernelx.dll` and all other default targets. Both protection exports were verified
+as local implementations in the built DLL. Retail Xbox behavior and game
+compatibility remain unverified; this change does not establish that another
+title is playable.
 
 The existing TODO about validating every page before changing protection remains:
 if a later unit fails, earlier successfully changed units are not rolled back.
