@@ -57,3 +57,14 @@ jobs:
         name: WinDurango-Release
         path: build/bin/Release/
         archive: true
+
+  kernelx-memory-tests:
+    runs-on: windows-2025-vs2026
+    steps:
+    - uses: actions/checkout@v4
+    - name: Configure KernelX memory-protection tests
+      run: cmake -S tests/kernelx_virtual_protect -B build/kernelx-virtual-protect-tests -A x64
+    - name: Build KernelX memory-protection tests
+      run: cmake --build build/kernelx-virtual-protect-tests --config Release
+    - name: Run KernelX memory-protection tests
+      run: ctest --test-dir build/kernelx-virtual-protect-tests -C Release --output-on-failure

@@ -503,17 +503,40 @@ EXTERN_C BOOL __stdcall EraVirtualProtectEx(_In_ HANDLE hProcess, _In_ LPVOID lp
     // VirtualProtect will normally only work on pages that belong to the same allocation.
     if (AllocationBase)
     {
+        const ULONG_PTR Address = (ULONG_PTR)lpAddress;
+        if (!dwSize || dwSize - 1 > MAXULONG_PTR - Address)
+        {
+            SetLastError(ERROR_INVALID_PARAMETER);
+            return FALSE;
+        }
+
+        const ULONG_PTR AllocationOffset = Address - (ULONG_PTR)AllocationBase;
+        if (dwSize > Mappable.RegionSize - AllocationOffset)
+        {
+            SetLastError(ERROR_INVALID_ADDRESS);
+            return FALSE;
+        }
+
         // TODO: Validate all pages are committed before changing protections
         ULONG_PTR PageSize = Mappable.Is4MBPages ? PAGE_SIZE_2MB : PAGE_SIZE_4KB;
-        ULONG_PTR BasePage = (ULONG_PTR)lpAddress & ~(PageSize - 1);
-        ULONG_PTR LastPage = ((ULONG_PTR)lpAddress + dwSize) & ~(PageSize - 1);
-        BOOL Status = VirtualProtectEx(hProcess, (LPVOID)BasePage, PageSize, flNewProtect,
-                                       lpflOldProtect ? lpflOldProtect : &flOldProtect);
+        ULONG_PTR BasePage = Address & ~(PageSize - 1);
+        ULONG_PTR LastPage = (Address + dwSize - 1) & ~(PageSize - 1);
+        DWORD FirstOldProtect = 0;
 
-        for (ULONG_PTR Page = BasePage + PageSize; Page <= LastPage; Page += PageSize)
-            Status |= VirtualProtectEx(hProcess, (LPVOID)Page, PageSize, flNewProtect, &flOldProtect);
+        for (ULONG_PTR Page = BasePage;; Page += PageSize)
+        {
+            if (!VirtualProtectEx(hProcess, (LPVOID)Page, PageSize, flNewProtect, &flOldProtect))
+                return FALSE;
 
-        return Status;
+            if (Page == BasePage)
+                FirstOldProtect = flOldProtect;
+            if (Page == LastPage)
+                break;
+        }
+
+        if (lpflOldProtect)
+            *lpflOldProtect = FirstOldProtect;
+        return TRUE;
     }
 
     return VirtualProtectEx(hProcess, lpAddress, dwSize, flNewProtect, lpflOldProtect ? lpflOldProtect : &flOldProtect);
