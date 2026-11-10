@@ -31,15 +31,16 @@ bool wd::common::Config::parse()
 {
     try
     {
+        /**
+         * @brief Check if the file exists, and read the config, 
+         * if it doesnt exist, then use the template.
+         */
         if (!pDirectory->fileExists("winDurango.json")) {
             pFile = pDirectory->CreateFile("winDurango.json");
             pFile->open();
             pFile->write(jsonTemplate);
-        } else {
-            pFile = pDirectory->CreateFile("winDurango.json");
-            pFile->open();
-            pFile->write(jsonTemplate);
         }
+        
         std::string jsonData = pFile->read();
         data = nlohmann::json::parse(jsonData);
         return true;
