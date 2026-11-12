@@ -34,11 +34,16 @@ bool wd::common::Config::parse()
         /**
          * @brief Check if the file exists, and read the config, 
          * if it doesnt exist, then use the template.
+         * @note oop, forgot to open it - CT5
          */
         if (!pDirectory->fileExists("winDurango.json")) {
             pFile = pDirectory->CreateFile("winDurango.json");
             pFile->open();
             pFile->write(jsonTemplate);
+        } else {
+            pFile = std::make_shared<wd::impl::winrt::interfaces::storage::WinRTFile>(
+                pDirectory->dirpath() / std::filesystem::path("winDurango.json"));
+            pFile->open();
         }
         
         std::string jsonData = pFile->read();
