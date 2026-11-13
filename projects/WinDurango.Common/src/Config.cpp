@@ -41,8 +41,7 @@ bool wd::common::Config::parse()
             pFile->open();
             pFile->write(jsonTemplate);
         } else {
-            pFile = std::make_shared<wd::impl::winrt::interfaces::storage::WinRTFile>(
-                pDirectory->dirpath() / std::filesystem::path("winDurango.json"));
+            pFile = pDirectory->CreateFile("winDurango.json");
             pFile->open();
         }
         
