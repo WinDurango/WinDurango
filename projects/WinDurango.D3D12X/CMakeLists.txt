@@ -1,5 +1,5 @@
 ﻿cmake_minimum_required(VERSION 4.0)
-project(WinDurango.D3D11X VERSION 1.0.0)
+project(WinDurango.D3D12X VERSION 1.0.0)
 
 set(VERSION_SUFFIX "-dev.1") # used for non-stable versions, otherwise blank
 set(CMAKE_CXX_STANDARD 20)
