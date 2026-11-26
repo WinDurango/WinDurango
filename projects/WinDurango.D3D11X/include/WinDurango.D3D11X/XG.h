@@ -385,33 +385,6 @@ extern "C"
 
 HMODULE g_XboxGraphicsModule = nullptr;
 XGCreateTexture2DComputer g_XGCreateTexture2DComputer = nullptr;
-
-HRESULT CopyFromSubresourceChecked(XGTextureAddressComputer* Computer, UINT Subresource, void* pVirtualAddress, UINT RowPitch, UINT SlicePitch, BYTE* DetiledData)
-{
-    __try
-    {
-        Computer->vt->CopyFromSubresource(Computer, DetiledData, 0, Subresource, pVirtualAddress, RowPitch, SlicePitch);
-        return S_OK;
-    }
-    __except (EXCEPTION_EXECUTE_HANDLER)
-    {
-        return E_FAIL;
-    }
-}
-
-HRESULT CopyFromSubresourceChecked_Old(XGTextureAddressComputer_Old* Computer, UINT Subresource, void* pVirtualAddress, UINT RowPitch, UINT SlicePitch, BYTE* DetiledData)
-{
-    __try
-    {
-        Computer->vt->CopyFromSubresource(Computer, DetiledData, 0, Subresource, pVirtualAddress, RowPitch, SlicePitch);
-        return S_OK;
-    }
-    __except (EXCEPTION_EXECUTE_HANDLER)
-    {
-        return E_FAIL;
-    }
-}
-
 HRESULT DetileTexture2D(UINT TileModeIndex, D3D11_TEXTURE2D_DESC* pDesc, void* pVirtualAddress, BYTE* DetiledData, UINT RowPitch, UINT SlicePitch)
 {
     if (!pDesc)
@@ -455,7 +428,7 @@ HRESULT DetileTexture2D(UINT TileModeIndex, D3D11_TEXTURE2D_DESC* pDesc, void* p
         if (FAILED(hr))
             return hr;
 
-        if (g_ABI >= abi_t{ 10,0,16232,1064 })
+        if (g_ABI >= abi_t{10,0,16232,1064})
         {
             if (!compWrapper || !compWrapper->vt)
             {
@@ -470,10 +443,28 @@ HRESULT DetileTexture2D(UINT TileModeIndex, D3D11_TEXTURE2D_DESC* pDesc, void* p
             }
         }
 
-        if (g_ABI >= abi_t{10,0,16232,1064})
-            hr = CopyFromSubresourceChecked(compWrapper, 0, pVirtualAddress, RowPitch, SlicePitch, DetiledData);
+        if (g_ABI >= abi_t{ 10,0,16232,1064 })
+        {
+            __try
+            {
+                compWrapper->vt->CopyFromSubresource(compWrapper, DetiledData, 0, 0, pVirtualAddress, RowPitch, SlicePitch);
+            }
+            __except (EXCEPTION_EXECUTE_HANDLER)
+            {
+                hr = E_FAIL;
+            }
+        }
         else
-            hr = CopyFromSubresourceChecked_Old(compWrapperOld, 0, pVirtualAddress, RowPitch, SlicePitch, DetiledData);
+        {
+            __try
+            {
+                compWrapperOld->vt->CopyFromSubresource(compWrapperOld, DetiledData, 0, 0, pVirtualAddress, RowPitch, SlicePitch);
+            }
+            __except (EXCEPTION_EXECUTE_HANDLER)
+            {
+                hr = E_FAIL;
+            }
+        }
 
         if (g_ABI >= abi_t{10,0,16232,1064} && compWrapper)
             compWrapper->vt->Release(compWrapper);
@@ -484,5 +475,97 @@ HRESULT DetileTexture2D(UINT TileModeIndex, D3D11_TEXTURE2D_DESC* pDesc, void* p
     }
 
     MessageBoxA(nullptr, "xg_x.dll could not be found by DetileTexture2D! Make sure to copy it over to the executable folder.", "ERROR", MB_ICONERROR);
+    return E_FAIL;
+}
+
+XGCreateTexture3DComputer g_XGCreateTexture3DComputer = nullptr;
+HRESULT DetileTexture3D(UINT TileModeIndex, D3D11_TEXTURE3D_DESC* pDesc, void* pVirtualAddress, BYTE* DetiledData, UINT RowPitch, UINT SlicePitch)
+{
+    if (!pDesc)
+        return E_FAIL;
+
+    XG_TEXTURE3D_DESC desc{};
+    desc.BindFlags = pDesc->BindFlags;
+    desc.CPUAccessFlags = pDesc->CPUAccessFlags;
+    desc.Format = (XG_FORMAT)pDesc->Format;
+    desc.MipLevels = pDesc->MipLevels;
+    desc.MiscFlags = pDesc->MiscFlags;
+    desc.TileMode = (XG_TILE_MODE)TileModeIndex;
+    desc.Height = pDesc->Height;
+    desc.Width = pDesc->Width;
+    desc.Depth = pDesc->Depth;
+    desc.Pitch = 0;
+    desc.ESRAMOffsetBytes = 0;
+    desc.ESRAMUsageBytes = 0;
+    desc.Usage = (XG_USAGE)pDesc->Usage;
+
+    if (!g_XboxGraphicsModule)
+    {
+        g_XboxGraphicsModule = LoadLibraryW(L"xg_x.dll");
+    }
+
+    if (g_XboxGraphicsModule)
+    {
+        XGTextureAddressComputer_Old* compWrapperOld = nullptr;
+        XGTextureAddressComputer* compWrapper = nullptr;
+        HRESULT hr = 0;
+
+        if (!g_XGCreateTexture3DComputer)
+            g_XGCreateTexture3DComputer = (XGCreateTexture3DComputer)GetProcAddress(g_XboxGraphicsModule, "XGCreateTexture3DComputer");
+
+        if (g_ABI >= abi_t{10,0,16232,1064})
+            hr = g_XGCreateTexture3DComputer(&desc, (void**)&compWrapper);
+        else
+            hr = g_XGCreateTexture3DComputer(&desc, (void**)&compWrapperOld);
+        if (FAILED(hr))
+            return hr;
+
+        if (g_ABI >= abi_t{10,0,16232,1064})
+        {
+            if (!compWrapper || !compWrapper->vt)
+            {
+                return E_FAIL;
+            }
+        }
+        else
+        {
+            if (!compWrapperOld || !compWrapperOld->vt)
+            {
+                return E_FAIL;
+            }
+        }
+
+        if (g_ABI >= abi_t{ 10,0,16232,1064 })
+        {
+            __try
+            {
+                compWrapper->vt->CopyFromSubresource(compWrapper, DetiledData, 0, 0, pVirtualAddress, RowPitch, SlicePitch);
+            }
+            __except (EXCEPTION_EXECUTE_HANDLER)
+            {
+                hr = E_FAIL;
+            }
+        }
+        else
+        {
+            __try
+            {
+                compWrapperOld->vt->CopyFromSubresource(compWrapperOld, DetiledData, 0, 0, pVirtualAddress, RowPitch, SlicePitch);
+            }
+            __except (EXCEPTION_EXECUTE_HANDLER)
+            {
+                hr = E_FAIL;
+            }
+        }
+
+        if (g_ABI >= abi_t{10,0,16232,1064} && compWrapper)
+            compWrapper->vt->Release(compWrapper);
+        else if (compWrapperOld)
+            compWrapperOld->vt->Release(compWrapperOld);
+
+        return hr;
+    }
+
+    MessageBoxA(nullptr, "xg_x.dll could not be found by DetileTexture3D! Make sure to copy it over to the executable folder.", "ERROR", MB_ICONERROR);
     return E_FAIL;
 }

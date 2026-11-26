@@ -51,9 +51,9 @@ public:
     bool IsWindowedStereoEnabled();
     HRESULT CreateSwapChainForHwnd(xbox::IGraphicsUnknown<ABI> *pDevice, HWND hWnd, DXGI_SWAP_CHAIN_DESC1 const *pDesc,
                                    DXGI_SWAP_CHAIN_FULLSCREEN_DESC const *pFullscreenDesc,
-                                   IDXGIOutput *pRestrictToOutput, gfx::IDXGISwapChain1<ABI> **ppSwapChain);
+                                   gfx::IDXGIOutput<ABI> *pRestrictToOutput, gfx::IDXGISwapChain1<ABI> **ppSwapChain);
     HRESULT CreateSwapChainForCoreWindow(xbox::IGraphicsUnknown<ABI> *pDevice, IUnknown *pWindow,
-                                         DXGI_SWAP_CHAIN_DESC1 *pDesc, IDXGIOutput *pRestrictToOutput,
+                                         DXGI_SWAP_CHAIN_DESC1 *pDesc, gfx::IDXGIOutput<ABI> *pRestrictToOutput,
                                          gfx::IDXGISwapChain1<ABI> **ppSwapChain);
     HRESULT GetSharedResourceAdapterLuid(void *hResource, _LUID *pLuid);
     HRESULT RegisterStereoStatusWindow(HWND WindowHandle, uint32_t wMsg, uint32_t *pdwCookie);
@@ -63,7 +63,7 @@ public:
     HRESULT RegisterOcclusionStatusEvent(void *hEvent, uint32_t *pdwCookie);
     void UnregisterOcclusionStatus(uint32_t dwCookie);
     HRESULT CreateSwapChainForComposition(xbox::IGraphicsUnknown<ABI> *pDevice, DXGI_SWAP_CHAIN_DESC1 const *pDesc,
-                                          IDXGIOutput *pRestrictToOutput, gfx::IDXGISwapChain1<ABI> **ppSwapChain);
+                                          gfx::IDXGIOutput<ABI> *pRestrictToOutput, gfx::IDXGISwapChain1<ABI> **ppSwapChain);
 };
 
 #undef ABI_INTERFACE

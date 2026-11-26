@@ -197,9 +197,16 @@ HRESULT EraCurrentAppWrapper::GetTrustLevel(TrustLevel *trustLevel)
     return m_realCurrentApp->GetTrustLevel(trustLevel);
 }
 
-HRESULT EraCurrentAppWrapper::get_LicenseInformation(ABI::Windows::ApplicationModel::Store::ILicenseInformation **value)
+HRESULT EraCurrentAppWrapper::get_LicenseInformation(EraILicenseInformation **value)
 {
-    return E_NOTIMPL;
+    ABI::Windows::ApplicationModel::Store::ILicenseInformation *LicenseInformation = nullptr;
+    HRESULT hr = m_realCurrentApp->get_LicenseInformation(&LicenseInformation);
+    if (SUCCEEDED(hr))
+    {
+        *value = new EraLicenseInformationWrapper(LicenseInformation);
+    }
+
+    return hr;
 }
 
 HRESULT EraCurrentAppWrapper::get_LinkUri(ABI::Windows::Foundation::IUriRuntimeClass **value)

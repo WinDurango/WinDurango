@@ -182,7 +182,7 @@ template <abi_t ABI>
 HRESULT DXGIFactory2<ABI>::CreateSwapChainForHwnd(xbox::IGraphicsUnknown<ABI> *pDevice, HWND hWnd,
                                                   DXGI_SWAP_CHAIN_DESC1 const *pDesc,
                                                   DXGI_SWAP_CHAIN_FULLSCREEN_DESC const *pFullscreenDesc,
-                                                  IDXGIOutput *pRestrictToOutput,
+                                                  gfx::IDXGIOutput<ABI> *pRestrictToOutput,
                                                   gfx::IDXGISwapChain1<ABI> **ppSwapChain)
 {
     IMPLEMENT_STUB();
@@ -193,7 +193,7 @@ IDXGISwapChain1 *g_pOldSwapChain = nullptr;
 
 template <abi_t ABI>
 HRESULT DXGIFactory2<ABI>::CreateSwapChainForCoreWindow(xbox::IGraphicsUnknown<ABI> *pDevice, IUnknown *pWindow,
-                                                        DXGI_SWAP_CHAIN_DESC1 *pDesc, IDXGIOutput *pRestrictToOutput,
+                                                        DXGI_SWAP_CHAIN_DESC1 *pDesc, gfx::IDXGIOutput<ABI> *pRestrictToOutput,
                                                         gfx::IDXGISwapChain1<ABI> **ppSwapChain)
 {
     if (g_pOldSwapChain)
@@ -351,7 +351,7 @@ template <abi_t ABI> void DXGIFactory2<ABI>::UnregisterOcclusionStatus(uint32_t 
 template <abi_t ABI>
 HRESULT DXGIFactory2<ABI>::CreateSwapChainForComposition(xbox::IGraphicsUnknown<ABI> *pDevice,
                                                          DXGI_SWAP_CHAIN_DESC1 const *pDesc,
-                                                         IDXGIOutput *pRestrictToOutput,
+                                                         gfx::IDXGIOutput<ABI> *pRestrictToOutput,
                                                          gfx::IDXGISwapChain1<ABI> **ppSwapChain)
 {
     IMPLEMENT_STUB();

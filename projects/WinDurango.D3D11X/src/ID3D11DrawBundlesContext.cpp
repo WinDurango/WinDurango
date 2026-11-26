@@ -1672,12 +1672,12 @@ template <abi_t ABI> void D3D11DrawBundlesContext<ABI>::SetFastResources_Debug(U
         UINT64 v26 = 0;
         int v27 = 0;
         int v51 = 0;
-        void *BaseAddress = 0;
+        void *BaseAddress = nullptr;
         UINT64 *ResourcePtr = nullptr;
         UINT v13 = 0;
         UINT Slot = 0;
         UINT64 Stride = 0;
-        UINT D3D11X_SET_FAST_VALUE = 0;
+        gfx::D3D11_STAGE D3D11X_SET_FAST_VALUE = gfx::D3D11_STAGE::D3D11_STAGE_VS;
         gfx::ID3D11ShaderResourceView<ABI> *SRV{};
         gfx::ID3D11Buffer<ABI> *Buffer{};
         gfx::ID3D11SamplerState<ABI> *Sampler{};
@@ -1692,7 +1692,7 @@ template <abi_t ABI> void D3D11DrawBundlesContext<ABI>::SetFastResources_Debug(U
             Slot = (UINT8)v13;
             v14 = (v10 >> 27) & 1;
             v17 = v10 >> 31;
-            D3D11X_SET_FAST_VALUE = ((BYTE *)&v10)[2] & 0xF;
+            D3D11X_SET_FAST_VALUE = (gfx::D3D11_STAGE)(((BYTE *)&v10)[2] & 0xF);
 
             if (v12)
             {
@@ -1702,7 +1702,7 @@ template <abi_t ABI> void D3D11DrawBundlesContext<ABI>::SetFastResources_Debug(U
                     ResourcePtr = *(UINT64 **)pTableStart;
                     pTableStart += 4;
                     Stride = (v23 >> 48) & 0xFFFF;
-                    UINT64 Offset = v23 & 0x0000FFFFFFFFFFFF;
+                    UINT64 Offset = v23 & 0xFFFFFFFFFFFF;
                     v26 = v23 - ((UINT64)(UINT)Stride << 48);
 
                     if (ResourcePtr)
@@ -1723,28 +1723,34 @@ template <abi_t ABI> void D3D11DrawBundlesContext<ABI>::SetFastResources_Debug(U
                                     {
                                         switch (D3D11X_SET_FAST_VALUE)
                                         {
-                                        case 0:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_VS:
                                             SRV = reinterpret_cast<gfx::ID3D11ShaderResourceView<ABI> *>(ResourcePtr);
+                                            BaseAddress = (void*)((UINT64)Offset + (UINT64)SRV->m_pAllocationStart);
                                             VSSetPlacementShaderResource(Slot, SRV, BaseAddress);
                                             break;
-                                        case 1:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_HS:
                                             SRV = reinterpret_cast<gfx::ID3D11ShaderResourceView<ABI> *>(ResourcePtr);
+                                            BaseAddress = (void*)((UINT64)Offset + (UINT64)SRV->m_pAllocationStart); 
                                             HSSetPlacementShaderResource(Slot, SRV, BaseAddress);
                                             break;
-                                        case 2:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_DS:
                                             SRV = reinterpret_cast<gfx::ID3D11ShaderResourceView<ABI> *>(ResourcePtr);
+                                            BaseAddress = (void*)((UINT64)Offset + (UINT64)SRV->m_pAllocationStart); 
                                             DSSetPlacementShaderResource(Slot, SRV, BaseAddress);
                                             break;
-                                        case 3:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_GS:
                                             SRV = reinterpret_cast<gfx::ID3D11ShaderResourceView<ABI> *>(ResourcePtr);
+                                            BaseAddress = (void*)((UINT64)Offset + (UINT64)SRV->m_pAllocationStart); 
                                             GSSetPlacementShaderResource(Slot, SRV, BaseAddress);
                                             break;
-                                        case 4:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_PS:
                                             SRV = reinterpret_cast<gfx::ID3D11ShaderResourceView<ABI> *>(ResourcePtr);
+                                            BaseAddress = (void*)((UINT64)Offset + (UINT64)SRV->m_pAllocationStart); 
                                             PSSetPlacementShaderResource(Slot, SRV, BaseAddress);
                                             break;
-                                        case 5:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_CS:
                                             SRV = reinterpret_cast<gfx::ID3D11ShaderResourceView<ABI> *>(ResourcePtr);
+                                            BaseAddress = (void*)((UINT64)Offset + (UINT64)SRV->m_pAllocationStart); 
                                             CSSetPlacementShaderResource(Slot, SRV, BaseAddress);
                                             break;
                                         }
@@ -1753,27 +1759,27 @@ template <abi_t ABI> void D3D11DrawBundlesContext<ABI>::SetFastResources_Debug(U
                                     {
                                         switch (D3D11X_SET_FAST_VALUE)
                                         {
-                                        case 0:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_VS:
                                             SRV = reinterpret_cast<gfx::ID3D11ShaderResourceView<ABI> *>(ResourcePtr);
                                             VSSetFastShaderResource(Slot, SRV);
                                             break;
-                                        case 1:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_HS:
                                             SRV = reinterpret_cast<gfx::ID3D11ShaderResourceView<ABI> *>(ResourcePtr);
                                             HSSetFastShaderResource(Slot, SRV);
                                             break;
-                                        case 2:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_DS:
                                             SRV = reinterpret_cast<gfx::ID3D11ShaderResourceView<ABI> *>(ResourcePtr);
                                             DSSetFastShaderResource(Slot, SRV);
                                             break;
-                                        case 3:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_GS:
                                             SRV = reinterpret_cast<gfx::ID3D11ShaderResourceView<ABI> *>(ResourcePtr);
                                             GSSetFastShaderResource(Slot, SRV);
                                             break;
-                                        case 4:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_PS:
                                             SRV = reinterpret_cast<gfx::ID3D11ShaderResourceView<ABI> *>(ResourcePtr);
                                             PSSetFastShaderResource(Slot, SRV);
                                             break;
-                                        case 5:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_CS:
                                             SRV = reinterpret_cast<gfx::ID3D11ShaderResourceView<ABI> *>(ResourcePtr);
                                             CSSetFastShaderResource(Slot, SRV);
                                             break;
@@ -1796,28 +1802,34 @@ template <abi_t ABI> void D3D11DrawBundlesContext<ABI>::SetFastResources_Debug(U
                                     {
                                         switch (D3D11X_SET_FAST_VALUE)
                                         {
-                                        case 1:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_HS:
                                             Buffer = reinterpret_cast<gfx::ID3D11Buffer<ABI> *>(ResourcePtr);
+                                            BaseAddress = (void*)((UINT64)Offset + (UINT64)Buffer->m_pAllocationStart);
                                             HSSetPlacementConstantBuffer(Slot, Buffer, BaseAddress);
                                             break;
-                                        case 2:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_DS:
                                             Buffer = reinterpret_cast<gfx::ID3D11Buffer<ABI> *>(ResourcePtr);
+                                            BaseAddress = (void*)((UINT64)Offset + (UINT64)Buffer->m_pAllocationStart); 
                                             DSSetPlacementConstantBuffer(Slot, Buffer, BaseAddress);
                                             break;
-                                        case 3:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_GS:
                                             Buffer = reinterpret_cast<gfx::ID3D11Buffer<ABI> *>(ResourcePtr);
+                                            BaseAddress = (void*)((UINT64)Offset + (UINT64)Buffer->m_pAllocationStart); 
                                             GSSetPlacementConstantBuffer(Slot, Buffer, BaseAddress);
                                             break;
-                                        case 4:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_PS:
                                             Buffer = reinterpret_cast<gfx::ID3D11Buffer<ABI> *>(ResourcePtr);
+                                            BaseAddress = (void*)((UINT64)Offset + (UINT64)Buffer->m_pAllocationStart); 
                                             PSSetPlacementConstantBuffer(Slot, Buffer, BaseAddress);
                                             break;
-                                        case 5:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_CS:
                                             Buffer = reinterpret_cast<gfx::ID3D11Buffer<ABI> *>(ResourcePtr);
+                                            BaseAddress = (void*)((UINT64)Offset + (UINT64)Buffer->m_pAllocationStart); 
                                             CSSetPlacementConstantBuffer(Slot, Buffer, BaseAddress);
                                             break;
-                                        case 6:
+                                        case gfx::D3D11_STAGE::D3D11_STAGE_VS:
                                             Buffer = reinterpret_cast<gfx::ID3D11Buffer<ABI> *>(ResourcePtr);
+                                            BaseAddress = (void*)((UINT64)Offset + (UINT64)Buffer->m_pAllocationStart); 
                                             IASetPlacementVertexBuffer(Slot, Buffer, BaseAddress, Stride);
                                             break;
                                         }
@@ -1825,6 +1837,7 @@ template <abi_t ABI> void D3D11DrawBundlesContext<ABI>::SetFastResources_Debug(U
                                     else
                                     {
                                         Buffer = reinterpret_cast<gfx::ID3D11Buffer<ABI> *>(ResourcePtr);
+                                        BaseAddress = (void*)((UINT64)Offset + (UINT64)Buffer->m_pAllocationStart); 
                                         VSSetPlacementConstantBuffer(Slot, Buffer, BaseAddress);
                                     }
                                 }
@@ -1832,27 +1845,27 @@ template <abi_t ABI> void D3D11DrawBundlesContext<ABI>::SetFastResources_Debug(U
                                 {
                                     switch (D3D11X_SET_FAST_VALUE)
                                     {
-                                    case 1:
+                                    case gfx::D3D11_STAGE::D3D11_STAGE_HS:
                                         Buffer = reinterpret_cast<gfx::ID3D11Buffer<ABI> *>(ResourcePtr);
                                         HSSetFastConstantBuffer(Slot, Buffer);
                                         break;
-                                    case 2:
+                                    case gfx::D3D11_STAGE::D3D11_STAGE_DS:
                                         Buffer = reinterpret_cast<gfx::ID3D11Buffer<ABI> *>(ResourcePtr);
                                         DSSetFastConstantBuffer(Slot, Buffer);
                                         break;
-                                    case 3:
+                                    case gfx::D3D11_STAGE::D3D11_STAGE_GS:
                                         Buffer = reinterpret_cast<gfx::ID3D11Buffer<ABI> *>(ResourcePtr);
                                         GSSetFastConstantBuffer(Slot, Buffer);
                                         break;
-                                    case 4:
+                                    case gfx::D3D11_STAGE::D3D11_STAGE_PS:
                                         Buffer = reinterpret_cast<gfx::ID3D11Buffer<ABI> *>(ResourcePtr);
                                         PSSetFastConstantBuffer(Slot, Buffer);
                                         break;
-                                    case 5:
+                                    case gfx::D3D11_STAGE::D3D11_STAGE_CS:
                                         Buffer = reinterpret_cast<gfx::ID3D11Buffer<ABI> *>(ResourcePtr);
                                         CSSetFastConstantBuffer(Slot, Buffer);
                                         break;
-                                    case 6:
+                                    case gfx::D3D11_STAGE::D3D11_STAGE_VS:
                                         Buffer = reinterpret_cast<gfx::ID3D11Buffer<ABI> *>(ResourcePtr);
                                         IASetFastVertexBuffer(Slot, Buffer, Stride);
                                         break;
@@ -1873,23 +1886,23 @@ template <abi_t ABI> void D3D11DrawBundlesContext<ABI>::SetFastResources_Debug(U
                             {
                                 switch (D3D11X_SET_FAST_VALUE)
                                 {
-                                case 1:
+                                case gfx::D3D11_STAGE::D3D11_STAGE_HS:
                                     Sampler = reinterpret_cast<gfx::ID3D11SamplerState<ABI> *>(ResourcePtr);
                                     HSSetFastSampler(Slot, Sampler);
                                     break;
-                                case 2:
+                                case gfx::D3D11_STAGE::D3D11_STAGE_DS:
                                     Sampler = reinterpret_cast<gfx::ID3D11SamplerState<ABI> *>(ResourcePtr);
                                     DSSetFastSampler(Slot, Sampler);
                                     break;
-                                case 3:
+                                case gfx::D3D11_STAGE::D3D11_STAGE_GS:
                                     Sampler = reinterpret_cast<gfx::ID3D11SamplerState<ABI> *>(ResourcePtr);
                                     GSSetFastSampler(Slot, Sampler);
                                     break;
-                                case 4:
+                                case gfx::D3D11_STAGE::D3D11_STAGE_PS:
                                     Sampler = reinterpret_cast<gfx::ID3D11SamplerState<ABI> *>(ResourcePtr);
                                     PSSetFastSampler(Slot, Sampler);
                                     break;
-                                case 5:
+                                case gfx::D3D11_STAGE::D3D11_STAGE_CS:
                                     Sampler = reinterpret_cast<gfx::ID3D11SamplerState<ABI> *>(ResourcePtr);
                                     CSSetFastSampler(Slot, Sampler);
                                     break;

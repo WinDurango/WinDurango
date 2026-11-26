@@ -30,12 +30,13 @@ struct AVFrame;
 // seconds, which matches the 256 kbit/s the file is encoded at.
 class XmaVoice
 {
-  public:
+public:
     // Packet geometry, public because the caller works in the same units: the shared context's
     // offsetRead is a bit position in a buffer measured in these packets.
     static UINT32 constexpr c_PacketBytes = 2048;
     static UINT32 constexpr c_PacketBits = c_PacketBytes * 8;
     static UINT32 constexpr c_HeaderBits = 32;
+    static UINT32 constexpr c_FrameSamples = 512;
 
     ~XmaVoice();
 
@@ -70,11 +71,12 @@ class XmaVoice
     // Drops queued samples as well. For a voice being torn down, not for a handover.
     void Reset();
 
-  private:
+private:
     bool OpenCodec(UINT32 channels);
     void CloseCodec();
     bool FeedNextPacket();
     void DrainDecoder();
+    bool DrainOneFrame();
     void Push(float const *samples, UINT32 count, UINT32 channel);
 
     static UINT32 constexpr c_MaxChannels = 2;
@@ -97,20 +99,6 @@ class XmaVoice
     float _queue[c_MaxChannels][c_QueueSamples]{};
     UINT32 _head[c_MaxChannels]{};
     UINT32 _count[c_MaxChannels]{};
-
-    // Records every packet handed to the codec, in the order it was handed over. XMA carries an
-    // overlap between consecutive frames, so a packet fed out of sequence does not drop audio - it
-    // adds broadband noise on top of otherwise correct music, which is what the recording shows.
-    // Whether the sequence is right cannot be seen from this side; it has to be matched against the
-    // bank the packets came from.
-    void DumpPacket(unsigned char const *packet);
-    HANDLE _packetDump = nullptr;
-    UINT32 _packetsDumped = 0;
-    static UINT32 constexpr c_PacketDumpLimit = 900; // about a minute of stereo music
-
-    // Fingerprints of the packets fed while the decoder primes, so one that comes round a second
-    // time before the title has refilled its buffer is not decoded twice.
-    UINT64 _recentPackets[8]{};
 
     // Nothing leaves the voice until it holds enough to keep going. Starting to play the moment the
     // first samples arrive is what put a gap in the audio a fifth of a second later: the decoder

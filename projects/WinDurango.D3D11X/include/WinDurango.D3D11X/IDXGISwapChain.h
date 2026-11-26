@@ -40,13 +40,13 @@ public:
     //
     HRESULT Present(uint32_t SyncInterval, uint32_t Flags);
     HRESULT GetBuffer(UINT Buffer, REFIID riid, void **ppSurface);
-    HRESULT SetFullscreenState(bool Fullscreen, IDXGIOutput *pTarget);
-    HRESULT GetFullscreenState(bool *pFullscreen, IDXGIOutput **ppTarget);
+    HRESULT SetFullscreenState(bool Fullscreen, gfx::IDXGIOutput<ABI> *pTarget);
+    HRESULT GetFullscreenState(bool *pFullscreen, gfx::IDXGIOutput<ABI> **ppTarget);
     HRESULT GetDesc(DXGI_SWAP_CHAIN_DESC *pDesc);
     HRESULT ResizeBuffers(uint32_t BufferCount, uint32_t Width, uint32_t Height, DXGI_FORMAT NewFormat,
                           uint32_t SwapChainFlags);
     HRESULT ResizeTarget(DXGI_MODE_DESC const *pNewTargetParameters);
-    HRESULT GetContainingOutput(IDXGIOutput **ppOutput);
+    HRESULT GetContainingOutput(gfx::IDXGIOutput<ABI> **ppOutput);
     HRESULT GetFrameStatistics(DXGI_FRAME_STATISTICS *pStats);
     HRESULT GetLastPresentCount(uint32_t *pLastPresentCount);
 
@@ -59,7 +59,7 @@ public:
     HRESULT GetCoreWindow(REFIID refiid, void **ppUnk);
     HRESULT Present1(uint32_t SyncInterval, uint32_t PresentFlags, DXGI_PRESENT_PARAMETERS const *pPresentParameters);
     bool IsTemporaryMonoSupported();
-    HRESULT GetRestrictToOutput(IDXGIOutput **ppRestrictToOutput);
+    HRESULT GetRestrictToOutput(gfx::IDXGIOutput<ABI> **ppRestrictToOutput);
     HRESULT SetBackgroundColor(DXGI_RGBA const *pColor);
     HRESULT GetBackgroundColor(DXGI_RGBA *pColor);
     HRESULT SetRotation(DXGI_MODE_ROTATION Rotation);

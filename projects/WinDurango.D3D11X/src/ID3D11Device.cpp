@@ -931,7 +931,6 @@ template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreatePlacementBuffer(D3D11_BUFFER_DESC const *pDesc, void *pVirtualAddress,
                                                  gfx::ID3D11Buffer<ABI> **ppBuffer)
 {
-    std::lock_guard lock(g_ResourceMapMutex);
     D3D11_SUBRESOURCE_DATA initialData{};
     initialData.pSysMem = pVirtualAddress;
     initialData.SysMemPitch = 0;
@@ -963,6 +962,7 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementBuffer(D3D11_BUFFER_DESC const *pDesc,
             D3D11Buffer<ABI> *Buffer = static_cast<D3D11Buffer<ABI>*>((*ppBuffer));
             (*ppBuffer)->m_pAllocationStart = pVirtualAddress;
             Buffer->m_IsDirty = true;
+            if (mbi.AllocationBase) std::lock_guard lock(g_ResourceMapMutex);
             g_ResourceMap.insert({mbi.AllocationBase, (*ppBuffer)});
             g_AllocationBaseMap.insert({(*ppBuffer), mbi.AllocationBase});
         }
@@ -975,7 +975,6 @@ template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture1D(D3D11_TEXTURE1D_DESC const *pDesc, UINT TileModeIndex, UINT Pitch,
                                                     void *pVirtualAddress, gfx::ID3D11Texture1D<ABI> **ppTexture1D)
 {
-    std::lock_guard lock(g_ResourceMapMutex);
     std::vector<D3D11_SUBRESOURCE_DATA> initialData(pDesc->ArraySize * pDesc->MipLevels);
     UINT RowPitch = 0;
     UINT SlicePitch = 0;
@@ -1018,7 +1017,6 @@ template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture2D(D3D11_TEXTURE2D_DESC const *pDesc, UINT TileModeIndex, UINT Pitch,
                                                     void *pVirtualAddress, gfx::ID3D11Texture2D<ABI> **ppTexture2D)
 {
-    std::lock_guard lock(g_ResourceMapMutex);
     std::vector<D3D11_SUBRESOURCE_DATA> initialData(pDesc->ArraySize * pDesc->MipLevels);
     UINT RowPitch = 0;
     UINT SlicePitch = 0;
@@ -1044,10 +1042,11 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture2D(D3D11_TEXTURE2D_DESC const *
         HRESULT hr = CreateTexture2D(&pDesc2, 0, ppTexture2D);
         (*ppTexture2D)->m_pAllocationStart = pVirtualAddress;
         D3D11Texture2D<ABI> *Texture = static_cast<D3D11Texture2D<ABI>*>((*ppTexture2D));
-        Texture->m_TileModeIndex = TileModeIndex;
-        Texture->m_IsDirty = true;
-        Texture->m_RowPitch = RowPitch;
-        Texture->m_SlicePitch = SlicePitch;
+        if (mbi.AllocationBase) Texture->m_TileModeIndex = TileModeIndex;
+        if (mbi.AllocationBase) Texture->m_IsDirty = true;
+        if (mbi.AllocationBase) Texture->m_RowPitch = RowPitch;
+        if (mbi.AllocationBase) Texture->m_SlicePitch = SlicePitch;
+        if (mbi.AllocationBase) std::lock_guard lock(g_ResourceMapMutex);
         if (mbi.AllocationBase) g_ResourceMap.insert({mbi.AllocationBase, (*ppTexture2D)});
         if (mbi.AllocationBase) g_AllocationBaseMap.insert({(*ppTexture2D), mbi.AllocationBase});
         initialData.clear();
@@ -1062,6 +1061,7 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture2D(D3D11_TEXTURE2D_DESC const *
         Texture->m_IsDirty = true;
         Texture->m_RowPitch = RowPitch;
         Texture->m_SlicePitch = SlicePitch;
+        std::lock_guard lock(g_ResourceMapMutex);
         g_ResourceMap.insert({mbi.AllocationBase, (*ppTexture2D)});
         g_AllocationBaseMap.insert({(*ppTexture2D), mbi.AllocationBase});
         initialData.clear();
@@ -1077,6 +1077,7 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture2D(D3D11_TEXTURE2D_DESC const *
         Texture->m_IsDirty = true;
         Texture->m_RowPitch = RowPitch;
         Texture->m_SlicePitch = SlicePitch;
+        std::lock_guard lock(g_ResourceMapMutex);
         g_ResourceMap.insert({mbi.AllocationBase, (*ppTexture2D)});
         g_AllocationBaseMap.insert({(*ppTexture2D), mbi.AllocationBase});
         initialData.clear();
@@ -1091,7 +1092,6 @@ template <abi_t ABI>
 HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture3D(D3D11_TEXTURE3D_DESC const *pDesc, UINT TileModeIndex, UINT Pitch,
                                                     void *pVirtualAddress, gfx::ID3D11Texture3D<ABI> **ppTexture3D)
 {
-    std::lock_guard lock(g_ResourceMapMutex);
     std::vector<D3D11_SUBRESOURCE_DATA> initialData(pDesc->MipLevels);
     UINT RowPitch = 0;
     UINT SlicePitch = 0;
@@ -1116,6 +1116,14 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture3D(D3D11_TEXTURE3D_DESC const *
     {
         HRESULT hr = CreateTexture3D(&pDesc2, 0, ppTexture3D);
         (*ppTexture3D)->m_pAllocationStart = pVirtualAddress;
+        D3D11Texture3D<ABI> *Texture = static_cast<D3D11Texture3D<ABI>*>((*ppTexture3D));
+        if (mbi.AllocationBase) Texture->m_TileModeIndex = TileModeIndex;
+        if (mbi.AllocationBase) Texture->m_IsDirty = true;
+        if (mbi.AllocationBase) Texture->m_RowPitch = RowPitch;
+        if (mbi.AllocationBase) Texture->m_SlicePitch = SlicePitch;
+        if (mbi.AllocationBase) std::lock_guard lock(g_ResourceMapMutex);
+        if (mbi.AllocationBase) g_ResourceMap.insert({mbi.AllocationBase, (*ppTexture3D)});
+        if (mbi.AllocationBase) g_AllocationBaseMap.insert({(*ppTexture3D), mbi.AllocationBase});
         initialData.clear();
         return hr;
     }
@@ -1123,6 +1131,14 @@ HRESULT D3D11DeviceX<ABI>::CreatePlacementTexture3D(D3D11_TEXTURE3D_DESC const *
     {
         HRESULT hr = CreateTexture3D(&pDesc2, initialData.data(), ppTexture3D);
         (*ppTexture3D)->m_pAllocationStart = pVirtualAddress;
+        D3D11Texture3D<ABI> *Texture = static_cast<D3D11Texture3D<ABI>*>((*ppTexture3D));
+        Texture->m_TileModeIndex = TileModeIndex;
+        Texture->m_IsDirty = true;
+        Texture->m_RowPitch = RowPitch;
+        Texture->m_SlicePitch = SlicePitch;
+        std::lock_guard lock(g_ResourceMapMutex);
+        g_ResourceMap.insert({mbi.AllocationBase, (*ppTexture3D)});
+        g_AllocationBaseMap.insert({(*ppTexture3D), mbi.AllocationBase});
         initialData.clear();
         return hr;
     }

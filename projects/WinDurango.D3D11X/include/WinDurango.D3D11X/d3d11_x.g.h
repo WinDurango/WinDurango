@@ -252,6 +252,12 @@ namespace gfx
     struct IDXGIObjectVtbl;
 
     template <abi_t ABI>
+    struct IDXGIOutput;
+
+    template <abi_t ABI>
+    struct IDXGIOutputVtbl;
+
+    template <abi_t ABI>
     struct IDXGIDevice;
 
     template <abi_t ABI>
@@ -4256,6 +4262,39 @@ namespace gfx
         HRESULT (*GetParent)(void *, _GUID const &riid, void **ppParent);
     };
 
+    template <abi_t ABI>
+    struct IDXGIOutput : gfx::IDXGIObject<ABI>
+    {
+        virtual HRESULT GetDesc(DXGI_OUTPUT_DESC *pDesc) = 0;
+        virtual HRESULT GetDisplayModeList(DXGI_FORMAT EnumFormat, UINT Flags, UINT *pNumModes, DXGI_MODE_DESC *pDesc) = 0;
+        virtual HRESULT FindClosestMatchingMode(DXGI_MODE_DESC const *pModeToMatch, DXGI_MODE_DESC *pClosestMatch, IUnknown *pConcernedDevice) = 0;
+        virtual HRESULT WaitForVBlank() = 0;
+        virtual HRESULT TakeOwnership(IUnknown *pDevice, bool Exclusive) = 0;
+        virtual void ReleaseOwnership() = 0;
+        virtual HRESULT GetGammaControlCapabilities(DXGI_GAMMA_CONTROL_CAPABILITIES *pGammaCaps) = 0;
+        virtual HRESULT SetGammaControl(DXGI_GAMMA_CONTROL const *pArray) = 0;
+        virtual HRESULT GetGammaControl(DXGI_GAMMA_CONTROL *pArray) = 0;
+        virtual HRESULT SetDisplaySurface(IDXGISurface *pScanoutSurface) = 0;
+        virtual HRESULT GetDisplaySurfaceData(IDXGISurface *pDestination) = 0;
+        virtual HRESULT GetFrameStatistics(DXGI_FRAME_STATISTICS *pStats) = 0;
+    };
+
+    template <abi_t ABI> struct IDXGIOutputVtbl : gfx::IDXGIObjectVtbl<ABI>
+    {
+        HRESULT (*GetDesc)(void *, DXGI_OUTPUT_DESC *pDesc);
+        HRESULT (*GetDisplayModeList)(void *, DXGI_FORMAT EnumFormat, UINT Flags, UINT *pNumModes, DXGI_MODE_DESC *pDesc);
+        HRESULT (*FindClosestMatchingMode)(void *, DXGI_MODE_DESC const *pModeToMatch, DXGI_MODE_DESC *pClosestMatch, IUnknown *pConcernedDevice);
+        HRESULT (*WaitForVBlank)(void *);
+        HRESULT (*TakeOwnership)(void *, IUnknown *pDevice, bool Exclusive);
+        void (*ReleaseOwnership)(void *);
+        HRESULT (*GetGammaControlCapabilities)(void *, DXGI_GAMMA_CONTROL_CAPABILITIES *pGammaCaps);
+        HRESULT (*SetGammaControl)(void *, DXGI_GAMMA_CONTROL const *pArray);
+        HRESULT (*GetGammaControl)(void *, DXGI_GAMMA_CONTROL *pArray);
+        HRESULT (*SetDisplaySurface)(void *, IDXGISurface *pScanoutSurface);
+        HRESULT (*GetDisplaySurfaceData)(void *, IDXGISurface *pDestination);
+        HRESULT (*GetFrameStatistics)(void *, DXGI_FRAME_STATISTICS *pStats);
+    };
+
     namespace details
     {
         template <abi_t ABI> struct IDXGIDeviceData
@@ -4317,14 +4356,14 @@ namespace gfx
 
     template <abi_t ABI> struct IDXGIAdapter : gfx::IDXGIObject<ABI>
     {
-        virtual HRESULT EnumOutputs(UINT Output, IDXGIOutput **ppOutput) = 0;
+        virtual HRESULT EnumOutputs(UINT Output, IDXGIOutput<ABI> **ppOutput) = 0;
         virtual HRESULT GetDesc(DXGI_ADAPTER_DESC *pDesc) = 0;
         virtual HRESULT CheckInterfaceSupport(_GUID const &InterfaceName, LARGE_INTEGER *pUMDVersion) = 0;
     };
 
     template <abi_t ABI> struct IDXGIAdapterVtbl : gfx::IDXGIObjectVtbl<ABI>
     {
-        HRESULT (*EnumOutputs)(void *, UINT Output, IDXGIOutput **ppOutput);
+        HRESULT (*EnumOutputs)(void *, UINT Output, IDXGIOutput<ABI> **ppOutput);
         HRESULT (*GetDesc)(void *, DXGI_ADAPTER_DESC *pDesc);
         HRESULT (*CheckInterfaceSupport)(void *, _GUID const &InterfaceName, LARGE_INTEGER *pUMDVersion);
     };
@@ -4353,13 +4392,13 @@ namespace gfx
     {
         virtual HRESULT Present(uint32_t SyncInterval, uint32_t Flags) = 0;
         virtual HRESULT GetBuffer(UINT Buffer, REFIID riid, void **ppSurface) = 0;
-        virtual HRESULT SetFullscreenState(bool Fullscreen, IDXGIOutput *pTarget) = 0;
-        virtual HRESULT GetFullscreenState(bool *pFullscreen, IDXGIOutput **ppTarget) = 0;
+        virtual HRESULT SetFullscreenState(bool Fullscreen, IDXGIOutput<ABI> *pTarget) = 0;
+        virtual HRESULT GetFullscreenState(bool *pFullscreen, IDXGIOutput<ABI> **ppTarget) = 0;
         virtual HRESULT GetDesc(DXGI_SWAP_CHAIN_DESC *pDesc) = 0;
         virtual HRESULT ResizeBuffers(uint32_t BufferCount, uint32_t Width, uint32_t Height, DXGI_FORMAT NewFormat,
                                       uint32_t SwapChainFlags) = 0;
         virtual HRESULT ResizeTarget(DXGI_MODE_DESC const *pNewTargetParameters) = 0;
-        virtual HRESULT GetContainingOutput(IDXGIOutput **ppOutput) = 0;
+        virtual HRESULT GetContainingOutput(IDXGIOutput<ABI> **ppOutput) = 0;
         virtual HRESULT GetFrameStatistics(DXGI_FRAME_STATISTICS *pStats) = 0;
         virtual HRESULT GetLastPresentCount(uint32_t *pLastPresentCount) = 0;
     };
@@ -4368,13 +4407,13 @@ namespace gfx
     {
         HRESULT (*Present)(void *, uint32_t SyncInterval, uint32_t Flags);
         HRESULT (*GetBuffer)(void *, UINT Buffer, REFIID riid, void **ppSurface);
-        HRESULT (*SetFullscreenState)(void *, bool Fullscreen, IDXGIOutput *pTarget);
-        HRESULT (*GetFullscreenState)(void *, bool *pFullscreen, IDXGIOutput **ppTarget);
+        HRESULT (*SetFullscreenState)(void *, bool Fullscreen, IDXGIOutput<ABI> *pTarget);
+        HRESULT (*GetFullscreenState)(void *, bool *pFullscreen, IDXGIOutput<ABI> **ppTarget);
         HRESULT (*GetDesc)(void *, DXGI_SWAP_CHAIN_DESC *pDesc);
         HRESULT (*ResizeBuffers)(void *, uint32_t BufferCount, uint32_t Width, uint32_t Height, DXGI_FORMAT NewFormat,
                                  uint32_t SwapChainFlags);
         HRESULT (*ResizeTarget)(void *, DXGI_MODE_DESC const *pNewTargetParameters);
-        HRESULT (*GetContainingOutput)(void *, IDXGIOutput **ppOutput);
+        HRESULT (*GetContainingOutput)(void *, IDXGIOutput<ABI> **ppOutput);
         HRESULT (*GetFrameStatistics)(void *, DXGI_FRAME_STATISTICS *pStats);
         HRESULT (*GetLastPresentCount)(void *, uint32_t *pLastPresentCount);
     };
@@ -4388,7 +4427,7 @@ namespace gfx
         virtual HRESULT Present1(uint32_t SyncInterval, uint32_t PresentFlags,
                                  DXGI_PRESENT_PARAMETERS const *pPresentParameters) = 0;
         virtual bool IsTemporaryMonoSupported() = 0;
-        virtual HRESULT GetRestrictToOutput(IDXGIOutput **ppRestrictToOutput) = 0;
+        virtual HRESULT GetRestrictToOutput(IDXGIOutput<ABI> **ppRestrictToOutput) = 0;
         virtual HRESULT SetBackgroundColor(DXGI_RGBA const *pColor) = 0;
         virtual HRESULT GetBackgroundColor(DXGI_RGBA *pColor) = 0;
         virtual HRESULT SetRotation(DXGI_MODE_ROTATION Rotation) = 0;
@@ -4404,7 +4443,7 @@ namespace gfx
         HRESULT (*Present1)(void *, uint32_t SyncInterval, uint32_t PresentFlags,
                             DXGI_PRESENT_PARAMETERS const *pPresentParameters);
         bool (*IsTemporaryMonoSupported)(void *);
-        HRESULT (*GetRestrictToOutput)(void *, IDXGIOutput **ppRestrictToOutput);
+        HRESULT (*GetRestrictToOutput)(void *, IDXGIOutput<ABI> **ppRestrictToOutput);
         HRESULT (*SetBackgroundColor)(void *, DXGI_RGBA const *pColor);
         HRESULT (*GetBackgroundColor)(void *, DXGI_RGBA *pColor);
         HRESULT (*SetRotation)(void *, DXGI_MODE_ROTATION Rotation);
@@ -4457,10 +4496,10 @@ namespace gfx
         virtual HRESULT CreateSwapChainForHwnd(xbox::IGraphicsUnknown<ABI> *pDevice, HWND hWnd,
                                                DXGI_SWAP_CHAIN_DESC1 const *pDesc,
                                                DXGI_SWAP_CHAIN_FULLSCREEN_DESC const *pFullscreenDesc,
-                                               IDXGIOutput *pRestrictToOutput,
+                                               IDXGIOutput<ABI> *pRestrictToOutput,
                                                gfx::IDXGISwapChain1<ABI> **ppSwapChain) = 0;
         virtual HRESULT CreateSwapChainForCoreWindow(xbox::IGraphicsUnknown<ABI> *pDevice, IUnknown *pWindow,
-                                                     DXGI_SWAP_CHAIN_DESC1 *pDesc, IDXGIOutput *pRestrictToOutput,
+                                                     DXGI_SWAP_CHAIN_DESC1 *pDesc, IDXGIOutput<ABI> *pRestrictToOutput,
                                                      gfx::IDXGISwapChain1<ABI> **ppSwapChain) = 0;
         virtual HRESULT GetSharedResourceAdapterLuid(void *hResource, _LUID *pLuid) = 0;
         virtual HRESULT RegisterStereoStatusWindow(HWND WindowHandle, uint32_t wMsg, uint32_t *pdwCookie) = 0;
@@ -4471,7 +4510,7 @@ namespace gfx
         virtual void UnregisterOcclusionStatus(uint32_t dwCookie) = 0;
         virtual HRESULT CreateSwapChainForComposition(xbox::IGraphicsUnknown<ABI> *pDevice,
                                                       DXGI_SWAP_CHAIN_DESC1 const *pDesc,
-                                                      IDXGIOutput *pRestrictToOutput,
+                                                      IDXGIOutput<ABI> *pRestrictToOutput,
                                                       gfx::IDXGISwapChain1<ABI> **ppSwapChain) = 0;
     };
 
@@ -4481,9 +4520,9 @@ namespace gfx
         HRESULT (*CreateSwapChainForHwnd)(void *, xbox::IGraphicsUnknown<ABI> *pDevice, HWND hWnd,
                                           DXGI_SWAP_CHAIN_DESC1 const *pDesc,
                                           DXGI_SWAP_CHAIN_FULLSCREEN_DESC const *pFullscreenDesc,
-                                          IDXGIOutput *pRestrictToOutput, gfx::IDXGISwapChain1<ABI> **ppSwapChain);
+                                          IDXGIOutput<ABI> *pRestrictToOutput, gfx::IDXGISwapChain1<ABI> **ppSwapChain);
         HRESULT (*CreateSwapChainForCoreWindow)(void *, xbox::IGraphicsUnknown<ABI> *pDevice, IUnknown *pWindow,
-                                                DXGI_SWAP_CHAIN_DESC1 *pDesc, IDXGIOutput *pRestrictToOutput,
+                                                DXGI_SWAP_CHAIN_DESC1 *pDesc, IDXGIOutput<ABI> *pRestrictToOutput,
                                                 gfx::IDXGISwapChain1<ABI> **ppSwapChain);
         HRESULT (*GetSharedResourceAdapterLuid)(void *, void *hResource, _LUID *pLuid);
         HRESULT (*RegisterStereoStatusWindow)(void *, HWND WindowHandle, uint32_t wMsg, uint32_t *pdwCookie);
@@ -4493,7 +4532,7 @@ namespace gfx
         HRESULT (*RegisterOcclusionStatusEvent)(void *, void *hEvent, uint32_t *pdwCookie);
         void (*UnregisterOcclusionStatus)(void *, uint32_t dwCookie);
         HRESULT (*CreateSwapChainForComposition)(void *, xbox::IGraphicsUnknown<ABI> *pDevice,
-                                                 DXGI_SWAP_CHAIN_DESC1 const *pDesc, IDXGIOutput *pRestrictToOutput,
+                                                 DXGI_SWAP_CHAIN_DESC1 const *pDesc, IDXGIOutput<ABI> *pRestrictToOutput,
                                                  gfx::IDXGISwapChain1<ABI> **ppSwapChain);
     };
 
@@ -4719,6 +4758,8 @@ DECLARE_ABI_UUIDOF_HELPER(gfx::ID3D11PerformanceDeviceX, 0x88671610,0x712E,0x4F1
 
 DECLARE_ABI_UUIDOF_HELPER(gfx::IDXGIObject, 0xAEC22FB8, 0x76F3, 0x4639, 0x9B, 0xE0, 0x28, 0xEB, 0x43, 0xA6, 0x7A, 0x2E)
 
+DECLARE_ABI_UUIDOF_HELPER(gfx::IDXGIOutput, 0xAE02EEDB, 0xC735, 0x4690, 0x8D, 0x52, 0x5A, 0x8D, 0xC2, 0x02, 0x13, 0xAA)
+
 DECLARE_ABI_UUIDOF_HELPER(gfx::IDXGIDevice, 0x54EC77FA, 0x1377, 0x44E6, 0x8C, 0x32, 0x88, 0xFD, 0x5F, 0x44, 0xC8, 0x4C)
 
 DECLARE_ABI_UUIDOF_HELPER(gfx::IDXGIDevice1, 0x77DB970F, 0x6276, 0x48BA, 0xBA, 0x28, 0x07, 0x01, 0x43, 0xB4, 0x39, 0x2C)
@@ -4752,6 +4793,8 @@ inline HRESULT d3d11CreateInstance(abi_t ABI, void **ppvObject)
     else if (ABI >= abi_t{10,0,14393,2152})
         *ppvObject = new T<abi_t{10,0,14393,2152}>();
     else if (ABI >= abi_t{10,0,10586,1225})
+        *ppvObject = new T<abi_t{10,0,14393,2152}>();
+    else if (ABI >= abi_t{10,0,10586,1194})
         *ppvObject = new T<abi_t{10,0,14393,2152}>();
     else if (ABI >= abi_t{6,2,13004,0})
         *ppvObject = new T<abi_t{6,2,13004,0}>();

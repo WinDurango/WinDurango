@@ -1,5 +1,6 @@
 #include "IDXGIAdapter.h"
 #include "IDXGIFactory.h"
+#include "IDXGIOutput.h"
 
 //
 // IUnknown
@@ -97,9 +98,15 @@ template <abi_t ABI> HRESULT DXGIAdapter1<ABI>::GetParent(_GUID const &riid, voi
 //
 // IDXGIAdapter
 //
-template <abi_t ABI> HRESULT DXGIAdapter1<ABI>::EnumOutputs(UINT Output, IDXGIOutput **ppOutput)
+template <abi_t ABI> HRESULT DXGIAdapter1<ABI>::EnumOutputs(UINT Output, gfx::IDXGIOutput<ABI> **ppOutput)
 {
-    return m_pFunction->EnumOutputs(Output, ppOutput);
+    IDXGIOutput *pOutput = nullptr;
+    HRESULT hr = m_pFunction->EnumOutputs(Output, &pOutput);
+    if (SUCCEEDED(hr))
+    {
+        *ppOutput = new DXGIOutput<ABI>(pOutput);
+    }
+    return hr;
 }
 
 template <abi_t ABI> HRESULT DXGIAdapter1<ABI>::GetDesc(DXGI_ADAPTER_DESC *pDesc)

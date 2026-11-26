@@ -164,18 +164,18 @@ namespace winrt::Windows::Xbox::Management::Deployment::implementation
     }
     winrt::event_token DownloadableContentPackageManager::DownloadableContentPackageInstallCompleted(winrt::Windows::Xbox::Management::Deployment::DownloadableContentPackageInstallCompletedEventHandler const& handler)
     {
-        return e_DownloadableContentPackageInstallCompleted.add(handler);
+        return {};
     }
     void DownloadableContentPackageManager::DownloadableContentPackageInstallCompleted(winrt::event_token const& token) noexcept
     {
-        e_DownloadableContentPackageInstallCompleted.remove(token);
+
     }
     winrt::event_token DownloadableContentPackageManager::DownloadableContentPackageInstallCompletedWithDetails(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Management::Deployment::DownloadableContentPackageInstallCompletedEventArgs> const& handler)
     {
-        return e_DownloadableContentPackageInstallCompletedWithDetails.add(handler);
+        return {};
     }
     void DownloadableContentPackageManager::DownloadableContentPackageInstallCompletedWithDetails(winrt::event_token const& token) noexcept
     {
-        e_DownloadableContentPackageInstallCompletedWithDetails.remove(token);
+
     }
 }

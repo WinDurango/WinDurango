@@ -4,12 +4,12 @@ namespace winrt::Windows::Xbox::System::implementation
 {
     hstring GetTokenAndSignatureResult::Signature()
     {
-        return signature;
+        return L"0";
     }
 
     hstring GetTokenAndSignatureResult::Token()
     {
-        return token;
+        return L"0";
     }
 
     winrt::Windows::Xbox::System::UserOnlineState OnlineStateChangedEventArgs::State()

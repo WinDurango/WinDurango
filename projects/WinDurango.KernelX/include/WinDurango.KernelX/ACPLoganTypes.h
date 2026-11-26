@@ -2,6 +2,7 @@
 #include "kernelx.h"
 #include <Windows.h>
 #include <thread>
+#include <vector>
 
 struct abi_t
 {

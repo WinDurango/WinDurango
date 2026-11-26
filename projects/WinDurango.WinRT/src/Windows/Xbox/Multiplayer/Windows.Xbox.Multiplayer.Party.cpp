@@ -128,43 +128,43 @@ namespace winrt::Windows::Xbox::Multiplayer::implementation
     }
     winrt::event_token Party::GameSessionReady(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Multiplayer::GameSessionReadyEventArgs> const& handler)
     {
-        return e_GameSessionReady.add(handler);
+        return {};
     }
     void Party::GameSessionReady(winrt::event_token const& token) noexcept
     {
-        e_GameSessionReady.remove(token);
+
     }
     winrt::event_token Party::PartyStateChanged(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Multiplayer::PartyStateChangedEventArgs> const& handler)
     {
-        return e_PartyStateChanged.add(handler);
+        return {};
     }
     void Party::PartyStateChanged(winrt::event_token const& token) noexcept
     {
-        e_PartyStateChanged.remove(token);
+
     }
     winrt::event_token Party::PartyRosterChanged(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Multiplayer::PartyRosterChangedEventArgs> const& handler)
     {
-        return e_PartyRosterChanged.add(handler);
+        return {};
     }
     void Party::PartyRosterChanged(winrt::event_token const& token) noexcept
     {
-        e_PartyRosterChanged.remove(token);
+
     }
     winrt::event_token Party::MatchStatusChanged(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Multiplayer::MatchStatusChangedEventArgs> const& handler)
     {
-        return e_MatchStatusChanged.add(handler);
+        return {};
     }
     void Party::MatchStatusChanged(winrt::event_token const& token) noexcept
     {
-        e_MatchStatusChanged.remove(token);
+
     }
     winrt::event_token Party::GamePlayersChanged(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Multiplayer::GamePlayersChangedEventArgs> const& handler)
     {
-        return e_GamePlayersChanged.add(handler);
+        return {};
     }
     void Party::GamePlayersChanged(winrt::event_token const& token) noexcept
     {
-        e_GamePlayersChanged.remove(token);
+
     }
     winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Xbox::Multiplayer::PartyView> Party::GetPartyViewAsyncEx(winrt::Windows::Xbox::Multiplayer::PartyFlags flags)
     {

@@ -32,7 +32,7 @@ public:
     //
     // IDXGIAdapter
     //
-    HRESULT EnumOutputs(UINT Output, IDXGIOutput **ppOutput);
+    HRESULT EnumOutputs(UINT Output, gfx::IDXGIOutput<ABI> **ppOutput);
     HRESULT GetDesc(DXGI_ADAPTER_DESC *pDesc);
     HRESULT CheckInterfaceSupport(_GUID const &InterfaceName, LARGE_INTEGER *pUMDVersion);
 

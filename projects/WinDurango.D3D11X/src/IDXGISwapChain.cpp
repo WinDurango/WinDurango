@@ -1,4 +1,5 @@
 #include "IDXGISwapChain.h"
+#include "IDXGIOutput.h"
 #include "d3d11.x.h"
 
 //
@@ -128,14 +129,24 @@ template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::GetBuffer(UINT Buffer, REFIID 
     return E_NOINTERFACE;
 }
 
-template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::SetFullscreenState(bool Fullscreen, IDXGIOutput *pTarget)
+template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::SetFullscreenState(bool Fullscreen, gfx::IDXGIOutput<ABI> *pTarget)
 {
-    return m_pFunction->SetFullscreenState(Fullscreen, pTarget);
+    if (!pTarget)
+        return m_pFunction->SetFullscreenState(Fullscreen, nullptr);
+
+    return m_pFunction->SetFullscreenState(Fullscreen, static_cast<DXGIOutput<ABI>*>(pTarget)->m_pFunction);
 }
 
-template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::GetFullscreenState(bool *pFullscreen, IDXGIOutput **ppTarget)
+template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::GetFullscreenState(bool *pFullscreen, gfx::IDXGIOutput<ABI> **ppTarget)
 {
-    return m_pFunction->GetFullscreenState((BOOL*)pFullscreen, ppTarget);
+    IDXGIOutput *pOutput = nullptr;
+    HRESULT hr = m_pFunction->GetFullscreenState((BOOL*)pFullscreen, &pOutput);
+    if (ppTarget && pOutput)
+    {
+        *ppTarget = new DXGIOutput<ABI>(pOutput);
+    }
+
+    return hr;
 }
 
 template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::GetDesc(DXGI_SWAP_CHAIN_DESC *pDesc)
@@ -156,9 +167,16 @@ template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::ResizeTarget(DXGI_MODE_DESC co
     return E_NOTIMPL;
 }
 
-template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::GetContainingOutput(IDXGIOutput **ppOutput)
+template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::GetContainingOutput(gfx::IDXGIOutput<ABI> **ppOutput)
 {
-    return m_pFunction->GetContainingOutput(ppOutput);
+    IDXGIOutput *pOutput = nullptr;
+    HRESULT hr = m_pFunction->GetContainingOutput(&pOutput);
+    if (ppOutput && pOutput)
+    {
+        *ppOutput = new DXGIOutput<ABI>(pOutput);
+    }
+
+    return hr;
 }
 
 template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::GetFrameStatistics(DXGI_FRAME_STATISTICS *pStats)
@@ -234,7 +252,7 @@ template <abi_t ABI> bool DXGISwapChain1<ABI>::IsTemporaryMonoSupported()
     return {};
 }
 
-template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::GetRestrictToOutput(IDXGIOutput **ppRestrictToOutput)
+template <abi_t ABI> HRESULT DXGISwapChain1<ABI>::GetRestrictToOutput(gfx::IDXGIOutput<ABI> **ppRestrictToOutput)
 {
     IMPLEMENT_STUB();
     return E_NOTIMPL;

@@ -5,7 +5,7 @@ namespace winrt::Windows::Xbox::ApplicationModel::Store::implementation
 {
     hstring ProductPurchasedEventArgs::Receipt()
     {
-        return L"1";
+        return L"0";
     }
     winrt::Windows::Foundation::IAsyncAction Product::ShowPurchaseAsync(winrt::Windows::Xbox::System::User unk, hstring unka)
     {

@@ -73,21 +73,22 @@ enum D3D11_GRAPHICS_MEMORY_ACCESS_FLAG
 
 EXTERN_C HRESULT __stdcall D3DAllocateGraphicsMemory(SIZE_T SizeInBytes, UINT64 AlignmentBytes, UINT64 DesiredGpuVirtualAddress, UINT Flags, LPVOID *ppAddress)
 {
-    DWORD flAllocationType = -1879035904;
+    DWORD flAllocationType = MEM_4MB_PAGES | MEM_GRAPHICS | MEM_COMMIT | MEM_RESERVE;
     DWORD flProtect = 0;
 
     if (!ppAddress || AlignmentBytes > 0x20000) //Alignment must be less than 128KB.
         return E_INVALIDARG;
 
     if (AlignmentBytes <= 0x10000) 
-        flAllocationType = 805318656;
+        flAllocationType = MEM_LARGE_PAGES | MEM_GRAPHICS | MEM_COMMIT | MEM_RESERVE;
 
+    //Apparently PAGE_GRAPHICS flags were used on those and they appear on winnt.h but aren't supported on Windows.
     if (Flags == D3D11_GRAPHICS_MEMORY_ACCESS_CPU_CACHE_COHERENT)
-        flProtect = 65540;
+        flProtect = PAGE_READWRITE;
     else if (Flags == D3D11_GRAPHICS_MEMORY_ACCESS_CPU_WRITECOMBINE_NONCOHERENT)
-        flProtect = 1028;
+        flProtect = PAGE_WRITECOMBINE | PAGE_READWRITE;
     else if (Flags == D3D11_GRAPHICS_MEMORY_ACCESS_CPU_CACHE_NONCOHERENT_GPU_READONLY)
-        flProtect = 262148;
+        flProtect = PAGE_NOCACHE | PAGE_READWRITE;
 
     (*ppAddress) = VirtualAlloc((LPVOID)DesiredGpuVirtualAddress, SizeInBytes, flAllocationType, flProtect);
 

@@ -302,40 +302,29 @@ template <abi_t ABI> ULONG D3D11ShaderResourceView<ABI>::Release()
             if (g_PSFastShaderResources<ABI>[i] == this)
             {
                 g_PSFastShaderResources<ABI>[i] = nullptr;
-                delete this;
-                return RefCount;
             }
             if (g_VSFastShaderResources<ABI>[i] == this)
             {
                 g_VSFastShaderResources<ABI>[i] = nullptr;
-                delete this;
-                return RefCount;
             }
             if (g_CSFastShaderResources<ABI>[i] == this)
             {
                 g_CSFastShaderResources<ABI>[i] = nullptr;
-                delete this;
-                return RefCount;
             }
             if (g_GSFastShaderResources<ABI>[i] == this)
             {
                 g_GSFastShaderResources<ABI>[i] = nullptr;
-                delete this;
-                return RefCount;
             }
             if (g_HSFastShaderResources<ABI>[i] == this)
             {
                 g_HSFastShaderResources<ABI>[i] = nullptr;
-                delete this;
-                return RefCount;
             }
             if (g_DSFastShaderResources<ABI>[i] == this)
             {
                 g_DSFastShaderResources<ABI>[i] = nullptr;
-                delete this;
-                return RefCount;
             }
         }
+
         delete this;
     }
     return RefCount;
@@ -453,7 +442,18 @@ template <abi_t ABI> ULONG D3D11UnorderedAccessView<ABI>::Release()
 {
     m_pFunction->Release();
     ULONG RefCount = InterlockedDecrement(&this->m_RefCount);
-    if (!RefCount) delete this;
+    if (!RefCount)
+    {
+        for (UINT i = 0; i < D3D11_1_UAV_SLOT_COUNT; ++i)
+        {
+            if (g_CSFastUnorderedAccessViews<ABI>[i] == this)
+            {
+                g_CSFastUnorderedAccessViews<ABI>[i] = nullptr;
+            }
+        }
+
+        delete this;
+    }
     return RefCount;
 }
 

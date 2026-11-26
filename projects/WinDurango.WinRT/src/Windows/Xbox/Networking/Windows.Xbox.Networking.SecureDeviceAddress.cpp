@@ -36,15 +36,16 @@ namespace winrt::Windows::Xbox::Networking::implementation
     }
     winrt::event_token SecureDeviceAddress::BufferChanged(winrt::Windows::Foundation::TypedEventHandler<winrt::Windows::Xbox::Networking::SecureDeviceAddress, winrt::Windows::Foundation::IInspectable> const& handler)
     {
-        return e_BufferChanged.add(handler);
+        return {};
     }
     void SecureDeviceAddress::BufferChanged(winrt::event_token const& token) noexcept
     {
-        e_BufferChanged.remove(token);
+
     }
     winrt::Windows::Storage::Streams::IBuffer SecureDeviceAddress::GetBuffer()
     {
-        winrt::Windows::Storage::Streams::IBuffer Buffer(winrt::Windows::Storage::Streams::Buffer(64));
+        winrt::Windows::Storage::Streams::Buffer Buffer(64);
+        Buffer.Length(64);
         return Buffer;
     }
     int32_t SecureDeviceAddress::Compare(winrt::Windows::Xbox::Networking::SecureDeviceAddress const& secureDeviceAddress)

@@ -69,7 +69,11 @@ inline BOOL IsXboxAddress(const PVOID Address)
 
 HRESULT(STDMETHODCALLTYPE *TrueGetForCurrentThread)(ICoreWindowStatic *staticWindow, CoreWindow **window);
 
+HRESULT(STDMETHODCALLTYPE *TrueGetForCurrentView)(ABI::Windows::Devices::Input::IMouseDeviceStatics *statics, ABI::Windows::Devices::Input::IMouseDevice **mouseDevice);
+
 HRESULT STDMETHODCALLTYPE EraGetForCurrentThread(ICoreWindowStatic *pThis, CoreWindow **ppWindow);
+
+HRESULT STDMETHODCALLTYPE EraGetForCurrentView(ABI::Windows::Devices::Input::IMouseDeviceStatics *statics, ABI::Windows::Devices::Input::IMouseDevice **mouseDevice);
 
 typedef HWND(WINAPI *PCreateWindowInBandEx)(DWORD dwExStyle, LPCWSTR lpClassName, LPCWSTR lpWindowName, DWORD dwStyle,
                                             int x, int y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu,
@@ -142,7 +146,17 @@ LONG D_Halo5VectoredExceptionHandler(_EXCEPTION_POINTERS *ExceptionInfo)
 {
     if (ExceptionInfo->ExceptionRecord->ExceptionCode == EXCEPTION_ACCESS_VIOLATION)
     {
-        if (ExceptionInfo->ExceptionRecord->ExceptionInformation[0] == 1)
+        if (ExceptionInfo->ExceptionRecord->ExceptionInformation[0] == 0)
+        {
+            MEMORY_BASIC_INFORMATION mbi{};
+            if (VirtualQuery((LPVOID)ExceptionInfo->ExceptionRecord->ExceptionInformation[1], &mbi, sizeof(mbi)) == sizeof(mbi))
+            {
+                DWORD LastProtect = 0;
+                BOOL Result = VirtualProtect(mbi.BaseAddress, mbi.RegionSize, PAGE_READWRITE, &LastProtect);
+                return EXCEPTION_CONTINUE_EXECUTION;
+            }
+        }
+        else if (ExceptionInfo->ExceptionRecord->ExceptionInformation[0] == 1)
         {
             ULONG LastProtect = 0;
             LPVOID ExceptionAddress = (LPVOID)ExceptionInfo->ExceptionRecord->ExceptionInformation[1];
@@ -161,6 +175,8 @@ BOOL(WINAPI *P_ForzaMotorsport5LoadBank)(UINT64 *a1, INT64 a2) = nullptr;
 //Rodrigo Todescatto: This function is related to FMOD Banks loading, but I'm not sure what it does.
 BOOL D_UnknownForzaFunction(UINT a1)
 {
+    P_UnknownForzaFunction(a1);
+
     //Rodrigo Todescatto: Returning TRUE makes the game load the FMOD Banks, returning FALSE
     //causes a black screen hang after the Playground Games/Turn 10/Microsoft Studios video.
     return TRUE;
@@ -170,6 +186,6 @@ BOOL D_ForzaMotorsport5LoadBank(UINT64 *a1, INT64 a2)
 {
     BOOL Result = P_ForzaMotorsport5LoadBank(a1, a2);
     if (!Result)
-        printf("Forza Motorsport 5 failed to load FMOD bankk!\n");
+        printf("Forza Motorsport 5 failed to load FMOD bank!\n");
     return Result;
 }

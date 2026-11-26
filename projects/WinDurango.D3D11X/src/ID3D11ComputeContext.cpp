@@ -317,6 +317,7 @@ void D3D11ComputeContextX<ABI>::BeginResourceBatch(void* a1, uint32_t a2)
 template<abi_t ABI>
 uint32_t D3D11ComputeContextX<ABI>::EndResourceBatch(uint32_t* a1)
 {
+    IMPLEMENT_STUB();
     return 0;
 }
 
@@ -347,7 +348,7 @@ void D3D11ComputeContextX<ABI>::ReadGDS(gfx::_D3D11X_GDS_REGION_TYPE a1, uint32_
 template<abi_t ABI>
 void D3D11ComputeContextX<ABI>::InsertWaitOnMemory(const void* a1, uint32_t a2, D3D11_COMPARISON_FUNC a3, uint32_t a4, uint32_t a5)
 {
-
+    IMPLEMENT_STUB();
 }
 
 template<abi_t ABI>

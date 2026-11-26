@@ -178,6 +178,28 @@ HRESULT __stdcall EraGetForCurrentThread(ICoreWindowStatic *pThis, CoreWindow **
     return hr;
 }
 
+HRESULT __stdcall EraGetForCurrentView(ABI::Windows::Devices::Input::IMouseDeviceStatics *statics,
+                                       ABI::Windows::Devices::Input::IMouseDevice **mouseDevice)
+{
+    HRESULT hr = TrueGetForCurrentView(statics, mouseDevice);
+    if (FAILED(hr))
+    {
+        return hr;
+    }
+
+    if (*mouseDevice == NULL)
+    {
+        return hr;
+    }
+
+    if (IsXboxCallee())
+    {
+        *reinterpret_cast<IMouseDeviceEra**>(mouseDevice) = new MouseDeviceEra(*mouseDevice);
+    }
+
+    return hr;
+}
+
 HWND __stdcall EraCreateWindowInBandEx(DWORD dwExStyle, LPCWSTR lpClassName, LPCWSTR lpWindowName, DWORD dwStyle, int x,
                                        int y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu,
                                        HINSTANCE hInstance, LPVOID lpParam, DWORD dwBand, DWORD dwTypeFlags)
@@ -392,6 +414,29 @@ HRESULT WINAPI WdRoGetActivationFactoryCore(
             DetourAttach(reinterpret_cast<PVOID*>(&TrueActivateInstance), EraAppActivateInstance);
             DetourTransactionCommit();
         }
+    }
+
+    if (rss == std::string("Windows.Devices.Input.MouseDevice"))
+    {
+        ComPtr<ABI::Windows::Devices::Input::IMouseDeviceStatics> mouseDeviceStatic;
+        HRESULT hr = RoGetActivationFactory(Microsoft::WRL::Wrappers::HStringReference::HStringReference(RuntimeClass_Windows_Devices_Input_MouseDevice).Get(), IID_PPV_ARGS(&mouseDeviceStatic));
+        if (FAILED(hr))
+        {
+            DebugBreak();
+            return hr;
+        }
+
+        if (!TrueGetForCurrentView)
+        {
+            *reinterpret_cast<void **>(&TrueGetForCurrentView) = (*reinterpret_cast<void ***>(mouseDeviceStatic.Get()))[6];
+
+            DetourTransactionBegin();
+            DetourUpdateThread(GetCurrentThread());
+            DetourAttach(reinterpret_cast<PVOID*>(&TrueGetForCurrentView), EraGetForCurrentView);
+            DetourTransactionCommit();
+        }
+
+        return mouseDeviceStatic.CopyTo<ABI::Windows::Devices::Input::IMouseDeviceStatics>((ABI::Windows::Devices::Input::IMouseDeviceStatics**)factory);
     }
 
     for (auto pfn : g_RoEntryPoints)

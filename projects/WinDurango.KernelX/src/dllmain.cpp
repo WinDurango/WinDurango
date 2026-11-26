@@ -89,6 +89,8 @@ void KernelxInitialize(HINSTANCE hinstDLL)
         {
             *(void**)&P_StartForzaThread = (char*)GetModuleHandleW(nullptr) + 0x10A7C00;
             DetourAttach((void**)&P_StartForzaThread, &D_StartForzaThread);
+            *(void**)&P_UnknownForzaFunction = (char*)GetModuleHandleW(nullptr) + 0x11F6130;
+            DetourAttach((void**)&P_UnknownForzaFunction, &D_UnknownForzaFunction);
         }
 
         //Forza Motorsport 5

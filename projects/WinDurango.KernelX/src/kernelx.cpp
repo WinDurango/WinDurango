@@ -255,10 +255,16 @@ EXTERN_C LPVOID __stdcall EraVirtualAllocEx(HANDLE hProcess, LPVOID lpAddress, S
 {
     if (flAllocationType & MEM_GRAPHICS)
     {
-        if (flProtect & PAGE_READWRITE)
+        if ((flProtect & PAGE_READWRITE) || (flProtect & PAGE_WRITECOPY))
+        {
             flProtect &= ~PAGE_READWRITE;
-
-        flProtect |= PAGE_READONLY;
+            flProtect |= PAGE_READONLY;
+        }
+        else if ((flProtect & PAGE_EXECUTE_READWRITE) || (flProtect & PAGE_EXECUTE_WRITECOPY))
+        {
+            flProtect &= ~PAGE_EXECUTE_READWRITE;
+            flProtect |= PAGE_EXECUTE_READ;
+        }
     }
 
     MEM_ADDRESS_REQUIREMENTS AddrRq;
@@ -341,8 +347,7 @@ EXTERN_C LPVOID __stdcall EraVirtualAllocEx(HANDLE hProcess, LPVOID lpAddress, S
             // This comes with its own caveats. MEM_COMMIT and other Virtual* functions must
             // be aware of mappable memory allocations and handle them appropriately.
             for (SIZE_T dwOffset = dwPageSize; dwOffset < dwSize; dwOffset += dwPageSize)
-                VirtualFreeEx(hProcess, (LPBYTE)lpAddress + dwOffset, dwPageSize,
-                              MEM_RELEASE | MEM_PRESERVE_PLACEHOLDER);
+                VirtualFreeEx(hProcess, (LPBYTE)lpAddress + dwOffset, dwPageSize, MEM_RELEASE | MEM_PRESERVE_PLACEHOLDER);
 
             AcquireSRWLockExclusive(&XwpMappableLock);
             XwpMappables[(ULONG_PTR)lpAddress] = Mappable;
@@ -616,8 +621,6 @@ EXTERN_C HRESULT __stdcall MapTitleEsramPages(PVOID VirtualAddress, UINT NumberO
     return S_OK;
 }
 
-#define XALLOC_IS_GRAPHICS(Attributes) ((BOOL)(((Attributes) & 0x1E0000000ULL) != 0))
-
 EXTERN_C PVOID __stdcall XMemAllocDefault(SIZE_T dwSize, ULONGLONG dwAttributes)
 {
     auto attr = XALLOC_ATTRIBUTES{dwAttributes};
@@ -736,12 +739,6 @@ void FixRelativePath(LPCWSTR &lpFileName)
     static std::wstring convert{};
     std::wstring_view fileName(lpFileName);
 
-    if (fileName.find(L"MP4") != std::wstring::npos)
-    {
-        printf("AAAAAAAAAA");
-        DebugBreak();
-    }
-
     if (fileName.size() == 0)
         return;
 
@@ -810,25 +807,6 @@ void FixRelativePath(LPCWSTR &lpFileName)
         std::replace(convert.begin(), convert.end(), L'//', L'/');
 
         lpFileName = convert.data();
-    }
-
-    if (wcsstr(lpFileName, L"Mount"))
-    {
-        if (!wcsstr(lpFileName, L"Mount/") && !wcsstr(lpFileName, L"Mount\\"))
-        {
-            LPCWSTR Pos = wcsstr(lpFileName, L"Mount");
-            std::wstring fixed(lpFileName);
-            size_t index = Pos - lpFileName;
-
-            fixed.insert(index + 5, L"/");
-            convert = fixed;
-
-            std::replace(convert.begin(), convert.end(), L'\\', L'/');
-            std::replace(convert.begin(), convert.end(), L'//', L'/');
-
-            lpFileName = convert.c_str();
-            return;
-        }
     }
 }
 
@@ -996,7 +974,25 @@ EXTERN_C BOOL __stdcall EraGetFileAttributesExW(LPCWSTR lpFileName, GET_FILEEX_I
 {
     LPCWSTR FileName = lpFileName;
     FixRelativePath(FileName);
-    return TrueGetFileAttributesExW(FileName, fInfoLevelId, lpFileInformation);
+    BOOL Result = TrueGetFileAttributesExW(FileName, fInfoLevelId, lpFileInformation);
+    if (!Result)
+    {
+        WIN32_FILE_ATTRIBUTE_DATA FileData{};
+        FileData.dwFileAttributes = FILE_ATTRIBUTE_DIRECTORY;
+        FileData.ftCreationTime.dwHighDateTime = 1;
+        FileData.ftCreationTime.dwLowDateTime = 1;
+        FileData.ftLastAccessTime.dwHighDateTime = 1;
+        FileData.ftLastAccessTime.dwLowDateTime = 1;
+        FileData.ftLastWriteTime.dwHighDateTime = 1;
+        FileData.ftLastWriteTime.dwLowDateTime = 1;
+        FileData.nFileSizeHigh = 1;
+        FileData.nFileSizeLow = 1;
+        memcpy(lpFileInformation, &FileData, sizeof(FileData));
+
+        return TRUE;
+    }
+
+    return Result;
 }
 
 EXTERN_C BOOL __stdcall EraGetFileAttributesExA(LPCSTR lpFileName, GET_FILEEX_INFO_LEVELS fInfoLevelId,
@@ -1007,6 +1003,22 @@ EXTERN_C BOOL __stdcall EraGetFileAttributesExA(LPCSTR lpFileName, GET_FILEEX_IN
     FixRelativePath(FileName);
     
     BOOL Result = TrueGetFileAttributesExW(FileName, fInfoLevelId, lpFileInformation);
+    if (!Result)
+    {
+        WIN32_FILE_ATTRIBUTE_DATA FileData{};
+        FileData.dwFileAttributes = FILE_ATTRIBUTE_DIRECTORY;
+        FileData.ftCreationTime.dwHighDateTime = 1;
+        FileData.ftCreationTime.dwLowDateTime = 1;
+        FileData.ftLastAccessTime.dwHighDateTime = 1;
+        FileData.ftLastAccessTime.dwLowDateTime = 1;
+        FileData.ftLastWriteTime.dwHighDateTime = 1;
+        FileData.ftLastWriteTime.dwLowDateTime = 1;
+        FileData.nFileSizeHigh = 1;
+        FileData.nFileSizeLow = 1;
+        memcpy(lpFileInformation, &FileData, sizeof(FileData));
+
+        return TRUE;
+    }
 
     return Result;
 }
@@ -1018,6 +1030,11 @@ EXTERN_C DWORD __stdcall EraGetFileAttributesA(LPCSTR lpFileName)
     FixRelativePath(FileName);
 
     DWORD Result = TrueGetFileAttributesW(FileName);
+
+    if (Result == INVALID_FILE_ATTRIBUTES)
+    {
+        return FILE_ATTRIBUTE_DIRECTORY;
+    }
 
     return Result;
 }

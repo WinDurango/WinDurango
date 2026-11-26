@@ -1,13 +1,13 @@
 #include "Windows.Xbox.Multiplayer.PartyChat.h"
 #include "WinDurangoWinRT.h"
+#include "Windows.Xbox.Multiplayer.PartyConfig.h"
 
 static bool g_isChatSuppresed = false;
 namespace winrt::Windows::Xbox::Multiplayer::implementation
 {
     winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Xbox::Multiplayer::PartyChatView> PartyChat::GetPartyChatViewAsync()
     {
-        p_wd->log.Warn("WinDurango::WinRT::Windows::Xbox::Multiplayer", "Unimplemented: GetPartyChatViewAsync");
-        throw hresult_not_implemented();
+        co_return winrt::make<implementation::PartyChatView>();
     }
     winrt::event_token PartyChat::PartyChatViewChanged(winrt::Windows::Foundation::EventHandler<winrt::Windows::Foundation::IInspectable> const& handler)
     {

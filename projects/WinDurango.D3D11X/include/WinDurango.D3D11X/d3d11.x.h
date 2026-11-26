@@ -27,7 +27,6 @@ BOOL m_Fence = TRUE;
 std::multimap<void*, void*> g_ResourceMap;
 std::unordered_map<void*, void*> g_AllocationBaseMap;
 std::mutex g_ResourceMapMutex;
-std::mutex g_UpdateSubresourceMutex;
 
 #pragma comment(lib, "onecore.lib")
 #pragma comment(lib, "kernel32.lib")

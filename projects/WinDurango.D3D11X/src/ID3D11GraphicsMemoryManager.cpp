@@ -14,10 +14,11 @@ LONG D3D11GraphicsMemoryManager<ABI>::VectoredExceptionHandler(_EXCEPTION_POINTE
             MEMORY_BASIC_INFORMATION mbi{};
             void *Address = (void*)pExceptionPointers->ExceptionRecord->ExceptionInformation[1];
             SIZE_T Result = VirtualQuery(Address, &mbi, sizeof(mbi));
-            if (mbi.AllocationBase && Result == sizeof(mbi))
+            void *AllocationBase = mbi.AllocationBase;
+            if (AllocationBase && Result)
             {
                 std::lock_guard lock(g_ResourceMapMutex);
-                auto Range = g_ResourceMap.equal_range(mbi.AllocationBase);
+                auto Range = g_ResourceMap.equal_range(AllocationBase);
                 for (auto it = Range.first; it != Range.second; ++it)
                 {
                     D3D11_RESOURCE_DIMENSION Type{};

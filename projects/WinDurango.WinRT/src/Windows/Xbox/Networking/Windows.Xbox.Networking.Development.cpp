@@ -5,7 +5,7 @@ namespace winrt::Windows::Xbox::Networking::implementation
 {
     hstring SecureDeviceSocketDescription::Name()
     {
-        return L"Name";
+        return L"";
     }
     winrt::Windows::Xbox::Networking::SecureIpProtocol SecureDeviceSocketDescription::IpProtocol()
     {
