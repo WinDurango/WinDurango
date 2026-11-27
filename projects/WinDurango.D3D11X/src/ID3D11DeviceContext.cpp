@@ -7,6 +7,7 @@
 #include "d3d11.x.h"
 #include "XG.h"
 #include "ID3D11CommandList.h"
+#include "MemorySync.h"
 
 //
 // IUnknown
@@ -5112,18 +5113,40 @@ void D3D11DeviceContextX<ABI>::InsertWaitOnMemory(void const *pAddress, UINT Fla
                                                   D3D11_COMPARISON_FUNC ComparisonFunction, UINT ReferenceValue,
                                                   UINT Mask)
 {
-    IMPLEMENT_STUB();
+    if (!pAddress)
+        return;
+
+    bool Satisfied = wd::memsync::WaitUntil(
+        [&] { return wd::memsync::Compare(ComparisonFunction, wd::memsync::Load32(pAddress) & Mask, ReferenceValue); },
+        [this] { ExecuteBackgroundContexts(); }, wd::memsync::WaitTimeoutMs);
+
+    if (!Satisfied)
+        wd::memsync::LogWaitTimeout(__func__, pAddress);
 }
 
 template <abi_t ABI> void D3D11DeviceContextX<ABI>::WriteTimestampToMemory(void *pDstAddress)
 {
-    IMPLEMENT_STUB();
+    UINT64 Timestamp = wd::memsync::ReadTimestamp();
+    memcpy(pDstAddress, &Timestamp, sizeof(Timestamp));
 }
 
 template <abi_t ABI>
 void D3D11DeviceContextX<ABI>::WriteTimestampToBuffer(gfx::ID3D11Buffer<ABI> *pBuffer, UINT OffsetBytes)
 {
-    IMPLEMENT_STUB();
+    if (!pBuffer)
+        return;
+
+    UINT64 Timestamp = wd::memsync::ReadTimestamp();
+
+    // Placement buffers live in title-visible memory: write there and let the memory manager pick it up.
+    if (pBuffer->m_pAllocationStart)
+    {
+        memcpy(static_cast<BYTE *>(pBuffer->m_pAllocationStart) + OffsetBytes, &Timestamp, sizeof(Timestamp));
+        return;
+    }
+
+    D3D11_BOX Box{OffsetBytes, 0, 0, OffsetBytes + static_cast<UINT>(sizeof(Timestamp)), 1, 1};
+    UpdateSubresource(pBuffer, 0, &Box, &Timestamp, 0, 0);
 }
 
 template <abi_t ABI>
@@ -5185,14 +5208,22 @@ void D3D11DeviceContextX<ABI>::SetBorderColorPalette(gfx::ID3D11Buffer<ABI> *pBu
 
 template <abi_t ABI> void D3D11DeviceContextX<ABI>::WriteValueEndOfPipe64(void *pDestination, UINT64 Value, UINT Flags)
 {
-    IMPLEMENT_STUB();
+    memcpy(pDestination, &Value, sizeof(Value));
 }
 
 template <abi_t ABI>
 void D3D11DeviceContextX<ABI>::InsertWaitOnMemory64(void const *pAddress, UINT Flags,
                                                     D3D11_COMPARISON_FUNC ComparisonFunction, UINT64 ReferenceValue)
 {
-    IMPLEMENT_STUB();
+    if (!pAddress)
+        return;
+
+    bool Satisfied = wd::memsync::WaitUntil(
+        [&] { return wd::memsync::Compare(ComparisonFunction, wd::memsync::Load64(pAddress), ReferenceValue); },
+        [this] { ExecuteBackgroundContexts(); }, wd::memsync::WaitTimeoutMs);
+
+    if (!Satisfied)
+        wd::memsync::LogWaitTimeout(__func__, pAddress);
 }
 
 template <abi_t ABI>
