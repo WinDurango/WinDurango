@@ -106,8 +106,22 @@ EXTERN_C HRESULT __stdcall D3DConfigureVirtualMemory(UINT64 a1)
 
 EXTERN_C HRESULT __stdcall D3DFreeGraphicsMemory(void *pAddress)
 {
-    IMPLEMENT_STUB();
-    return E_NOTIMPL;
+    if (!pAddress)
+        return E_INVALIDARG;
+
+    // Release the whole allocation made by D3DAllocateGraphicsMemory. VirtualFree resolves to the same
+    // implementation as the VirtualAlloc above (KernelX's EraVirtualFree), which also unmaps the
+    // mappable large/4MB-page views that the Xbox allocation flags create.
+    SetLastError(ERROR_SUCCESS);
+    if (!VirtualFree(pAddress, 0, MEM_RELEASE))
+    {
+        // KernelX can fail without setting a last error (e.g. pAddress is not an allocation base),
+        // so never turn a failure into HRESULT_FROM_WIN32(ERROR_SUCCESS) == S_OK.
+        DWORD Error = GetLastError();
+        return Error ? HRESULT_FROM_WIN32(Error) : E_INVALIDARG;
+    }
+
+    return S_OK;
 }
 
 EXTERN_C HRESULT __stdcall D3DMapEsramMemory(UINT Flags, void *pVirtualAddress, UINT NumPages, const UINT *pPageList)
