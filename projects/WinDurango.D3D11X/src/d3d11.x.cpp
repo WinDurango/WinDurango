@@ -3,6 +3,7 @@
 #include "d3d11_x.g.h"
 #include "ID3D11Runtime.h"
 #include "kernelx.h"
+#include "DisplayTiming.h"
 
 EXTERN_C HRESULT __stdcall EraD3D10CreateBlob()
 {
@@ -140,8 +141,41 @@ struct DXGIX_FRAME_STATISTICS
     void *Cookie[2];
 };
 
+// Fills pFrameStatistics[0..NumberFramesRequested) with the most recent presents, newest first; entries beyond the
+// recorded history are zeroed. GPU times use the same QPC clock as the CPU times.
 EXTERN_C HRESULT __stdcall DXGIXGetFrameStatistics(UINT NumberFramesRequested, DXGIX_FRAME_STATISTICS *pFrameStatistics)
 {
+    if (NumberFramesRequested == 0)
+        return S_OK;
+    if (!pFrameStatistics)
+        return E_INVALIDARG;
+
+    ZeroMemory(pFrameStatistics, sizeof(*pFrameStatistics) * NumberFramesRequested);
+
+    auto &History = wd::display::GetPresentHistory();
+    std::lock_guard Lock(History.Mutex);
+
+    UINT const Available = std::min<UINT>(NumberFramesRequested, History.Frames.Count());
+    for (UINT i = 0; i < Available; i++)
+    {
+        wd::display::FrameRecord const &Frame = History.Frames.Recent(i);
+        DXGIX_FRAME_STATISTICS &Stats = pFrameStatistics[i];
+
+        UINT64 const VSyncCount = wd::display::VSyncCountAt(Frame.CpuPresentDone, History.Start, History.Period);
+        UINT64 const VSyncTime = History.Start + VSyncCount * History.Period;
+
+        Stats.CPUTimePresentCalled = Frame.CpuPresentCalled;
+        Stats.CPUTimeAddedToQueue = Frame.CpuPresentCalled;
+        Stats.CPUTimeFrameComplete = Frame.CpuPresentDone;
+        Stats.GPUTimeFrameComplete = Frame.CpuPresentDone;
+        Stats.CPUTimeVSync = VSyncTime;
+        Stats.GPUTimeVSync = VSyncTime;
+        Stats.CPUTimeFlip = Frame.CpuPresentDone;
+        Stats.GPUTimeFlip = Frame.CpuPresentDone;
+        Stats.VSyncCount = VSyncCount;
+        Stats.Cookie[0] = Frame.Cookie;
+    }
+
     return S_OK;
 }
 
@@ -166,13 +200,26 @@ EXTERN_C HRESULT __stdcall DXGIXPresentArray(UINT SyncInterval, UINT PresentImme
         d3d11CreateInstance<DXGIXPresentArrayHelper>(g_ABI, (void **)&g_PresentArrayHelper);
     }
 
+    wd::display::FrameRecord Frame;
+    Frame.CpuPresentCalled = wd::display::Now();
+    Frame.Cookie = (pPresentParameters && NumSwapChains) ? pPresentParameters[0].Cookie : nullptr;
+
     g_PresentArrayHelper->PresentArray(ppSwapChains, NumSwapChains, SyncInterval);
+
+    Frame.CpuPresentDone = wd::display::Now();
+    {
+        auto &History = wd::display::GetPresentHistory();
+        std::lock_guard Lock(History.Mutex);
+        History.Frames.Push(Frame);
+    }
     return S_OK;
 }
 
+// Signals hEvent once per (emulated) v-blank until it is replaced or cleared with nullptr. Scan-line positions
+// cannot be targeted on PC, so VLineNum is ignored.
 EXTERN_C HRESULT __stdcall DXGIXSetVLineNotification(UINT VLineCounter, UINT VLineNum, HANDLE hEvent)
 {
-    return S_OK;
+    return wd::display::GetVLineNotifier().Set(VLineCounter, hEvent);
 }
 
 #pragma comment(linker, "/export:D3D10CreateBlob=EraD3D10CreateBlob,@1")
